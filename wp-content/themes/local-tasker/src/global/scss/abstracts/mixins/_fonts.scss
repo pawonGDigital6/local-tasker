@@ -17,17 +17,19 @@
 	// Iterate through each font-type and add the src to $src.
 	@each $ext in $font-ext {
 
-		@if $ext ==otf {
+		@if $ext == otf {
 			$src: $src + "url('#{$font-path}.#{$ext}') format('opentype'),";
-		} @else if $ext ==woff {
+		} @else if $ext == woff {
 			$src: $src + "url('#{$font-path}.#{$ext}') format('woff'),";
-		} @else if $ext ==woff2 {
+		} @else if $ext == woff2 {
 			$src: $src + "url('#{$font-path}.#{$ext}') format('woff2'),";
-		} @else if $ext ==ttf {
+		} @else if $ext == woff2-variations {
+			$src: $src + "url('#{$font-path}.woff2') format('woff2-variations'),";
+		} @else if $ext == ttf {
 			$src: $src + "url('#{$font-path}.#{$ext}') format('truetype'),";
-		} @else if $ext ==svg {
+		} @else if $ext == svg {
 			$src: $src + "url('#{$font-path}.#{$ext}') format('svg'),";
-		} @else if $ext ==eot {
+		} @else if $ext == eot {
 			$src: $src +
 				"url('#{$font-path}.#{$ext}') format('embedded-opentype'),";
 		}

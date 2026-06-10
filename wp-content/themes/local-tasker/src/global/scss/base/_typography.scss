@@ -13,17 +13,89 @@
 *    font-style
 * );
 */
-// @include mix.font-face('Roboto', '../fonts/roboto', (woff2,woff,otf), 400, normal);
+// Manrope (Static Font - Currently in your folder)
+@include mix.font-face("Manrope", "../fonts/manrope/Manrope-Var", (woff2-variations, woff2), 100 900, normal);
+
+// PP Formula (Standard Width)
+@include mix.font-face("PP Formula", "../fonts/pp-formula/PPFormula-Light", (woff2), 300, normal);
+@include mix.font-face("PP Formula", "../fonts/pp-formula/PPFormula-Medium", (woff2), 500, normal);
+@include mix.font-face("PP Formula", "../fonts/pp-formula/PPFormula-MediumItalic", (woff2), 500, italic);
+@include mix.font-face("PP Formula", "../fonts/pp-formula/PPFormula-Extrabold", (woff2), 800, normal);
+
+// // PP Formula Condensed
+// @include mix.font-face(
+// 	"PP Formula Condensed",
+// 	"../fonts/pp-formula/PPFormula-CondensedExtralight",
+// 	(woff2),
+// 	200,
+// 	normal
+// );
+// @include mix.font-face(
+// 	"PP Formula Condensed",
+// 	"../fonts/pp-formula/PPFormula-CondensedLightItalic",
+// 	(woff2),
+// 	300,
+// 	italic
+// );
+// @include mix.font-face("PP Formula Condensed", "../fonts/pp-formula/PPFormula-CondensedBlack", (woff2), 900, normal);
+
+// // PP Formula Semi Condensed
+// @include mix.font-face(
+// 	"PP Formula Semi Condensed",
+// 	"../fonts/pp-formula/PPFormula-SemiCondensedThin",
+// 	(woff2),
+// 	100,
+// 	normal
+// );
+// @include mix.font-face(
+// 	"PP Formula Semi Condensed",
+// 	"../fonts/pp-formula/PPFormula-SemiCondensedExtralight",
+// 	(woff2),
+// 	200,
+// 	normal
+// );
+// @include mix.font-face(
+// 	"PP Formula Semi Condensed",
+// 	"../fonts/pp-formula/PPFormula-SemiCondensedExtralightItalic",
+// 	(woff2),
+// 	200,
+// 	italic
+// );
+// @include mix.font-face(
+// 	"PP Formula Semi Condensed",
+// 	"../fonts/pp-formula/PPFormula-SemiCondensedMedium",
+// 	(woff2),
+// 	500,
+// 	normal
+// );
+
+// // PP Formula Narrow
+// @include mix.font-face("PP Formula Narrow", "../fonts/pp-formula/PPFormula-NarrowRegular", (woff2), 400, normal);
+// @include mix.font-face("PP Formula Narrow", "../fonts/pp-formula/PPFormula-NarrowSemibold", (woff2), 600, normal);
+
+// // PP Formula Extended
+// @include mix.font-face("PP Formula Extended", "../fonts/pp-formula/PPFormula-ExtendedMedium", (woff2), 500, normal);
+// @include mix.font-face("PP Formula Extended", "../fonts/pp-formula/PPFormula-ExtendedBold", (woff2), 700, normal);
+
+// // PP Formula Semi Extended
+// @include mix.font-face(
+// 	"PP Formula Semi Extended",
+// 	"../fonts/pp-formula/PPFormula-SemiExtendedBold",
+// 	(woff2),
+// 	700,
+// 	normal
+// );
 
 /**
 * Typography
 *
 */
 body {
-	color: var.$color-text;
-	font-family: var.$font-primary;
-	font-size: 100%;
+	font-size: 1rem;
 	line-height: 1.5;
+	font-weight: 400;
+	font-family: var(--lt-font-base);
+	color: var(--lt-text-secondary);
 }
 
 h1,
@@ -32,56 +104,18 @@ h3,
 h4,
 h5,
 h6 {
-	color: var.$color-primary;
-	font-family: var.$font-secondary;
-	font-weight: 700;
+	font-family: var(--lt-font-primary);
 	line-height: 1.2;
-	margin: 0 0 1.5em;
-
-	a {
-		font: inherit;
-		color: inherit;
-		text-decoration: none;
-		transition: color 0.3s ease;
-
-		&:hover {
-			color: var.$color-accent;
-		}
-	}
-}
-
-h1 {
-	font-size: 2.5rem;
-}
-
-h2 {
-	font-size: 2rem;
-}
-
-h3 {
-	font-size: 1.75rem;
-}
-
-h4 {
-	font-size: 1.5rem;
-}
-
-h5 {
-	font-size: 1.25rem;
-}
-
-h6 {
-	font-size: 1rem;
 }
 
 p,
 ul,
 ol,
 blockquote {
-	margin: 0 0 1.5em;
+	margin: 0 0 1.5rem;
 
 	a {
-		color: var.$color-accent;
+		color: var(--lt-text-secondary);
 		text-decoration: none;
 
 		&:hover {

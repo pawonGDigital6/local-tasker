@@ -142,21 +142,112 @@ function local_tasker_widgets_init()
 }
 add_action('widgets_init', 'local_tasker_widgets_init');
 
+// /**
+//  * Enqueue scripts and styles.
+//  */
+// function local_tasker_scripts()
+// {
+// 	wp_enqueue_style('local-tasker-style', get_stylesheet_uri(), array(), _S_VERSION);
+// 	wp_style_add_data('local-tasker-style', 'rtl', 'replace');
+
+// 	wp_enqueue_script('local-tasker-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true);
+
+// 	if (is_singular() && comments_open() && get_option('thread_comments')) {
+// 		wp_enqueue_script('comment-reply');
+// 	}
+// }
+// add_action('wp_enqueue_scripts', 'local_tasker_scripts');
+
+
 /**
  * Enqueue scripts and styles.
  */
 function local_tasker_scripts()
 {
-	wp_enqueue_style('local-tasker-style', get_stylesheet_uri(), array(), _S_VERSION);
+
+	$path = '/build/global/';
+
+	$version = '';
+	$dependencies = array();
+
+	if (file_exists(get_template_directory() . $path . 'index.asset.php')) {
+		$version_details = require get_template_directory() . $path . 'index.asset.php';
+
+		if (isset($version_details['version'])) {
+			$version = $version_details['version'];
+		}
+
+		if (isset($version_details['dependencies'])) {
+			$dependencies = array_merge($dependencies, $version_details['dependencies']);
+		}
+	}
+
+	wp_enqueue_style('local-tasker-style', get_stylesheet_uri(), array(), $version);
 	wp_style_add_data('local-tasker-style', 'rtl', 'replace');
 
-	wp_enqueue_script('local-tasker-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true);
+	// Theme custom styles.
+	wp_register_style('local-tasker-custom-style', get_template_directory_uri() . $path . 'index.css', '', $version);
+	wp_enqueue_style('local-tasker-custom-style');
+	wp_style_add_data('local-tasker-custom-style', 'rtl', 'replace');
 
-	if (is_singular() && comments_open() && get_option('thread_comments')) {
-		wp_enqueue_script('comment-reply');
-	}
+	// Theme custom scripts.
+	wp_register_script('local-tasker-custom-script', get_template_directory_uri() . $path . 'index.js', $dependencies, $version, true);
+	wp_enqueue_script('local-tasker-custom-script');
+
 }
 add_action('wp_enqueue_scripts', 'local_tasker_scripts');
+
+/**
+ * Enqueue Block Editor style
+ */
+function local_tasker_global_editor_style()
+{
+	$path = '/build/global/';
+
+	$version = '';
+	$dependencies = array();
+
+	if (file_exists(get_template_directory() . $path . 'editor.asset.php')) {
+		$version_details = require get_template_directory() . $path . 'editor.asset.php';
+
+		if (isset($version_details['version'])) {
+			$version = $version_details['version'];
+		}
+
+		if (isset($version_details['dependencies'])) {
+			$dependencies = array_merge($dependencies, $version_details['dependencies']);
+		}
+	}
+
+	// Editor custom styles.
+	wp_register_style('local-tasker-editor-style', get_template_directory_uri() . $path . 'editor.css', '', $version);
+	wp_enqueue_style('local-tasker-editor-style');
+	wp_style_add_data('local-tasker-editor-style', 'rtl', 'replace');
+
+}
+add_action('enqueue_block_editor_assets', 'local_tasker_global_editor_style');
+
+/**
+ * We use WordPress's admin_enqueue_scripts hook to
+ * enqueue our custom admin scripts and styles.
+ *
+ * @link https://developer.wordpress.org/reference/hooks/admin_enqueue_scripts/
+ */
+function enqueue_admin_scripts_and_styles()
+{
+	wp_enqueue_script('admin-scripts', get_stylesheet_directory_uri() . '/js/acf_block_preview.js', array('wp-blocks', 'wp-element', 'wp-hooks'), '', true);
+
+	// We use wp_localize_script to pass data
+	wp_localize_script('admin-scripts', 'passed_data', array('templateUrl' => get_stylesheet_directory_uri()));
+}
+
+add_action('admin_enqueue_scripts', 'enqueue_admin_scripts_and_styles');
+
+/**
+ * Load ACF Blocks.
+ */
+require get_template_directory() . '/inc/acf-register-blocks.php';
+require get_template_directory() . '/inc/acf-block-settings.php';
 
 /**
  * Implement the Custom Header feature.

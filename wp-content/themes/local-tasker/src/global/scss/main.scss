@@ -3,6 +3,9 @@
 @use "base/base";
 @use "base/typography";
 
+// utilities
+@use "utilites/typography-class";
+
 // Components
 @use "components/buttons";
 @use "components/navigation";

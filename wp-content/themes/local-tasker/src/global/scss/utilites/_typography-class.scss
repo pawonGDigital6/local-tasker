@@ -1,0 +1,74 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+
+/* ==========================================================================
+   Headings (Fluid Typography via Clamp)
+   ========================================================================== */
+h1,
+.lt-h1 {
+    /* Mobile: 34px (2.125rem) -> Desktop: 60px (3.75rem) */
+    font-size: clamp(2.125rem, 1.485rem + 2.517vw, 3.75rem);
+}
+
+h2,
+.lt-h2 {
+    /* Mobile: 32px (2rem) -> Desktop: 48px (3rem) */
+    font-size: clamp(2rem, 1.606rem + 1.549vw, 3rem);
+}
+
+h3,
+.lt-h3 {
+    /* Mobile: 30px (1.875rem) -> Desktop: 40px (2.5rem) */
+    font-size: clamp(1.875rem, 1.629rem + 0.968vw, 2.5rem);
+}
+
+h4,
+.lt-h4 {
+    /* Mobile: 24px (1.5rem) -> Desktop: 32px (2rem) */
+    font-size: clamp(1.5rem, 1.303rem + 0.774vw, 2rem);
+}
+
+h5,
+.lt-h5 {
+    /* Static rem (24px) */
+    font-size: 1.5rem;
+}
+
+/* ==========================================================================
+   Text (Static Rem)
+   ========================================================================== */
+
+.lt-text-base {
+    font-size: 1rem; /* 16px */
+}
+
+.lt-text-md {
+    font-size: 1.125rem; /* 18px */
+}
+
+.lt-text-lg {
+    font-size: 1.25rem; /* 20px */
+}
+
+.lt-text-xl {
+    font-size: 1.375rem; /* 22px */
+}
+
+/* ==========================================================================
+   Captions (Static Rem)
+   ========================================================================== */
+
+.lt-text-cap-xs {
+    font-size: 0.625rem; /* 10px */
+    line-height: 1.6;
+}
+
+.lt-text-cap-sm {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.833;
+}
+
+.lt-text-cap-md {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.429;
+}

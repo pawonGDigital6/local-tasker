@@ -1,0 +1,173 @@
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/global/scss/editor.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
+:root {
+  /* Colors */
+  --lt-brand: #0a65fc;
+  --lt-accent: #f69222;
+  --lt-text-primary: #131313;
+  --lt-text-secondary: #2e2e2e;
+  --lt-text-placeholder: #9ca3af;
+  --lt-text-muted: #4a5565;
+  --lt-onyx: #131313;
+  --lt-snow-drift: #f8f8f7;
+  --lt-white: #ffffff;
+  --lt-black: #000000;
+  /* Typography */
+  --lt-font-base: "Manrope", sans-serif;
+  --lt-font-primary: "PP Formula", sans-serif;
+}
+
+/*********************
+* BREAKPOINTS
+*
+* @example
+* for max-width case
+* @include breakpoint('smaller') {
+*	@content;
+* }
+*
+* for min-width case
+* @include breakpoint('smaller', true) {
+*	@content;
+*}
+*********************/
+
+/*********************
+	Flex
+*********************/
+
+/*********************
+	Flex Direction
+
+@example
+// If display: flex; is needed
+@include flex-column(true);
+
+// If display: flex; is not needed
+@include flex-column();
+*********************/
+
+/*********************
+	Flex Direction
+
+@example
+// Center Vertically and horizontally
+@include flex-center();
+
+// Center only horizontally
+@include flex-center(hr);
+
+// Center only vertically
+@include flex-center(vr);
+
+*********************/
+
+/*********************
+Flex Grid Width
+
+@example
+
+@include flex-grid-width(5, 30px);
+
+Note: Do not forget to add column-gap in the parent element
+
+*********************/
+
+/*********************
+	Flex Width
+
+@example
+
+@include flex-width(calc(100% / 3));
+*********************/
+
+/**
+* Mixin to declare Font-face
+*
+*/
+
+.acf-block.padding-top-sm {
+  padding-block-start: 40px;
+}
+
+.acf-block.padding-top-md {
+  padding-block-start: 80px;
+}
+
+.acf-block.padding-top-lg {
+  padding-block-start: 120px;
+}
+
+.acf-block.padding-bottom-sm {
+  padding-block-end: 40px;
+}
+
+.acf-block.padding-bottom-md {
+  padding-block-end: 80px;
+}
+
+.acf-block.padding-bottom-lg {
+  padding-block-end: 120px;
+}
+
+.acf-block.background-primary {
+  background-color: #007bff;
+}
+
+.acf-block.background-secondary {
+  background-color: #6c757d;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  word-break: break-word;
+  -webkit-text-size-adjust: 100%;
+     -moz-text-size-adjust: 100%;
+          text-size-adjust: 100%;
+}
+
+img,
+video,
+svg,
+iframe,
+figure,
+picture {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  width: min(1440px, 100%);
+  margin-inline: auto;
+  padding-inline: 15px;
+}
+
+.container--small {
+  width: min(900px, 100%);
+}
+
+.container--wide {
+  width: min(1600px, 100%);
+}
+
+@media (prefers-reduced-motion) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.editor-styles-wrapper .acf-block-preview.acf-block-component {
+  max-width: 100%;
+  margin-block: 0;
+}
