@@ -1,0 +1,54 @@
+// ─── Gap ────────────────────────────────────────────────────────────────
+// Configuration
+$start: 0;
+$end: 16;
+$base-unit: 0.25rem;
+
+@for $i from $start through $end {
+    $value: $i * $base-unit;
+
+    // --- GAP ---
+    .gap-#{$i} {
+        gap: $value;
+    }
+    .gap-x-#{$i} {
+        column-gap: $value;
+    } // Horizontal gap
+    .gap-y-#{$i} {
+        row-gap: $value;
+    } // Vertical gap
+
+    // --- MARGIN ---
+    .mt-#{$i} {
+        margin-top: $value;
+    }
+    .mb-#{$i} {
+        margin-bottom: $value;
+    }
+
+    // Horizontal (X-axis) using Logical Properties
+    .mx-#{$i} {
+        margin-inline: $value;
+    }
+    // Vertical (Y-axis) using Logical Properties
+    .my-#{$i} {
+        margin-block: $value;
+    }
+
+    // --- PADDING ---
+    .pt-#{$i} {
+        padding-top: $value;
+    }
+    .pb-#{$i} {
+        padding-bottom: $value;
+    }
+
+    // Horizontal (X-axis)
+    .px-#{$i} {
+        padding-inline: $value;
+    }
+    // Vertical (Y-axis)
+    .py-#{$i} {
+        padding-block: $value;
+    }
+}

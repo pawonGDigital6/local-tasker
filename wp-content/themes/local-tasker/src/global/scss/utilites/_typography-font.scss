@@ -1,0 +1,71 @@
+// ─── Font family ────────────────────────────────────────────────────────────────
+.font-base {
+	font-family: var(--lt-font-base);
+}
+
+.font-primary {
+	font-family: var(--lt-font-primary);
+}
+
+// ─── Font Weight ────────────────────────────────────────────────────────────────
+.font-thin {
+	font-weight: 100;
+}
+
+.font-extralight {
+	font-weight: 200;
+}
+
+.font-light {
+	font-weight: 300;
+}
+
+.font-normal {
+	font-weight: 400;
+}
+
+.font-medium {
+	font-weight: 500;
+}
+
+.font-semibold {
+	font-weight: 600;
+}
+
+.font-bold {
+	font-weight: 700;
+}
+
+.font-extrabold {
+	font-weight: 800;
+}
+
+.font-black {
+	font-weight: 900;
+}
+
+// ─── Font Style ────────────────────────────────────────────────────────────────
+.font-italic {
+	font-style: italic;
+}
+
+// ─── Text Style ────────────────────────────────────────────────────────────────
+.text-decoration-none {
+	text-decoration: none;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+// ─── Text Transform ────────────────────────────────────────────────────────────────
+.uppercase {
+	text-transform: uppercase;
+}
+
+.list-none,
+.list-none ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}

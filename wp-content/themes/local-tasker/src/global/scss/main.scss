@@ -4,7 +4,14 @@
 @use "base/typography";
 
 // utilities
+@use "utilites/typography-font";
+@use "utilites/colors";
+@use "utilites/gap";
+@use "utilites/display";
+@use "utilites/alignment";
 @use "utilites/typography-class";
+@use "utilites/keyframes";
+@use "utilites/other";
 
 // Components
 @use "components/buttons";
