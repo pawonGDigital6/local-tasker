@@ -1,46 +1,30 @@
 {
-  "name": "underscores",
-  "version": "1.0.0",
-  "description": "Hi. I'm a starter theme called _s, or underscores, if you like. I'm a theme meant for hacking so don't use me as a Parent Theme. Instead try turning me into the next, most awesome, WordPress theme out there. That's what I'm here for.",
-  "author": "Automattic Theme Team",
-  "license": "GPL-2.0-or-later",
-  "keywords": [
-    "WordPress",
-    "Theme"
-  ],
-  "homepage": "https://github.com/Automattic/_s#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Automattic/_s.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Automattic/_s/issues"
-  },
-  "devDependencies": {
-    "@wordpress/scripts": "^19.2.2",
-    "dir-archiver": "^1.1.1",
-    "node-sass": "^7.0.1",
-    "rtlcss": "^3.5.0"
-  },
-  "rtlcssConfig": {
-    "options": {
-      "autoRename": false,
-      "autoRenameStrict": false,
-      "blacklist": {},
-      "clean": true,
-      "greedy": false,
-      "processUrls": false,
-      "stringMap": []
+    "name": "acf-first-block",
+    "version": "1.0.0",
+    "description": "Example block scaffolded with Create Block tool.",
+    "author": "The WordPress Contributors",
+    "license": "GPL-2.0-or-later",
+    "main": "build/index.js",
+    "scripts": {
+        "build": "cross-env COPY_PREVIEW_IMAGE=true wp-scripts build --webpack-copy-php --source-path=src/blocks --output-path=build/blocks",
+        "build:global": "wp-scripts build --source-path=src/global --output-path=build/global",
+        "format": "wp-scripts format",
+        "lint:css": "wp-scripts lint-style src/global/**/*.scss",
+        "lint:js": "wp-scripts lint-js",
+        "packages-update": "wp-scripts packages-update",
+        "plugin-zip": "wp-scripts plugin-zip",
+        "start": "cross-env COPY_PREVIEW_IMAGE=true wp-scripts start --webpack-copy-php --source-path=src/blocks --output-path=build/blocks",
+        "start:global": "wp-scripts start index.js editor.js --source-path=src/global --output-path=build/global",
+        "create-block": "cd src/blocks && npx @wordpress/create-block --no-plugin  --template ../../inc/acf-block-template"
     },
-    "plugins": [],
-    "map": false
-  },
-  "scripts": {
-    "watch": "node-sass sass/ -o ./ --source-map true --output-style expanded --indent-type tab --indent-width 1 -w",
-    "compile:css": "node-sass sass/ -o ./ && stylelint '*.css' --fix || true && stylelint '*.css' --fix",
-    "compile:rtl": "rtlcss style.css style-rtl.css",
-    "lint:scss": "wp-scripts lint-style 'sass/**/*.scss'",
-    "lint:js": "wp-scripts lint-js 'js/*.js'",
-    "bundle": "dir-archiver --src . --dest ../_s.zip --exclude .DS_Store .stylelintrc.json .eslintrc .git .gitattributes .github .gitignore README.md composer.json composer.lock node_modules vendor package-lock.json package.json .travis.yml phpcs.xml.dist sass style.css.map yarn.lock"
-  }
+    "devDependencies": {
+        "@wordpress/scripts": "^30.8.1",
+        "@wordpress/stylelint-config": "^23.9.0",
+        "copy-webpack-plugin": "^12.0.2",
+        "cross-env": "^7.0.3"
+    },
+    "dependencies": {
+        "@wordpress/dom-ready": "^4.15.0",
+        "swiper": "^11.2.1"
+    }
 }

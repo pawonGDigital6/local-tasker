@@ -1,0 +1,91 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+
+/**
+* Declare Font-face
+*
+* usage example
+* @include mix.font-face(
+*    'font-name',
+*    'font-path',
+*    (font-ext),
+*    font-weight,
+*    font-style
+* );
+*/
+// @include mix.font-face('Roboto', '../fonts/roboto', (woff2,woff,otf), 400, normal);
+
+/**
+* Typography
+*
+*/
+body {
+	color: var.$color-text;
+	font-family: var.$font-primary;
+	font-size: 100%;
+	line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: var.$color-primary;
+	font-family: var.$font-secondary;
+	font-weight: 700;
+	line-height: 1.2;
+	margin: 0 0 1.5em;
+
+	a {
+		font: inherit;
+		color: inherit;
+		text-decoration: none;
+		transition: color 0.3s ease;
+
+		&:hover {
+			color: var.$color-accent;
+		}
+	}
+}
+
+h1 {
+	font-size: 2.5rem;
+}
+
+h2 {
+	font-size: 2rem;
+}
+
+h3 {
+	font-size: 1.75rem;
+}
+
+h4 {
+	font-size: 1.5rem;
+}
+
+h5 {
+	font-size: 1.25rem;
+}
+
+h6 {
+	font-size: 1rem;
+}
+
+p,
+ul,
+ol,
+blockquote {
+	margin: 0 0 1.5em;
+
+	a {
+		color: var.$color-accent;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}

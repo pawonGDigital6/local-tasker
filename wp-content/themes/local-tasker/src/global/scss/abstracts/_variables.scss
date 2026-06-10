@@ -1,0 +1,33 @@
+@use "sass:map";
+
+// Font Family
+$font-primary: "Roboto", sans-serif;
+$font-secondary: "Open Sans", sans-serif;
+
+// Colors
+$color-primary: #007bff;
+$color-secondary: #6c757d;
+$color-text: #333;
+$color-accent: rgb(183, 5, 5);
+$color-white: #fff;
+$color-black: #000;
+
+// Breakpoints
+$breakpoints: (
+	"xxs": 320px,
+	"iPhone5": 374px,
+	"extraSmall": 479px,
+	"smaller": 575px,
+	"small": 767px,
+	"medium": 991px,
+	"ipadPro": 1024px,
+	"wide": 1199px,
+	"laptop": 1399px,
+	"extraWide": 1930px,
+);
+
+// Container size
+$content-size: 1440px;
+$content-small-size: 900px;
+$content-wide-size: 1600px;
+$content-spacing-inline: 15px;

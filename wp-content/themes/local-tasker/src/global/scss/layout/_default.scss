@@ -1,0 +1,36 @@
+@use "../abstracts/variables" as var;
+
+article:where(.page, .post) {
+
+	:is(.entry-content, .entry-header, .entry-footer) {
+
+		> *:not(:is(.acf-block, .wp-block-group)) {
+			width: min(var.$content-size, 100%);
+			margin-inline: auto;
+			padding-inline: var.$content-spacing-inline;
+		}
+
+		.wp-block-group {
+
+			&__inner-container {
+				width: min(var.$content-size, 100%);
+				margin-inline: auto;
+				padding-inline: var.$content-spacing-inline;
+			}
+
+			&.alignwide {
+
+				.wp-block-group__inner-container {
+					width: min(var.$content-wide-size, 100%);
+				}
+			}
+
+			&.alignfull {
+
+				.wp-block-group__inner-container {
+					width: 100%;
+				}
+			}
+		}
+	}
+}

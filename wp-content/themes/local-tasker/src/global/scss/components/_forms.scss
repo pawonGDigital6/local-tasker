@@ -1,0 +1,18 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+
+
+textarea {
+	vertical-align: top;
+}
+
+input:not([type="submit"]):not([type="reset"]):not([type="button"]),
+select,
+textarea {
+	width: 100%;
+
+	&:focus {
+		outline: 0;
+	}
+}
+

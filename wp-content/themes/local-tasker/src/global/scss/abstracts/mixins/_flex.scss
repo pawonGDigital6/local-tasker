@@ -1,0 +1,97 @@
+/*********************
+	Flex
+*********************/
+@mixin flex($justify: false, $align: false, $wrap: false, $direction: false) {
+	display: flex;
+
+	@if $justify {
+		justify-content: $justify;
+	}
+
+	@if $align {
+		align-items: $align;
+	}
+
+	@if $wrap {
+		flex-wrap: $wrap;
+	}
+
+	@if $direction {
+		flex-direction: $direction;
+	}
+}
+
+/*********************
+	Flex Direction
+
+@example
+// If display: flex; is needed
+@include flex-column(true);
+
+// If display: flex; is not needed
+@include flex-column();
+*********************/
+@mixin flex-column($flex: false) {
+
+	@if $flex {
+		display: flex;
+	}
+
+	flex-direction: column;
+}
+
+/*********************
+	Flex Direction
+
+@example
+// Center Vertically and horizontally
+@include flex-center();
+
+// Center only horizontally
+@include flex-center(hr);
+
+// Center only vertically
+@include flex-center(vr);
+
+*********************/
+@mixin flex-center($dir: false) {
+	display: flex;
+
+	@if $dir ==hr {
+		justify-content: center;
+	} @else if $dir ==vr {
+		align-items: center;
+	} @else {
+		justify-content: center;
+		align-items: center;
+	}
+}
+
+/*********************
+Flex Grid Width
+
+@example
+
+@include flex-grid-width(5, 30px);
+
+Note: Do not forget to add column-gap in the parent element
+
+*********************/
+@mixin flex-grid-width($columns: 1, $gap: 0) {
+	$total-gap: calc($gap * ($columns - 1));
+	$width: calc((100% / $columns) - ($total-gap / $columns));
+	flex: 0 0 $width;
+	max-width: $width;
+}
+
+/*********************
+	Flex Width
+
+@example
+
+@include flex-width(calc(100% / 3));
+*********************/
+@mixin flex-width($width) {
+	flex: 0 0 #{$width};
+	max-width: #{$width};
+}

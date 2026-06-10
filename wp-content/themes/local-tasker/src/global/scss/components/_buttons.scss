@@ -1,0 +1,13 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+
+button,
+.button,
+.btn,
+input[type="submit"],
+input[type="reset"] {
+	display: inline-block;
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+	cursor: pointer;
+}
