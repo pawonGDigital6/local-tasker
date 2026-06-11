@@ -16,29 +16,3 @@
 	// @include center-block;
 	margin-bottom: 1.5em;
 }
-
-// ─── Text Alignment ────────────────────────────────────────────────────────────────
-.text-center {
-	text-align: center;
-}
-
-.text-right {
-	text-align: right;
-}
-
-.text-left {
-	text-align: left;
-}
-
-// ─── Flex ────────────────────────────────────────────────────────────────
-.justify-between {
-	justify-content: space-between;
-}
-
-.items-center {
-	align-items: center;
-}
-
-.items-end {
-	align-items: flex-end;
-}

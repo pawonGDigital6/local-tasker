@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/* ─── Map existing design tokens to Tailwind's theme ─── */
+@theme {
+  --color-lt-brand: #0a65fc;
+  --color-lt-accent: #f69222;
+  --color-lt-text-primary: #131313;
+  --color-lt-text-secondary: #2e2e2e;
+  --color-lt-text-placeholder: #9ca3af;
+  --color-lt-text-muted: #4a5565;
+  --color-lt-onyx: #131313;
+  --color-lt-snow-drift: #f8f8f7;
+  --color-lt-white: #ffffff;
+  --color-lt-black: #000000;
+
+
+  --font-base: "Manrope", sans-serif;
+  --font-primary: "PP Formula", sans-serif;
+
+  --breakpoint-xxs: 320px;
+  --breakpoint-xs: 374px;
+  --breakpoint-smlr: 567px;
+  --breakpoint-sm: 767px;
+  --breakpoint-md: 991px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-wd: 1199px;
+  --breakpoint-lp: 1399px;
+  --breakpoint-xl: 1930px;
+}
+

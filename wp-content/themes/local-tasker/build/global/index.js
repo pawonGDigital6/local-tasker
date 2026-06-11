@@ -18,6 +18,18 @@ _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default()(() => {
 
 /***/ },
 
+/***/ "./src/global/tailwind/tailwind.css"
+/*!******************************************!*\
+  !*** ./src/global/tailwind/tailwind.css ***!
+  \******************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
 /***/ "./src/global/scss/main.scss"
 /*!***********************************!*\
   !*** ./src/global/scss/main.scss ***!
@@ -122,7 +134,9 @@ var __webpack_exports__ = {};
   \*****************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./js/main */ "./src/global/js/main.js");
-/* harmony import */ var _scss_main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scss/main.scss */ "./src/global/scss/main.scss");
+/* harmony import */ var _tailwind_tailwind_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tailwind/tailwind.css */ "./src/global/tailwind/tailwind.css");
+/* harmony import */ var _scss_main_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scss/main.scss */ "./src/global/scss/main.scss");
+
 
 
 })();

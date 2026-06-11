@@ -4,13 +4,13 @@ const path = require("path");
 
 const copyPreviewImage = [];
 
-if(process.env.COPY_PREVIEW_IMAGE === "true"){
+if (process.env.COPY_PREVIEW_IMAGE === "true") {
     copyPreviewImage.push(
         new CopyWebpackPlugin({
             patterns: [
                 {
-                    from:  "**/preview.png",
-                    to:  "[path][name][ext]",
+                    from: "**/preview.png",
+                    to: "[path][name][ext]",
                     context: path.resolve(__dirname, "src", "blocks")
                 },
             ],
@@ -26,7 +26,28 @@ module.exports = {
     },
     externals: {
         ...defaults.externals,
-        jquery: "jQuery", // Make the 'jQuery' available from external source so that we do not have to install saperate dependency.
+        jquery: "jQuery",
+    },
+    module: {
+        ...defaults.module,
+        rules: [
+            ...defaults.module.rules,
+            {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    require('@tailwindcss/postcss'),
+                                ],
+                            },
+                        },
+                    },
+                ],
+            },
+        ],
     },
     plugins: [
         ...defaults.plugins,

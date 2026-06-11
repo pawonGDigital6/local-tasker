@@ -18,10 +18,13 @@
         "create-block": "cd src/blocks && npx @wordpress/create-block --no-plugin  --template ../../inc/acf-block-template"
     },
     "devDependencies": {
+        "@tailwindcss/postcss": "^4.3.0",
         "@wordpress/scripts": "^30.8.1",
         "@wordpress/stylelint-config": "^23.9.0",
         "copy-webpack-plugin": "^12.0.2",
-        "cross-env": "^7.0.3"
+        "cross-env": "^7.0.3",
+        "postcss": "^8.5.15",
+        "tailwindcss": "^4.3.0"
     },
     "dependencies": {
         "@wordpress/dom-ready": "^4.15.0",

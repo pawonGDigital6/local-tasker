@@ -1,35 +1,4 @@
 @use "sass:map";
-
-:root {
-	/* Colors */
-	--lt-brand: #0a65fc;
-	--lt-accent: #f69222;
-	--lt-text-primary: #131313;
-	--lt-text-secondary: #2e2e2e;
-	--lt-text-placeholder: #9ca3af;
-	--lt-text-muted: #4a5565;
-	--lt-onyx: #131313;
-	--lt-snow-drift: #f8f8f7;
-	--lt-white: #ffffff;
-	--lt-black: #000000;
-
-	/* Typography */
-	--lt-font-base: "Manrope", sans-serif;
-	--lt-font-primary: "PP Formula", sans-serif;
-}
-
-// Font Family
-$font-primary: "Roboto", sans-serif;
-$font-secondary: "Open Sans", sans-serif;
-
-// Colors
-$color-primary: #007bff;
-$color-secondary: #6c757d;
-$color-text: #333;
-$color-accent: rgb(183, 5, 5);
-$color-white: #fff;
-$color-black: #000;
-
 // Breakpoints
 $breakpoints: (
 	"xxs": 320px,

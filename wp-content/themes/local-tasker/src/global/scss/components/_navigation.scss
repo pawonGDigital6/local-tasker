@@ -2,254 +2,178 @@
 @use "../abstracts/mixins" as mix;
 
 .menu-toggle {
+    @include mix.flex(space-between, center, nowrap, column);
+    background: none;
+    border: none;
+    height: 24px;
+    padding: 0;
+    position: relative;
+    width: 40px;
+    z-index: 100;
 
-	@include mix.flex(space-between, center, nowrap, column);
-	background: none;
-	border: none;
-	height: 24px;
-	padding: 0;
-	position: relative;
-	width: 40px;
-	z-index: 100;
+    @include mix.breakpoint(ipadPro, true) {
+        display: none;
+    }
 
-	@include mix.breakpoint(ipadPro, true) {
-		display: none;
-	}
+    span {
+        display: block;
+        width: 100%;
+        height: 3px;
+        // background: var.$color-primary;
 
-	span {
-		display: block;
-		width: 100%;
-		height: 3px;
-		background: var.$color-primary;
+        &:nth-child(1) {
+            font-size: 0;
+            transition: transform 0.3s ease;
 
-		&:nth-child(1) {
-			font-size: 0;
-			transition: transform 0.3s ease;
+            .menu-open & {
+                transform: translateY(11px) rotate(45deg);
+            }
+        }
 
-			.menu-open & {
-				transform: translateY(11px) rotate(45deg);
-			}
-		}
+        &:nth-child(2) {
+            transition:
+                height 0.3s ease,
+                opacity 0.3s ease;
 
-		&:nth-child(2) {
-			transition:
-				height 0.3s ease,
-				opacity 0.3s ease;
+            .menu-open & {
+                height: 0;
+                opacity: 0;
+            }
+        }
 
-			.menu-open & {
-				height: 0;
-				opacity: 0;
-			}
-		}
+        &:nth-child(3) {
+            transition: transform 0.3s ease;
 
-		&:nth-child(3) {
-			transition: transform 0.3s ease;
-
-			.menu-open & {
-				transform: translateY(-10px) rotate(-45deg);
-			}
-		}
-	}
+            .menu-open & {
+                transform: translateY(-10px) rotate(-45deg);
+            }
+        }
+    }
 }
 
-.menu-primary-container {
+.main-navigation {
+    @include mix.breakpoint(ipadPro) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 25rem;
+        height: 100dvh;
+        background-color: var(--color-lt-snow-drift);
+        z-index: 99;
+        padding: 6rem 2rem 4rem;
+        overflow: auto;
+    }
+    @include mix.breakpoint(smaller) {
+        width: 100%;
+    }
 
-	@include mix.breakpoint(ipadPro) {
-		background: var.$color-white;
-		inset: 0;
-		opacity: 0;
-		overflow: auto;
-		padding: 10vh 40px;
-		position: fixed;
-		transform: translateX(100%);
-		transition:
-			opacity 0.3s ease,
-			transform 0.3s ease;
-		z-index: 99;
+    @include mix.breakpoint(ipadPro, true) {
+        padding-top: 2.25rem;
+    }
 
-		.menu-open & {
-			transform: translateX(0);
-			opacity: 1;
-		}
-	}
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 1rem 4rem;
+        display: flex;
+        justify-content: center;
+        @include mix.breakpoint(ipadPro) {
+            flex-direction: column;
+            justify-content: flex-start;
+        }
 
-	ul {
-		margin: 0;
-		padding: 0;
-		list-style-type: none;
-	}
-}
+        li {
+            a {
+                transition: color 0.32s;
+                text-decoration: none;
 
-ul.menu {
+                &:hover {
+                    color: var(--color-lt-brand);
+                }
+            }
+        }
+    }
 
-	@include mix.breakpoint(ipadPro, true) {
+    .menu-item-has-children {
+        position: relative;
 
-		@include mix.flex(flex-end, center);
-		column-gap: 40px;
-	}
+        &:before {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 16px;
+        }
 
-	li {
+        > a {
+            position: relative;
+            display: inline-block;
+            padding-right: 1rem;
 
-		&.menu-item-has-children {
-			position: relative;
+            &:before,
+            &:after {
+                --size: 13px;
+                content: "";
+                position: absolute;
+                background-color: #2e2e2e;
+            }
 
-			> a {
-				padding-right: 20px;
-			}
-		}
+            &:before {
+                width: var(--size);
+                height: 1px;
+                right: 0;
+                top: 8px;
+            }
 
-		a {
-			display: inline-block;
-			text-decoration: none;
-			color: var.$color-primary;
-			transition: color 0.3s ease;
-			padding-block: 0.5em;
-		}
+            &:after {
+                top: 2px;
+                right: 6px;
+                width: 1px;
+                height: var(--size);
+            }
+        }
 
-		&:hover {
+        &:hover > {
+            a {
+                color: var(--color-lt-brand);
 
-			> a {
-				color: var.$color-accent;
-			}
-		}
-	}
-}
+                &::before,
+                &::after {
+                    background-color: var(--color-lt-brand);
+                }
+            }
+            .sub-menu {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+        }
+    }
 
-ul.sub-menu {
-
-	@include mix.breakpoint(ipadPro, true) {
-		background: var.$color-white;
-		box-shadow: 0 0 10px rgba(var.$color-black, 0.1);
-		left: 50%;
-		min-width: 150px;
-		opacity: 0;
-		pointer-events: none;
-		position: absolute;
-		top: 100%;
-		transform: translate(-50%, 0);
-		transition:
-			opacity 0.3s ease,
-			visibility 0.3s ease;
-		visibility: hidden;
-		z-index: 10;
-
-		.menu-item-has-children:hover > & {
-			opacity: 1;
-			visibility: visible;
-			pointer-events: auto;
-		}
-
-		.align-right & {
-			left: auto;
-			right: 0;
-			transform: none;
-
-			ul {
-				left: auto;
-				right: 100%;
-			}
-		}
-	}
-
-	@include mix.breakpoint(ipadPro) {
-		display: none;
-		margin-left: 15px;
-
-		// .submenu-open > & {
-		//     height: var(--submenu-height, auto);
-		// }
-	}
-
-	li {
-
-		> a {
-			display: block;
-			padding: 0.2em 0.6em;
-		}
-
-		&:first-child {
-
-			> a {
-				padding-top: 0.4em;
-			}
-		}
-
-		&:last-child {
-
-			> a {
-				padding-bottom: 0.4em;
-			}
-		}
-	}
-
-	ul {
-		top: 0;
-		left: 100%;
-		transform: none;
-	}
-}
-
-.submenu-arrow {
-	position: absolute;
-	top: 10px;
-	right: 0;
-	width: 14px;
-	height: 14px;
-
-	@include mix.flex(center, center);
-	cursor: pointer;
-	transition: top 0.3s ease;
-
-	li:hover > & {
-
-		@include mix.breakpoint(ipadPro, true) {
-			top: 15px;
-		}
-	}
-
-	.submenu-open > & {
-		top: 15px;
-	}
-
-	.sub-menu & {
-		justify-content: flex-start;
-		right: 10px;
-	}
-
-	&::before {
-		content: "";
-		display: block;
-		width: 8px;
-		height: 8px;
-		border-right: 2px solid var.$color-primary;
-		border-bottom: 2px solid var.$color-primary;
-		transform: rotate(45deg);
-		transition:
-			transform 0.3s ease,
-			border-color 0.3s ease;
-
-		.sub-menu & {
-
-			@include mix.breakpoint(ipadPro, true) {
-				transform: rotate(-45deg);
-			}
-		}
-
-		li:hover > & {
-
-			@include mix.breakpoint(ipadPro, true) {
-				border-color: var.$color-accent;
-				transform: rotate(45deg) scale(-1);
-			}
-		}
-
-		.submenu-open > & {
-			border-color: var.$color-accent;
-			transform: rotate(45deg) scale(-1);
-		}
-	}
-}
-
-body.menu-open {
-	overflow: hidden;
+    .sub-menu {
+        font-size: 12px;
+        flex-wrap: nowrap;
+        gap: 0.8rem;
+        flex-direction: column;
+        @include mix.breakpoint(ipadPro) {
+            padding: 1rem 0 1rem 0.75rem;
+        }
+        @include mix.breakpoint(ipadPro, true) {
+            position: absolute;
+            top: 0;
+            left: 0;
+            top: calc(100% + 16px);
+            border-radius: 8px;
+            padding: 16px;
+            background-color: var(--color-lt-snow-drift);
+            width: 280px;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.32s;
+            transform: translateY(8px);
+            will-change: transform, opacity, visibility;
+        }
+    }
 }

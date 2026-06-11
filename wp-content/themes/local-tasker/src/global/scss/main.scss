@@ -1,25 +1,27 @@
+// @import "tailwindcss";
+
 // Base
 @use "base/normalize";
 @use "base/base";
 @use "base/typography";
 
 // utilities
-@use "utilites/typography-font";
-@use "utilites/colors";
-@use "utilites/gap";
-@use "utilites/display";
+// @use "utilites/typography-font";
+// @use "utilites/colors";
+// @use "utilites/gap";
+// @use "utilites/display";
 @use "utilites/alignment";
 @use "utilites/typography-class";
-@use "utilites/keyframes";
-@use "utilites/other";
+// @use "utilites/keyframes";
+// @use "utilites/other";
 
 // Components
 @use "components/buttons";
 @use "components/navigation";
-@use "components/forms";
+// @use "components/forms";
 @use "components/block-settings";
 
 // Layouts
 @use "layout/header";
 @use "layout/footer";
-@use "layout/default";
+// @use "layout/default";
