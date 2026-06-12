@@ -1,7 +1,6 @@
 @use "./abstracts/variables" as var;
 @use "./abstracts/mixins" as mix;
-@use "./components/block-settings";
-@use "./base/base";
+@use "./layout/block-settings";
 
 .editor-styles-wrapper{
 	.acf-block-preview.acf-block-component {

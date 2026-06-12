@@ -1,18 +1,2 @@
 @use "../abstracts/variables" as var;
 @use "../abstracts/mixins" as mix;
-
-.site-header {
-	padding-block: 20px;
-
-	> .container {
-
-		@include mix.flex(space-between, center);
-	}
-
-	.site-branding {
-
-		.site-title {
-			margin: 0;
-		}
-	}
-}

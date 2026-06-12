@@ -29,15 +29,6 @@ main {
 	display: block;
 }
 
-/**
-   * Correct the font size and margin on `h1` elements within `section` and
-   * `article` contexts in Chrome, Firefox, and Safari.
-   */
-h1 {
-	font-size: 2em;
-	margin: 0.67em 0;
-}
-
 /* Grouping content
      ========================================================================== */
 
@@ -314,4 +305,41 @@ template {
    */
 [hidden] {
 	display: none;
+}
+
+/**
+   * Theme Based Normalization
+*/
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0s !important;
+		transition: none !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+.alignleft {
+	float: left;
+	margin-right: 1.5em;
+	margin-bottom: 1.5em;
+}
+
+.alignright {
+	float: right;
+	margin-left: 1.5em;
+	margin-bottom: 1.5em;
+}
+
+.aligncenter {
+	clear: both;
+	// @include center-block;
+	margin-bottom: 1.5em;
 }

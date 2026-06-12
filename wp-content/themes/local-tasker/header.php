@@ -27,10 +27,10 @@
 		<a class="skip-link screen-reader-text"
 			href="#primary"><?php esc_html_e('Skip to content', 'local-tasker'); ?></a>
 		<!-- Top bar -->
-		<div class="top-bar bg-lt-onyx py-1">
+		<div class="top-bar bg-lt-onyx py-2">
 			<div class="container">
 				<span
-					class="uppercase text-lt-white text-center block lt-text-cap-sm tracking-[1px] leading-[1.37]">Free
+					class="uppercase text-lt-white text-center block text-caption-sm tracking-[1px] leading-[1.30]">Free
 					Shipping |
 					Seamless returns
 					| CALL ON
@@ -47,7 +47,7 @@
 						<!-- Left -->
 						<div class="site-header__top-left">
 							<a href="tel:02046340122"
-								class="inline-flex items-center gap-1 text-lt-secondary no-underline lt-text-cap-md leading-[1.71]">
+								class="inline-flex items-center gap-2 lt-text-color-secondary no-underline text-caption-md leading-[1.71] hover:text-lt-brand transition-colors">
 								<span class="icon">
 									<svg width="15" height="14" viewBox="0 0 15 14" fill="none"
 										xmlns="http://www.w3.org/2000/svg">
@@ -106,9 +106,9 @@
 								</svg>
 							</button>
 							<!-- Cart  -->
-							<a href="#" class="cart-icon relative">
+							<a href="#" class="cart-icon relative pr-3">
 								<span
-									class="absolute top-[-6px] right-[-13px] flex items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] lt-text-cap-sm">2</span>
+									class="absolute top-[-6px] right-[0] flex items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] text-caption-sm">2</span>
 								<svg width="19" height="21" viewBox="0 0 19 21" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<path
@@ -123,9 +123,17 @@
 			<!-- Header Bottom -->
 			<div class="site-header__bottom">
 				<div class="container">
-					<nav id="site-navigation" class="main-navigation lt-text-cap-md font-primary font-bold">
-						<!-- <button class="menu-toggle" aria-controls="primary-menu"
-							aria-expanded="false"><?php esc_html_e('Primary Menu', 'local-tasker'); ?></button> -->
+					<nav id="site-navigation" class="main-navigation text-caption-md  font-primary font-bold">
+						<div class="menu-close-btn-holder text-right cursor-pointer lg:hidden mb-10">
+							<div class="menu-close-btn inline-block">
+								<svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+									xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M12.2197 0.21967C12.5126 -0.0732233 12.9873 -0.0732233 13.2802 0.21967C13.5731 0.512563 13.5731 0.987324 13.2802 1.28022L7.81049 6.74994L13.2802 12.2197C13.5731 12.5126 13.5731 12.9873 13.2802 13.2802C12.9873 13.5731 12.5126 13.5731 12.2197 13.2802L6.74994 7.81049L1.28022 13.2802C0.987324 13.5731 0.512563 13.5731 0.21967 13.2802C-0.0732233 12.9873 -0.0732233 12.5126 0.21967 12.2197L5.6894 6.74994L0.21967 1.28022C-0.0732233 0.987324 -0.0732233 0.512563 0.21967 0.21967C0.512563 -0.0732233 0.987324 -0.0732233 1.28022 0.21967L6.74994 5.6894L12.2197 0.21967Z"
+										fill="#2E2E2E" />
+								</svg>
+							</div>
+						</div>
 						<?php
 						wp_nav_menu(
 							array(

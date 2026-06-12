@@ -15,50 +15,6 @@
 *	@content;
 *}
 *********************/
-/*********************
-	Flex
-*********************/
-/*********************
-	Flex Direction
-
-@example
-// If display: flex; is needed
-@include flex-column(true);
-
-// If display: flex; is not needed
-@include flex-column();
-*********************/
-/*********************
-	Flex Direction
-
-@example
-// Center Vertically and horizontally
-@include flex-center();
-
-// Center only horizontally
-@include flex-center(hr);
-
-// Center only vertically
-@include flex-center(vr);
-
-*********************/
-/*********************
-Flex Grid Width
-
-@example
-
-@include flex-grid-width(5, 30px);
-
-Note: Do not forget to add column-gap in the parent element
-
-*********************/
-/*********************
-	Flex Width
-
-@example
-
-@include flex-width(calc(100% / 3));
-*********************/
 /**
 * Mixin to declare Font-face
 *

@@ -1,55 +1,55 @@
 @use "../abstracts/variables" as var;
 @use "../abstracts/mixins" as mix;
 
-.menu-toggle {
-    @include mix.flex(space-between, center, nowrap, column);
-    background: none;
-    border: none;
-    height: 24px;
-    padding: 0;
-    position: relative;
-    width: 40px;
-    z-index: 100;
+// .menu-toggle {
+//     @include mix.flex(space-between, center, nowrap, column);
+//     background: none;
+//     border: none;
+//     height: 24px;
+//     padding: 0;
+//     position: relative;
+//     width: 40px;
+//     z-index: 100;
 
-    @include mix.breakpoint(ipadPro, true) {
-        display: none;
-    }
+//     @include mix.breakpoint(ipadPro, true) {
+//         display: none;
+//     }
 
-    span {
-        display: block;
-        width: 100%;
-        height: 3px;
-        // background: var.$color-primary;
+//     span {
+//         display: block;
+//         width: 100%;
+//         height: 3px;
+//         // background: var.$color-primary;
 
-        &:nth-child(1) {
-            font-size: 0;
-            transition: transform 0.3s ease;
+//         &:nth-child(1) {
+//             font-size: 0;
+//             transition: transform 0.3s ease;
 
-            .menu-open & {
-                transform: translateY(11px) rotate(45deg);
-            }
-        }
+//             .menu-open & {
+//                 transform: translateY(11px) rotate(45deg);
+//             }
+//         }
 
-        &:nth-child(2) {
-            transition:
-                height 0.3s ease,
-                opacity 0.3s ease;
+//         &:nth-child(2) {
+//             transition:
+//                 height 0.3s ease,
+//                 opacity 0.3s ease;
 
-            .menu-open & {
-                height: 0;
-                opacity: 0;
-            }
-        }
+//             .menu-open & {
+//                 height: 0;
+//                 opacity: 0;
+//             }
+//         }
 
-        &:nth-child(3) {
-            transition: transform 0.3s ease;
+//         &:nth-child(3) {
+//             transition: transform 0.3s ease;
 
-            .menu-open & {
-                transform: translateY(-10px) rotate(-45deg);
-            }
-        }
-    }
-}
+//             .menu-open & {
+//                 transform: translateY(-10px) rotate(-45deg);
+//             }
+//         }
+//     }
+// }
 
 .main-navigation {
     @include mix.breakpoint(ipadPro) {
@@ -60,7 +60,7 @@
         height: 100dvh;
         background-color: var(--color-lt-snow-drift);
         z-index: 99;
-        padding: 6rem 2rem 4rem;
+        padding: 2rem 2rem 4rem;
         overflow: auto;
     }
     @include mix.breakpoint(smaller) {
@@ -89,7 +89,9 @@
                 text-decoration: none;
 
                 &:hover {
-                    color: var(--color-lt-brand);
+                    @media (hover:hover) {
+                        color: var(--color-lt-brand);
+                    }
                 }
             }
         }
@@ -114,40 +116,42 @@
 
             &:before,
             &:after {
-                --size: 13px;
+                --size: 11px;
                 content: "";
                 position: absolute;
                 background-color: #2e2e2e;
             }
 
             &:before {
-                width: var(--size);
+               width: var(--size);
                 height: 1px;
-                right: 0;
-                top: 8px;
+                right: 2px;
+                top: calc(var(--size) - 2px);
             }
 
             &:after {
-                top: 2px;
-                right: 6px;
+                top: calc(var(--size) - 7px);
+                right: 7px;
                 width: 1px;
                 height: var(--size);
             }
         }
 
         &:hover > {
-            a {
-                color: var(--color-lt-brand);
+            @media (hover:hover) {
+                a {
+                    color: var(--color-lt-brand);
 
-                &::before,
-                &::after {
-                    background-color: var(--color-lt-brand);
+                    &::before,
+                    &::after {
+                        background-color: var(--color-lt-brand);
+                    }
                 }
-            }
-            .sub-menu {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(0);
+                .sub-menu {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(0);
+                }
             }
         }
     }
