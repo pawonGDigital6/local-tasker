@@ -1,2 +1,33 @@
 @use "../abstracts/variables" as var;
 @use "../abstracts/mixins" as mix;
+
+.site-footer {
+    a {
+        text-decoration: none;
+        transition: all 0.36s;
+        &:hover {
+            color: var(--color-lt-accent);
+        }
+    }
+
+    ul {
+        margin: 0;
+    }
+}
+.footer-top {
+    .menu {
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        gap: 0.71875rem;
+    }
+}
+
+.footer-bottom {
+    .menu {
+        font-weight: 800;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}

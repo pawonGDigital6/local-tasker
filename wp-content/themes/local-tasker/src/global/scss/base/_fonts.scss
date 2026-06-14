@@ -5,7 +5,31 @@
 @include mix.font-face("Manrope", "../fonts/manrope/Manrope-Var", (woff2-variations, woff2), 100 900, normal);
 
 // PP Formula
+/* --- Condensed Width --- */
+@include mix.font-face("PP Formula Condensed", "../fonts/pp-formula/PPFormula-CondensedExtralight", (woff2), 200, normal);
+@include mix.font-face("PP Formula Condensed", "../fonts/pp-formula/PPFormula-CondensedLightItalic", (woff2), 300, italic);
+@include mix.font-face("PP Formula Condensed", "../fonts/pp-formula/PPFormula-CondensedBlack", (woff2), 900, normal);
+
+/* --- Narrow Width --- */
+@include mix.font-face("PP Formula Narrow", "../fonts/pp-formula/PPFormula-NarrowRegular", (woff2), 400, normal);
+@include mix.font-face("PP Formula Narrow", "../fonts/pp-formula/PPFormula-NarrowSemibold", (woff2), 600, normal);
+
+/* --- Semi-Condensed Width --- */
+@include mix.font-face("PP Formula Semi Condensed", "../fonts/pp-formula/PPFormula-SemiCondensedThin", (woff2), 100, normal);
+@include mix.font-face("PP Formula Semi Condensed", "../fonts/pp-formula/PPFormula-SemiCondensedExtralight", (woff2), 200, normal);
+@include mix.font-face("PP Formula Semi Condensed", "../fonts/pp-formula/PPFormula-SemiCondensedExtralightItalic", (woff2), 200, italic);
+@include mix.font-face("PP Formula Semi Condensed", "../fonts/pp-formula/PPFormula-SemiCondensedMedium", (woff2), 500, normal);
+
+/* --- Regular Width --- */
 @include mix.font-face("PP Formula", "../fonts/pp-formula/PPFormula-Light", (woff2), 300, normal);
 @include mix.font-face("PP Formula", "../fonts/pp-formula/PPFormula-Medium", (woff2), 500, normal);
 @include mix.font-face("PP Formula", "../fonts/pp-formula/PPFormula-MediumItalic", (woff2), 500, italic);
 @include mix.font-face("PP Formula", "../fonts/pp-formula/PPFormula-Extrabold", (woff2), 800, normal);
+
+/* --- Semi-Extended Width --- */
+@include mix.font-face("PP Formula Semi Extended", "../fonts/pp-formula/PPFormula-SemiExtendedBold", (woff2), 700, normal);
+
+/* --- Extended Width --- */
+@include mix.font-face("PP Formula Extended", "../fonts/pp-formula/PPFormula-ExtendedMedium", (woff2), 500, normal);
+@include mix.font-face("PP Formula Extended", "../fonts/pp-formula/PPFormula-ExtendedBold", (woff2), 700, normal);
+

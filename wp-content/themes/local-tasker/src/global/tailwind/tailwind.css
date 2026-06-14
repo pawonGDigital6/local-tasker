@@ -21,15 +21,17 @@
   /* Font Families */
   --font-base: "Manrope", sans-serif;
   --font-primary: "PP Formula", sans-serif;
+  
+  --font-condensed: "PP Formula Condensed", sans-serif;
+  --font-narrow: "PP Formula Narrow", sans-serif;
+  --font-semi-cond: "PP Formula Semi Condensed", sans-serif;
+  --font-semi-ext: "PP Formula Semi Extended", sans-serif;
+  --font-extended: "PP Formula Extended", sans-serif;
 
   /* Font Weights */
   --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
 
   /* Body Text */
-  --text-body-sm: 0.875rem; /* 14px */
   --text-body: 1rem; /* 16px */
   --text-body-lg: 1.125rem; /* 18px */
   --text-body-xl: 1.25rem; /* 20px */

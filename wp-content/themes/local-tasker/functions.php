@@ -277,6 +277,11 @@ if (defined('JETPACK__VERSION')) {
 }
 
 /**
+ * Support SVG
+ */
+require get_template_directory() . '/inc/support-svg.php';
+
+/**
  * Load WooCommerce compatibility file.
  */
 if (class_exists('WooCommerce')) {
