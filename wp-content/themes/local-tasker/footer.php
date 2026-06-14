@@ -10,7 +10,7 @@
  */
 
 ?>
-
+	<div class="site-overlay fixed inset-0 bg-lt-onyx opacity-50 z-[98] hidden"></div>
 	<footer id="colophon" class="site-footer">
 		<div class="site-info">
 			<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'local-tasker' ) ); ?>">

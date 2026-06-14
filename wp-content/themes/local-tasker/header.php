@@ -30,7 +30,7 @@
 		<div class="top-bar bg-lt-onyx py-2">
 			<div class="container">
 				<span
-					class="uppercase text-lt-white text-center block text-caption-sm tracking-[1px] leading-[1.30]">Free
+					class="uppercase text-lt-white text-center block md:text-caption-sm text-caption-xs tracking-[1px] leading-[1.30]">Free
 					Shipping |
 					Seamless returns
 					| CALL ON
@@ -45,9 +45,9 @@
 					<!-- Header Top -->
 					<div class="site-header__top-inner flex justify-between items-center">
 						<!-- Left -->
-						<div class="site-header__top-left">
+						<div class="site-header__top-left md:inline-flex hidden">
 							<a href="tel:02046340122"
-								class="inline-flex items-center gap-2 lt-text-color-secondary no-underline text-caption-md leading-[1.71] hover:text-lt-brand transition-colors">
+								class="inline-flex items-center gap-2 lt-text-secondary no-underline text-caption-md leading-[1.71] hover:text-lt-brand transition-colors">
 								<span class="icon">
 									<svg width="15" height="14" viewBox="0 0 15 14" fill="none"
 										xmlns="http://www.w3.org/2000/svg">
@@ -60,17 +60,28 @@
 							</a>
 						</div>
 						<!-- Center -->
-						<div class="site-header__top-center">
-							<?php if (has_custom_logo()):
-								the_custom_logo();
-							endif;
-							?>
+						<div class="site-header__top-center flex items-center gap-[12px]">
+							<!-- HamnBurger -->
+							<div
+								class="menu-hamn-burger flex flex-col justify-between w-[24px] h-[20px] max-smlr:w-[18px] max-smlr:h-[13px] md:hidden cursor-pointer shrink-0">
+								<span class="h-[2px] w-full bg-lt-text-secondary rounded-[2px] block"></span>
+								<span class="h-[2px] w-full bg-lt-text-secondary rounded-[2px] block"></span>
+								<span class="h-[2px] w-full bg-lt-text-secondary rounded-[2px] block"></span>
+							</div><!-- End of HamnBurger -->
+							<!-- Site Logo -->
+							<div class="site-logo max-md:w-[180px] max-xs:w-[140px]">
+								<?php if (has_custom_logo()):
+									the_custom_logo();
+								endif;
+								?>
+							</div>
+							<!-- End of Site Logo -->
 						</div>
 						<!-- Right -->
-						<div class="site-header__top-right flex items-center flex justify-end gap-[20px]">
+						<div class="site-header__top-right flex items-center flex justify-end gap-[20px] max-sm:gap-[12px]">
 							<!-- User  -->
 							<a href="#" class="icon-link">
-								<svg width="20" height="18" viewBox="0 0 20 18" fill="none"
+								<svg class="max-md:w-[16px]" width="20" height="18" viewBox="0 0 20 18" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_774_479)">
 										<path
@@ -89,7 +100,7 @@
 							</a>
 							<!-- search  -->
 							<button class="search-button appearance-button">
-								<svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+								<svg class="max-md:w-[16px]" width="20" height="20" viewBox="0 0 20 20" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_774_483)">
 										<path
@@ -108,8 +119,8 @@
 							<!-- Cart  -->
 							<a href="#" class="cart-icon relative pr-3">
 								<span
-									class="absolute top-[-6px] right-[0] flex items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] text-caption-sm">2</span>
-								<svg width="19" height="21" viewBox="0 0 19 21" fill="none"
+									class="absolute top-[-6px] right-[0] max-sm:top-[-9px] flex items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] text-caption-sm">2</span>
+								<svg class="max-md:w-[16px]" width="19" height="21" viewBox="0 0 19 21" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<path
 										d="M5 6.5V5C5 3.80653 5.47411 2.66193 6.31802 1.81802C7.16193 0.974106 8.30653 0.5 9.5 0.5C10.6935 0.5 11.8381 0.974106 12.682 1.81802C13.5259 2.66193 14 3.80653 14 5V6.5M2.25 6.5C2.05109 6.5 1.86032 6.57902 1.71967 6.71967C1.57902 6.86032 1.5 7.05109 1.5 7.25L0.5 17.375C0.5 18.793 1.707 20 3.125 20H15.875C17.293 20 18.5 18.851 18.5 17.434L17.5 7.25C17.5 7.05109 17.421 6.86032 17.2803 6.71967C17.1397 6.57902 16.9489 6.5 16.75 6.5H2.25Z"
@@ -126,7 +137,7 @@
 					<nav id="site-navigation" class="main-navigation text-caption-md  font-primary font-bold">
 						<div class="menu-close-btn-holder text-right cursor-pointer lg:hidden mb-10">
 							<div class="menu-close-btn inline-block">
-								<svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+								<svg class="w-[18px]" width="14" height="14" viewBox="0 0 14 14" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<path
 										d="M12.2197 0.21967C12.5126 -0.0732233 12.9873 -0.0732233 13.2802 0.21967C13.5731 0.512563 13.5731 0.987324 13.2802 1.28022L7.81049 6.74994L13.2802 12.2197C13.5731 12.5126 13.5731 12.9873 13.2802 13.2802C12.9873 13.5731 12.5126 13.5731 12.2197 13.2802L6.74994 7.81049L1.28022 13.2802C0.987324 13.5731 0.512563 13.5731 0.21967 13.2802C-0.0732233 12.9873 -0.0732233 12.5126 0.21967 12.2197L5.6894 6.74994L0.21967 1.28022C-0.0732233 0.987324 -0.0732233 0.512563 0.21967 0.21967C0.512563 -0.0732233 0.987324 -0.0732233 1.28022 0.21967L6.74994 5.6894L12.2197 0.21967Z"
