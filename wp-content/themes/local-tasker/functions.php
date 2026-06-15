@@ -122,10 +122,15 @@ function local_tasker_content_width()
 add_action('after_setup_theme', 'local_tasker_content_width', 0);
 
 /**
+
  * Register widget area.
+
  *
+
  * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
+
  */
+
 function local_tasker_widgets_init()
 {
 	register_sidebar(
@@ -140,6 +145,7 @@ function local_tasker_widgets_init()
 		)
 	);
 }
+
 add_action('widgets_init', 'local_tasker_widgets_init');
 
 // /**
