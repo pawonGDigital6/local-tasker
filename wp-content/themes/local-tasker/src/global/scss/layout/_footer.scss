@@ -31,3 +31,15 @@
         gap: 1rem;
     }
 }
+
+// ------------------------------- Search Pop Opened
+body {
+    &.opened-search-popup {
+        overflow: hidden;
+        .global-search-pop {
+            transition: visibility 0.32s, opacity 0.32s;
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+}

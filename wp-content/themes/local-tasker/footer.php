@@ -16,6 +16,26 @@ $nav_heading_three = get_field('nav_heading_three', 'options');
 $nav_heading_four = get_field('nav_heading_four', 'options');
 $copyright_text = get_field('copyright_text', 'options');
 ?>
+<div class="global-search-pop fixed inset-0 bg-lt-onyx z-[98] pt-10 pb-[9rem] invisible opacity-0">
+	<div class="container h-full w-full">
+		<div class="global-search-pop__closer-holder w-[18px] h-[18px] ml-auto cursor-pointer search-pop-closer">
+			<svg class="w-[18px]" width="14" height="14" viewBox="0 0 14 14" fill="none"
+				xmlns="http://www.w3.org/2000/svg">
+				<path
+					d="M12.2197 0.21967C12.5126 -0.0732233 12.9873 -0.0732233 13.2802 0.21967C13.5731 0.512563 13.5731 0.987324 13.2802 1.28022L7.81049 6.74994L13.2802 12.2197C13.5731 12.5126 13.5731 12.9873 13.2802 13.2802C12.9873 13.5731 12.5126 13.5731 12.2197 13.2802L6.74994 7.81049L1.28022 13.2802C0.987324 13.5731 0.512563 13.5731 0.21967 13.2802C-0.0732233 12.9873 -0.0732233 12.5126 0.21967 12.2197L5.6894 6.74994L0.21967 1.28022C-0.0732233 0.987324 -0.0732233 0.512563 0.21967 0.21967C0.512563 -0.0732233 0.987324 -0.0732233 1.28022 0.21967L6.74994 5.6894L12.2197 0.21967Z"
+					fill="#ffffff" />
+			</svg>
+		</div>
+		<div class="global-search-pop__holder h-full w-full flex items-center justify-center">
+			<?php
+			if (function_exists('get_product_search_form')) {
+				get_product_search_form();
+			}
+			?>
+		</div>
+	</div>
+</div>
+<!-- Site Overlay -->
 <div class="site-overlay fixed inset-0 bg-lt-onyx opacity-50 z-[98] hidden"></div>
 <footer id="colophon" class="site-footer pt-16 md:pb-[4.5rem] sm:pb-10 pb-4 bg-[#1C1C1C] text-lt-snow-drift">
 	<div class="container">
