@@ -95,6 +95,45 @@ const navigation = {
 
 /***/ },
 
+/***/ "./src/global/js/components/search-popup.js"
+/*!**************************************************!*\
+  !*** ./src/global/js/components/search-popup.js ***!
+  \**************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const searchPop = {
+  init: function () {
+    this.cacheDom();
+    this.bindEvents();
+  },
+  cacheDom: function () {
+    this.searchOpeners = document.querySelectorAll('.search-pop-opener');
+    this.searchCloser = document.querySelector('.search-pop-closer');
+  },
+  bindEvents: function () {
+    // Arrow function preserves 'this' context
+    this.searchOpeners.forEach(searchOpener => {
+      searchOpener.addEventListener('click', () => this.searchPopOpen());
+    });
+
+    // Optional chaining (?.) prevents crashes if closer doesn't exist
+    this.searchCloser?.addEventListener('click', () => this.searchPopClose());
+  },
+  searchPopOpen: function () {
+    document.body.classList.add('opened-search-popup');
+  },
+  searchPopClose: function () {
+    document.body.classList.remove('opened-search-popup');
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (searchPop);
+
+/***/ },
+
 /***/ "./src/global/js/main.js"
 /*!*******************************!*\
   !*** ./src/global/js/main.js ***!
@@ -105,10 +144,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/dom-ready */ "@wordpress/dom-ready");
 /* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_navigation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/navigation */ "./src/global/js/components/navigation.js");
+/* harmony import */ var _components_search_popup__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/search-popup */ "./src/global/js/components/search-popup.js");
+
 
 
 _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default()(() => {
   _components_navigation__WEBPACK_IMPORTED_MODULE_1__["default"].init();
+  _components_search_popup__WEBPACK_IMPORTED_MODULE_2__["default"].init();
 });
 
 /***/ },
