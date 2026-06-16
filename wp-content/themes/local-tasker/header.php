@@ -38,7 +38,7 @@
 			</div>
 		</div>
 		<!-- Site Header -->
-		<header id="masthead" class="site-header py-[20px]">
+		<header id="masthead" class="site-header sm:py-[20px] pt-[26px] pb-[24px]">
 			<!-- Header Top -->
 			<div class="site-header__top">
 				<div class="container flex flex-col nowrap">

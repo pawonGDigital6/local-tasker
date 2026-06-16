@@ -2,7 +2,7 @@
 @use "../abstracts/mixins" as mix;
 
 // Manrope
-@include mix.font-face("Manrope", "../fonts/manrope/Manrope-Var", (woff2-variations, woff2), 100 900, normal);
+@include mix.font-face("Manrope", "../fonts/manrope/Manrope-Var", (ttf), 200 800, normal);
 
 // PP Formula
 /* --- Condensed Width --- */
