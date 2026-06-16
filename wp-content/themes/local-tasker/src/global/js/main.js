@@ -1,5 +1,6 @@
 import domReady from '@wordpress/dom-ready';
+import navigation from './components/navigation';
 
 domReady(() => {
-	console.log('Local Tasker Loaded');
+	navigation.init();
 });

@@ -134,7 +134,7 @@
             display: none;
         }
         @include mix.breakpoint(ipadPro, true) {
-            display: block;
+            display: block !important;
             position: absolute;
             top: 0;
             left: 0;
