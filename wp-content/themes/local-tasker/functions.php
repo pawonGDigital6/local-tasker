@@ -287,6 +287,12 @@ if (defined('JETPACK__VERSION')) {
  */
 require get_template_directory() . '/inc/support-svg.php';
 
+
+/**
+ * CPTs
+ */
+require_once get_template_directory() . '/inc/cpt/services.php';
+
 /**
  * Load WooCommerce compatibility file.
  */
