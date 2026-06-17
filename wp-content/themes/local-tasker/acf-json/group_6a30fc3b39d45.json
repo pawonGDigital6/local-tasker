@@ -1,7 +1,25 @@
 {
     "key": "group_6a30fc3b39d45",
-    "title": "Hero Block",
+    "title": "Block: Hero",
     "fields": [
+        {
+            "key": "field_6a319cc4f531b",
+            "label": "Content",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
         {
             "key": "field_6a30fc3fe57f7",
             "label": "Pre Title",
@@ -236,5 +254,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1781630565
+    "modified": 1781636310
 }

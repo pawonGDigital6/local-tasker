@@ -20,5 +20,83 @@
 *
 */
 /**This is the block Style*/
+.lt-services-and-products .section-content ul {
+  margin: 0;
+}
+@media screen and (max-width: 767px) {
+  .lt-services-and-products .section-content ul {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+  }
+}
+.cs-tab__head {
+  margin-bottom: 1.75rem;
+  padding: 6px;
+  margin-inline: auto;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  border-radius: 40px;
+}
+@media screen and (max-width: 767px) {
+  .cs-tab__head {
+    margin-bottom: 1.25rem;
+  }
+}
+.cs-tab__head ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.cs-tab__head-title {
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--color-lt-text-muted);
+  transition: color 0.36s, background-color 0.36s;
+  border-radius: 40px;
+  cursor: pointer;
+  padding: 14px 12px 16px;
+  border: 0;
+  border-radius: 40px;
+  background-color: transparent;
+  min-width: 160px;
+  text-align: center;
+}
+@media screen and (max-width: 575px) {
+  .cs-tab__head-title {
+    font-size: 14px;
+    min-width: 126px;
+    padding: 17px 12px 18px;
+  }
+}
+.cs-tab__head-title.active, .cs-tab__head-title:hover {
+  background-color: var(--color-lt-brand);
+  color: var(--color-lt-snow-drift);
+}
+.cs-tab__content-holder {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.0509803922) inset;
+  border: 1px solid #e5e7eb;
+  padding: 2rem;
+  border-radius: 20px;
+  background-color: var(--color-lt-snow-drift);
+}
+@media screen and (max-width: 767px) {
+  .cs-tab__content-holder {
+    padding: 2.5rem 2.1875rem;
+    border-radius: 24px;
+  }
+}
+.cs-tab__content-holder .tab-content {
+  display: none;
+}
+.cs-tab__content-holder .tab-content.active {
+  display: block;
+}
 
 /*# sourceMappingURL=style-index.css.map*/
