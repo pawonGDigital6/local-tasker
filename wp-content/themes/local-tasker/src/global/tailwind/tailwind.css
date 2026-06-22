@@ -109,6 +109,10 @@
 		margin-bottom: 1.5rem;
 	}
 
+	.abs-bg-img {
+		pointer-events: none;
+	}
+
 	.abs-bg-img img {
 		width: 100%;
 		height: 100%;
@@ -257,6 +261,7 @@
 	}
 }
 
+
 @utility img-full-cover {
 
 	&>img {
@@ -265,4 +270,15 @@
 		object-fit: cover;
 	}
 
+}
+
+@utility stretched-link {
+	&::after {
+		display: block;
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 10;
+		pointer-events: auto;
+	}
 }

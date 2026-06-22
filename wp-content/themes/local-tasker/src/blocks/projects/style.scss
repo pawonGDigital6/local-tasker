@@ -1,0 +1,34 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+.projects-gallery {
+	.project-card {
+		min-height: 255px;
+	}
+	.left-layout {
+		.project-card {
+			@include mix.breakpoint(small, true) {
+				min-height: 540px;
+			}
+		}
+	}
+	.right-layout {
+		.project-card {
+			--gap: 20px;
+			@include mix.breakpoint(small, true) {
+				min-height: 261px;
+				&:nth-child(1) {
+					width: 100%;
+					height: calc(50% - (var(--gap) / 2));
+				}
+
+				&:nth-child(2),
+				&:nth-child(3) {
+					width: calc(50% - (var(--gap) / 2));
+					height: calc(50% - (var(--gap) / 2));
+				}
+			}
+		}
+	}
+}
