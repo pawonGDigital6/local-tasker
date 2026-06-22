@@ -1,9 +1,9 @@
 {
-    "key": "group_6a319af6ebbbb",
-    "title": "Block: Services & Products",
+    "key": "group_6a38248dcba1d",
+    "title": "Block: Why LocalTasker",
     "fields": [
         {
-            "key": "field_6a319d2c7131c",
+            "key": "field_6a382634fe6a7",
             "label": "Content",
             "name": "",
             "aria-label": "",
@@ -21,9 +21,9 @@
             "selected": 0
         },
         {
-            "key": "field_6a319af7cd754",
-            "label": "Section Title",
-            "name": "section_title",
+            "key": "field_6a38248ec53a8",
+            "label": "Pre Title",
+            "name": "pre_title",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -42,9 +42,9 @@
             "append": ""
         },
         {
-            "key": "field_6a31f52bde44e",
-            "label": "Section Sub Text",
-            "name": "section_sub_text",
+            "key": "field_6a3824bdc53a9",
+            "label": "Title",
+            "name": "title",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -63,11 +63,11 @@
             "append": ""
         },
         {
-            "key": "field_6a319b14cd755",
+            "key": "field_6a3824c8c53aa",
             "label": "Section Content",
             "name": "section_content",
             "aria-label": "",
-            "type": "wysiwyg",
+            "type": "textarea",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -77,16 +77,16 @@
                 "id": ""
             },
             "default_value": "",
+            "maxlength": "",
             "allow_in_bindings": 0,
-            "tabs": "all",
-            "toolbar": "full",
-            "media_upload": 1,
-            "delay": 0
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
         },
         {
-            "key": "field_6a319b33cd756",
-            "label": "Section Button",
-            "name": "section_button",
+            "key": "field_6a3824d3ec8bb",
+            "label": "Button",
+            "name": "button",
             "aria-label": "",
             "type": "link",
             "instructions": "",
@@ -101,11 +101,11 @@
             "allow_in_bindings": 0
         },
         {
-            "key": "field_6a319b5bcd757",
-            "label": "Services",
-            "name": "services_prod",
+            "key": "field_6a3824e6ec8bc",
+            "label": "Image Big",
+            "name": "image_big",
             "aria-label": "",
-            "type": "relationship",
+            "type": "image",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -114,30 +114,24 @@
                 "class": "",
                 "id": ""
             },
-            "post_type": [
-                "service"
-            ],
-            "post_status": [
-                "publish"
-            ],
-            "taxonomy": "",
-            "filters": [
-                "search"
-            ],
-            "return_format": "object",
-            "min": "",
-            "max": 6,
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
             "allow_in_bindings": 0,
-            "elements": "",
-            "bidirectional": 0,
-            "bidirectional_target": []
+            "preview_size": "medium"
         },
         {
-            "key": "field_6a319b93cd758",
-            "label": "Products",
-            "name": "prod_services",
+            "key": "field_6a3824f6ec8bd",
+            "label": "Image Small",
+            "name": "image_small",
             "aria-label": "",
-            "type": "relationship",
+            "type": "image",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -146,24 +140,17 @@
                 "class": "",
                 "id": ""
             },
-            "post_type": [
-                "product"
-            ],
-            "post_status": [
-                "publish"
-            ],
-            "taxonomy": "",
-            "filters": [
-                "search",
-                "taxonomy"
-            ],
-            "return_format": "object",
-            "min": "",
-            "max": 6,
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
             "allow_in_bindings": 0,
-            "elements": "",
-            "bidirectional": 0,
-            "bidirectional_target": []
+            "preview_size": "medium"
         }
     ],
     "location": [
@@ -171,7 +158,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf-block\/service-and-products"
+                "value": "acf-block\/why-us"
             }
         ]
     ],
@@ -184,5 +171,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1781714064
+    "modified": 1782065494
 }
