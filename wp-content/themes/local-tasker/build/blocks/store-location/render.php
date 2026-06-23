@@ -46,7 +46,7 @@ $section_title = get_field('section_title');
 		<?php
 		$args = array(
 			'post_type' => 'lt_store_location',
-			'posts_per_page' => 6,
+			'posts_per_page' => -1,
 			'post_status' => 'publish',
 			'orderby' => 'date',
 			'order' => 'DESC',
