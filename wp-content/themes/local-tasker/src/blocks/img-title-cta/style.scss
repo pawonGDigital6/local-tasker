@@ -1,0 +1,13 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+.cta-item {
+	&:first-child {
+		.abs-bg-img {
+			img {
+				object-position: bottom center;
+			}
+		}
+	}
+}
