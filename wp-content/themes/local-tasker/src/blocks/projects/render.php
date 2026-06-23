@@ -109,7 +109,7 @@ $section_text = get_field('section_text');
 							<article
 								class="project-card relative w-full overflow-hidden rounded-[11px] md:rounded-3xl flex items-end group">
 								<div class="project-card__media absolute inset-0 img-full-cover">
-									<img class="transition-transform duration-700 group-hover:scale-105 origin-center"
+									<img class="will-change-transform transition-transform duration-700 group-hover:scale-105 origin-center"
 										src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" />
 								</div>
 								<div
@@ -139,13 +139,13 @@ $section_text = get_field('section_text');
 							<article
 								class="project-card group relative w-full overflow-hidden rounded-[11px] md:rounded-3xl flex items-end">
 								<div class="project-card__media absolute inset-0 img-full-cover">
-									<img class="transition-transform duration-700 group-hover:scale-105 origin-center"
+									<img class="will-change-transform transition-transform duration-700 group-hover:scale-105 origin-center"
 										src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" />
 								</div>
 								<div
 									class="project-card__overlay absolute inset-0 bg-[linear-gradient(0deg,rgba(9,30,66,0.8)_0%,rgba(0,0,0,0)_100%)] opacity-100">
 								</div>
-								<div class="project-card__content flex flex-col gap-[10px] p-3.5 md:gap-[4.8px] md:p-5 z-10">
+								<div class="project-card__content w-full flex flex-col gap-[10px] p-3.5 md:gap-[4.8px] md:p-5 z-10">
 									<span
 										class="text-caption-xs font-bold uppercase leading-[11px] text-lt-accent md:text-caption-md md:normal-case md:leading-5">
 										<?php echo esc_html($category_name); ?>

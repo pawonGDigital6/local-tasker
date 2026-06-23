@@ -1,0 +1,63 @@
+/*!************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/google-review/style.scss ***!
+  \************************************************************************************************************************************************************************************************************************************************************/
+/*********************
+* BREAKPOINTS
+*
+* @example
+* for max-width case
+* @include breakpoint('smaller') {
+*	@content;
+* }
+*
+* for min-width case
+* @include breakpoint('smaller', true) {
+*	@content;
+*}
+*********************/
+/**
+* Mixin to declare Font-face
+*
+*/
+/**This is the block Style*/
+.review-holder .ti-widget-container {
+  margin-block: 0 !important;
+}
+.review-holder .ti-widget.ti-goog .ti-widget-container,
+.review-holder .ti-widget.ti-goog .ti-widget-container * {
+  font-family: var(--font-base);
+}
+.review-holder .ti-widget.ti-goog .ti-review-item > .ti-inner {
+  background-color: var(--color-lt-snow-drift) !important;
+  border-radius: 18px !important;
+}
+.review-holder .ti-widget.ti-goog .ti-widget-container .ti-name {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.71;
+  letter-spacing: 0;
+  color: var(--color-lt-text-primary);
+}
+.review-holder .ti-widget.ti-goog .ti-widget-container .ti-date {
+  font-size: 12.57px;
+  line-height: 1.61;
+  font-weight: 400;
+  color: var(--color-lt-text-secondary);
+}
+.review-holder .ti-widget.ti-goog .ti-widget-container .ti-review-content {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-lt-text-primary);
+}
+.review-holder .ti-widget.ti-goog .ti-read-more {
+  padding-top: 10px;
+}
+.review-holder .ti-widget.ti-goog .ti-read-more span {
+  font-size: 12.57px;
+  line-height: 1.61;
+  font-weight: 400;
+  color: var(--color-lt-text-secondary) !important;
+  opacity: 1;
+}
+
+/*# sourceMappingURL=style-index.css.map*/

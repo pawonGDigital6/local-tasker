@@ -1,0 +1,58 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+.review-holder {
+	.ti-widget-container {
+		margin-block: 0 !important;
+	}
+	.ti-widget.ti-goog .ti-widget-container,
+	.ti-widget.ti-goog .ti-widget-container * {
+		font-family: var(--font-base);
+	}
+
+	.ti-widget.ti-goog .ti-review-item > .ti-inner {
+		background-color: var(--color-lt-snow-drift) !important;
+		border-radius: 18px !important;
+	}
+
+	.ti-widget.ti-goog {
+		.ti-widget-container {
+			.ti-name {
+				font-weight: 400;
+				font-size: 14px;
+				line-height: 1.71;
+				letter-spacing: 0;
+				color: var(--color-lt-text-primary);
+			}
+			//name
+
+			.ti-date {
+				font-size: 12.57px;
+				line-height: 1.61;
+				font-weight: 400;
+				color: var(--color-lt-text-secondary);
+			}
+
+			.ti-review-content {
+				font-size: 14px;
+				// line-height: 1.71;
+				font-weight: 400;
+				color: var(--color-lt-text-primary);
+			}
+		}
+		//container
+
+		.ti-read-more {
+			padding-top: 10px;
+			span {
+				font-size: 12.57px;
+				line-height: 1.61;
+				font-weight: 400;
+				color: var(--color-lt-text-secondary) !important;
+				opacity: 1;
+			}
+		}
+	}
+	//google
+}
