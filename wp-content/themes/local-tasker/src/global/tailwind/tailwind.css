@@ -63,13 +63,13 @@
 
 	/* Breakpoints */
 	--breakpoint-xxs: 320px;
-	--breakpoint-xs: 374px;
-	--breakpoint-smlr: 567px;
-	--breakpoint-sm: 767px;
-	--breakpoint-md: 991px;
-	--breakpoint-lg: 1024px;
-	--breakpoint-wd: 1199px;
-	--breakpoint-lp: 1399px;
+	--breakpoint-xs: 375px;
+	--breakpoint-smlr: 568px;
+	--breakpoint-sm: 768px;
+	--breakpoint-md: 992px;
+	--breakpoint-lg: 1025px;
+	--breakpoint-wd: 1200px;
+	--breakpoint-lp: 1400px;
 	--breakpoint-bigLp: 1600px;
 	--breakpoint-xl: 1930px;
 }

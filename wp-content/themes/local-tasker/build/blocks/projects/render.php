@@ -32,41 +32,51 @@ if ($block_style !== '') {
 	$style_attr = 'style="' . $block_style . '"';
 }
 $section_title = get_field('section_title');
-
+$section_text = get_field('section_text');
 ?>
 <section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container flex flex-col sm:gap-10 gap-[3.125rem]">
 		<div class="projects-header flex flex-col gap-[15px] md:flex-row md:items-end md:justify-between md:gap-8">
 			<div class="projects-header__content flex max-w-[717px] flex-col gap-2.5">
 				<?php if ($section_title): ?>
-					
 					<h2
-					class="font-semi-ext text-[2rem] font-bold leading-8 tracking-[0.0022em] text-lt-onyx md:text-[2.5rem] md:leading-[3.375rem] md:tracking-[-0.0225em]">
-					Recent Projects </h2>
+						class="font-semi-ext text-[2rem] font-bold leading-8 tracking-[0.0022em] text-lt-onyx md:text-[2.5rem] md:leading-[3.375rem] md:tracking-[-0.0225em]">
+						<?php echo esc_html($section_title); ?>
+					</h2>
 				<?php endif; ?>
-				
-				<div class="text-caption-md leading-5 tracking-[0.02em] text-lt-secondary md:text-body md:leading-normal">
-					See how we transform homes with quality flooring, renovations, and expert installation. </div>
+				<?php if ($section_text): ?>
+					<div class="text-caption-md leading-5 tracking-[0.02em] text-lt-secondary md:text-body md:leading-normal">
+						<?php echo $section_text; ?>
+					</div>
+				<?php endif; ?>
 			</div>
-			<a href="#"
-				class="projects-header__link group inline-flex w-fit items-center gap-2 text-caption-md font-bold leading-6 text-lt-accent md:text-body md:tracking-[0.02em]">
-				<span class="text">View All</span>
-				<span class="icon transition-transform duration-400 shrink-0 group-hover:translate-x-0.5">
-					<svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<g clip-path="url(#clip0_168_6617)">
-							<path d="M1.16602 7.5H12.8327" stroke="#F69222" stroke-width="1.66667" stroke-linecap="round"
-								stroke-linejoin="round" />
-							<path d="M7 1.66699L12.8333 7.50033L7 13.3337" stroke="#F69222" stroke-width="1.66667"
-								stroke-linecap="round" stroke-linejoin="round" />
-						</g>
-						<defs>
-							<clipPath id="clip0_168_6617">
-								<rect width="14" height="15" fill="white" />
-							</clipPath>
-						</defs>
-					</svg>
-				</span>
-			</a>
+			<?php
+			$link = get_field('section_button_link');
+			if ($link):
+				$link_url = $link['url'];
+				$link_title = $link['title'];
+				$link_target = $link['target'] ? $link['target'] : '_self';
+				?>
+				<a class="projects-header__link group inline-flex w-fit items-center gap-2 text-caption-md font-bold leading-6 text-lt-accent md:text-body md:tracking-[0.02em]"
+					href="<?php echo esc_url($link_url); ?>" target="<?php echo esc_attr($link_target); ?>">
+					<span class="text"><?php echo esc_html($link_title); ?></span>
+					<span class="icon transition-transform duration-400 shrink-0 group-hover:translate-x-0.5">
+						<svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g clip-path="url(#clip0_168_6617)">
+								<path d="M1.16602 7.5H12.8327" stroke="#F69222" stroke-width="1.66667" stroke-linecap="round"
+									stroke-linejoin="round" />
+								<path d="M7 1.66699L12.8333 7.50033L7 13.3337" stroke="#F69222" stroke-width="1.66667"
+									stroke-linecap="round" stroke-linejoin="round" />
+							</g>
+							<defs>
+								<clipPath id="clip0_168_6617">
+									<rect width="14" height="15" fill="white" />
+								</clipPath>
+							</defs>
+						</svg>
+					</span>
+				</a>
+			<?php endif; ?>
 		</div>
 		<?php
 		$args = array(
