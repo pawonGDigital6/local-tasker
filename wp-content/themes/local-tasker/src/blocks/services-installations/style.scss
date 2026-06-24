@@ -1,0 +1,38 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+.service-insta {
+	&__text {
+		a {
+			color: var(--color-lt-accent);
+		}
+	}
+}
+
+.lt-service-installation {
+	.lt-slide-pagination {
+		top: initial;
+		@include mix.breakpoint(medium, true) {
+			left: 2.5rem;
+		}
+	}
+
+	.lt-left-slide {
+		.img-holder {
+			img {
+				position: absolute;
+				inset: 0;
+				height: 100%;
+				width: 100%;
+				object-fit: cover;
+				object-position: center 22.6%;
+			}
+		}
+	}
+	.service-insta__text {
+		> *:last-child {
+			margin-bottom: 0;
+		}
+	}
+}

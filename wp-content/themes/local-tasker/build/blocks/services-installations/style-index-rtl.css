@@ -1,0 +1,46 @@
+/*!*********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/services-installations/style.scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************/
+/*********************
+* BREAKPOINTS
+*
+* @example
+* for max-width case
+* @include breakpoint('smaller') {
+*	@content;
+* }
+*
+* for min-width case
+* @include breakpoint('smaller', true) {
+*	@content;
+*}
+*********************/
+/**
+* Mixin to declare Font-face
+*
+*/
+/**This is the block Style*/
+.service-insta__text a {
+  color: var(--color-lt-accent);
+}
+.lt-service-installation .lt-slide-pagination {
+  top: initial;
+}
+@media screen and (min-width: 992px) {
+  .lt-service-installation .lt-slide-pagination {
+    right: 2.5rem;
+  }
+}
+.lt-service-installation .lt-left-slide .img-holder img {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center 22.6%;
+     object-position: center 22.6%;
+}
+.lt-service-installation .service-insta__text > *:last-child {
+  margin-bottom: 0;
+}

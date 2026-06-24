@@ -13,6 +13,8 @@
 	--color-lt-text-placeholder: #9ca3af;
 	--color-lt-text-muted: #4a5565;
 
+	--color-lt-border-white: #EAE8E8;
+
 	--color-lt-onyx: #131313;
 	--color-lt-snow-drift: #f8f8f7;
 	--color-lt-white: #ffffff;
@@ -162,6 +164,16 @@
 		font-size: var(--text-h5);
 		line-height: var(--leading-h5);
 	}
+
+	.swiper-button-disabled {
+		cursor: not-allowed !important;
+		background-color: transparent !important;
+		border-color: var(--color-lt-border-white) !important;
+
+		svg {
+			opacity: 0.2;
+		}
+	}
 }
 
 /* --------------------------------------------------
@@ -184,6 +196,10 @@
 
 @utility partial-container-left {
 	padding-left: max(40px, calc((100vw - 1365px) / 2));
+}
+
+@utility partial-container-right {
+	padding-right: max(40px, calc((100vw - 1365px) / 2));
 }
 
 @utility tick-ul {
@@ -280,5 +296,32 @@
 		inset: 0;
 		z-index: 10;
 		pointer-events: auto;
+	}
+}
+
+@utility lt-slide-pagination {
+	display: flex;
+	gap: 12px;
+
+	@media screen and (max-width: 767px) {
+		gap: 8px;
+	}
+
+	.swiper-pagination-bullet {
+		--size: 17px;
+		width: var(--size) !important;
+		height: var(--size) !important;
+		background-color: var(--color-lt-white) !important;
+		margin: 0 !important;
+		opacity: 0.5 !important;
+
+		@media screen and (max-width: 767px) {
+			--size: 11px;
+		}
+
+		&.swiper-pagination-bullet-active {
+			background-color: #F89120 !important;
+			opacity: 1 !important;
+		}
 	}
 }
