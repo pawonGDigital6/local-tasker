@@ -1,0 +1,66 @@
+/*!*****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/inner-two-col-hero/style.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************/
+/*********************
+* BREAKPOINTS
+*
+* @example
+* for max-width case
+* @include breakpoint('smaller') {
+*	@content;
+* }
+*
+* for min-width case
+* @include breakpoint('smaller', true) {
+*	@content;
+*}
+*********************/
+/**
+* Mixin to declare Font-face
+*
+*/
+/**This is the block Style*/
+.lt-inner-two-col-hero {
+  --secGradColor: linear-gradient(
+  	135deg,
+  	#091e42 0%,
+  	#09224e 7.14%,
+  	#09265a 14.29%,
+  	#092a67 21.43%,
+  	#092e73 28.57%,
+  	#093280 35.71%,
+  	#09368e 42.86%,
+  	#083a9b 50%,
+  	#083ea9 57.14%,
+  	#0741b7 64.29%,
+  	#0645c5 71.43%,
+  	#0549d3 78.57%,
+  	#034de2 85.71%,
+  	#0251f0 92.86%,
+  	#0055ff 100%
+  );
+}
+@media screen and (max-width: 767px) {
+  .lt-inner-two-col-hero {
+    background: var(--secGradColor);
+  }
+}
+@media screen and (min-width: 768px) {
+  .lt-inner-two-col-hero .left-col {
+    background: var(--secGradColor);
+  }
+}
+.lt-inner-two-col-hero .in-testimonial__content *:last-child {
+  margin-bottom: 0;
+}
+.lt-inner-two-col-hero .in-testimonial .swiper-slide {
+  height: initial;
+}
+.lt-inner-two-col-hero .lt-slide-pagination .swiper-pagination-bullet {
+  --size: 13px;
+}
+@media screen and (max-width: 767px) {
+  .lt-inner-two-col-hero .lt-slide-pagination .swiper-pagination-bullet {
+    --size: 8px;
+  }
+}
