@@ -1187,8 +1187,14 @@ body.opened-search-popup .global-search-pop {
   .mb-3 {
     margin-bottom: calc(var(--spacing) * 3);
   }
+  .mb-3\.5 {
+    margin-bottom: calc(var(--spacing) * 3.5);
+  }
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
+  }
+  .mb-4\.5 {
+    margin-bottom: calc(var(--spacing) * 4.5);
   }
   .mb-5 {
     margin-bottom: calc(var(--spacing) * 5);
@@ -1261,6 +1267,9 @@ body.opened-search-popup .global-search-pop {
   }
   .mb-\[11px\] {
     margin-bottom: 11px;
+  }
+  .mb-\[14px\] {
+    margin-bottom: 14px;
   }
   .ml-auto {
     margin-left: auto;
@@ -1408,6 +1417,9 @@ body.opened-search-popup .global-search-pop {
   .max-w-\[302px\] {
     max-width: 302px;
   }
+  .max-w-\[334px\] {
+    max-width: 334px;
+  }
   .max-w-\[460px\] {
     max-width: 460px;
   }
@@ -1443,6 +1455,9 @@ body.opened-search-popup .global-search-pop {
   }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .flex-col {
     flex-direction: column;
@@ -1543,6 +1558,14 @@ body.opened-search-popup .global-search-pop {
   .gap-\[27px\] {
     gap: 27px;
   }
+  .gap-x-6 {
+    -moz-column-gap: calc(var(--spacing) * 6);
+         column-gap: calc(var(--spacing) * 6);
+  }
+  .gap-x-8 {
+    -moz-column-gap: calc(var(--spacing) * 8);
+         column-gap: calc(var(--spacing) * 8);
+  }
   .gap-x-9 {
     -moz-column-gap: calc(var(--spacing) * 9);
          column-gap: calc(var(--spacing) * 9);
@@ -1565,6 +1588,15 @@ body.opened-search-popup .global-search-pop {
   }
   .gap-y-7\.5 {
     row-gap: calc(var(--spacing) * 7.5);
+  }
+  .gap-y-8 {
+    row-gap: calc(var(--spacing) * 8);
+  }
+  .gap-y-10 {
+    row-gap: calc(var(--spacing) * 10);
+  }
+  .gap-y-12\.5 {
+    row-gap: calc(var(--spacing) * 12.5);
   }
   .gap-y-\[1\.18rem\] {
     row-gap: 1.18rem;
@@ -1622,6 +1654,9 @@ body.opened-search-popup .global-search-pop {
   }
   .bg-\[\#1C1C1C\] {
     background-color: #1C1C1C;
+  }
+  .bg-\[\#F6F7F9\] {
+    background-color: #F6F7F9;
   }
   .bg-lt-black {
     background-color: var(--color-lt-black);
@@ -1729,6 +1764,9 @@ body.opened-search-popup .global-search-pop {
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
+  .py-12 {
+    padding-block: calc(var(--spacing) * 12);
+  }
   .py-16 {
     padding-block: calc(var(--spacing) * 16);
   }
@@ -1816,6 +1854,9 @@ body.opened-search-popup .global-search-pop {
   .font-primary {
     font-family: var(--font-primary);
   }
+  .font-semi-cond {
+    font-family: var(--font-semi-cond);
+  }
   .font-semi-ext {
     font-family: var(--font-semi-ext);
   }
@@ -1841,6 +1882,9 @@ body.opened-search-popup .global-search-pop {
   }
   .text-body {
     font-size: var(--text-body);
+  }
+  .text-body-lg {
+    font-size: var(--text-body-lg);
   }
   .text-body-xl {
     font-size: var(--text-body-xl);
@@ -2023,6 +2067,9 @@ body.opened-search-popup .global-search-pop {
   }
   .text-lt-accent {
     color: var(--color-lt-accent);
+  }
+  .text-lt-brand {
+    color: var(--color-lt-brand);
   }
   .text-lt-onyx {
     color: var(--color-lt-onyx);
@@ -2490,6 +2537,11 @@ body.opened-search-popup .global-search-pop {
       margin-bottom: 1.3125rem;
     }
   }
+  .sm\:mb-\[2\.2\] {
+    @media (width >= 768px) {
+      margin-bottom: 2.2;
+    }
+  }
   .sm\:mb-\[6px\] {
     @media (width >= 768px) {
       margin-bottom: 6px;
@@ -2508,6 +2560,11 @@ body.opened-search-popup .global-search-pop {
   .sm\:mb-\[18px\] {
     @media (width >= 768px) {
       margin-bottom: 18px;
+    }
+  }
+  .sm\:max-w-\[334px\] {
+    @media (width >= 768px) {
+      max-width: 334px;
     }
   }
   .sm\:grid-cols-2 {
@@ -2618,6 +2675,11 @@ body.opened-search-popup .global-search-pop {
   .sm\:px-9\.5 {
     @media (width >= 768px) {
       padding-inline: calc(var(--spacing) * 9.5);
+    }
+  }
+  .sm\:py-12 {
+    @media (width >= 768px) {
+      padding-block: calc(var(--spacing) * 12);
     }
   }
   .sm\:py-\[2\.075rem\] {
@@ -2851,6 +2913,11 @@ body.opened-search-popup .global-search-pop {
   .md\:min-w-\[270px\] {
     @media (width >= 992px) {
       min-width: 270px;
+    }
+  }
+  .md\:grid-cols-2 {
+    @media (width >= 992px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   .md\:grid-cols-3 {
@@ -3212,6 +3279,11 @@ body.opened-search-popup .global-search-pop {
   .wd\:px-5 {
     @media (width >= 1200px) {
       padding-inline: calc(var(--spacing) * 5);
+    }
+  }
+  .wd\:px-6 {
+    @media (width >= 1200px) {
+      padding-inline: calc(var(--spacing) * 6);
     }
   }
   .wd\:pr-5 {
