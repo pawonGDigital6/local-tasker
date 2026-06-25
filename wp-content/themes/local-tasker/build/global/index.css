@@ -1061,6 +1061,9 @@ body.opened-search-popup .global-search-pop {
   .bottom-11\! {
     bottom: calc(var(--spacing) * 11) !important;
   }
+  .bottom-\[-90px\] {
+    bottom: -90px;
+  }
   .left-0 {
     left: calc(var(--spacing) * 0);
   }
@@ -2453,6 +2456,11 @@ body.opened-search-popup .global-search-pop {
       line-height: normal;
     }
   }
+  .max-smlr\:hidden {
+    @media (width < 568px) {
+      display: none;
+    }
+  }
   .max-smlr\:h-\[13px\] {
     @media (width < 568px) {
       height: 13px;
@@ -2481,6 +2489,16 @@ body.opened-search-popup .global-search-pop {
   .max-xs\:w-\[140px\] {
     @media (width < 375px) {
       width: 140px;
+    }
+  }
+  .smlr\:bottom-0 {
+    @media (width >= 568px) {
+      bottom: calc(var(--spacing) * 0);
+    }
+  }
+  .smlr\:hidden {
+    @media (width >= 568px) {
+      display: none;
     }
   }
   .smlr\:min-h-\[210px\] {
