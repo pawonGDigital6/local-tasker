@@ -46,7 +46,7 @@
             "label": "Section Sub Text",
             "name": "section_sub_text",
             "aria-label": "",
-            "type": "text",
+            "type": "textarea",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -58,9 +58,9 @@
             "default_value": "",
             "maxlength": "",
             "allow_in_bindings": 0,
+            "rows": "",
             "placeholder": "",
-            "prepend": "",
-            "append": ""
+            "new_lines": ""
         },
         {
             "key": "field_6a319b14cd755",
@@ -184,5 +184,8 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1781714064
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1782361620
 }
