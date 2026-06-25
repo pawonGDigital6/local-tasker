@@ -261,6 +261,17 @@
 		}
 	}
 
+	&.btn--accent {
+		background-color: var(--color-lt-accent);
+		color: var(--color-lt-white);
+		border: 1px solid var(--color-lt-accent);
+
+		&:hover {
+			background-color: transparent;
+			color: var(--color-lt-accent);
+		}
+	}
+
 	&.btn--white {
 		background-color: var(--color-lt-white);
 		color: var(--color-lt-brand);

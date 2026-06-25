@@ -1,0 +1,40 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+.lt-quote-cta{
+	&__feat{
+
+		.icon{
+			box-shadow: 0px 4px 6px -4px #1C398E80,
+			 0px 10px 15px -3px #1C398E80;
+		}
+
+		&-item{
+			border-color: #FFFFFF1A;
+			&:last-child{
+				padding: 0 !important;
+				border: 0 !important;
+			}
+		}
+
+	}
+
+	&__content-col{
+		.content{
+			strong{
+				color: var(--color-lt-accent);
+			}
+		}
+	}
+	&__img-holder{
+		img{
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center 20%;
+		}
+	}
+}
