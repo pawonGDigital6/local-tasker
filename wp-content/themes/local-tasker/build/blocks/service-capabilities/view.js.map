@@ -1,0 +1,1 @@
+{"version":3,"file":"service-capabilities/view.js","mappings":";;;;AAAAA,OAAO,CAACC,GAAG,CAAC,yBAAyB,CAAC,C","sources":["webpack://acf-first-block/./src/blocks/service-capabilities/view.js"],"sourcesContent":["console.log(\"this is the view script\");"],"names":["console","log"],"sourceRoot":""}

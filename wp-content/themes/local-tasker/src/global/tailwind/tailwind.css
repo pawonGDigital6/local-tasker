@@ -136,8 +136,8 @@
 	h4,
 	h5,
 	h6 {
-		font-family: var(--font-primary);
-		font-weight: var(--font-weight-medium);
+		font-family: var(--font-semi-ext);
+		font-weight: var(--font-weight-bold);
 		margin: 0;
 	}
 
