@@ -20,5 +20,26 @@
 *
 */
 /**This is the block Style*/
+.has-four-col .icon-box {
+  max-width: 290px;
+}
+@media screen and (max-width: 767px) {
+  .has-four-col .icon-box {
+    max-width: 250px;
+  }
+}
+.has-four-col .icon-box__icon {
+  width: 64px;
+  height: 64px;
+  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.1019607843), 0px 1px 3px 0px rgba(0, 0, 0, 0.1019607843);
+  border-radius: 16px;
+  background-color: var(--color-lt-white-lilac);
+  padding: 14px;
+  text-align: center;
+  margin-inline: auto;
+}
+.has-four-col .icon-box__title {
+  color: #292B32;
+}
 
 /*# sourceMappingURL=style-index.css.map*/

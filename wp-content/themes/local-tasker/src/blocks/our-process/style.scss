@@ -1,0 +1,16 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+.lt-process {
+	.single-img {
+		img {
+			width: 100%;
+			height: 238px;
+			object-fit: cover;
+			@include mix.breakpoint(medium, true) {
+				height: 486px;
+			}
+		}
+	}
+}

@@ -21,6 +21,27 @@
             "selected": 0
         },
         {
+            "key": "field_6a3d65e24bfa5",
+            "label": "Is 4 Column?",
+            "name": "four_column",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
             "key": "field_6a3ca45d5844f",
             "label": "Icon Box Lists",
             "name": "ib_lists",
@@ -92,6 +113,28 @@
                     "parent_repeater": "field_6a3ca45d5844f"
                 },
                 {
+                    "key": "field_6a3d666a6ff6f",
+                    "label": "Has Content?",
+                    "name": "has_content",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "allow_in_bindings": 0,
+                    "ui_on_text": "",
+                    "ui_off_text": "",
+                    "ui": 1,
+                    "parent_repeater": "field_6a3ca45d5844f"
+                },
+                {
                     "key": "field_6a3ca4ab58452",
                     "label": "Text",
                     "name": "ib_text",
@@ -99,7 +142,15 @@
                     "type": "textarea",
                     "instructions": "",
                     "required": 0,
-                    "conditional_logic": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_6a3d666a6ff6f",
+                                "operator": "==",
+                                "value": "1"
+                            }
+                        ]
+                    ],
                     "wrapper": {
                         "width": "",
                         "class": "",
@@ -137,5 +188,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1782360454
+    "modified": 1782408849
 }
