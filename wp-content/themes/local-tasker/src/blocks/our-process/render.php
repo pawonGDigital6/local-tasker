@@ -40,7 +40,7 @@ $op_sec_content = get_field('op_sec_content');
 	<div class="container">
 		<div class="rows flex flex-wrap lg:gap-8 gap-12.5 lg:justify-between">
 			<!-- Cols -->
-			<div class="content-col lg:w-[50%] w-full lg:pb-16.5">
+			<div class="content-col lg:w-[50%] w-full">
 				<!-- Pre Title -->
 				<?php if ($op_pre_title): ?>
 					<span

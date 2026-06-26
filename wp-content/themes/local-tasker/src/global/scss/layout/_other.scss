@@ -1,0 +1,21 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+
+.related-services {
+	.gird-item {
+		position: relative;
+		&:first-child {
+			&:after {
+				@include mix.breakpoint(small, true) {
+					content: "";
+					position: absolute;
+					right: -16px;
+					top: 0;
+					height: 100%;
+					width: 1px;
+					background-color: #e6e6e6;
+				}
+			}
+		} //first child
+	} //grid Item
+}
