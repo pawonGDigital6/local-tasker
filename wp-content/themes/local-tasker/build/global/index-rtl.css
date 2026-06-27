@@ -1665,6 +1665,12 @@ body.opened-search-popup .global-search-pop {
   .flex-col {
     flex-direction: column;
   }
+  .flex-row {
+    flex-direction: row;
+  }
+  .flex-row-reverse {
+    flex-direction: row-reverse;
+  }
   .flex-wrap {
     flex-wrap: wrap;
   }
@@ -2597,6 +2603,11 @@ body.opened-search-popup .global-search-pop {
   .max-md\:gap-5 {
     @media (width < 992px) {
       gap: calc(var(--spacing) * 5);
+    }
+  }
+  .max-md\:gap-12\.5 {
+    @media (width < 992px) {
+      gap: calc(var(--spacing) * 12.5);
     }
   }
   .max-md\:rounded-br-\[8\.75rem\] {
@@ -3540,6 +3551,11 @@ body.opened-search-popup .global-search-pop {
   .md\:flex-row {
     @media (width >= 992px) {
       flex-direction: row;
+    }
+  }
+  .md\:flex-row-reverse {
+    @media (width >= 992px) {
+      flex-direction: row-reverse;
     }
   }
   .md\:flex-wrap {

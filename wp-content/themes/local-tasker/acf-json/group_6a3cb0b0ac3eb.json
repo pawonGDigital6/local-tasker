@@ -21,6 +21,27 @@
             "selected": 0
         },
         {
+            "key": "field_6a3fbc70c5787",
+            "label": "Media Image Right?",
+            "name": "ms_img_position",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
             "key": "field_6a3cb0c8cd0ec",
             "label": "Media Slider Lists",
             "name": "media_slider_lists",
@@ -152,5 +173,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1782362395
+    "modified": 1782562047
 }

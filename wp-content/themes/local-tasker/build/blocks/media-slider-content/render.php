@@ -34,12 +34,11 @@ if ($block_style !== '') {
 
 $ms_heading = get_field('ms_heading');
 $ms_content = get_field('ms_content');
-
-
+$is_img_right = get_field('ms_img_position');
 ?>
 <section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container max-sm:px-0">
-		<div class="rows flex flex-wrap justify-between md:gap-8 gap-5 wd:px-8">
+		<div class="rows flex flex-wrap justify-between md:gap-8 gap-5 wd:px-8 <?php echo $is_img_right ? 'md:flex-row-reverse flex-wrap-reverse max-md:gap-12.5' : ''; ?>">
 			<!-- Media Col -->
 			<div class="media-col md:w-[51.2%] w-full relative">
 				<div class="media-slider swiper">
