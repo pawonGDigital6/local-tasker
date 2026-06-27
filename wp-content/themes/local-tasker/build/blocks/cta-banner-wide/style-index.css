@@ -1,0 +1,33 @@
+/*!**************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/cta-banner-wide/style.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************/
+/*********************
+* BREAKPOINTS
+*
+* @example
+* for max-width case
+* @include breakpoint('smaller') {
+*	@content;
+* }
+*
+* for min-width case
+* @include breakpoint('smaller', true) {
+*	@content;
+*}
+*********************/
+/**
+* Mixin to declare Font-face
+*
+*/
+/**This is the block Style*/
+.lt-cta-wide .overlay {
+  background: radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52, 131, 0.396875) 79.62%, rgba(10, 101, 252, 0.1625) 100%);
+}
+.lt-cta-wide__content a {
+  color: var(--color-lt-accent);
+}
+.lt-cta-wide__content a:hover {
+  text-decoration: underline;
+}
+
+/*# sourceMappingURL=style-index.css.map*/

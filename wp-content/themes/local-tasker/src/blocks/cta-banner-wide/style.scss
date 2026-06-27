@@ -1,0 +1,19 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+.lt-cta-wide{
+	.overlay{
+		background: radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52, 131, 0.396875) 79.62%, rgba(10, 101, 252, 0.1625) 100%);
+		// background-color: rgba(0, 0, 0, 0.6);
+	}
+	&__content{
+		a{
+			color: var(--color-lt-accent);
+
+			&:hover{
+				text-decoration: underline;
+			}
+		}
+	}
+}
