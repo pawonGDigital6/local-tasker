@@ -20,14 +20,52 @@
 *
 */
 /**This is the block Style*/
-.lt-process .single-img img {
+.lt-process .single-img img,
+.lt-process .single-img video,
+.lt-process .single-video img,
+.lt-process .single-video video {
   width: 100%;
   height: 238px;
   -o-object-fit: cover;
      object-fit: cover;
 }
 @media screen and (min-width: 992px) {
-  .lt-process .single-img img {
+  .lt-process .single-img img,
+  .lt-process .single-img video,
+  .lt-process .single-video img,
+  .lt-process .single-video video {
     height: 486px;
   }
+}
+.lt-process .single-video video {
+  height: 450px;
+}
+.lt-process .process-content {
+  font-size: 20px;
+  line-height: normal;
+}
+@media screen and (max-width: 767px) {
+  .lt-process .process-content {
+    font-size: 14px;
+  }
+}
+.lt-process .process-content h5 {
+  line-height: normal;
+  color: var(--color-lt-brand);
+}
+@media screen and (min-width: 768px) {
+  .lt-process .process-content h5 {
+    font-size: 20px;
+  }
+}
+.lt-process .process-content > *:not(:last-child) {
+  margin-bottom: 25px;
+}
+@media screen and (max-width: 767px) {
+  .lt-process .process-content > *:not(:last-child) {
+    margin-bottom: 14px;
+  }
+}
+.lt-process .process-content > *:last-child {
+  margin-bottom: 0;
 }

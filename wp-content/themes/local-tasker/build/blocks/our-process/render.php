@@ -34,7 +34,13 @@ if ($block_style !== '') {
 $op_pre_title = get_field('op_pre_title');
 $op_sec_title = get_field('op_sec_title');
 $op_sec_content = get_field('op_sec_content');
-
+$button_blue = get_field('button_color');
+$op_process_content = get_field('op_process_content');
+$op_process_display_as_cont = get_field('op_display_process_as_content');
+$size = 'full';
+$is_single_video_use = get_field('op_single_vid_use');
+$op_single_video = get_field('op_single_video');
+$op_single_image = get_field('op_single_image');
 ?>
 <section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container">
@@ -65,76 +71,99 @@ $op_sec_content = get_field('op_sec_content');
 					?>
 					<!-- Btn wrap -->
 					<div class="btn-wrap sm:mt-10 smlr:mt-6 mt-3">
-						<a class="btn btn--accent smlr:min-w-[270px]" href="<?php echo esc_url($link_url); ?>"
+						<a class="btn  smlr:min-w-[270px] <?php echo $button_blue ? 'btn--brand' : 'btn--accent' ?>"
+							href="<?php echo esc_url($link_url); ?>"
 							target="<?php echo esc_attr($link_target); ?>"><?php echo esc_html($link_title); ?></a>
 					</div>
 				<?php endif; ?>
 				<?php
-				$op_single_image = get_field('op_single_image');
-				$size = 'full';
-				if ($op_single_image):
+				if ($is_single_video_use && !empty($op_single_video) && is_array($op_single_video)):
+					$video_url = esc_url($op_single_video['url']);
+					$mime_type = esc_attr($op_single_video['mime_type']);
+					$video_title = esc_attr($op_single_video['title']);
 					?>
-					<!-- Single Image -->
-					<div class="single-img flex justify-center sm:mt-14 w-screen ml-[calc((100%-8px)-50vw)] max-lg:hidden">
-						<?php
-						$url = wp_get_attachment_url($op_single_image);
-						echo wp_get_attachment_image($op_single_image, $size);
-						?>
+					<!-- Single Video -->
+					<div class="single-video flex justify-center sm:mt-14 w-screen ml-[calc((100%-8px)-50vw)] max-lg:hidden">
+						<video autoplay loop playsinline muted>
+							<source src="<?php echo $video_url; ?>" type="<?php echo $mime_type; ?>">
+						</video>
 					</div>
 					<?php
-				endif; ?>
+					// 2. Default Fallback: If anything else is selected (or nothing is selected) and the image exists, render the image
+				elseif (!empty($op_single_image)): ?>
+					<!-- Single Image -->
+					<div class="single-img flex justify-center sm:mt-14 w-screen ml-[calc((100%-8px)-50vw)] max-lg:hidden">
+						<?php echo wp_get_attachment_image($op_single_image, $size); ?>
+					</div>
+				<?php endif; ?>
 			</div>
 			<!-- Process Col -->
 			<div
 				class="process-col lg:w-[46.4%] w-full h-full sm:border sm:border-[#E6E6E6] sm:rounded-[8px] bg-lt-white flex flex-col gap-6 sm:p-12 lg:my-[2.5625rem_-9.3125rem] z-10 lg:mb-19.25">
-				<?php if (have_rows('op_process_lists')): ?>
-					<?php
-					$count = 1;
-					while (have_rows('op_process_lists')):
-						the_row();
-						$op_pro_title = get_sub_field('op_pro_title');
-						$op_pro_text = get_sub_field('op_pro_text');
-						?>
-						<!-- List -->
-						<div class="process-list flex sm:gap-6 gap-4 sm:pb-6 sm:border-b sm:border-[#E6E6E6] last:pb-0 last:border-0">
-							<div
-								class="numb inline-flex items-center justify-center shrink-0 sm:w-10 sm:h-10 w-8 h-8 p-1 text-lt-white bg-lt-brand rounded-full sm:text-body-xl leading-none font-bold">
-								<?php echo $count; ?>
-							</div>
-							<div class="text wd:mt-[-4px]">
-								<?php if ($op_pro_title): ?>
-									<h3
-										class="process-list__title sm:mb-2 mb-1 text-lt-brand sm:text-body-xl text-body sm:leading-[normal] font-bold font-semi-ext sm:tracking-[-0.8px]">
-										<?php echo esc_html($op_pro_title); ?>
-									</h3>
-								<?php endif; ?>
-								<?php if ($op_pro_text): ?>
-									<div class="process-list__text text-lt-text-secondary sm:text-caption-md text-caption-sm">
-										<?php echo $op_pro_text; ?>
-									</div>
-								<?php endif; ?>
-							</div>
-						</div><!-- End of List -->
+				<?php
+				if ($op_process_display_as_cont):
+					if ($op_process_content): ?>
+						<div class="process-content">
+							<?php echo wp_kses_post($op_process_content); ?>
+						</div>
+					<?php endif;
+				else:
+					if (have_rows('op_process_lists')): ?>
 						<?php
-						$count++;
-					endwhile;
-					?>
+						$count = 1;
+						while (have_rows('op_process_lists')):
+							the_row();
+							$op_pro_title = get_sub_field('op_pro_title');
+							$op_pro_text = get_sub_field('op_pro_text');
+							?>
+							<!-- List -->
+							<div
+								class="process-list flex sm:gap-6 gap-4 sm:pb-6 sm:border-b sm:border-[#E6E6E6] last:pb-0 last:border-0">
+								<div
+									class="numb inline-flex items-center justify-center shrink-0 sm:w-10 sm:h-10 w-8 h-8 p-1 text-lt-white bg-lt-brand rounded-full sm:text-body-xl leading-none font-bold">
+									<?php echo $count; ?>
+								</div>
+								<div class="text sm:-mt-1"> <!-- Fixed negative margin syntax: sm:-mt-1 is clean Tailwind for ~4px -->
+									<?php if ($op_pro_title): ?>
+										<h3
+											class="process-list__title sm:mb-2 mb-1 text-lt-brand sm:text-body-xl text-body sm:leading-[normal] font-bold font-semi-ext sm:tracking-[-0.8px]">
+											<?php echo esc_html($op_pro_title); ?>
+										</h3>
+									<?php endif; ?>
+									<?php if ($op_pro_text): ?>
+										<div class="process-list__text text-lt-text-secondary sm:text-caption-md text-caption-sm">
+											<?php echo $op_pro_text; ?>
+										</div>
+									<?php endif; ?>
+								</div>
+							</div><!-- End of List -->
+							<?php
+							$count++;
+						endwhile;
+						?>
+					<?php endif; ?>
 				<?php endif; ?>
 			</div><!-- End of Process Col -->
 		</div>
 	</div>
 	<?php
-	$op_single_image = get_field('op_single_image');
-	$size = 'full';
-	if ($op_single_image):
+	if ($is_single_video_use && !empty($op_single_video) && is_array($op_single_video)):
+		$video_url = esc_url($op_single_video['url']);
+		$mime_type = esc_attr($op_single_video['mime_type']);
+		$video_title = esc_attr($op_single_video['title']);
 		?>
-		<!-- Single Image -->
-		<div class="single-img mt-16 lg:hidden">
-			<?php
-			$url = wp_get_attachment_url($op_single_image);
-			echo wp_get_attachment_image($op_single_image, $size);
-			?>
+		<!-- Single Video -->
+		<div class="single-video mt-16 lg:hidden">
+			<video autoplay loop playsinline muted>
+				<source src="<?php echo $video_url; ?>" type="<?php echo $mime_type; ?>">
+			</video>
 		</div>
 		<?php
-	endif; ?>
+		// 2. Default Fallback: If anything else is selected (or nothing is selected) and the image exists, render the image
+	elseif (!empty($op_single_image)): ?>
+		<!-- Single Image -->
+		<div class="single-img mt-16 lg:hidden">
+			<?php echo wp_get_attachment_image($op_single_image, $size); ?>
+		</div>
+	<?php endif; ?>
 </section>
