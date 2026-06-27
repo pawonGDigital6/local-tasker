@@ -1,0 +1,231 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+
+.th-form-style {
+	br {
+		display: none;
+	}
+	p {
+		margin: 0;
+	}
+	label {
+		font-weight: 600;
+		font-size: var(--text-caption-md);
+		line-height: 1.5;
+		letter-spacing: 0;
+		color: var(--color-lt-text-primary);
+		margin-bottom: 8px;
+		display: block;
+	}
+	input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+	textarea {
+		background-color: #f8f8f7;
+		border-radius: 4px;
+		border: 1px solid var(--Border-Default, #e5e7eb);
+		padding: 1rem;
+		line-height: 1.5;
+	}
+	input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]) {
+		width: 100%;
+		height: 52px;
+	}
+
+	input.wpcf7-countrytext {
+		padding-left: 53px !important;
+	}
+
+	.wpcf7-radio {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem 4rem;
+		margin-top: 17px !important;
+		@include mix.breakpoint(small){
+			gap: 1rem 1.2rem;
+		}
+
+		input {
+			width: 16px;
+			height: 16px;
+			position: relative;
+			top: 2px;
+		}
+
+		input {
+			display: none;
+		}
+
+		.wpcf7-list-item-label {
+			position: relative;
+			font-size: 16px;
+			line-height: 1.5;
+			font-weight: 400;
+			margin: 0;
+			color: #1c2f4c;
+			cursor: pointer;
+			padding-left: 24px;
+
+			
+			&:before,
+			&:after {
+				content: "";
+				position: absolute;
+			}
+			&:before {
+				left: 0;
+				top: 2px;
+				width: 16px;
+				height: 16px;
+				border: 1px solid #b3b3b3;
+				border-radius: 50%;
+				background: transparent;
+			}
+			&:after {
+				top: 6px;
+				left: 4px;
+				width: 8px;
+				height: 8px;
+				background: #ffffff;
+				border-radius: 50%;
+				transition: all 0.2s ease;
+				opacity: 0;
+			}
+		}
+
+		.wpcf7-list-item {
+			margin: 0;
+
+			label{
+				margin: 0;
+			}
+
+			&:has(input:checked) {
+				.wpcf7-list-item-label {
+					&:after {
+						opacity: 1;
+					}
+
+					&:before {
+						background-color: #3079f4;
+						border-color: #3079f4;
+					}
+				}
+			}
+		}
+	}
+	//radio
+
+	.type-tel {
+		.flag-container {
+			.selected-flag {
+				background-color: transparent;
+				padding-right: 24px;
+				width: 66px !important;
+
+				&:after {
+					content: "";
+					position: absolute;
+					top: 50%;
+					transform: translateY(-50%);
+					right: 0;
+					height: 24px;
+					width: 1px;
+					background-color: #e6e6e6;
+				}
+
+				.iti-arrow {
+					right: 20px;
+				}
+
+				.selected-dial-code {
+					display: none;
+				}
+			}
+		}
+	}
+
+	.type-submit {
+		position: relative;
+		margin-top: 8px;
+		.wpcf7-submit {
+			font-weight: 400;
+			width: 100%;
+			cursor: pointer;
+		}
+
+		.wpcf7-spinner {
+			position: absolute;
+			left: 0;
+			top: 16px;
+		}
+	}
+
+	.rows {
+		--colGap: 24px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 var(--colGap);
+
+		.cols {
+			width: 100%;
+			&:not(:last-child) {
+				margin-bottom: 16px;
+			}
+
+			&.half {
+				@include mix.breakpoint(small, true) {
+					width: calc(50% - (var(--colGap) / 2));
+				}
+			}
+		}
+	}
+}
+
+/*=======================================================================
+   # Contact Form 7 Error message
+====================================================================*/
+.wpcf7-form {
+	.screen-reader-response {
+		position: absolute !important;
+		width: 1px !important;
+		height: 1px !important;
+		padding: 0 !important;
+		margin: -1px !important;
+		overflow: hidden !important;
+		clip: rect(0, 0, 0, 0) !important;
+		white-space: nowrap !important;
+		border: 0 !important;
+	}
+	.wpcf7-not-valid-tip {
+		font-size: 13px;
+		margin-top: 8px;
+	}
+
+	.wpcf7-response-output {
+		color: #fff;
+		text-align: center;
+	}
+
+	&.failed,
+	&.aborted {
+		.wpcf7-response-output {
+			background: #dc3232;
+		}
+	}
+	&.spam {
+		.wpcf7-response-output {
+			background: #f56e28;
+		}
+	}
+	&.invalid,
+	&.unaccepted,
+	&.payment-required {
+		.wpcf7-response-output {
+			background: #f56e28;
+		}
+	}
+	&.sent {
+		.wpcf7-response-output {
+			background: #46b450;
+		}
+	}
+}
