@@ -1571,9 +1571,6 @@ body.opened-search-popup .global-search-pop {
   .h-\[150px\] {
     height: 150px;
   }
-  .h-auto {
-    height: auto;
-  }
   .h-full {
     height: 100%;
   }
@@ -1955,6 +1952,9 @@ body.opened-search-popup .global-search-pop {
   .py-5 {
     padding-block: calc(var(--spacing) * 5);
   }
+  .py-9 {
+    padding-block: calc(var(--spacing) * 9);
+  }
   .py-9\.5 {
     padding-block: calc(var(--spacing) * 9.5);
   }
@@ -2309,6 +2309,9 @@ body.opened-search-popup .global-search-pop {
   }
   .text-white {
     color: var(--color-white);
+  }
+  .capitalize {
+    text-transform: capitalize;
   }
   .uppercase {
     text-transform: uppercase;

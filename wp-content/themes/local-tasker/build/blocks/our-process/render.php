@@ -55,7 +55,7 @@ $op_single_image = get_field('op_single_image');
 				<!-- Section Title -->
 				<?php if ($op_sec_title): ?>
 					<h2
-						class="section-title sm:mb-6 mb-4.5 text-h3 leading-[1.30] font-bold font-semi-ext text-lt-text-primary sm:tracking-[-1px]">
+						class="section-title capitalize sm:mb-6 mb-4.5 text-h3 leading-[1.30] font-bold font-semi-ext text-lt-text-primary sm:tracking-[-1px]">
 						<?php echo esc_html($op_sec_title); ?>
 					</h2>
 				<?php endif; ?>
