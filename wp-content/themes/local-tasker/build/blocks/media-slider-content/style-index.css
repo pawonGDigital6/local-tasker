@@ -31,6 +31,17 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
+.lt-ms-content__cont ul {
+  font-weight: 600;
+}
+@media screen and (max-width: 991px) {
+  .lt-ms-content__cont ul {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+  }
+}
 .lt-ms-content .slide-arrow.prev.swiper-button-disabled svg path {
   fill: var(--color-lt-white);
 }

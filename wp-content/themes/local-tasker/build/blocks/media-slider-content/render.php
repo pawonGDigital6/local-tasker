@@ -35,6 +35,8 @@ if ($block_style !== '') {
 $ms_heading = get_field('ms_heading');
 $ms_content = get_field('ms_content');
 $is_img_right = get_field('ms_img_position');
+$button_orange = get_field( 'btn_color_brand_orange') ;
+ 
 ?>
 <section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container max-sm:px-0">
@@ -107,7 +109,7 @@ $is_img_right = get_field('ms_img_position');
 					</h2>
 				<?php endif; ?>
 				<?php if ($ms_content): ?>
-					<div class="lt-ms-content__cont mb-6 max-sm:text-caption-md sm:tracking-[0.02em] tracking-[-0.15px] text-lt-text-secondary"><?php echo $ms_content; ?></div>
+					<div class="lt-ms-content__cont mb-6 max-sm:text-caption-md sm:tracking-[0.02em] tracking-[-0.15px] text-lt-text-secondary tick-ul"><?php echo $ms_content; ?></div>
 				<?php endif; ?>
 				<?php
 				$link = get_field('ms_button');
@@ -116,7 +118,7 @@ $is_img_right = get_field('ms_img_position');
 					$link_title = $link['title'];
 					$link_target = $link['target'] ? $link['target'] : '_self';
 					?>
-					<a class="btn btn--brand md:min-w-[270px]" href="<?php echo esc_url($link_url); ?>"
+					<a class="btn md:min-w-[270px] <?php echo $button_orange ? 'btn--accent' : 'btn--brand' ?>" href="<?php echo esc_url($link_url); ?>"
 						target="<?php echo esc_attr($link_target); ?>"><?php echo esc_html($link_title); ?></a>
 				<?php endif; ?>
 			</div>
