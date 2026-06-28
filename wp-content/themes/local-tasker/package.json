@@ -27,6 +27,7 @@
         "tailwindcss": "^4.3.0"
     },
     "dependencies": {
+        "@fancyapps/ui": "^6.1.14",
         "@wordpress/dom-ready": "^4.15.0",
         "swiper": "^11.2.1"
     }

@@ -19,13 +19,9 @@
 * Mixin to declare Font-face
 *
 */
-.testimonials {
-  padding-block: 50px;
+.testimonial-card__content {
+  box-shadow: 0px 3px 10.9px 0px rgba(163, 163, 163, 0.2509803922);
 }
-.testimonial-slider .swiper-slide {
-  min-height: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #f1f1f1;
+.testimonial-card__content .text > *:last-child {
+  margin-bottom: 0;
 }
