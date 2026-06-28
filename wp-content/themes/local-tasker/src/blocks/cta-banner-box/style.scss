@@ -1,0 +1,11 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+.lt-cta-box {
+	& + .wp-block-spacer {
+		@include mix.breakpoint(small) {
+			height: 0 !important; 
+		}
+	}
+}
