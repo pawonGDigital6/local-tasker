@@ -27,8 +27,7 @@
   opacity: 0.5;
 }
 .lt-client-logo__carousel .logo-holder img {
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
   height: 36px;
   filter: contrast(0%) grayscale(100%);
 }

@@ -35,7 +35,6 @@
   margin-bottom: 1.75rem;
   padding: 6px;
   margin-inline: auto;
-  max-width: -moz-max-content;
   max-width: max-content;
   border-radius: 40px;
 }

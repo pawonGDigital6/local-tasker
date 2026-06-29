@@ -1,8 +1,7 @@
-<!-- breadcrumbs -->
 <div class="breadcrumb md:mb-10.5 mb-13.5">
 	<?php if (function_exists('rank_math_the_breadcrumbs')): ?>
 		<ul
-			class="flex items-center max-wd:justify-center gap-2.75 text-white text-caption-sm font-semibold tracking-[0.48px] mb-0">
+			class="bread-lists flex items-center max-wd:justify-center gap-2.75 text-white text-caption-sm font-semibold tracking-[0.48px] mb-0">
 			<?php
 			// Fetch the raw breadcrumb array from Rank Math
 			$crumbs = RankMath\Frontend\Breadcrumbs::get()->get_crumbs();
@@ -32,4 +31,4 @@
 			?>
 		</ul>
 	<?php endif; ?>
-</div><!-- End of breadcrumbs -->
+</div>

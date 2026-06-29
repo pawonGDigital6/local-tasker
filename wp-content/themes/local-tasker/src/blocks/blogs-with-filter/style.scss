@@ -1,0 +1,11 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+.th-filter{
+	.active{
+		font-weight: 600;
+		background-color: var(--color-lt-brand);
+		color: var(--color-lt-white);
+	}
+}

@@ -36,10 +36,8 @@
   inset: 0;
   height: 100%;
   width: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center 22.6%;
-     object-position: center 22.6%;
+  object-fit: cover;
+  object-position: center 22.6%;
 }
 .lt-service-installation .service-insta__text > *:last-child {
   margin-bottom: 0;

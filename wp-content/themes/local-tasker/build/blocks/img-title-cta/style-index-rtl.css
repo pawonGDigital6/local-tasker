@@ -21,6 +21,5 @@
 */
 /**This is the block Style*/
 .cta-item:first-child .abs-bg-img img {
-  -o-object-position: bottom center;
-     object-position: bottom center;
+  object-position: bottom center;
 }

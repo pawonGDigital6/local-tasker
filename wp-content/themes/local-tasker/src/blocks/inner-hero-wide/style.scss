@@ -14,5 +14,10 @@
 		@include mix.breakpoint(small) {
 			margin-bottom: 1.225rem;
 		}
+		.bread-lists{
+			@include mix.breakpoint(medium, true) {
+			justify-content: flex-start;
+			}
+		}
 	}
 }

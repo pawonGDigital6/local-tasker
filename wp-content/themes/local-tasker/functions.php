@@ -299,3 +299,29 @@ require_once get_template_directory() . '/inc/cpt/services.php';
 if (class_exists('WooCommerce')) {
 	require get_template_directory() . '/inc/woocommerce.php';
 }
+
+// ─ Include the AJAX handler class ────────────────────────────────────────
+require_once get_template_directory() . '/inc/class-blogs-filter-ajax.php';
+
+function lt_enqueue_blogs_filter_assets(): void {
+	wp_enqueue_script(
+		'lt-blogs-filter',
+		get_template_directory_uri() . '/assets/js/blogs-filter.js',
+		[],      // No dependencies.
+		'1.0.0',
+		[
+			'strategy'  => 'defer',  // WP 6.3+ — removes script from critical path.
+			'in_footer' => true,
+		]
+	);
+ 
+	// Expose the admin AJAX URL so the script never has to guess or hardcode it.
+	wp_localize_script(
+		'lt-blogs-filter',
+		'bwfData',
+		[
+			'ajaxUrl' => esc_url( admin_url( 'admin-ajax.php' ) ),
+		]
+	);
+}
+add_action( 'wp_enqueue_scripts', 'lt_enqueue_blogs_filter_assets' );

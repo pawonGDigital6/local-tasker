@@ -36,3 +36,8 @@
     margin-bottom: 1.225rem;
   }
 }
+@media screen and (min-width: 992px) {
+  .lt-inner-hero-wd .breadcrumb .bread-lists {
+    justify-content: flex-start;
+  }
+}
