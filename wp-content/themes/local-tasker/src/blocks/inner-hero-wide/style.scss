@@ -1,0 +1,18 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+.lt-inner-hero-wd {
+	.overlay {
+		background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%);
+		@include mix.breakpoint(medium) {
+			background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 80%, rgba(0, 0, 0, 0) 100%);
+		}
+	}
+	.breadcrumb {
+		margin-bottom: 1.625rem;
+		@include mix.breakpoint(small) {
+			margin-bottom: 1.225rem;
+		}
+	}
+}

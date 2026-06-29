@@ -195,6 +195,10 @@
 	}
 }
 
+@utility container-bx {
+	max-width: 1360px;
+}
+
 @utility partial-container-left {
 	padding-left: max(40px, calc((100vw - 1365px) / 2));
 }
@@ -335,5 +339,11 @@
 			background-color: #F89120 !important;
 			opacity: 1 !important;
 		}
+	}
+}
+
+@utility last-ele-0{
+	& > *last-child{
+		margin-bottom: 0;
 	}
 }

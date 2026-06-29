@@ -47,41 +47,9 @@ $in_two_hero_content = get_field('in_two_hero_content');
 			<div
 				class="left-col relative wd:w-[57.6%] w-full rounded-[20px] sm:p-[3.8125rem_3.1875rem_3.8125rem_2.375rem] max-lg:text-center flex flex-col justify-between wd:min-h-[690px]">
 				<div class="upper relative z-10">
-					<!-- breadcrumbs -->
-					<div class="breadcrumb md:mb-10.5 mb-13.5">
-						<?php if (function_exists('rank_math_the_breadcrumbs')): ?>
-							<ul
-								class="flex items-center max-wd:justify-center gap-2.75 text-white text-caption-sm font-semibold tracking-[0.48px] mb-0">
-								<?php
-								// Fetch the raw breadcrumb array from Rank Math
-								$crumbs = RankMath\Frontend\Breadcrumbs::get()->get_crumbs();
-
-								if (!empty($crumbs) && is_array($crumbs)) {
-									$count = count($crumbs);
-									foreach ($crumbs as $key => $crumb) {
-										$is_last = ($key + 1 === $count);
-
-										// Render Breadcrumb Link
-										if ($is_last || empty($crumb[1])) {
-											echo '<li class="active">' . esc_html($crumb[0]) . '</li>';
-										} else {
-											echo '<li><a class="text-inherit hover:text-lt-accent transition-colors duration-320" href="' . esc_url($crumb[1]) . '">' . esc_html($crumb[0]) . '</a></li>';
-										}
-
-										// Render Custom SVG Separator (if not the last element)
-										if (!$is_last) {
-											echo '<li class="sep mt-[2px]">';
-											echo '<svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">';
-											echo '<path d="M0.46405 0.463867L4.83905 4.83887L0.46405 9.21387" stroke="white" stroke-width="1.3125" />';
-											echo '</svg>';
-											echo '</li>';
-										}
-									}
-								}
-								?>
-							</ul>
-						<?php endif; ?>
-					</div><!-- End of breadcrumbs -->
+					<!-- BreadCrumb -->
+					<?php get_template_part('template-parts/components/breadcrumb'); ?>
+					<!-- End of BreadCrumb -->
 					<!-- Pre Heading -->
 					<div
 						class="pre-header flex  max-wd:justify-center sm:gap-4 mb-5.25 max-sm:flex-col max-sm:items-center max-md:justify-center">
