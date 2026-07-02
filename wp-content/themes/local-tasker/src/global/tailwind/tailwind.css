@@ -347,3 +347,11 @@
 		margin-bottom: 0;
 	}
 }
+
+@utility theme-shadow {
+	box-shadow: 0px 1px 2px -1px #0000001A, 0px 1px 3px 0px #0000001A;
+}
+
+@utility theme-bg-grad{
+	background: linear-gradient(135deg, #091E42 0%, #09224E 7.14%, #09265A 14.29%, #092A67 21.43%, #092E73 28.57%, #093280 35.71%, #09368E 42.86%, #083A9B 50%, #083EA9 57.14%, #0741B7 64.29%, #0645C5 71.43%, #0549D3 78.57%, #034DE2 85.71%, #0251F0 92.86%, #0055FF 100%);
+}

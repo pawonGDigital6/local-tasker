@@ -1,0 +1,55 @@
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+
+.default-single {
+	.entry-content {
+		@include mix.breakpoint(small, true) {
+			letter-spacing: 0.02em;
+		}
+		h2,h3,h4,h5,h6{
+			line-height: normal;
+			@include mix.breakpoint(small, true) {
+				letter-spacing: -0.02em;
+			}
+		}
+
+		> *:not(.wp-block-spacer) {
+			margin-bottom: 1.5rem;
+			@include mix.breakpoint(small) {
+				margin-bottom: 1rem;
+			}
+		}
+
+		> *:last-child {
+			margin-bottom: 0;
+		}
+
+		blockquote {
+			font-size: 16px;
+			line-height: 1.5;
+			letter-spacing: 0.02em;
+			background-color: #eff6ff;
+			padding: 24px;
+			border-radius: 10px;
+			@include mix.breakpoint(small) {
+				font-size: 12px;
+			}
+
+			> *:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}
+
+
+.related-post .swiper-pagination-bullet{
+	--swiper-pagination-bullet-width: 11px;
+	--swiper-pagination-bullet-height: 11px;
+	background: #EAEAEA !important;
+	opacity: 1 !important;
+
+	&.swiper-pagination-bullet-active{
+		background-color: var(--color-lt-accent) !important;
+	}
+}
