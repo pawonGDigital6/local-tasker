@@ -46,7 +46,7 @@ $ll_sec_content = get_field('ll_sec_content');
 	<div class="wd:container-bx container">
 		<!-- Section Header -->
 		<div class="section-header sm:mb-12 mb-[50px] text-center">
-			<?php if ($ll_sec_title = get_field('ll_sec_title')): ?>
+			<?php if ($ll_sec_title): ?>
 				<h2
 					class="sec-title font-semi-ext text-[2rem] font-bold sm:leading-[1.2] leading-[normal] tracking-[-0.02em] text-lt-text-primary">
 					<?php echo esc_html($ll_sec_title); ?>
