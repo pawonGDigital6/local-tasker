@@ -21,7 +21,7 @@
 */
 /**This is the block Style*/
 @media screen and (max-width: 767px) {
-  .lt-cta-box + .wp-block-spacer {
+  .lt-cta-box:not(.no-bg-img) + .wp-block-spacer {
     height: 0 !important;
   }
 }

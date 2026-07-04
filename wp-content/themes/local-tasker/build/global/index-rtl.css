@@ -2612,6 +2612,9 @@ body.opened-search-popup .global-search-pop {
   .min-h-\[307px\] {
     min-height: 307px;
   }
+  .min-h-\[321px\] {
+    min-height: 321px;
+  }
   .min-h-\[378px\] {
     min-height: 378px;
   }
@@ -2916,6 +2919,9 @@ body.opened-search-popup .global-search-pop {
   }
   .rounded-\[13px\] {
     border-radius: 13px;
+  }
+  .rounded-\[16px\] {
+    border-radius: 16px;
   }
   .rounded-\[20px\] {
     border-radius: 20px;
@@ -4651,6 +4657,11 @@ body.opened-search-popup .global-search-pop {
       height: 100%;
     }
   }
+  .sm\:min-h-\[278px\] {
+    @media (width >= 768px) {
+      min-height: 278px;
+    }
+  }
   .sm\:min-h-\[434px\] {
     @media (width >= 768px) {
       min-height: 434px;
@@ -5972,6 +5983,62 @@ body.opened-search-popup .global-search-pop {
   .wd\:pl-24\.5 {
     @media (width >= 1200px) {
       padding-right: calc(var(--spacing) * 24.5);
+    }
+  }
+  .wd\:sm\:container {
+    @media (width >= 1200px) {
+      @media (width >= 768px) {
+        width: 100%;
+        @media (width >= 320px) {
+          max-width: 320px;
+        }
+        @media (width >= 375px) {
+          max-width: 375px;
+        }
+        @media (width >= 568px) {
+          max-width: 568px;
+        }
+        @media (width >= 768px) {
+          max-width: 768px;
+        }
+        @media (width >= 992px) {
+          max-width: 992px;
+        }
+        @media (width >= 1025px) {
+          max-width: 1025px;
+        }
+        @media (width >= 1200px) {
+          max-width: 1200px;
+        }
+        @media (width >= 1400px) {
+          max-width: 1400px;
+        }
+        @media (width >= 1600px) {
+          max-width: 1600px;
+        }
+        @media (width >= 1930px) {
+          max-width: 1930px;
+        }
+        @media (width >= 96rem) {
+          max-width: 96rem;
+        }
+      }
+    }
+  }
+  .wd\:sm\:container {
+    @media (width >= 1200px) {
+      @media (width >= 768px) {
+        width: 100%;
+        max-width: 1430px;
+        margin-inline: auto;
+        padding-inline: 40px;
+        @media (max-width: 1199px) {
+          padding-inline: 32px;
+        }
+        @media (max-width: 767px) {
+          padding-inline: 16px;
+        }
+      }
     }
   }
   .lp\:w-\[40\.8\%\] {

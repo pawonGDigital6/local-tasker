@@ -3,7 +3,7 @@
 
 /**This is the block Style*/
 .lt-cta-box {
-	& + .wp-block-spacer {
+	&:not(.no-bg-img) + .wp-block-spacer {
 		@include mix.breakpoint(small) {
 			height: 0 !important; 
 		}
