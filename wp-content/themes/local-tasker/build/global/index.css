@@ -1199,7 +1199,7 @@ body.opened-search-popup .global-search-pop {
     transition: all 0.32s;
     transform: translateY(8px);
     will-change: transform, opacity, visibility;
-    z-index: 4;
+    z-index: 14;
   }
 }
 .main-navigation .sub-menu li:not(:last-child) {

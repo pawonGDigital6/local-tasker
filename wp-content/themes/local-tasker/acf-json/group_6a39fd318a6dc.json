@@ -34,7 +34,7 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "table",
+            "layout": "block",
             "pagination": 0,
             "min": 0,
             "max": 2,
@@ -96,7 +96,7 @@
                     "label": "CTA LInk",
                     "name": "cta_link",
                     "aria-label": "",
-                    "type": "text",
+                    "type": "page_link",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -105,12 +105,15 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
-                    "maxlength": "",
+                    "post_type": "",
+                    "post_status": [
+                        "publish"
+                    ],
+                    "taxonomy": "",
+                    "allow_archives": 0,
+                    "multiple": 0,
+                    "allow_null": 0,
                     "allow_in_bindings": 0,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
                     "parent_repeater": "field_6a39fd33a23e5"
                 }
             ]
@@ -134,5 +137,8 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1782185633
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1783267396
 }
