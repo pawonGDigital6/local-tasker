@@ -1,2 +1,7 @@
 @use "../abstracts/variables" as var;
 @use "../abstracts/mixins" as mix;
+
+
+.site-header{
+	box-shadow: 0px -1px 0px 0px #00000026 inset;
+}

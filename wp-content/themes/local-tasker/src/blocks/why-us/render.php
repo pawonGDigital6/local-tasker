@@ -46,7 +46,7 @@ $size = 'full';
 			if ($image_small):
 				?>
 				<div
-					class="why-us__accent absolute md:left-[-58px] top-0 z-[2] hidden h-[11.25rem] w-[11.25rem] overflow-hidden rounded-full md:block">
+					class="why-us__accent absolute md:left-[-58px] top-0 z-2 max-md:hidden w-45 h-45 overflow-hidden rounded-full md:block">
 					<?php
 					$url = wp_get_attachment_url($image_small);
 					echo wp_get_attachment_image($image_small, $size);

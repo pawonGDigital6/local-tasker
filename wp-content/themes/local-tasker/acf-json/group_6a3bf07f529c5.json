@@ -243,6 +243,27 @@
             ]
         },
         {
+            "key": "field_6a492fb5cc601",
+            "label": "Turn Off Hero Testimonial?",
+            "name": "turn_off_hero_testimonial",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
             "key": "field_6a3bf1e6a0ea8",
             "label": "Inner Hero Testimonial",
             "name": "inner_hero_testimonial",
@@ -250,7 +271,15 @@
             "type": "repeater",
             "instructions": "",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6a492fb5cc601",
+                        "operator": "!=",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "",
                 "class": "",
@@ -379,5 +408,8 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1782321363
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1783181405
 }

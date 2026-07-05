@@ -64,5 +64,8 @@
     --size: 8px;
   }
 }
+.lt-inner-two-col-hero .no-testimonial .breadcrumb .bread-lists {
+  justify-content: center;
+}
 
 /*# sourceMappingURL=style-index.css.map*/
