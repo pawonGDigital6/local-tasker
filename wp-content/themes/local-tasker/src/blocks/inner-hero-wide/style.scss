@@ -21,3 +21,21 @@
 		}
 	}
 }
+
+// ------------------------------------- Contact Page
+body{
+	&.lt-contact-page{
+		.content {
+			max-width: 700px;
+			margin-inline: auto;
+		}
+		.breadcrumb {
+			.bread-lists{
+				justify-content: center;
+			}
+		}
+		.lt-inner-hero-wd {
+			text-align: center;
+		}
+	}
+}

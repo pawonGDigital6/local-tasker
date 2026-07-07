@@ -8,7 +8,7 @@
  *
  * @package local-tasker
  */
-
+$unique_page_class = get_field('unique_page_class');
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -17,11 +17,10 @@
 	<meta charset="<?php bloginfo('charset'); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
-
 	<?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+<body <?php body_class($unique_page_class); ?>>
 	<?php wp_body_open(); ?>
 	<div id="page" class="site">
 		<a class="skip-link screen-reader-text"
@@ -31,10 +30,7 @@
 			<div class="container">
 				<span
 					class="uppercase text-lt-white text-center block md:text-caption-sm text-caption-xs tracking-[1px] leading-[1.30]">Free
-					Shipping |
-					Seamless returns
-					| CALL ON
-				</span>
+					Shipping | Seamless returns | CALL ON </span>
 			</div>
 		</div>
 		<!-- Site Header -->
@@ -106,8 +102,8 @@
 										<path
 											d="M8.36388 1.0005C7.38967 0.989147 6.42289 1.17122 5.51955 1.53618C4.61621 1.90114 3.79428 2.44172 3.10136 3.12661C2.40844 3.81151 1.85831 4.62709 1.48285 5.52611C1.10739 6.42513 0.914062 7.38972 0.914062 8.364C0.914062 9.33828 1.10739 10.3029 1.48285 11.2019C1.85831 12.1009 2.40844 12.9165 3.10136 13.6014C3.79428 14.2863 4.61621 14.8269 5.51955 15.1918C6.42289 15.5568 7.38967 15.7389 8.36388 15.7275C10.3019 15.7049 12.1529 14.9192 13.5154 13.5407C14.8779 12.1622 15.6421 10.3022 15.6421 8.364C15.6421 6.42581 14.8779 4.56576 13.5154 3.18729C12.1529 1.80882 10.3019 1.02309 8.36388 1.0005Z"
 											stroke="#2E2E2E" stroke-miterlimit="10" />
-										<path d="M13.8569 13.8594L18.9999 19.0024" stroke="#2E2E2E"
-											stroke-miterlimit="10" stroke-linecap="round" />
+										<path d="M13.8569 13.8594L18.9999 19.0024" stroke="#2E2E2E" stroke-miterlimit="10"
+											stroke-linecap="round" />
 									</g>
 									<defs>
 										<clipPath id="clip0_774_483">
