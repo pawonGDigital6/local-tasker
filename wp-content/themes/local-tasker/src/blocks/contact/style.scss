@@ -2,3 +2,69 @@
 @use "../../global/scss/abstracts/mixins" as mix;
 
 /**This is the block Style*/
+
+/*=======================================================================
+   # Contact block – CF7 form
+   Reuses the global `.th-form-style` utility; only the deltas this
+   design needs are overridden below (scoped to the block).
+====================================================================*/
+.lt-contact {
+	.th-form-style {
+		// Labels: 16px on desktop (design), keep global 14px on mobile
+		label {
+			@include mix.breakpoint(small, true) {
+				font-size: var(--text-body);
+			}
+		}
+
+		// Inputs/textarea: 8px radius + design surface/border colours
+		input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+		textarea {
+			border-radius: 8px;
+			border-color: #e6e6e6;
+			background-color: #f9fafb;
+
+			&::placeholder {
+				color: #b3b3b3;
+			}
+		}
+
+		// CF7 renders the textarea with a default `rows` attribute, which
+		// makes it far taller than the design. Pin the height to match.
+		textarea {
+			height: 118px;
+			resize: vertical;
+
+			@include mix.breakpoint(small) {
+				height: 110px;
+				min-height: 110px;
+			}
+		}
+
+		// Grid spacing: 16px column gap, 24px row rhythm
+		.rows {
+			--colGap: 16px;
+
+			.cols:not(:last-child) {
+				margin-bottom: 24px;
+			}
+		}
+
+		// Submit: hugs its content on desktop, full-width on mobile
+		.type-submit {
+			margin-top: 0;
+
+			.wpcf7-submit {
+				font-weight: 700;
+				width: auto;
+				@include mix.breakpoint(smaller) {
+					width: 100%;
+				}
+
+				@include mix.breakpoint(small, true) {
+					min-width: 225px;
+				}
+			}
+		}
+	}
+}

@@ -24,6 +24,7 @@
 		border: 1px solid var(--Border-Default, #e5e7eb);
 		padding: 1rem;
 		line-height: 1.5;
+		width: 100%;
 	}
 	input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]) {
 		width: 100%;

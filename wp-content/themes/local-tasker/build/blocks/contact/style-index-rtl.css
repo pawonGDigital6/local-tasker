@@ -1,6 +1,7 @@
 /*!******************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/contact/style.scss ***!
   \******************************************************************************************************************************************************************************************************************************************************/
+@charset "UTF-8";
 /*********************
 * BREAKPOINTS
 *
@@ -20,3 +21,56 @@
 *
 */
 /**This is the block Style*/
+/*=======================================================================
+   # Contact block – CF7 form
+   Reuses the global `.th-form-style` utility; only the deltas this
+   design needs are overridden below (scoped to the block).
+====================================================================*/
+@media screen and (min-width: 768px) {
+  .lt-contact .th-form-style label {
+    font-size: var(--text-body);
+  }
+}
+.lt-contact .th-form-style input:not([type=checkbox]):not([type=radio]):not([type=submit]),
+.lt-contact .th-form-style textarea {
+  border-radius: 8px;
+  border-color: #e6e6e6;
+  background-color: #f9fafb;
+}
+.lt-contact .th-form-style input:not([type=checkbox]):not([type=radio]):not([type=submit])::placeholder,
+.lt-contact .th-form-style textarea::placeholder {
+  color: #b3b3b3;
+}
+.lt-contact .th-form-style textarea {
+  height: 118px;
+  resize: vertical;
+}
+@media screen and (max-width: 767px) {
+  .lt-contact .th-form-style textarea {
+    height: 110px;
+    min-height: 110px;
+  }
+}
+.lt-contact .th-form-style .rows {
+  --colGap: 16px;
+}
+.lt-contact .th-form-style .rows .cols:not(:last-child) {
+  margin-bottom: 24px;
+}
+.lt-contact .th-form-style .type-submit {
+  margin-top: 0;
+}
+.lt-contact .th-form-style .type-submit .wpcf7-submit {
+  font-weight: 700;
+  width: auto;
+}
+@media screen and (max-width: 575px) {
+  .lt-contact .th-form-style .type-submit .wpcf7-submit {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 768px) {
+  .lt-contact .th-form-style .type-submit .wpcf7-submit {
+    min-width: 225px;
+  }
+}
