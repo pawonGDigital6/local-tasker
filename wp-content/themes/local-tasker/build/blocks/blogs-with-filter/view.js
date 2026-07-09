@@ -184,6 +184,9 @@
      * @param {boolean} isLoading
      */
     _setLoadingState(isLoading) {
+      // Toggle the white veil + spinner overlay on the grid.
+      this.block.classList.toggle("is-loading", isLoading);
+
       // Load More button feedback.
       if (this.loadMoreBtn) {
         this.loadMoreBtn.disabled = isLoading;

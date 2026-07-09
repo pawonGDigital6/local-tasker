@@ -2,20 +2,24 @@
 @use "../../global/scss/abstracts/mixins" as mix;
 
 /**This is the block Style*/
-.th-filter{
-	.active{
-		font-weight: 600;
+
+// Active filter pill. Kept in CSS (not inline utilities) because the JS toggles
+// `.active` at runtime. Higher specificity than the inline hover utilities, so a
+// hover over the active pill never flickers to the hover tint.
+.th-filter {
+	.filter-btn.active {
 		background-color: var(--color-lt-brand);
 		color: var(--color-lt-white);
 	}
 }
 
 // ─── AJAX loading overlay ──────────────────────────────────────────────────
-// Soft white veil + spinner over the grid during a filter change or
-// "Load More", matching the Projects block. Pseudo-elements on `.blog-lists`
-// survive the grid's innerHTML replacement (only its children are swapped).
-.lt-blogs-filter {
-	.blog-lists {
+// A soft white veil + spinner over the grid while a filter change or
+// "View All" request is in flight, so the user gets clear "loading" feedback.
+// Implemented as pseudo-elements on `.project-lists` so they survive the
+// grid's innerHTML replacement (only the grid's children are swapped).
+.lt-projects {
+	.project-lists {
 		position: relative;
 
 		// White veil.
@@ -50,29 +54,30 @@
 		}
 	}
 
-	&.is-loading .blog-lists {
+	&.is-loading .project-lists {
 		&::after {
 			opacity: 1;
 			visibility: visible;
-			pointer-events: auto;
+			pointer-events: auto; // block interaction with cards underneath
 		}
 
 		&::before {
 			opacity: 1;
 			visibility: visible;
-			animation: bwf-spin 0.7s linear infinite;
+			animation: pwf-spin 0.7s linear infinite;
 		}
 	}
 }
 
-@keyframes bwf-spin {
+@keyframes pwf-spin {
 	to {
 		transform: rotate(360deg);
 	}
 }
 
+// Respect users who prefer reduced motion — show the ring without spinning.
 @media (prefers-reduced-motion: reduce) {
-	.lt-blogs-filter.is-loading .blog-lists::before {
+	.lt-projects.is-loading .project-lists::before {
 		animation: none;
 	}
 }

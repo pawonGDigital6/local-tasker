@@ -304,17 +304,13 @@ if (class_exists('WooCommerce')) {
 require_once get_template_directory() . '/inc/class-blogs-filter-ajax.php';
 
 function lt_enqueue_blogs_filter_assets(): void {
-	wp_enqueue_script(
-		'lt-blogs-filter',
-		get_template_directory_uri() . '/assets/js/blogs-filter.js',
-		[],      // No dependencies.
-		'1.0.0',
-		[
-			'strategy'  => 'defer',  // WP 6.3+ — removes script from critical path.
-			'in_footer' => true,
-		]
-	);
- 
+	// Data-only handle (src = false) — the BlogsFilter class ships with the
+	// block's viewScript, so this handle exists purely to print the localized
+	// AJAX URL inline. Previously this pointed at /assets/js/blogs-filter.js,
+	// which does not exist and 404'd site-wide.
+	wp_register_script( 'lt-blogs-filter', false, [], '1.0.0', [ 'in_footer' => true ] );
+	wp_enqueue_script( 'lt-blogs-filter' );
+
 	// Expose the admin AJAX URL so the script never has to guess or hardcode it.
 	wp_localize_script(
 		'lt-blogs-filter',
@@ -325,3 +321,26 @@ function lt_enqueue_blogs_filter_assets(): void {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'lt_enqueue_blogs_filter_assets' );
+
+// ─ Include the Projects filter AJAX handler ──────────────────────────────
+require_once get_template_directory() . '/inc/class-projects-filter-ajax.php';
+
+/**
+ * Expose the admin-ajax URL for the "Project With Filter" block.
+ *
+ * Uses a src-less (data-only) script handle so the correct URL is printed
+ * inline — robust on sub-directory installs — without shipping a physical file.
+ */
+function lt_enqueue_projects_filter_assets(): void {
+	wp_register_script( 'lt-projects-filter', false, [], '1.0.0', [ 'in_footer' => true ] );
+	wp_enqueue_script( 'lt-projects-filter' );
+
+	wp_localize_script(
+		'lt-projects-filter',
+		'pwfData',
+		[
+			'ajaxUrl' => esc_url( admin_url( 'admin-ajax.php' ) ),
+		]
+	);
+}
+add_action( 'wp_enqueue_scripts', 'lt_enqueue_projects_filter_assets' );

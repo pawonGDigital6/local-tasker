@@ -1,6 +1,6 @@
-/*!****************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/blogs-with-filter/style.scss ***!
-  \****************************************************************************************************************************************************************************************************************************************************************/
+/*!******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/project-with-filter/style.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************/
 /*********************
 * BREAKPOINTS
 *
@@ -20,15 +20,14 @@
 *
 */
 /**This is the block Style*/
-.th-filter .active {
-  font-weight: 600;
+.th-filter .filter-btn.active {
   background-color: var(--color-lt-brand);
   color: var(--color-lt-white);
 }
-.lt-blogs-filter .blog-lists {
+.lt-projects .project-lists {
   position: relative;
 }
-.lt-blogs-filter .blog-lists::after {
+.lt-projects .project-lists::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -39,7 +38,7 @@
   pointer-events: none;
   transition: opacity 0.25s ease, visibility 0.25s ease;
 }
-.lt-blogs-filter .blog-lists::before {
+.lt-projects .project-lists::before {
   content: "";
   position: absolute;
   z-index: 3;
@@ -55,23 +54,23 @@
   visibility: hidden;
   transition: opacity 0.25s ease, visibility 0.25s ease;
 }
-.lt-blogs-filter.is-loading .blog-lists::after {
+.lt-projects.is-loading .project-lists::after {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
-.lt-blogs-filter.is-loading .blog-lists::before {
+.lt-projects.is-loading .project-lists::before {
   opacity: 1;
   visibility: visible;
-  animation: bwf-spin 0.7s linear infinite;
+  animation: pwf-spin 0.7s linear infinite;
 }
-@keyframes bwf-spin {
+@keyframes pwf-spin {
   to {
     transform: rotate(-360deg);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .lt-blogs-filter.is-loading .blog-lists::before {
+  .lt-projects.is-loading .project-lists::before {
     animation: none;
   }
 }
