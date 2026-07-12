@@ -344,3 +344,8 @@ function lt_enqueue_projects_filter_assets(): void {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'lt_enqueue_projects_filter_assets' );
+
+add_filter('block_editor_settings_all', function ($settings) {
+	$settings['styles'] = array(); // Disabling custom block styles often drops the iframe
+	return $settings;
+});
