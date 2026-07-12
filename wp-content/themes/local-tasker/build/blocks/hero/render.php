@@ -103,7 +103,7 @@ radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52,
 		<!-- Hero Title -->
 		<?php if ($hero_title): ?>
 			<h1
-				class="hero-title text-white text-center font-bold max-w-[892px] mx-auto leading-none font-semi-ext max-md:leading-[1.23]">
+				class="hero-title text-white text-center font-bold max-w-[892px] mx-auto leading-[1.3] font-semi-ext max-md:leading-[1.23]">
 				<?php echo esc_html($hero_title); ?>
 			</h1>
 		<?php endif; ?>
