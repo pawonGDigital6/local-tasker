@@ -1,0 +1,91 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+.lt-location-tab {
+	.lc-tab {
+		// --------------------------- Tab Head (pill segmented control)
+		&__head {
+			margin-bottom: 2.5rem;
+
+			@include mix.breakpoint(small) {
+				margin-bottom: 2rem;
+				overflow-x: auto;
+				background-color: var(--color-lt-snow-drift);
+				border-radius: 40px;
+			}
+
+			ul {
+				list-style: none;
+				margin: 0 auto;
+				padding: 6px;
+				display: flex;
+				gap: 4px;
+				max-width: max-content;
+				@include mix.breakpoint(small, true) {
+					background-color: var(--color-lt-snow-drift);
+					border-radius: 40px;
+				}
+
+				@include mix.breakpoint(small) {
+					margin-inline: 0;
+					width: max-content;
+					margin-inline: -16px;
+					padding-inline: 16px;
+				}
+			}
+		}
+
+		&__btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			white-space: nowrap;
+			font-size: 16px;
+			line-height: 1;
+			font-weight: 700;
+			letter-spacing: 0;
+			color: var(--color-lt-text-muted);
+			background-color: transparent;
+			border: 0;
+			border-radius: 40px;
+			padding: 14px 40px 16px;
+			cursor: pointer;
+			transition:
+				color 0.36s,
+				background-color 0.36s;
+
+			@include mix.breakpoint(small) {
+				font-size: 14px;
+				padding: 12px 22px 14px;
+			}
+
+			&.active,
+			&:hover {
+				background-color: var(--color-lt-brand);
+				color: var(--color-lt-snow-drift);
+			}
+		}
+
+		.oh-content {
+			ul,
+			ol {
+				margin: 0;
+				li {
+					&:not(:last-child) {
+						margin-bottom: 8px;
+					}
+				}
+			}
+		}
+
+		// --------------------------- Tab Panels
+		&__panel {
+			display: none;
+
+			&.active {
+				display: block;
+			}
+		}
+	}
+}

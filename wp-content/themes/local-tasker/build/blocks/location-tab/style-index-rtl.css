@@ -1,0 +1,96 @@
+/*!***********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/location-tab/style.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************/
+/*********************
+* BREAKPOINTS
+*
+* @example
+* for max-width case
+* @include breakpoint('smaller') {
+*	@content;
+* }
+*
+* for min-width case
+* @include breakpoint('smaller', true) {
+*	@content;
+*}
+*********************/
+/**
+* Mixin to declare Font-face
+*
+*/
+/**This is the block Style*/
+.lt-location-tab .lc-tab__head {
+  margin-bottom: 2.5rem;
+}
+@media screen and (max-width: 767px) {
+  .lt-location-tab .lc-tab__head {
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    background-color: var(--color-lt-snow-drift);
+    border-radius: 40px;
+  }
+}
+.lt-location-tab .lc-tab__head ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 6px;
+  display: flex;
+  gap: 4px;
+  max-width: max-content;
+}
+@media screen and (min-width: 768px) {
+  .lt-location-tab .lc-tab__head ul {
+    background-color: var(--color-lt-snow-drift);
+    border-radius: 40px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .lt-location-tab .lc-tab__head ul {
+    margin-inline: 0;
+    width: max-content;
+    margin-inline: -16px;
+    padding-inline: 16px;
+  }
+}
+.lt-location-tab .lc-tab__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--color-lt-text-muted);
+  background-color: transparent;
+  border: 0;
+  border-radius: 40px;
+  padding: 14px 40px 16px;
+  cursor: pointer;
+  transition: color 0.36s, background-color 0.36s;
+}
+@media screen and (max-width: 767px) {
+  .lt-location-tab .lc-tab__btn {
+    font-size: 14px;
+    padding: 12px 22px 14px;
+  }
+}
+.lt-location-tab .lc-tab__btn.active, .lt-location-tab .lc-tab__btn:hover {
+  background-color: var(--color-lt-brand);
+  color: var(--color-lt-snow-drift);
+}
+.lt-location-tab .lc-tab .oh-content ul,
+.lt-location-tab .lc-tab .oh-content ol {
+  margin: 0;
+}
+.lt-location-tab .lc-tab .oh-content ul li:not(:last-child),
+.lt-location-tab .lc-tab .oh-content ol li:not(:last-child) {
+  margin-bottom: 8px;
+}
+.lt-location-tab .lc-tab__panel {
+  display: none;
+}
+.lt-location-tab .lc-tab__panel.active {
+  display: block;
+}
