@@ -20,5 +20,185 @@
 *
 */
 /**This is the block Style*/
+.lt-hero .hero-search__form {
+  max-width: 912px;
+  margin-inline: auto;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background-color: var(--color-lt-snow-drift);
+  border: 1px solid #e5e7eb;
+  border-radius: 50px;
+  min-height: 93px;
+  overflow: hidden;
+}
+@media screen and (max-width: 991px) {
+  .lt-hero .hero-search__form {
+    min-height: 75px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .lt-hero .hero-search__form {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    background-color: #f9f9f9;
+    border: 0;
+    border-radius: 24px;
+    min-height: 0;
+  }
+}
+.lt-hero .hero-search__bar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  border-radius: 0;
+  padding: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+@media screen and (max-width: 767px) {
+  .lt-hero .hero-search__bar {
+    flex-direction: column;
+    gap: 8px;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+  }
+}
+.lt-hero .hero-search__field {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+.lt-hero .hero-search__field:first-child .hero-search__select {
+  padding-left: 15px;
+}
+@media screen and (max-width: 767px) {
+  .lt-hero .hero-search__field {
+    width: 100%;
+    min-height: 44px;
+    padding-inline: 16px;
+    background-color: #f9fafb;
+    border-radius: 16px;
+  }
+  .lt-hero .hero-search__field:first-child .hero-search__select {
+    padding-left: 0;
+  }
+}
+.lt-hero .hero-search__select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxNyAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAuMzUzNTE2IDAuMzUzNTE2TDguMzUzNTIgOC4zNTM1MkwxNi4zNTM1IDAuMzUzNTE2IiBzdHJva2U9IiM2NjY2NjYiLz4KPC9zdmc+Cg==);
+  background-repeat: no-repeat;
+  background-position: right 24px center;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  padding: 20px 52px 20px 28px;
+  font-size: 20px;
+  font-family: inherit;
+  color: var(--color-lt-text-secondary);
+  line-height: 1.5;
+}
+.lt-hero .hero-search__select:focus {
+  outline: none;
+}
+@media screen and (max-width: 991px) {
+  .lt-hero .hero-search__select {
+    padding-right: 40px;
+    background-position: right 12px center;
+    background-size: 13px;
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .lt-hero .hero-search__select {
+    font-size: 14px;
+    padding: 0 24px 0 0;
+    background-position: right 0 center;
+    background-size: 17px;
+  }
+}
+.lt-hero .hero-search__select.is-selected {
+  color: var(--color-lt-text-primary);
+}
+.lt-hero .hero-search__select option {
+  color: var(--color-lt-text-primary);
+}
+.lt-hero .hero-search__select option[value=""] {
+  color: var(--color-lt-text-secondary);
+}
+.lt-hero .hero-search__divider {
+  width: 1px;
+  background-color: #e5e7eb;
+  align-self: stretch;
+  flex-shrink: 0;
+  align-self: stretch;
+  height: 100%;
+  margin: 0;
+}
+@media screen and (max-width: 767px) {
+  .lt-hero .hero-search__divider {
+    display: none;
+  }
+}
+.lt-hero .hero-search__btn {
+  flex-shrink: 0;
+  align-items: center;
+  min-width: 208px;
+  margin: 4px 4px 4px 0;
+  cursor: pointer;
+}
+@media screen and (max-width: 991px) {
+  .lt-hero .hero-search__btn {
+    min-width: 182px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .lt-hero .hero-search__btn {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    border-radius: 40px;
+    padding-block: 19px !important;
+  }
+}
+@media screen and (min-width: 768px) {
+  .lt-hero .hero-search__btn {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-radius: 0 160px 160px 0 !important;
+  }
+}
+.lt-hero .hero-ctas .btn {
+  min-width: 270px;
+  padding-block: 19px;
+}
+.lt-hero .hero-ctas .btn--brand:hover {
+  background-color: var(--color-lt-white);
+  border-color: var(--color-lt-white);
+}
+@media screen and (max-width: 767px) {
+  .lt-hero .hero-ctas {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .lt-hero .hero-ctas .btn {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+body:not(.home) .lt-hero .hero-search,
+body:not(.home) .lt-hero .hero-ctas {
+  display: none;
+}
 
 /*# sourceMappingURL=style-index.css.map*/

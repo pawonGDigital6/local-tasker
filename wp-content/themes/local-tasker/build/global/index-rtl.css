@@ -3335,6 +3335,9 @@ body.woocommerce-account .woocommerce-info .button {
   .mt-\[15px\] {
     margin-top: 15px;
   }
+  .mt-\[25px\] {
+    margin-top: 25px;
+  }
   .mt-\[30px\] {
     margin-top: 30px;
   }
@@ -4183,6 +4186,12 @@ body.woocommerce-account .woocommerce-info .button {
   .rounded-xl {
     border-radius: var(--radius-xl);
   }
+  .rounded-tr {
+    border-top-left-radius: 0.25rem;
+  }
+  .rounded-br {
+    border-bottom-left-radius: 0.25rem;
+  }
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
@@ -4194,6 +4203,10 @@ body.woocommerce-account .woocommerce-info .button {
   .border-2 {
     border-style: var(--tw-border-style);
     border-width: 2px;
+  }
+  .border-\[1\.5px\] {
+    border-style: var(--tw-border-style);
+    border-width: 1.5px;
   }
   .border-x {
     border-inline-style: var(--tw-border-style);
@@ -5333,6 +5346,10 @@ body.woocommerce-account .woocommerce-info .button {
   .duration-800 {
     --tw-duration: 800ms;
     transition-duration: 800ms;
+  }
+  .duration-\[360ms\] {
+    --tw-duration: 360ms;
+    transition-duration: 360ms;
   }
   .duration-\[420ms\] {
     --tw-duration: 420ms;
@@ -6522,14 +6539,29 @@ body.woocommerce-account .woocommerce-info .button {
       margin-top: calc(var(--spacing) * 7.5);
     }
   }
+  .sm\:mt-9 {
+    @media (width >= 768px) {
+      margin-top: calc(var(--spacing) * 9);
+    }
+  }
   .sm\:mt-10 {
     @media (width >= 768px) {
       margin-top: calc(var(--spacing) * 10);
     }
   }
+  .sm\:mt-12 {
+    @media (width >= 768px) {
+      margin-top: calc(var(--spacing) * 12);
+    }
+  }
   .sm\:mt-14 {
     @media (width >= 768px) {
       margin-top: calc(var(--spacing) * 14);
+    }
+  }
+  .sm\:mt-\[1\.875rem\] {
+    @media (width >= 768px) {
+      margin-top: 1.875rem;
     }
   }
   .sm\:mt-\[22px\] {
@@ -6742,6 +6774,11 @@ body.woocommerce-account .woocommerce-info .button {
       min-width: 270px;
     }
   }
+  .sm\:flex-1 {
+    @media (width >= 768px) {
+      flex: 1;
+    }
+  }
   .sm\:grid-cols-2 {
     @media (width >= 768px) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -6822,6 +6859,11 @@ body.woocommerce-account .woocommerce-info .button {
       gap: 12px;
     }
   }
+  .sm\:gap-\[14px\] {
+    @media (width >= 768px) {
+      gap: 14px;
+    }
+  }
   .sm\:gap-\[25px\] {
     @media (width >= 768px) {
       gap: 25px;
@@ -6865,6 +6907,11 @@ body.woocommerce-account .woocommerce-info .button {
   .sm\:rounded-\[20px\] {
     @media (width >= 768px) {
       border-radius: 20px;
+    }
+  }
+  .sm\:rounded-full {
+    @media (width >= 768px) {
+      border-radius: calc(infinity * 1px);
     }
   }
   .sm\:border {
