@@ -113,8 +113,8 @@ $unique_page_class = get_field('unique_page_class');
 								</svg>
 							</button>
 							<!-- Cart  -->
-							<?php if ( class_exists( 'WooCommerce' ) && function_exists( 'local_tasker_woocommerce_cart_link' ) ) :
-								local_tasker_woocommerce_cart_link();
+							<?php if ( class_exists( 'WooCommerce' ) && function_exists( 'local_tasker_woocommerce_header_cart' ) ) :
+								local_tasker_woocommerce_header_cart();
 							else : ?>
 								<a href="#" class="cart-icon relative pr-3">
 									<span

@@ -188,7 +188,7 @@ if ( ! function_exists( 'local_tasker_woocommerce_cart_link' ) ) {
 	function local_tasker_woocommerce_cart_link() {
 		$count = WC()->cart->get_cart_contents_count();
 		?>
-		<a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="cart-icon cart-contents relative pr-3" title="<?php esc_attr_e( 'View your shopping cart', 'local-tasker' ); ?>">
+		<a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="cart-icon cart-contents relative pr-3" title="<?php esc_attr_e( 'View your shopping cart', 'local-tasker' ); ?>" data-lt-cart-toggle aria-haspopup="dialog" aria-controls="lt-mini-cart-panel" aria-expanded="false">
 			<span class="cart-count absolute top-[-6px] right-[0] max-sm:top-[-9px] items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] text-caption-sm <?php echo $count > 0 ? 'flex' : 'hidden'; ?>"><?php echo esc_html( $count ); ?></span>
 			<svg class="max-md:w-[16px]" width="19" height="21" viewBox="0 0 19 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path
@@ -648,33 +648,59 @@ function lt_enqueue_cart_badge_script(): void {
 }
 add_action( 'wp_enqueue_scripts', 'lt_enqueue_cart_badge_script' );
 
+/**
+ * Enqueue the header mini-cart drawer script (open/close, escape, overlay).
+ */
+function lt_enqueue_mini_cart_script(): void {
+	$rel = '/js/mini-cart.js';
+	wp_enqueue_script(
+		'lt-mini-cart',
+		get_template_directory_uri() . $rel,
+		[ 'jquery' ],
+		file_exists( get_template_directory() . $rel ) ? filemtime( get_template_directory() . $rel ) : _S_VERSION,
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'lt_enqueue_mini_cart_script' );
+
 if ( ! function_exists( 'local_tasker_woocommerce_header_cart' ) ) {
 	/**
-	 * Display Header Cart.
+	 * Header cart icon + mini-cart drawer.
+	 *
+	 * The icon still links to the cart page (works with JS disabled); with JS
+	 * enabled, js/mini-cart.js intercepts the click and slides the drawer open
+	 * instead. The drawer's contents come from WC_Widget_Cart, which renders
+	 * the `div.widget_shopping_cart_content` markup WooCommerce already knows
+	 * how to refresh via `wc-cart-fragments` on every add/remove — no extra
+	 * fragment wiring needed.
 	 *
 	 * @return void
 	 */
 	function local_tasker_woocommerce_header_cart() {
-		if ( is_cart() ) {
-			$class = 'current-menu-item';
-		} else {
-			$class = '';
-		}
+		local_tasker_woocommerce_cart_link();
 		?>
-		<ul id="site-header-cart" class="site-header-cart">
-			<li class="<?php echo esc_attr( $class ); ?>">
-				<?php local_tasker_woocommerce_cart_link(); ?>
-			</li>
-			<li>
-				<?php
-				$instance = array(
-					'title' => '',
-				);
+		<!-- Mini Cart: overlay -->
+		<div id="lt-mini-cart-overlay" class="fixed inset-0 bg-black/40 z-40 hidden" aria-hidden="true"></div>
 
-				the_widget( 'WC_Widget_Cart', $instance );
-				?>
-			</li>
-		</ul>
+		<!-- Mini Cart: drawer -->
+		<aside
+			id="lt-mini-cart-panel"
+			class="lt-mini-cart fixed inset-y-0 right-0 z-50 w-[380px] max-w-[90vw] bg-lt-white shadow-2xl overflow-y-auto translate-x-full transition-transform duration-300"
+			aria-label="<?php esc_attr_e( 'Shopping cart', 'local-tasker' ); ?>"
+			aria-hidden="true"
+		>
+			<div class="flex items-center justify-between px-5 py-4 border-b border-[#E9EAEC]">
+				<span class="text-body font-bold text-lt-text-primary font-semi-ext"><?php esc_html_e( 'Your Cart', 'local-tasker' ); ?></span>
+				<button type="button" id="lt-mini-cart-close" class="p-1 rounded hover:bg-lt-snow-drift transition-colors" aria-label="<?php esc_attr_e( 'Close cart', 'local-tasker' ); ?>">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+						<path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+					</svg>
+				</button>
+			</div>
+			<div class="lt-mini-cart__content p-5">
+				<?php the_widget( 'WC_Widget_Cart', array( 'title' => '' ) ); ?>
+			</div>
+		</aside>
 		<?php
 	}
 }

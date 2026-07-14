@@ -64,11 +64,17 @@ $price_inc        = $price_ex * 1.10;
 			<div class="lt-product-card__swatches flex items-center gap-[6px]">
 				<?php foreach ( $swatch_data['swatches'] as $swatch ) : ?>
 					<span
-						class="lt-swatch inline-block"
-						style="background-color: <?php echo esc_attr( $swatch['hex'] ); ?>"
+						class="lt-swatch inline-block overflow-hidden rounded-full"
 						title="<?php echo esc_attr( $swatch['name'] ); ?>"
 						aria-hidden="true"
-					></span>
+					>
+						<img
+							src="<?php echo esc_url( $swatch['image'] ); ?>"
+							alt="<?php echo esc_attr( $swatch['name'] ); ?>"
+							class="w-full h-full object-cover"
+							loading="lazy"
+						/>
+					</span>
 				<?php endforeach; ?>
 				<p class="lt-product-card__options text-caption-sm text-lt-brand font-medium leading-none m-0">
 					<?php esc_html_e( '+ more options', 'local-tasker' ); ?>

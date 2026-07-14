@@ -14,8 +14,9 @@ $price_min         = ( isset( $_GET['min_price'] ) && $_GET['min_price'] !== '' 
 $price_max         = ( isset( $_GET['max_price'] ) && $_GET['max_price'] !== '' ) ? (float) $_GET['max_price'] : '';
 $active_colours    = isset( $_GET['filter_colour'] ) ? array_map( 'sanitize_text_field', (array) $_GET['filter_colour'] ) : [];
 $active_thickness  = isset( $_GET['filter_thickness'] ) ? array_map( 'sanitize_text_field', (array) $_GET['filter_thickness'] ) : [];
+$active_pill_get   = isset( $_GET['filter'] ) ? sanitize_key( $_GET['filter'] ) : '';
 
-$has_active_filters = $active_cat !== '' || $price_min !== '' || $price_max !== '' || ! empty( $active_colours ) || ! empty( $active_thickness );
+$has_active_filters = $active_cat !== '' || $price_min !== '' || $price_max !== '' || ! empty( $active_colours ) || ! empty( $active_thickness ) || ( $active_pill_get !== '' && $active_pill_get !== 'all' );
 
 // Helper: build a filter URL preserving current query minus pagination.
 function lt_filter_url( array $params ): string {
@@ -39,7 +40,7 @@ if ( is_wp_error( $colour_terms ) ) { $colour_terms = []; }
 $thickness_terms = get_terms( [ 'taxonomy' => 'pa_thickness', 'hide_empty' => true, 'orderby' => 'name', 'order' => 'ASC' ] );
 if ( is_wp_error( $thickness_terms ) ) { $thickness_terms = []; }
 
-$clear_url = remove_query_arg( [ 'product_cat', 'min_price', 'max_price', 'filter_colour', 'filter_thickness', 'paged' ] );
+$clear_url = remove_query_arg( [ 'product_cat', 'min_price', 'max_price', 'filter_colour', 'filter_thickness', 'filter', 'paged' ] );
 
 // Total published products (used for "All Flooring" count label).
 $total_products_obj = wp_count_posts( 'product' );
@@ -251,7 +252,7 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 										<?php checked( $is_checked ); ?>
 									>
 									<span class="lt-filter-checkbox__ui w-4 h-4 rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150" aria-hidden="true">
-										<svg class="w-3 h-3 text-lt-white <?php echo $is_checked ? '' : 'hidden'; ?>" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										
 									</span>
 									<span class="text-caption-sm text-lt-text-secondary peer-checked:font-semibold peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
 										<?php echo esc_html( $term->name ); ?>
@@ -277,9 +278,6 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 					aria-controls="filter-thickness-body"
 				>
 					<span class="text-caption-md font-bold text-lt-text-primary"><?php esc_html_e( 'Thickness', 'local-tasker' ); ?></span>
-					<svg class="w-4 h-4 text-lt-text-muted shrink-0 transition-transform duration-200 group-aria-[expanded=false]:rotate-180" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-						<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-					</svg>
 				</button>
 				<ul id="filter-thickness-body" class="mt-3 flex flex-col gap-2 list-none p-0 m-0">
 					<?php foreach ( $thickness_terms as $term ) :
@@ -296,7 +294,6 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 										<?php checked( $is_checked ); ?>
 									>
 									<span class="lt-filter-checkbox__ui w-4 h-4 rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150" aria-hidden="true">
-										<svg class="w-3 h-3 text-lt-white <?php echo $is_checked ? '' : 'hidden'; ?>" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 									</span>
 									<span class="text-caption-sm text-lt-text-secondary peer-checked:font-semibold peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
 										<?php echo esc_html( $term->name ); ?>
@@ -312,11 +309,13 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 
 			<!-- Clear all + Apply (mobile) -->
 			<div class="flex flex-col gap-3 pt-2">
-				<?php if ( $has_active_filters ) : ?>
-					<a href="<?php echo esc_url( $clear_url ); ?>" class="text-caption-sm font-semibold text-lt-accent hover:underline text-center">
-						<?php esc_html_e( 'Clear All Filters', 'local-tasker' ); ?>
-					</a>
-				<?php endif; ?>
+				<a
+					href="<?php echo esc_url( $clear_url ); ?>"
+					id="lt-clear-filters"
+					class="text-caption-sm font-semibold text-lt-accent hover:underline text-center<?php echo $has_active_filters ? '' : ' hidden'; ?>"
+				>
+					<?php esc_html_e( 'Clear All Filters', 'local-tasker' ); ?>
+				</a>
 				<button type="submit" class="md:hidden btn btn--brand w-full">
 					<?php esc_html_e( 'Apply Filters', 'local-tasker' ); ?>
 				</button>

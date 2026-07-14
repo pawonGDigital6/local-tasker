@@ -1,0 +1,158 @@
+{
+    "key": "group_ps000001379f2d6",
+    "title": "Block: Pricing Showcase",
+    "fields": [
+        {
+            "key": "field_ps0000001a3a121",
+            "label": "Section Title",
+            "name": "ps_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Fully dynamic heading for this section.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Better Flooring Prices Through Scale",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_ps0000034450ea7",
+            "label": "Category",
+            "name": "ps_category",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Leave blank to pull from all product categories.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "product_cat",
+            "add_term": 0,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "field_type": "select",
+            "allow_null": 1,
+            "bidirectional": 0,
+            "multiple": 0,
+            "allow_in_bindings": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_ps0000071541c87",
+            "label": "Number of Products",
+            "name": "ps_products_count",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 4,
+            "min": 1,
+            "max": 12,
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "step": 1,
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_ps0000007ec16e0",
+            "label": "On Sale Only",
+            "name": "ps_on_sale_only",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Only show products currently on sale.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_ps000007ae80ab5",
+            "label": "View All Button Label",
+            "name": "ps_view_all_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "View All Products",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_ps0000153114f96",
+            "label": "View All URL",
+            "name": "ps_view_all_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Leave blank to link to the main Shop page.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf-block\/pricing-showcase"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1783611963
+}

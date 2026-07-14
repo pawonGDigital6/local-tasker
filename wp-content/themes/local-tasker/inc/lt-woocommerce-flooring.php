@@ -141,20 +141,21 @@ function lt_get_install_per_sqm( $product ) {
 }
 
 /**
- * Colour swatches for a product, derived from the `pa_colour` attribute terms.
+ * Variation image swatches for a product, one per `pa_colour` attribute term.
  *
- * Each swatch = [ 'name' => 'Warm Chestnut', 'hex' => '#8a5a3b' ]. The hex is read
- * from an optional term meta `lt_swatch_hex`, otherwise mapped from a small name
- * table, otherwise a neutral grey. Kept deliberately dependency-free.
+ * Each swatch = [ 'name' => 'Warm Chestnut', 'image' => 'https://.../thumb.jpg' ].
+ * For each colour term, the first matching variation is used to source the
+ * thumbnail (the variation's own image, falling back to the parent product's
+ * featured image if the variation has none set).
  *
  * @param int|WC_Product $product Product.
  * @param int            $limit   Max swatches to return inline.
- * @return array{swatches: array<int,array{name:string,hex:string}>, total:int}
+ * @return array{swatches: array<int,array{name:string,image:string}>, total:int}
  */
 function lt_get_product_swatches( $product, $limit = 3 ) {
 	$product = lt_resolve_product( $product );
 	$out     = array( 'swatches' => array(), 'total' => 0 );
-	if ( ! $product ) {
+	if ( ! $product || ! $product->is_type( 'variable' ) ) {
 		return $out;
 	}
 
@@ -165,14 +166,34 @@ function lt_get_product_swatches( $product, $limit = 3 ) {
 
 	$out['total'] = count( $terms );
 
+	$parent_image_id = $product->get_image_id();
+
 	foreach ( array_slice( $terms, 0, $limit ) as $term ) {
-		$hex = get_term_meta( $term->term_id, 'lt_swatch_hex', true );
-		if ( ! $hex ) {
-			$hex = lt_guess_swatch_hex( $term->name );
+		$image_id = 0;
+
+		foreach ( $product->get_children() as $variation_id ) {
+			$variation = wc_get_product( $variation_id );
+			if ( ! $variation ) {
+				continue;
+			}
+			$attributes = $variation->get_attributes();
+			$value      = $attributes['pa_colour'] ?? '';
+			if ( $value !== $term->slug ) {
+				continue;
+			}
+			$image_id = $variation->get_image_id();
+			break;
 		}
+
+		if ( ! $image_id ) {
+			$image_id = $parent_image_id;
+		}
+
+		$image_url = $image_id ? wp_get_attachment_image_url( $image_id, 'thumbnail' ) : wc_placeholder_img_src( 'thumbnail' );
+
 		$out['swatches'][] = array(
-			'name' => $term->name,
-			'hex'  => $hex,
+			'name'  => $term->name,
+			'image' => $image_url,
 		);
 	}
 

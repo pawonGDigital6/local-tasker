@@ -23,7 +23,8 @@
 	var loadWrap    = document.querySelector('[data-lt-loadmore]');
 	var loadBtn     = document.querySelector('[data-lt-loadmore-btn]');
 	var pills       = Array.prototype.slice.call(document.querySelectorAll('[data-lt-pill]'));
-	var clearLink   = document.querySelector('.lt-shop-filters .text-lt-accent');
+	var clearLink   = document.getElementById('lt-clear-filters');
+	var clearPill   = document.getElementById('lt-clear-pill');
 
 	var AJAX = (typeof window.ltShopFilter !== 'undefined') && grid;
 	var state = {
@@ -53,6 +54,25 @@
 	function activePill() {
 		var el = pills.find(function (p) { return p.classList.contains('is-active') || p.getAttribute('aria-current') === 'true'; });
 		return el ? el.dataset.ltPill : 'all';
+	}
+
+	/** Show/hide both "Clear All Filters" controls based on the live filter state. */
+	function refreshClearVisibility() {
+		var checkedCat = form && form.querySelector('[name="product_cat"]:checked');
+		var min = document.getElementById('lt-price-min');
+		var max = document.getElementById('lt-price-max');
+
+		var hasActive = !!(
+			(checkedCat && checkedCat.value) ||
+			(form && form.querySelector('[name="filter_colour[]"]:checked')) ||
+			(form && form.querySelector('[name="filter_thickness[]"]:checked')) ||
+			(min && min.value !== '') ||
+			(max && max.value !== '') ||
+			activePill() !== 'all'
+		);
+
+		if (clearLink) clearLink.classList.toggle('hidden', !hasActive);
+		if (clearPill) clearPill.classList.toggle('hidden', !hasActive);
 	}
 
 	/** Collect the current filter state into URLSearchParams. */
@@ -167,6 +187,7 @@
 		// Category (radio) / colour / thickness (checkboxes).
 		form.querySelectorAll('.lt-filter-checkbox').forEach(function (cb) {
 			cb.addEventListener('change', function () {
+				refreshClearVisibility();
 				if (AJAX) fetchProducts(false); else submitFallback();
 			});
 		});
@@ -175,7 +196,10 @@
 		var priceHandler = debounce(function () { if (AJAX) fetchProducts(false); else submitFallback(); }, 500);
 		['lt-price-min', 'lt-price-max'].forEach(function (id) {
 			var el = document.getElementById(id);
-			if (el) el.addEventListener('input', priceHandler);
+			if (el) el.addEventListener('input', function () {
+				refreshClearVisibility();
+				priceHandler();
+			});
 		});
 
 		form.addEventListener('submit', function (e) {
@@ -206,29 +230,33 @@
 			pills.forEach(function (p) { p.classList.remove('is-active'); p.setAttribute('aria-current', 'false'); });
 			pill.classList.add('is-active');
 			pill.setAttribute('aria-current', 'true');
+			refreshClearVisibility();
 			fetchProducts(false);
 		});
 	});
 
 	// Clear all filters.
-	if (clearLink && AJAX) {
-		clearLink.addEventListener('click', function (e) {
-			e.preventDefault();
-			form.querySelectorAll('input[type="checkbox"]').forEach(function (c) { c.checked = false; });
-			var allCatEl = form.querySelector('[data-all-cats]');
-			if (allCatEl) allCatEl.checked = true;
-			['lt-price-min', 'lt-price-max'].forEach(function (id) {
-				var el = document.getElementById(id); if (el) el.value = '';
+	[clearLink, clearPill].forEach(function (el) {
+		if (el && AJAX) {
+			el.addEventListener('click', function (e) {
+				e.preventDefault();
+				form.querySelectorAll('input[type="checkbox"]').forEach(function (c) { c.checked = false; });
+				var allCatEl = form.querySelector('[data-all-cats]');
+				if (allCatEl) allCatEl.checked = true;
+				['lt-price-min', 'lt-price-max'].forEach(function (id) {
+					var input = document.getElementById(id); if (input) input.value = '';
+				});
+				pills.forEach(function (p) {
+					var isAll = p.dataset.ltPill === 'all';
+					p.classList.toggle('is-active', isAll);
+					p.setAttribute('aria-current', isAll ? 'true' : 'false');
+				});
+				if (sortSel) sortSel.value = 'menu_order';
+				refreshClearVisibility();
+				fetchProducts(false);
 			});
-			pills.forEach(function (p) {
-				var isAll = p.dataset.ltPill === 'all';
-				p.classList.toggle('is-active', isAll);
-				p.setAttribute('aria-current', isAll ? 'true' : 'false');
-			});
-			if (sortSel) sortSel.value = 'menu_order';
-			fetchProducts(false);
-		});
-	}
+		}
+	});
 
 	// Load More.
 	if (loadBtn && AJAX) {

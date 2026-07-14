@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "acf-block/pricing-showcase",
+	"version": "0.1.0",
+	"title": "Pricing Showcase",
+	"category": "acf-blocks",
+	"icon": "block-default",
+	"description": "A dynamic heading with a grid of WooCommerce products (price/sale) and a View All button — used for the Service Inner \"Better Flooring Prices Through Scale\" section.",
+	"attributes": {
+		"previewImage": {
+			"type": "string",
+			"default": "preview.png"
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true
+	},
+	"textdomain": "pricing-showcase",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php"
+	}
+}

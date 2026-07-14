@@ -221,6 +221,7 @@ function lt_shop_get_categories() {
 			'parent'     => 0,
 			'orderby'    => 'name',
 			'order'      => 'ASC',
+			'exclude'    => array( get_option( 'default_product_cat', 0 ) ),
 		)
 	);
 	return is_wp_error( $terms ) ? array() : $terms;
