@@ -25,6 +25,7 @@
   background-color: var(--color-lt-brand);
   color: var(--color-lt-white);
 }
+
 .lt-blogs-filter .blog-lists {
   position: relative;
 }
@@ -65,6 +66,7 @@
   visibility: visible;
   animation: bwf-spin 0.7s linear infinite;
 }
+
 @keyframes bwf-spin {
   to {
     transform: rotate(-360deg);

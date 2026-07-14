@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "acf-block/popular-products",
+  "version": "0.1.0",
+  "title": "Popular Products",
+  "category": "acf-blocks",
+  "icon": "block-default",
+  "description": "A filterable grid of popular WooCommerce products with category tabs and a View All link.",
+  "attributes": {
+    "previewImage": {
+      "type": "string",
+      "default": "preview.png"
+    }
+  },
+  "supports": {
+    "html": false,
+    "anchor": true
+  },
+  "textdomain": "popular-products",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewStyle": "file:./view.css",
+  "viewScript": "file:./view.js",
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "render.php"
+  }
+}

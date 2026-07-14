@@ -113,16 +113,20 @@ $unique_page_class = get_field('unique_page_class');
 								</svg>
 							</button>
 							<!-- Cart  -->
-							<a href="#" class="cart-icon relative pr-3">
-								<span
-									class="absolute top-[-6px] right-[0] max-sm:top-[-9px] flex items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] text-caption-sm">2</span>
-								<svg class="max-md:w-[16px]" width="19" height="21" viewBox="0 0 19 21" fill="none"
-									xmlns="http://www.w3.org/2000/svg">
-									<path
-										d="M5 6.5V5C5 3.80653 5.47411 2.66193 6.31802 1.81802C7.16193 0.974106 8.30653 0.5 9.5 0.5C10.6935 0.5 11.8381 0.974106 12.682 1.81802C13.5259 2.66193 14 3.80653 14 5V6.5M2.25 6.5C2.05109 6.5 1.86032 6.57902 1.71967 6.71967C1.57902 6.86032 1.5 7.05109 1.5 7.25L0.5 17.375C0.5 18.793 1.707 20 3.125 20H15.875C17.293 20 18.5 18.851 18.5 17.434L17.5 7.25C17.5 7.05109 17.421 6.86032 17.2803 6.71967C17.1397 6.57902 16.9489 6.5 16.75 6.5H2.25Z"
-										stroke="#2E2E2E" stroke-linecap="round" stroke-linejoin="round" />
-								</svg>
-							</a>
+							<?php if ( class_exists( 'WooCommerce' ) && function_exists( 'local_tasker_woocommerce_cart_link' ) ) :
+								local_tasker_woocommerce_cart_link();
+							else : ?>
+								<a href="#" class="cart-icon relative pr-3">
+									<span
+										class="cart-count absolute top-[-6px] right-[0] max-sm:top-[-9px] hidden items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] text-caption-sm">0</span>
+									<svg class="max-md:w-[16px]" width="19" height="21" viewBox="0 0 19 21" fill="none"
+										xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M5 6.5V5C5 3.80653 5.47411 2.66193 6.31802 1.81802C7.16193 0.974106 8.30653 0.5 9.5 0.5C10.6935 0.5 11.8381 0.974106 12.682 1.81802C13.5259 2.66193 14 3.80653 14 5V6.5M2.25 6.5C2.05109 6.5 1.86032 6.57902 1.71967 6.71967C1.57902 6.86032 1.5 7.05109 1.5 7.25L0.5 17.375C0.5 18.793 1.707 20 3.125 20H15.875C17.293 20 18.5 18.851 18.5 17.434L17.5 7.25C17.5 7.05109 17.421 6.86032 17.2803 6.71967C17.1397 6.57902 16.9489 6.5 16.75 6.5H2.25Z"
+											stroke="#2E2E2E" stroke-linecap="round" stroke-linejoin="round" />
+									</svg>
+								</a>
+							<?php endif; ?>
 						</div>
 					</div>
 				</div>

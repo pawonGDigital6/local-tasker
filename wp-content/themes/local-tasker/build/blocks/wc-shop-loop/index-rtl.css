@@ -1,0 +1,26 @@
+/*!************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/wc-shop-loop/editor.scss ***!
+  \************************************************************************************************************************************************************************************************************************************************************/
+.lt-wc-shop-loop-placeholder {
+  border: 2px dashed #3182CE;
+  border-radius: 8px;
+  padding: 48px 24px;
+  text-align: center;
+  background: #EBF8FF;
+  color: #2B6CB0;
+}
+.lt-wc-shop-loop-placeholder__icon {
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.lt-wc-shop-loop-placeholder__title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+.lt-wc-shop-loop-placeholder__desc {
+  font-size: 13px;
+  margin: 0;
+  opacity: 0.75;
+}

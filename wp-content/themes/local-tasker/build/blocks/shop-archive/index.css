@@ -1,0 +1,34 @@
+/*!************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/shop-archive/editor.scss ***!
+  \************************************************************************************************************************************************************************************************************************************************************/
+@charset "UTF-8";
+/*********************
+* BREAKPOINTS
+*
+* @example
+* for max-width case
+* @include breakpoint('smaller') {
+*	@content;
+* }
+*
+* for min-width case
+* @include breakpoint('smaller', true) {
+*	@content;
+*}
+*********************/
+/**
+* Mixin to declare Font-face
+*
+*/
+/* Shop Archive — editor preview only. Full styling ships in
+   assets/css/lt-storefront.css (enqueued on the front end). */
+.lt-shop__editor-note {
+  padding: 24px;
+  border: 1px dashed var(--color-lt-border-white);
+  border-radius: 14px;
+  color: var(--color-lt-text-placeholder);
+  text-align: center;
+  font-family: var(--font-base);
+}
+
+/*# sourceMappingURL=index.css.map*/

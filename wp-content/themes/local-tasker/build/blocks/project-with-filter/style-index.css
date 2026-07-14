@@ -24,6 +24,7 @@
   background-color: var(--color-lt-brand);
   color: var(--color-lt-white);
 }
+
 .lt-projects .project-lists {
   position: relative;
 }
@@ -64,6 +65,7 @@
   visibility: visible;
   animation: pwf-spin 0.7s linear infinite;
 }
+
 @keyframes pwf-spin {
   to {
     transform: rotate(360deg);

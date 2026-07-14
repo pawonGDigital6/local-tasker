@@ -1,0 +1,82 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+
+// Active filter pill. Kept in CSS (not inline utilities) because the JS toggles
+// `.active` at runtime. Higher specificity than the inline hover utilities, so a
+// hover over the active pill never flickers to the hover tint.
+.th-filter {
+	.filter-btn.active {
+		background-color: var(--color-lt-brand);
+		color: var(--color-lt-white);
+	}
+}
+
+// ─── AJAX loading overlay ──────────────────────────────────────────────────
+// A soft white veil + spinner over the grid while a category tab switch is in
+// flight. Implemented as pseudo-elements on `.popular-products-list` so they
+// survive the grid's innerHTML replacement (only the grid's children swap).
+.lt-popular-products {
+	.popular-products-list {
+		position: relative;
+
+		// White veil.
+		&::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			z-index: 2;
+			background-color: rgba(255, 255, 255, 0.65);
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+			transition: opacity 0.25s ease, visibility 0.25s ease;
+		}
+
+		// Spinner.
+		&::before {
+			content: "";
+			position: absolute;
+			z-index: 3;
+			top: 50%;
+			left: 50%;
+			width: 44px;
+			height: 44px;
+			margin: -22px 0 0 -22px;
+			border: 3px solid rgba(10, 101, 252, 0.25);
+			border-top-color: var(--color-lt-brand);
+			border-radius: 50%;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 0.25s ease, visibility 0.25s ease;
+		}
+	}
+
+	&.is-loading .popular-products-list {
+		&::after {
+			opacity: 1;
+			visibility: visible;
+			pointer-events: auto; // block interaction with cards underneath
+		}
+
+		&::before {
+			opacity: 1;
+			visibility: visible;
+			animation: ppf-spin 0.7s linear infinite;
+		}
+	}
+}
+
+@keyframes ppf-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+// Respect users who prefer reduced motion — show the ring without spinning.
+@media (prefers-reduced-motion: reduce) {
+	.lt-popular-products.is-loading .popular-products-list::before {
+		animation: none;
+	}
+}

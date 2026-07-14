@@ -1,0 +1,133 @@
+/**
+ * Local Tasker — Single product page.
+ *
+ * Layout + component styling for the custom PDP (content-single-product.php).
+ * Shared tokens and .lt-btn styles come from lt-storefront.css (enqueued first).
+ */
+
+.lt-pdp {
+	--lt-brand: var(--color-lt-brand, #0a65fc);
+	--lt-ink: var(--color-lt-text-primary, #131313);
+	--lt-muted: var(--color-lt-text-muted, #4a5565);
+	--lt-line: var(--color-lt-border-white, #e5e5df);
+	--lt-surface: var(--color-lt-snow-drift, #f8f8f7);
+	--lt-sale: #ff1c1c;
+	--lt-radius: 16px;
+	font-family: var(--font-base, "Manrope", system-ui, sans-serif);
+	color: var(--lt-ink);
+}
+
+.lt-pdp__top { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; margin: 24px 0 56px; }
+
+/* --------------------------------------------------------------- Gallery */
+.lt-pdp__gallery .woocommerce-product-gallery { width: 100% !important; margin: 0; }
+.lt-pdp__gallery .woocommerce-product-gallery__image img { border-radius: var(--lt-radius); }
+.lt-pdp__gallery .flex-control-thumbs { display: flex; flex-wrap: wrap; gap: 12px; margin: 14px 0 0; padding: 0; list-style: none; }
+.lt-pdp__gallery .flex-control-thumbs li { width: calc(25% - 9px); }
+.lt-pdp__gallery .flex-control-thumbs img { border-radius: 10px; cursor: pointer; opacity: .75; transition: opacity .15s ease; }
+.lt-pdp__gallery .flex-control-thumbs img.flex-active,
+.lt-pdp__gallery .flex-control-thumbs img:hover { opacity: 1; }
+
+/* --------------------------------------------------------------- Summary */
+.lt-pdp__summary { min-width: 0; }
+.lt-pdp__tags { display: flex; gap: 8px; margin-bottom: 14px; }
+.lt-pdp__tag { font-size: 12px; font-weight: 600; color: var(--lt-brand); background: rgba(10,101,252,.08); padding: 5px 12px; border-radius: 999px; }
+.lt-pdp__title { font: 700 30px/1.25 var(--font-semi-ext, var(--font-base), sans-serif); margin: 0 0 14px; }
+.lt-pdp__rating { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.lt-stars { --star: #f6a609; position: relative; display: inline-block; width: 92px; height: 16px; font-size: 16px; line-height: 1; }
+.lt-stars::before { content: "★★★★★"; letter-spacing: 2px; color: var(--lt-line); }
+.lt-stars::after { content: "★★★★★"; letter-spacing: 2px; color: var(--star); position: absolute; inset: 0; overflow: hidden; width: calc(var(--rating, 5) / 5 * 100%); }
+.lt-pdp__rating-text { font-size: 14px; color: var(--lt-muted); }
+.lt-pdp__rating-text span { color: var(--lt-muted); }
+
+.lt-pdp__price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 16px; }
+.lt-pdp__price .lt-price__now { font-size: 30px; font-weight: 700; }
+.lt-pdp__price .lt-price__was { font-size: 18px; }
+.lt-pdp__box-price { font-size: 15px; color: var(--lt-muted); }
+.lt-pdp__excerpt { color: var(--lt-muted); font-size: 15px; line-height: 1.6; margin-bottom: 18px; }
+
+.lt-pdp__trust { list-style: none; margin: 0 0 22px; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
+.lt-pdp__trust li { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--lt-ink); font-weight: 600; }
+.lt-pdp__trust-ico { color: var(--lt-brand); font-size: 13px; }
+
+/* ------------------------------------------------------------ Calculator */
+.lt-calc { background: #fff; border: 1px solid var(--lt-line); border-radius: var(--lt-radius); padding: 22px; }
+.lt-calc__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.lt-calc__title { font: 700 18px var(--font-semi-ext, var(--font-base), sans-serif); }
+.lt-calc__toggle { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--lt-brand); font: 600 14px var(--font-base, sans-serif); cursor: pointer; }
+.lt-calc__toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+.lt-calc__qty-row { margin-bottom: 14px; }
+.lt-stepper { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--lt-line); border-radius: 12px; padding: 6px; }
+.lt-stepper__btn { width: 38px; height: 38px; border: none; background: var(--lt-surface); border-radius: 8px; font-size: 20px; line-height: 1; cursor: pointer; color: var(--lt-ink); }
+.lt-stepper__btn:hover { background: #ececec; }
+.lt-stepper__input { width: 84px; text-align: center; border: none; font: 700 18px var(--font-base, sans-serif); color: var(--lt-ink); outline: none; -moz-appearance: textfield; }
+.lt-stepper__input::-webkit-outer-spin-button,
+.lt-stepper__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.lt-stepper__unit { padding: 0 10px; font-size: 14px; color: var(--lt-muted); }
+
+.lt-calc__check { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--lt-muted); margin: 8px 0; cursor: pointer; }
+.lt-calc__check input { width: 16px; height: 16px; accent-color: var(--lt-brand); }
+
+.lt-calc__results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; padding: 16px; background: var(--lt-surface); border-radius: 12px; }
+.lt-calc__result { display: flex; flex-direction: column; gap: 4px; }
+.lt-calc__result-label { font-size: 12px; color: var(--lt-muted); text-transform: uppercase; letter-spacing: .03em; }
+.lt-calc__result-value { font: 700 16px var(--font-base, sans-serif); }
+.lt-calc__result--total .lt-calc__result-value { color: var(--lt-brand); }
+
+/* ------------------------------------------------------- Area calculator */
+.lt-area { border-top: 1px solid var(--lt-line); margin-top: 18px; padding-top: 18px; }
+.lt-area__grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; }
+.lt-area__title { display: block; font: 700 15px var(--font-base, sans-serif); margin-bottom: 12px; }
+.lt-area__table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.lt-area__table th { text-align: left; color: var(--lt-muted); font-weight: 600; padding: 0 8px 8px 0; }
+.lt-area__table td { padding: 4px 8px 4px 0; }
+.lt-area__table input { width: 100%; border: 1px solid var(--lt-line); border-radius: 8px; padding: 8px; font-size: 13px; }
+.lt-area__name { min-width: 70px; }
+.lt-area__area { font-weight: 700; white-space: nowrap; }
+.lt-area__remove { border: none; background: none; color: var(--lt-muted); font-size: 20px; cursor: pointer; line-height: 1; }
+.lt-area__remove:hover { color: var(--lt-sale); }
+.lt-area__add { margin-top: 10px; background: none; border: none; color: var(--lt-brand); font: 600 14px var(--font-base, sans-serif); cursor: pointer; }
+.lt-area__totals { margin: 16px 0; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.lt-area__totals > div { display: flex; justify-content: space-between; }
+.lt-area__totals span { color: var(--lt-muted); }
+.lt-area__use { width: 100%; }
+.lt-area__how { background: var(--lt-surface); border-radius: 12px; padding: 18px; }
+.lt-area__steps { margin: 0; padding-left: 18px; color: var(--lt-muted); font-size: 13px; line-height: 1.6; }
+.lt-area__steps li { margin-bottom: 8px; }
+
+/* ------------------------------------------------------------- Option */
+.lt-option { margin: 20px 0; border: 1px solid var(--lt-line); border-radius: 12px; overflow: hidden; }
+.lt-option__head { display: flex; justify-content: space-between; padding: 10px 16px; background: var(--lt-surface); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--lt-muted); }
+.lt-option__row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-top: 1px solid var(--lt-line); cursor: pointer; }
+.lt-option__left { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+.lt-option__left input { width: 18px; height: 18px; accent-color: var(--lt-brand); }
+.lt-option__price { font-weight: 700; }
+.lt-option__price small { color: var(--lt-muted); font-weight: 500; }
+.lt-option__note { padding: 12px 16px; margin: 0; font-size: 13px; color: var(--lt-muted); background: var(--lt-surface); }
+
+/* ------------------------------------------------------------- Actions */
+.lt-calc__actions { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+.lt-calc__actions .lt-btn--primary,
+.lt-calc__actions .lt-btn--dark { flex: 1; min-width: 150px; }
+
+/* ------------------------------------------------------------- Specs */
+.lt-pdp__specs, .lt-pdp__description { margin: 0 0 48px; }
+.lt-pdp__specs-title { font: 700 22px var(--font-semi-ext, var(--font-base), sans-serif); margin: 0 0 18px; }
+.lt-specs { width: 100%; border-collapse: collapse; border: 1px solid var(--lt-line); border-radius: 12px; overflow: hidden; }
+.lt-specs th, .lt-specs td { text-align: left; padding: 14px 18px; font-size: 14px; border-bottom: 1px solid var(--lt-line); }
+.lt-specs th { width: 38%; background: var(--lt-surface); color: var(--lt-ink); font-weight: 700; }
+.lt-specs td { color: var(--lt-muted); }
+.lt-specs tr:last-child th, .lt-specs tr:last-child td { border-bottom: none; }
+.lt-pdp__description-body { color: var(--lt-muted); font-size: 15px; line-height: 1.7; }
+
+/* ------------------------------------------------------------ Responsive */
+@media (max-width: 900px) {
+	.lt-pdp__top { grid-template-columns: 1fr; gap: 32px; }
+	.lt-area__grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+	.lt-pdp__title { font-size: 24px; }
+	.lt-calc__results { grid-template-columns: 1fr; }
+	.lt-calc__actions .lt-btn { flex: 1 1 100%; }
+}

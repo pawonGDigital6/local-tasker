@@ -1,0 +1,80 @@
+/*!***************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/popular-products/style.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************/
+/*********************
+* BREAKPOINTS
+*
+* @example
+* for max-width case
+* @include breakpoint('smaller') {
+*	@content;
+* }
+*
+* for min-width case
+* @include breakpoint('smaller', true) {
+*	@content;
+*}
+*********************/
+/**
+* Mixin to declare Font-face
+*
+*/
+/**This is the block Style*/
+.th-filter .filter-btn.active {
+  background-color: var(--color-lt-brand);
+  color: var(--color-lt-white);
+}
+
+.lt-popular-products .popular-products-list {
+  position: relative;
+}
+.lt-popular-products .popular-products-list::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.65);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.lt-popular-products .popular-products-list::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  border: 3px solid rgba(10, 101, 252, 0.25);
+  border-top-color: var(--color-lt-brand);
+  border-radius: 50%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.lt-popular-products.is-loading .popular-products-list::after {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.lt-popular-products.is-loading .popular-products-list::before {
+  opacity: 1;
+  visibility: visible;
+  animation: ppf-spin 0.7s linear infinite;
+}
+
+@keyframes ppf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lt-popular-products.is-loading .popular-products-list::before {
+    animation: none;
+  }
+}
+
+/*# sourceMappingURL=style-index.css.map*/

@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "acf-block/shop-archive",
+	"version": "0.1.0",
+	"title": "Shop Archive",
+	"category": "acf-blocks",
+	"icon": "grid-view",
+	"description": "Full WooCommerce shop archive with sidebar filters, quick-filter chips, sort and AJAX load-more. When added to the Shop page it replaces the default product loop.",
+	"keywords": ["shop", "products", "archive", "filter", "woocommerce"],
+	"attributes": {
+		"previewImage": { "type": "string", "default": "preview.png" }
+	},
+	"supports": { "html": false, "anchor": true },
+	"textdomain": "shop-archive",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"acf": { "mode": "preview", "renderTemplate": "render.php" }
+}

@@ -23,6 +23,7 @@
 .service-insta__text a {
   color: var(--color-lt-accent);
 }
+
 .lt-service-installation .lt-slide-pagination {
   top: initial;
 }

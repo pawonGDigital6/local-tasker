@@ -45,6 +45,12 @@ add_action( 'after_setup_theme', 'local_tasker_woocommerce_setup' );
 function local_tasker_woocommerce_scripts() {
 	wp_enqueue_style( 'local-tasker-woocommerce-style', get_template_directory_uri() . '/woocommerce.css', array(), _S_VERSION );
 
+	// The header mini-cart badge isn't rendered via WC_Widget_Cart, which is the
+	// only place WooCommerce core auto-enqueues wc-cart-fragments. Without it,
+	// nothing on the page listens for 'wc_fragment_refresh' and the badge never
+	// updates via AJAX (only on a full reload).
+	wp_enqueue_script( 'wc-cart-fragments' );
+
 	$font_path   = WC()->plugin_url() . '/assets/fonts/';
 	$inline_font = '@font-face {
 			font-family: "star";
@@ -180,20 +186,467 @@ if ( ! function_exists( 'local_tasker_woocommerce_cart_link' ) ) {
 	 * @return void
 	 */
 	function local_tasker_woocommerce_cart_link() {
+		$count = WC()->cart->get_cart_contents_count();
 		?>
-		<a class="cart-contents" href="<?php echo esc_url( wc_get_cart_url() ); ?>" title="<?php esc_attr_e( 'View your shopping cart', 'local-tasker' ); ?>">
-			<?php
-			$item_count_text = sprintf(
-				/* translators: number of items in the mini cart. */
-				_n( '%d item', '%d items', WC()->cart->get_cart_contents_count(), 'local-tasker' ),
-				WC()->cart->get_cart_contents_count()
-			);
-			?>
-			<span class="amount"><?php echo wp_kses_data( WC()->cart->get_cart_subtotal() ); ?></span> <span class="count"><?php echo esc_html( $item_count_text ); ?></span>
+		<a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="cart-icon cart-contents relative pr-3" title="<?php esc_attr_e( 'View your shopping cart', 'local-tasker' ); ?>">
+			<span class="cart-count absolute top-[-6px] right-[0] max-sm:top-[-9px] items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] text-caption-sm <?php echo $count > 0 ? 'flex' : 'hidden'; ?>"><?php echo esc_html( $count ); ?></span>
+			<svg class="max-md:w-[16px]" width="19" height="21" viewBox="0 0 19 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path
+					d="M5 6.5V5C5 3.80653 5.47411 2.66193 6.31802 1.81802C7.16193 0.974106 8.30653 0.5 9.5 0.5C10.6935 0.5 11.8381 0.974106 12.682 1.81802C13.5259 2.66193 14 3.80653 14 5V6.5M2.25 6.5C2.05109 6.5 1.86032 6.57902 1.71967 6.71967C1.57902 6.86032 1.5 7.05109 1.5 7.25L0.5 17.375C0.5 18.793 1.707 20 3.125 20H15.875C17.293 20 18.5 18.851 18.5 17.434L17.5 7.25C17.5 7.05109 17.421 6.86032 17.2803 6.71967C17.1397 6.57902 16.9489 6.5 16.75 6.5H2.25Z"
+					stroke="#2E2E2E" stroke-linecap="round" stroke-linejoin="round" />
+			</svg>
 		</a>
 		<?php
 	}
 }
+
+/**
+ * AJAX: add flooring boxes to cart with cart item meta.
+ */
+function lt_ajax_add_flooring_to_cart(): void {
+	check_ajax_referer( 'lt_add_to_cart_' . intval( $_POST['product_id'] ?? 0 ), 'nonce' );
+
+	$product_id   = absint( $_POST['product_id'] ?? 0 );
+	$quantity     = absint( $_POST['quantity']   ?? 0 );
+	$area_sqm     = (float) ( $_POST['area_sqm'] ?? 0 );
+	$option       = sanitize_text_field( $_POST['option'] ?? 'purchase-only' );
+	$variation_id = absint( $_POST['variation_id'] ?? 0 );
+
+	if ( ! $product_id || $quantity < 1 ) {
+		wp_send_json_error( [ 'message' => 'Invalid product or quantity.' ] );
+	}
+
+	$product = wc_get_product( $product_id );
+
+	if ( $product && $product->is_type( 'variable' ) && ! $variation_id ) {
+		wp_send_json_error( [ 'message' => 'Please select all options before adding to cart.' ] );
+	}
+
+	$variation_attrs = [];
+	if ( $variation_id && isset( $_POST['variation_attributes'] ) ) {
+		$raw = json_decode( wp_unslash( $_POST['variation_attributes'] ), true );
+		if ( is_array( $raw ) ) {
+			foreach ( $raw as $key => $value ) {
+				$key = sanitize_key( $key );
+				if ( 0 === strpos( $key, 'attribute_' ) ) {
+					$variation_attrs[ $key ] = sanitize_text_field( $value );
+				}
+			}
+		}
+	}
+
+	$carton_sqm = (float) get_post_meta( $product_id, 'carton_sqm', true );
+
+	$cart_item_data = [
+		'lt_area_sqm'    => $area_sqm,
+		'lt_boxes'       => $quantity,
+		'lt_coverage_sqm'=> $quantity * $carton_sqm,
+		'lt_option'      => $option,
+	];
+
+	$added = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_attrs, $cart_item_data );
+
+	if ( $added ) {
+		wp_send_json_success( [
+			'cart_count' => WC()->cart->get_cart_contents_count(),
+			'cart_url'   => wc_get_cart_url(),
+		] );
+	} else {
+		wp_send_json_error( [ 'message' => 'Could not add to cart.' ] );
+	}
+}
+add_action( 'wp_ajax_lt_add_flooring_to_cart',        'lt_ajax_add_flooring_to_cart' );
+add_action( 'wp_ajax_nopriv_lt_add_flooring_to_cart', 'lt_ajax_add_flooring_to_cart' );
+
+/**
+ * Enqueue shop archive JS on the shop/archive pages only.
+ */
+function lt_shop_archive_scripts() {
+	if ( is_shop() || is_product_category() || is_product_tag() ) {
+		wp_enqueue_script(
+			'lt-shop-archive',
+			get_template_directory_uri() . '/js/shop-archive.js',
+			[],
+			'1.1.0',
+			[ 'strategy' => 'defer', 'in_footer' => true ]
+		);
+
+		$per_page = (int) apply_filters( 'loop_shop_per_page', wc_get_default_products_per_row() * wc_get_default_product_rows_per_page() );
+		wp_localize_script(
+			'lt-shop-archive',
+			'ltShopFilter',
+			[
+				'ajaxUrl'  => esc_url( admin_url( 'admin-ajax.php' ) ),
+				'nonce'    => wp_create_nonce( 'lt_shop_load' ),
+				'perPage'  => $per_page > 0 ? $per_page : 9,
+			]
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'lt_shop_archive_scripts' );
+
+/**
+ * Enqueue product single JS (built by wp-scripts from js/product-single.js via global build).
+ * The file uses Swiper so it must go through the build step.
+ * For now registered as a plain script; once bundled it will resolve Swiper correctly.
+ */
+function lt_product_single_scripts(): void {
+	if ( ! is_product() ) {
+		return;
+	}
+
+	// product-single.js is bundled as part of the global build into build/global/.
+	// The entry is registered in src/global/js/main.js — import it there or
+	// register a separate entry via the build system. Handle as external script for now.
+	wp_enqueue_script(
+		'lt-product-single',
+		get_template_directory_uri() . '/build/global/product-single.js',
+		[],
+		'1.0.0',
+		[ 'strategy' => 'defer', 'in_footer' => true ]
+	);
+
+	// Pass ajaxUrl + currency symbol to the script.
+	wp_localize_script(
+		'lt-product-single',
+		'ltShopData',
+		[
+			'ajaxUrl'          => esc_url( admin_url( 'admin-ajax.php' ) ),
+			'currencySymbol'   => get_woocommerce_currency_symbol(),
+			'currencyPosition' => get_option( 'woocommerce_currency_pos', 'left' ),
+		]
+	);
+}
+add_action( 'wp_enqueue_scripts', 'lt_product_single_scripts' );
+
+/**
+ * Apply sidebar + quick-pill filters to the WooCommerce product loop.
+ *
+ * Uses woocommerce_product_query instead of pre_get_posts so we get the
+ * correctly-initialised WC query context without needing is_shop() / is_product_category()
+ * checks (those are global WC functions, not WP_Query methods, and are unreliable
+ * inside pre_get_posts before WC's own hook has run).
+ *
+ * @param WP_Query $q The product loop query, already configured by WC_Query.
+ */
+function lt_shop_filter_product_query( WP_Query $q ): void {
+	$tax_query = (array) $q->get( 'tax_query' );
+
+	// ── Sidebar: Colour / Finish ────────────────────────────────────────────
+	$colours = isset( $_GET['filter_colour'] )
+		? array_filter( array_map( 'sanitize_text_field', (array) $_GET['filter_colour'] ) )
+		: [];
+	if ( ! empty( $colours ) ) {
+		$tax_query[] = [
+			'taxonomy' => 'pa_colour',
+			'field'    => 'slug',
+			'terms'    => $colours,
+			'operator' => 'IN',
+		];
+	}
+
+	// ── Sidebar: Thickness ──────────────────────────────────────────────────
+	$thickness = isset( $_GET['filter_thickness'] )
+		? array_filter( array_map( 'sanitize_text_field', (array) $_GET['filter_thickness'] ) )
+		: [];
+	if ( ! empty( $thickness ) ) {
+		$tax_query[] = [
+			'taxonomy' => 'pa_thickness',
+			'field'    => 'slug',
+			'terms'    => $thickness,
+			'operator' => 'IN',
+		];
+	}
+
+	// ── Sidebar: Category radio (single-select) ─────────────────────────────
+	$cats = isset( $_GET['product_cat'] )
+		? array_filter( array_map( 'sanitize_text_field', (array) $_GET['product_cat'] ) )
+		: [];
+	if ( ! empty( $cats ) ) {
+		$tax_query[] = [
+			'taxonomy' => 'product_cat',
+			'field'    => 'slug',
+			'terms'    => $cats,
+			'operator' => 'IN',
+		];
+	}
+
+	// ── Quick-pill: on-sale ─────────────────────────────────────────────────
+	if ( isset( $_GET['filter'] ) && sanitize_key( $_GET['filter'] ) === 'on-sale' ) {
+		$sale_ids    = wc_get_product_ids_on_sale();
+		$existing_in = $q->get( 'post__in' );
+		$q->set( 'post__in', $existing_in
+			? array_intersect( $existing_in, $sale_ids )
+			: ( $sale_ids ?: [ 0 ] )
+		);
+	}
+
+	// ── Quick-pill: new-arrivals (last 30 days) ─────────────────────────────
+	if ( isset( $_GET['filter'] ) && sanitize_key( $_GET['filter'] ) === 'new-arrivals' ) {
+		$q->set( 'date_query', [ [ 'after' => '30 days ago', 'inclusive' => true ] ] );
+	}
+
+	// ── Quick-pill: in-stock ────────────────────────────────────────────────
+	if ( isset( $_GET['filter'] ) && sanitize_key( $_GET['filter'] ) === 'in-stock' ) {
+		$tax_query[] = [
+			'taxonomy' => 'product_visibility',
+			'field'    => 'name',
+			'terms'    => 'instock',
+			'operator' => 'IN',
+		];
+	}
+
+	// ── Quick-pill: category shortcuts ─────────────────────────────────────
+	$pill_cat_map = [ 'spc-hybrid' => 'spc-hybrid', 'engineered' => 'engineered', 'porcelain' => 'porcelain' ];
+	if ( isset( $_GET['filter'] ) ) {
+		$pill = sanitize_key( $_GET['filter'] );
+		if ( array_key_exists( $pill, $pill_cat_map ) ) {
+			$tax_query[] = [
+				'taxonomy' => 'product_cat',
+				'field'    => 'slug',
+				'terms'    => [ $pill_cat_map[ $pill ] ],
+				'operator' => 'IN',
+			];
+		}
+	}
+
+	if ( count( $tax_query ) > 1 ) {
+		$tax_query['relation'] = 'AND';
+	}
+	$q->set( 'tax_query', $tax_query );
+
+	// ── Sidebar: Price range ────────────────────────────────────────────────
+	$min = ( isset( $_GET['min_price'] ) && $_GET['min_price'] !== '' ) ? (float) $_GET['min_price'] : null;
+	$max = ( isset( $_GET['max_price'] ) && $_GET['max_price'] !== '' && (float) $_GET['max_price'] > 0 ) ? (float) $_GET['max_price'] : null;
+	if ( $min !== null || $max !== null ) {
+		add_filter( 'posts_where', function ( $where ) use ( $min, $max ) {
+			global $wpdb;
+			if ( $min !== null ) {
+				$where .= $wpdb->prepare(
+					" AND {$wpdb->posts}.ID IN (SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='_price' AND CAST(meta_value AS DECIMAL(10,2)) >= %f)",
+					$min
+				);
+			}
+			if ( $max !== null ) {
+				$where .= $wpdb->prepare(
+					" AND {$wpdb->posts}.ID IN (SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='_price' AND CAST(meta_value AS DECIMAL(10,2)) <= %f)",
+					$max
+				);
+			}
+			return $where;
+		} );
+	}
+}
+add_action( 'woocommerce_product_query', 'lt_shop_filter_product_query' );
+
+/**
+ * Normalise a request array (GET or AJAX POST) into a filter state.
+ *
+ * @param array $req Raw request.
+ * @return array
+ */
+function lt_shop_get_filters( array $req ): array {
+	$slugs = static function ( $v ) {
+		return array_values( array_filter( array_map( 'sanitize_title', (array) $v ) ) );
+	};
+	return [
+		'product_cat'      => isset( $req['product_cat'] ) ? $slugs( $req['product_cat'] ) : [],
+		'filter_colour'    => isset( $req['filter_colour'] ) ? $slugs( $req['filter_colour'] ) : [],
+		'filter_thickness' => isset( $req['filter_thickness'] ) ? $slugs( $req['filter_thickness'] ) : [],
+		'min_price'        => ( isset( $req['min_price'] ) && $req['min_price'] !== '' ) ? (float) $req['min_price'] : null,
+		'max_price'        => ( isset( $req['max_price'] ) && $req['max_price'] !== '' && (float) $req['max_price'] > 0 ) ? (float) $req['max_price'] : null,
+		'filter'           => isset( $req['filter'] ) ? sanitize_key( $req['filter'] ) : 'all',
+		'orderby'          => isset( $req['orderby'] ) ? sanitize_text_field( $req['orderby'] ) : '',
+		'paged'            => max( 1, absint( $req['paged'] ?? 1 ) ),
+	];
+}
+
+/**
+ * Map an orderby key to WP_Query ordering args (mirrors WooCommerce catalog ordering).
+ *
+ * @param string $orderby Orderby key.
+ * @return array
+ */
+function lt_shop_orderby_args( string $orderby ): array {
+	switch ( $orderby ) {
+		case 'price':
+			return [ 'orderby' => 'meta_value_num', 'meta_key' => '_price', 'order' => 'ASC' ];
+		case 'price-desc':
+			return [ 'orderby' => 'meta_value_num', 'meta_key' => '_price', 'order' => 'DESC' ];
+		case 'rating':
+			return [ 'orderby' => 'meta_value_num', 'meta_key' => '_wc_average_rating', 'order' => 'DESC' ];
+		case 'date':
+			return [ 'orderby' => 'date', 'order' => 'DESC' ];
+		case 'popularity':
+			return [ 'orderby' => 'meta_value_num', 'meta_key' => 'total_sales', 'order' => 'DESC' ];
+		case 'menu_order':
+		default:
+			return [ 'orderby' => 'menu_order title', 'order' => 'ASC' ];
+	}
+}
+
+/**
+ * Build a products WP_Query from a filter state — used by the AJAX endpoint so
+ * results match the server-rendered archive exactly.
+ *
+ * @param array $f        Filter state from lt_shop_get_filters().
+ * @param int   $per_page Products per page.
+ * @return WP_Query
+ */
+function lt_shop_build_query( array $f, int $per_page ): WP_Query {
+	$args = array_merge(
+		[
+			'post_type'           => 'product',
+			'post_status'         => 'publish',
+			'posts_per_page'      => $per_page,
+			'paged'               => $f['paged'],
+			'ignore_sticky_posts' => true,
+			'tax_query'           => [ 'relation' => 'AND' ],
+			'meta_query'          => [ 'relation' => 'AND' ],
+		],
+		lt_shop_orderby_args( $f['orderby'] ?: (string) get_option( 'woocommerce_default_catalog_orderby', 'menu_order' ) )
+	);
+
+	// Respect catalog visibility.
+	$hidden = [ 'exclude-from-catalog' ];
+	if ( 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) ) {
+		$hidden[] = 'outofstock';
+	}
+	$args['tax_query'][] = [
+		'taxonomy' => 'product_visibility',
+		'field'    => 'name',
+		'terms'    => $hidden,
+		'operator' => 'NOT IN',
+	];
+
+	if ( ! empty( $f['product_cat'] ) ) {
+		$args['tax_query'][] = [ 'taxonomy' => 'product_cat', 'field' => 'slug', 'terms' => $f['product_cat'], 'operator' => 'IN' ];
+	}
+	if ( ! empty( $f['filter_colour'] ) ) {
+		$args['tax_query'][] = [ 'taxonomy' => 'pa_colour', 'field' => 'slug', 'terms' => $f['filter_colour'], 'operator' => 'IN' ];
+	}
+	if ( ! empty( $f['filter_thickness'] ) ) {
+		$args['tax_query'][] = [ 'taxonomy' => 'pa_thickness', 'field' => 'slug', 'terms' => $f['filter_thickness'], 'operator' => 'IN' ];
+	}
+
+	// Quick pills.
+	switch ( $f['filter'] ) {
+		case 'on-sale':
+			$sale = wc_get_product_ids_on_sale();
+			$args['post__in'] = $sale ? $sale : [ 0 ];
+			break;
+		case 'new-arrivals':
+			$args['date_query'] = [ [ 'after' => '30 days ago', 'inclusive' => true ] ];
+			break;
+		case 'in-stock':
+			$args['tax_query'][] = [ 'taxonomy' => 'product_visibility', 'field' => 'name', 'terms' => 'outofstock', 'operator' => 'NOT IN' ];
+			break;
+		case 'spc-hybrid':
+		case 'engineered':
+		case 'porcelain':
+			$args['tax_query'][] = [ 'taxonomy' => 'product_cat', 'field' => 'slug', 'terms' => [ $f['filter'] ], 'operator' => 'IN' ];
+			break;
+	}
+
+	// Price range.
+	if ( null !== $f['min_price'] ) {
+		$args['meta_query'][] = [ 'key' => '_price', 'value' => $f['min_price'], 'compare' => '>=', 'type' => 'DECIMAL(12,2)' ];
+	}
+	if ( null !== $f['max_price'] ) {
+		$args['meta_query'][] = [ 'key' => '_price', 'value' => $f['max_price'], 'compare' => '<=', 'type' => 'DECIMAL(12,2)' ];
+	}
+
+	return new WP_Query( apply_filters( 'lt_shop_ajax_query_args', $args, $f ) );
+}
+
+/**
+ * AJAX: filtered / paginated product grid for the shop archive.
+ * Returns rendered product cards + pagination metadata.
+ */
+function lt_ajax_shop_load(): void {
+	check_ajax_referer( 'lt_shop_load', 'nonce' );
+
+	$f        = lt_shop_get_filters( wp_unslash( $_POST ) );
+	$per_page = isset( $_POST['per_page'] ) ? min( 48, max( 1, absint( $_POST['per_page'] ) ) ) : (int) apply_filters( 'loop_shop_per_page', wc_get_default_products_per_row() * wc_get_default_product_rows_per_page() );
+	if ( $per_page < 1 ) {
+		$per_page = 9;
+	}
+
+	$query = lt_shop_build_query( $f, $per_page );
+
+	// Prime the global loop so wc_get_template_part('content','product') works.
+	global $wp_query, $woocommerce_loop;
+	$original          = $wp_query;
+	$wp_query          = $query; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+	$woocommerce_loop['columns'] = wc_get_default_products_per_row();
+
+	ob_start();
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			wc_get_template_part( 'content', 'product' );
+		}
+	}
+	$html = ob_get_clean();
+
+	$wp_query = $original; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+	wp_reset_postdata();
+
+	wp_send_json_success( [
+		'html'        => $html,
+		'found'       => (int) $query->found_posts,
+		'max_pages'   => (int) $query->max_num_pages,
+		'page'        => $f['paged'],
+		'has_more'    => $f['paged'] < (int) $query->max_num_pages,
+	] );
+}
+add_action( 'wp_ajax_lt_shop_load', 'lt_ajax_shop_load' );
+add_action( 'wp_ajax_nopriv_lt_shop_load', 'lt_ajax_shop_load' );
+
+/**
+ * Enqueue the pixel-perfect storefront CSS on shop, product and front (hero) pages,
+ * loaded after the compiled Tailwind bundle so it can fine-tune the design.
+ */
+function lt_enqueue_storefront_css(): void {
+	$needs = ( function_exists( 'is_shop' ) && ( is_shop() || is_product_taxonomy() || is_product() ) ) || is_front_page() || is_page_template();
+	if ( ! $needs ) {
+		return;
+	}
+	$rel = '/assets/css/lt-storefront.css';
+	wp_enqueue_style(
+		'lt-storefront',
+		get_template_directory_uri() . $rel,
+		[ 'local-tasker-custom-style' ],
+		file_exists( get_template_directory() . $rel ) ? filemtime( get_template_directory() . $rel ) : _S_VERSION
+	);
+}
+add_action( 'wp_enqueue_scripts', 'lt_enqueue_storefront_css', 30 );
+
+/**
+ * Keep the header cart-count badge live without a full page reload.
+ *
+ * Neither the classic cart AJAX flow (wc-cart.js only fires 'updated_wc_div')
+ * nor the Cart/Checkout blocks (which update the wc/store/cart data store,
+ * not jQuery events) ever touch our header markup. js/cart-badge.js listens
+ * for both signal types and re-fetches the authoritative count straight from
+ * the Store API, so it works regardless of which cart experience is active.
+ */
+function lt_enqueue_cart_badge_script(): void {
+	$rel = '/js/cart-badge.js';
+	wp_enqueue_script(
+		'lt-cart-badge',
+		get_template_directory_uri() . $rel,
+		[],
+		file_exists( get_template_directory() . $rel ) ? filemtime( get_template_directory() . $rel ) : _S_VERSION,
+		true
+	);
+	wp_localize_script(
+		'lt-cart-badge',
+		'ltCartBadge',
+		[ 'storeApiUrl' => esc_url_raw( rest_url( 'wc/store/v1/cart' ) ) ]
+	);
+}
+add_action( 'wp_enqueue_scripts', 'lt_enqueue_cart_badge_script' );
 
 if ( ! function_exists( 'local_tasker_woocommerce_header_cart' ) ) {
 	/**

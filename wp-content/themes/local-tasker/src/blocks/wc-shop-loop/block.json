@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "acf-block/wc-shop-loop",
+	"version": "0.1.0",
+	"title": "WooCommerce Shop Loop",
+	"category": "acf-blocks",
+	"icon": "store",
+	"description": "Marks where the WooCommerce product filter and grid renders on the Shop page. Place ACF blocks above and below this block.",
+	"supports": {
+		"html": false,
+		"anchor": false,
+		"multiple": false
+	},
+	"textdomain": "local-tasker",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"acf": {
+		"mode": "preview",
+		"renderTemplate": "render.php"
+	}
+}

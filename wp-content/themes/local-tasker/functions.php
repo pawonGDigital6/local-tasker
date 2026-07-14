@@ -294,33 +294,42 @@ require get_template_directory() . '/inc/support-svg.php';
 require_once get_template_directory() . '/inc/cpt/services.php';
 
 /**
+ * ACF field group registration (products + site options).
+ */
+require_once get_template_directory() . '/inc/acf-product-fields.php';
+
+/**
  * Load WooCommerce compatibility file.
  */
 if (class_exists('WooCommerce')) {
 	require get_template_directory() . '/inc/woocommerce.php';
+	require_once get_template_directory() . '/inc/cpt/product-attributes.php';
+	require_once get_template_directory() . '/inc/lt-storefront.php';
+	require_once get_template_directory() . '/inc/lt-shop-filter.php';
 }
 
 // ─ Include the AJAX handler class ────────────────────────────────────────
 require_once get_template_directory() . '/inc/class-blogs-filter-ajax.php';
 
-function lt_enqueue_blogs_filter_assets(): void {
+function lt_enqueue_blogs_filter_assets(): void
+{
 	// Data-only handle (src = false) — the BlogsFilter class ships with the
 	// block's viewScript, so this handle exists purely to print the localized
 	// AJAX URL inline. Previously this pointed at /assets/js/blogs-filter.js,
 	// which does not exist and 404'd site-wide.
-	wp_register_script( 'lt-blogs-filter', false, [], '1.0.0', [ 'in_footer' => true ] );
-	wp_enqueue_script( 'lt-blogs-filter' );
+	wp_register_script('lt-blogs-filter', false, [], '1.0.0', ['in_footer' => true]);
+	wp_enqueue_script('lt-blogs-filter');
 
 	// Expose the admin AJAX URL so the script never has to guess or hardcode it.
 	wp_localize_script(
 		'lt-blogs-filter',
 		'bwfData',
 		[
-			'ajaxUrl' => esc_url( admin_url( 'admin-ajax.php' ) ),
+			'ajaxUrl' => esc_url(admin_url('admin-ajax.php')),
 		]
 	);
 }
-add_action( 'wp_enqueue_scripts', 'lt_enqueue_blogs_filter_assets' );
+add_action('wp_enqueue_scripts', 'lt_enqueue_blogs_filter_assets');
 
 // ─ Include the Projects filter AJAX handler ──────────────────────────────
 require_once get_template_directory() . '/inc/class-projects-filter-ajax.php';
@@ -331,19 +340,46 @@ require_once get_template_directory() . '/inc/class-projects-filter-ajax.php';
  * Uses a src-less (data-only) script handle so the correct URL is printed
  * inline — robust on sub-directory installs — without shipping a physical file.
  */
-function lt_enqueue_projects_filter_assets(): void {
-	wp_register_script( 'lt-projects-filter', false, [], '1.0.0', [ 'in_footer' => true ] );
-	wp_enqueue_script( 'lt-projects-filter' );
+function lt_enqueue_projects_filter_assets(): void
+{
+	wp_register_script('lt-projects-filter', false, [], '1.0.0', ['in_footer' => true]);
+	wp_enqueue_script('lt-projects-filter');
 
 	wp_localize_script(
 		'lt-projects-filter',
 		'pwfData',
 		[
-			'ajaxUrl' => esc_url( admin_url( 'admin-ajax.php' ) ),
+			'ajaxUrl' => esc_url(admin_url('admin-ajax.php')),
 		]
 	);
 }
-add_action( 'wp_enqueue_scripts', 'lt_enqueue_projects_filter_assets' );
+add_action('wp_enqueue_scripts', 'lt_enqueue_projects_filter_assets');
+
+// ─ Include the Popular Products filter AJAX handler ──────────────────────
+if (class_exists('WooCommerce')) {
+	require_once get_template_directory() . '/inc/class-popular-products-ajax.php';
+}
+
+/**
+ * Expose the admin-ajax URL for the "Popular Products" block.
+ *
+ * Uses a src-less (data-only) script handle so the correct URL is printed
+ * inline — robust on sub-directory installs — without shipping a physical file.
+ */
+function lt_enqueue_popular_products_filter_assets(): void
+{
+	wp_register_script('lt-popular-products-filter', false, [], '1.0.0', ['in_footer' => true]);
+	wp_enqueue_script('lt-popular-products-filter');
+
+	wp_localize_script(
+		'lt-popular-products-filter',
+		'ppfData',
+		[
+			'ajaxUrl' => esc_url(admin_url('admin-ajax.php')),
+		]
+	);
+}
+add_action('wp_enqueue_scripts', 'lt_enqueue_popular_products_filter_assets');
 
 add_filter('block_editor_settings_all', function ($settings) {
 	$settings['styles'] = array(); // Disabling custom block styles often drops the iframe
