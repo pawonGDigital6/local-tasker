@@ -47,9 +47,26 @@
 }
 
 .default-sing-page {
+	.wp-block-heading {
+		margin-bottom: 1.4rem;
+	}
 	h2 {
 		@include mix.breakpoint(small, true) {
 			font-size: var(--text-h3);
+		}
+	}
+
+	ul,ol{
+		list-style: inherit;
+		padding-left: 2rem;
+	}
+
+	a {
+		color: var(--color-lt-brand);
+		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
 		}
 	}
 }

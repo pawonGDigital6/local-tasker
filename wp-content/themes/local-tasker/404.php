@@ -9,52 +9,24 @@
 
 get_header();
 ?>
-
-	<main id="primary" class="site-main">
-
-		<section class="error-404 not-found">
+<main id="primary" class="site-main">
+	<section class="error-404 not-found sm:py-16 py-14 text-center min-h-[480px] flex items-center">
+		<div class="container">
 			<header class="page-header">
-				<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'local-tasker' ); ?></h1>
+				<h1 class="page-title mb-4"><?php esc_html_e('404 ERROR', 'local-tasker'); ?></h1>
 			</header><!-- .page-header -->
-
 			<div class="page-content">
-				<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'local-tasker' ); ?></p>
-
-					<?php
-					get_search_form();
-
-					the_widget( 'WP_Widget_Recent_Posts' );
-					?>
-
-					<div class="widget widget_categories">
-						<h2 class="widget-title"><?php esc_html_e( 'Most Used Categories', 'local-tasker' ); ?></h2>
-						<ul>
-							<?php
-							wp_list_categories(
-								array(
-									'orderby'    => 'count',
-									'order'      => 'DESC',
-									'show_count' => 1,
-									'title_li'   => '',
-									'number'     => 10,
-								)
-							);
-							?>
-						</ul>
-					</div><!-- .widget -->
-
-					<?php
-					/* translators: %1$s: smiley */
-					$local_tasker_archive_content = '<p>' . sprintf( esc_html__( 'Try looking in the monthly archives. %1$s', 'local-tasker' ), convert_smilies( ':)' ) ) . '</p>';
-					the_widget( 'WP_Widget_Archives', 'dropdown=1', "after_title=</h2>$local_tasker_archive_content" );
-
-					the_widget( 'WP_Widget_Tag_Cloud' );
-					?>
-
+				<div class="text">
+					<p>
+						Sorry, we can’t find the page you’re looking for.<br> Click the button below to go back to the homepage.
+					</p>
+				</div>
+				<div class="btn-wrap mt-8">
+					<a href="<?php echo home_url(); ?>" class="btn btn--brand">Back Home</a>
+				</div>
 			</div><!-- .page-content -->
-		</section><!-- .error-404 -->
-
-	</main><!-- #main -->
-
+		</div>
+	</section><!-- .error-404 -->
+</main><!-- #main -->
 <?php
 get_footer();
