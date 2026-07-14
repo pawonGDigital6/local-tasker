@@ -1304,11 +1304,19 @@ body.opened-search-popup .global-search-pop {
     letter-spacing: 0.02em;
   }
 }
-.default-single .entry-content h2, .default-single .entry-content h3, .default-single .entry-content h4, .default-single .entry-content h5, .default-single .entry-content h6 {
+.default-single .entry-content h2,
+.default-single .entry-content h3,
+.default-single .entry-content h4,
+.default-single .entry-content h5,
+.default-single .entry-content h6 {
   line-height: normal;
 }
 @media screen and (min-width: 768px) {
-  .default-single .entry-content h2, .default-single .entry-content h3, .default-single .entry-content h4, .default-single .entry-content h5, .default-single .entry-content h6 {
+  .default-single .entry-content h2,
+  .default-single .entry-content h3,
+  .default-single .entry-content h4,
+  .default-single .entry-content h5,
+  .default-single .entry-content h6 {
     letter-spacing: -0.02em;
   }
 }
@@ -1340,10 +1348,16 @@ body.opened-search-popup .global-search-pop {
   margin-bottom: 0;
 }
 
+@media screen and (min-width: 768px) {
+  .default-sing-page h2 {
+    font-size: var(--text-h3);
+  }
+}
+
 .related-post .swiper-pagination-bullet {
   --swiper-pagination-bullet-width: 11px;
   --swiper-pagination-bullet-height: 11px;
-  background: #EAEAEA !important;
+  background: #eaeaea !important;
   opacity: 1 !important;
 }
 .related-post .swiper-pagination-bullet.swiper-pagination-bullet-active {
@@ -1636,6 +1650,17 @@ body.opened-search-popup .global-search-pop {
 .woocommerce-checkout .wp-block-woocommerce-checkout,
 .woocommerce-account .wp-block-woocommerce-checkout {
   padding-top: 0;
+}
+.woocommerce-cart .wp-block-woocommerce-checkout-terms-block a,
+.woocommerce-checkout .wp-block-woocommerce-checkout-terms-block a,
+.woocommerce-account .wp-block-woocommerce-checkout-terms-block a {
+  color: var(--color-lt-brand);
+  text-decoration: underline;
+}
+.woocommerce-cart .wp-block-woocommerce-checkout-terms-block a:hover,
+.woocommerce-checkout .wp-block-woocommerce-checkout-terms-block a:hover,
+.woocommerce-account .wp-block-woocommerce-checkout-terms-block a:hover {
+  text-decoration: none;
 }
 
 /* --------------------------------------------------------------------------

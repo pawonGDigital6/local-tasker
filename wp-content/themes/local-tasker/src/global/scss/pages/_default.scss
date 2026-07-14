@@ -6,7 +6,11 @@
 		@include mix.breakpoint(small, true) {
 			letter-spacing: 0.02em;
 		}
-		h2,h3,h4,h5,h6{
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
 			line-height: normal;
 			@include mix.breakpoint(small, true) {
 				letter-spacing: -0.02em;
@@ -42,14 +46,21 @@
 	}
 }
 
+.default-sing-page {
+	h2 {
+		@include mix.breakpoint(small, true) {
+			font-size: var(--text-h3);
+		}
+	}
+}
 
-.related-post .swiper-pagination-bullet{
+.related-post .swiper-pagination-bullet {
 	--swiper-pagination-bullet-width: 11px;
 	--swiper-pagination-bullet-height: 11px;
-	background: #EAEAEA !important;
+	background: #eaeaea !important;
 	opacity: 1 !important;
 
-	&.swiper-pagination-bullet-active{
+	&.swiper-pagination-bullet-active {
 		background-color: var(--color-lt-accent) !important;
 	}
 }

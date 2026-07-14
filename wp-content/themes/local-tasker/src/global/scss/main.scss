@@ -8,8 +8,8 @@
 @use "layout/block-settings";
 @use "layout/other";
 @use "layout/common";
-@use "layout/default";
 
 // Pages
+@use "pages/default";
 @use "pages/single-project";
 @use "pages/woocommerce";

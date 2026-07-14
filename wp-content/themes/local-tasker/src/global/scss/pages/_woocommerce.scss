@@ -171,6 +171,17 @@
 	.wp-block-woocommerce-checkout {
 		padding-top: 0;
 	}
+
+	.wp-block-woocommerce-checkout-terms-block{
+		a{
+			color: var(--color-lt-brand);
+			text-decoration: underline;
+
+			&:hover{
+				text-decoration: none;
+			}
+		}
+	}
 }
 
 /* --------------------------------------------------------------------------
