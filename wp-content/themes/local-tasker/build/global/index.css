@@ -2400,7 +2400,7 @@ body.woocommerce-account .woocommerce-info .button {
   margin-bottom: 1.5rem;
 }
 .lt-mini-cart .woocommerce-mini-cart-item:not(:last-child) {
-  border-bottom: 1px solid #E9EAEC;
+  border-bottom: 1px solid #e9eaec;
   padding-bottom: 1.5rem;
 }
 .lt-mini-cart .woocommerce-mini-cart-item .remove {
@@ -2453,7 +2453,7 @@ body.woocommerce-account .woocommerce-info .button {
   gap: 16px;
   justify-content: space-between;
   padding-block: 1rem;
-  border-top: 1px solid #E9EAEC;
+  border-top: 1px solid #e9eaec;
   margin: 0;
   background-color: #fff;
   z-index: 2;
@@ -2475,11 +2475,38 @@ body.woocommerce-account .woocommerce-info .button {
   padding-block: 24px;
   background-color: #fff;
   z-index: 2;
-  border-top: 1px solid #E9EAEC;
+  border-top: 1px solid #e9eaec;
 }
 .lt-mini-cart .woocommerce-mini-cart__buttons > * {
   padding-inline: 8px !important;
   flex: 1 0 0;
+}
+
+/* --------------------------------------------------------------------------
+   [Product Card]
+-------------------------------------------------------------------------- */
+@media screen and (max-width: 767px) {
+  .filter-holder .th-filter > li:last-child {
+    padding-right: 16px;
+  }
+}
+
+.lt-product-card__price del {
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 400;
+  color: #4a5565;
+  margin-right: 8px;
+}
+.lt-product-card__price ins {
+  text-decoration: none;
+}
+@media screen and (max-width: 767px) {
+  .lt-product-card .btn {
+    padding-inline: 7px;
+    font-size: 13px;
+    padding-block: 16px;
+  }
 }
 /*!************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[9].use[0]!./src/global/tailwind/tailwind.css ***!
@@ -5055,6 +5082,10 @@ body.woocommerce-account .woocommerce-info .button {
     --tw-leading: 1.71;
     line-height: 1.71;
   }
+  .leading-\[1\] {
+    --tw-leading: 1;
+    line-height: 1;
+  }
   .leading-\[11px\] {
     --tw-leading: 11px;
     line-height: 11px;
@@ -5222,6 +5253,10 @@ body.woocommerce-account .woocommerce-info .button {
   .tracking-\[0\.28px\] {
     --tw-tracking: 0.28px;
     letter-spacing: 0.28px;
+  }
+  .tracking-\[0\.38px\] {
+    --tw-tracking: 0.38px;
+    letter-spacing: 0.38px;
   }
   .tracking-\[0\.48px\] {
     --tw-tracking: 0.48px;
@@ -6102,6 +6137,11 @@ body.woocommerce-account .woocommerce-info .button {
   .max-md\:pt-5 {
     @media (width < 992px) {
       padding-top: calc(var(--spacing) * 5);
+    }
+  }
+  .max-md\:pr-4 {
+    @media (width < 992px) {
+      padding-right: calc(var(--spacing) * 4);
     }
   }
   .max-md\:pb-5 {
@@ -7347,6 +7387,11 @@ body.woocommerce-account .woocommerce-info .button {
       font-size: 2rem;
     }
   }
+  .sm\:text-\[12px\] {
+    @media (width >= 768px) {
+      font-size: 12px;
+    }
+  }
   .sm\:text-\[22px\] {
     @media (width >= 768px) {
       font-size: 22px;
@@ -7427,6 +7472,12 @@ body.woocommerce-account .woocommerce-info .button {
     @media (width >= 768px) {
       --tw-leading: 1.375;
       line-height: 1.375;
+    }
+  }
+  .sm\:leading-\[22px\] {
+    @media (width >= 768px) {
+      --tw-leading: 22px;
+      line-height: 22px;
     }
   }
   .sm\:leading-\[normal\] {
@@ -7511,6 +7562,12 @@ body.woocommerce-account .woocommerce-info .button {
     @media (width >= 768px) {
       --tw-tracking: 0.4px;
       letter-spacing: 0.4px;
+    }
+  }
+  .sm\:tracking-\[0\.48px\] {
+    @media (width >= 768px) {
+      --tw-tracking: 0.48px;
+      letter-spacing: 0.48px;
     }
   }
   .sm\:theme-shadow {
@@ -7884,6 +7941,11 @@ body.woocommerce-account .woocommerce-info .button {
       justify-content: space-between;
     }
   }
+  .md\:justify-center {
+    @media (width >= 992px) {
+      justify-content: center;
+    }
+  }
   .md\:justify-end {
     @media (width >= 992px) {
       justify-content: flex-end;
@@ -7917,6 +7979,11 @@ body.woocommerce-account .woocommerce-info .button {
   .md\:gap-12 {
     @media (width >= 992px) {
       gap: calc(var(--spacing) * 12);
+    }
+  }
+  .md\:gap-20 {
+    @media (width >= 992px) {
+      gap: calc(var(--spacing) * 20);
     }
   }
   .md\:gap-\[4\.8px\] {

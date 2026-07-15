@@ -10,20 +10,14 @@ defined( 'ABSPATH' ) || exit;
 global $product;
 
 $product_id = $product->get_id();
-$carton_sqm = (float) get_post_meta( $product_id, 'carton_sqm', true );
 $has_price  = '' !== $product->get_price();
-$price_ex   = (float) $product->get_price();
 
-// Only show a /sqm figure when there's a real price AND a box coverage to divide it by.
-// A missing carton_sqm means "unit is ambiguous", not "no price" — those are different states.
-$show_per_sqm      = $has_price && $carton_sqm > 0;
-$price_per_sqm_ex  = $show_per_sqm ? $price_ex / $carton_sqm : 0;
+// _price is already the $/sqm figure — no conversion needed to show it.
+$price_per_sqm_ex  = $has_price ? (float) $product->get_price() : 0;
 $price_per_sqm_inc = $price_per_sqm_ex * 1.10;
 
-if ( $show_per_sqm ) {
+if ( $has_price ) {
 	$price_row = wc_price( $price_per_sqm_ex ) . ' <span class="text-lt-text-muted font-normal text-caption-xs">ex GST</span> <span class="text-lt-text-muted font-normal text-caption-xs">' . sprintf( __( '(incl. GST %s)', 'local-tasker' ), wc_price( $price_per_sqm_inc ) ) . '</span>';
-} elseif ( $has_price ) {
-	$price_row = $product->get_price_html();
 } else {
 	$price_row = esc_html__( 'Price on request', 'local-tasker' );
 }

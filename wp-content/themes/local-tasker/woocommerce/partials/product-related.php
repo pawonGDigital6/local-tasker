@@ -53,13 +53,10 @@ if ( empty( $related_products ) ) {
 			<div class="swiper-wrapper">
 				<?php foreach ( $related_products as $related ) :
 					$rid         = $related->get_id();
-					$carton_sqm  = (float) get_post_meta( $rid, 'carton_sqm', true );
 					$has_price   = '' !== $related->get_price();
-					$show_ppsm   = $has_price && $carton_sqm > 0;
-					$price_ex    = (float) $related->get_price();
-					$reg_ex      = (float) $related->get_regular_price();
-					$ppsm_ex     = $show_ppsm ? $price_ex / $carton_sqm : 0;
-					$reg_ppsm_ex = $show_ppsm ? $reg_ex / $carton_sqm : 0;
+					// _price is already the $/sqm figure — no conversion needed to show it.
+					$ppsm_ex     = $has_price ? (float) $related->get_price() : 0;
+					$reg_ppsm_ex = $has_price ? (float) $related->get_regular_price() : 0;
 					$ppsm_inc    = $ppsm_ex * 1.10;
 					$on_sale     = $related->is_on_sale();
 				?>
@@ -83,7 +80,7 @@ if ( empty( $related_products ) ) {
 									<p class="text-caption-sm text-lt-brand font-medium leading-none m-0"><?php esc_html_e( '+ more options', 'local-tasker' ); ?></p>
 								<?php endif; ?>
 								<div class="mt-auto pt-1">
-									<?php if ( $show_ppsm ) : ?>
+									<?php if ( $has_price ) : ?>
 										<div class="flex flex-wrap items-baseline gap-x-[6px]">
 											<?php if ( $on_sale && $reg_ppsm_ex > 0 ) : ?>
 												<span class="text-caption-md text-lt-text-muted line-through"><?php echo wc_price( $reg_ppsm_ex ); ?></span>
@@ -92,8 +89,6 @@ if ( empty( $related_products ) ) {
 											<span class="text-caption-sm text-lt-text-muted">/ sqm</span>
 										</div>
 										<p class="text-caption-xs text-lt-text-muted mt-[3px] m-0"><?php printf( esc_html__( '(incl. GST %s)', 'local-tasker' ), wc_price( $ppsm_inc ) ); ?></p>
-									<?php elseif ( $has_price ) : ?>
-										<div class="text-body font-bold text-lt-text-primary"><?php echo wp_kses_post( $related->get_price_html() ); ?></div>
 									<?php else : ?>
 										<span class="text-caption-sm text-lt-text-muted"><?php esc_html_e( 'Price on request', 'local-tasker' ); ?></span>
 									<?php endif; ?>

@@ -86,7 +86,7 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 			<!-- Category Filter -->
 			<div
 				class="filter-holder w-full overflow-auto scrollbar-thin scrollbar-thumb-[#0a65fc78] scrollbar-track-lt-snow-drift max-md:mr-[-32px] max-md:w-[calc(100%+32px)] max-sm:mr-[-16px] max-sm:w-[calc(100%+16px)]">
-				<ul class="th-filter filter-popular-products flex justify-center sm:gap-20 gap-6 m-0 whitespace-nowrap sm:pb-0 pb-4"
+				<ul class="th-filter filter-popular-products flex md:justify-center md:gap-20 sm:gap-10 gap-6 m-0 whitespace-nowrap sm:pb-0 pb-4"
 					role="list">
 					<li>
 						<button class="filter-btn active" data-category=""

@@ -10,16 +10,13 @@ defined( 'ABSPATH' ) || exit;
 global $product;
 
 $product_id  = get_the_ID();
-$carton_sqm  = (float) get_post_meta( $product_id, 'carton_sqm', true );
 $is_variable = $product->is_type( 'variable' );
 $is_on_sale  = $product->is_on_sale();
 $has_price   = '' !== $product->get_price();
 
-// Only show a /sqm figure when there's a real price AND a box coverage to divide it by.
-// A missing carton_sqm means "unit is ambiguous", not "no price" — those are different states.
-$show_per_sqm     = $has_price && $carton_sqm > 0;
-$price_ex         = $show_per_sqm ? (float) $product->get_price() / $carton_sqm : 0;
-$regular_price_ex = $show_per_sqm ? (float) $product->get_regular_price() / $carton_sqm : 0;
+// _price is already the $/sqm figure — no conversion needed to show it.
+$price_ex         = $has_price ? (float) $product->get_price() : 0;
+$regular_price_ex = $has_price ? (float) $product->get_regular_price() : 0;
 $price_inc        = $price_ex * 1.10;
 ?>
 <li
@@ -41,7 +38,7 @@ $price_inc        = $price_ex * 1.10;
 		<?php endif; ?>
 
 		<?php if ( $is_on_sale ) : ?>
-			<span class="lt-product-card__badge absolute top-2 left-2 z-10 bg-[#ff1c1c] text-lt-white text-[12px] font-semibold tracking-[0.48px] leading-4 px-2 py-1 rounded-[4px]" aria-label="<?php esc_attr_e( 'Sale', 'local-tasker' ); ?>">
+			<span class="lt-product-card__badge absolute top-2 left-2 z-10 bg-[#ff1c1c] text-lt-white sm:text-caption-sm text-caption-xs sm:tracking-[0.48px] tracking-[0.38px] leading-4 px-2 py-1 rounded-[4px]" aria-label="<?php esc_attr_e( 'Sale', 'local-tasker' ); ?>">
 				<?php esc_html_e( 'SALE', 'local-tasker' ); ?>
 			</span>
 		<?php endif; ?>
@@ -51,7 +48,7 @@ $price_inc        = $price_ex * 1.10;
 	<div class="lt-product-card__content flex flex-col flex-1 gap-3">
 
 		<!-- Title -->
-		<h3 class="lt-product-card__title text-base leading-[22px] font-bold text-lt-text-primary line-clamp-2 m-0">
+		<h3 class="lt-product-card__title max-sm:text-caption-sm text-base font-base sm:leading-[22px] leading-[1.25] font-bold text-lt-text-primary line-clamp-2 m-0">
 			<a
 				href="<?php the_permalink(); ?>"
 				class="hover:text-lt-brand transition-colors duration-200"
@@ -86,7 +83,7 @@ $price_inc        = $price_ex * 1.10;
 
 		<!-- Price block -->
 		<div class="lt-product-card__price mt-auto">
-			<?php if ( $show_per_sqm ) : ?>
+			<?php if ( $has_price ) : ?>
 				<div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
 					<?php if ( $is_on_sale && $regular_price_ex > 0 ) : ?>
 						<span class="text-caption-md text-lt-text-muted line-through leading-none">
@@ -106,10 +103,6 @@ $price_inc        = $price_ex * 1.10;
 					);
 					?>
 				</p>
-			<?php elseif ( $has_price ) : ?>
-				<div class="text-lg font-semibold text-lt-text-primary leading-[21px]">
-					<?php echo wp_kses_post( $product->get_price_html() ); ?>
-				</div>
 			<?php else : ?>
 				<span class="text-caption-sm text-lt-text-muted"><?php esc_html_e( 'Price on request', 'local-tasker' ); ?></span>
 			<?php endif; ?>

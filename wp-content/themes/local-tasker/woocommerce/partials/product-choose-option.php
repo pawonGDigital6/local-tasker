@@ -17,13 +17,14 @@ $current_price_ex = (float) $product->get_price();
 $install_rate_ex = (float) get_post_meta( $product_id, 'install_rate_per_sqm', true );
 $has_install     = $install_rate_ex > 0;
 
-// This widget only makes sense when a real /sqm price exists — bail rather than
-// render a fabricated "$0.00 / sqm" for products with no price or no box coverage.
+// This widget only makes sense when there's a real price and a box to purchase — bail rather
+// than render a fabricated "$0.00 / sqm" for products with no price or no box coverage.
 if ( ! $has_price || $carton_sqm <= 0 ) {
 	return;
 }
 
-$price_per_sqm_ex         = $current_price_ex / $carton_sqm;
+// _price is already the $/sqm figure — no conversion needed to show it.
+$price_per_sqm_ex         = $current_price_ex;
 $install_price_per_sqm_ex = $has_install ? ( $price_per_sqm_ex + $install_rate_ex ) : 0;
 ?>
 
