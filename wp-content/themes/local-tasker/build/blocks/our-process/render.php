@@ -12,7 +12,7 @@ if (!empty($block['anchor'])) {
 }
 
 // Create class attribute allowing for custom "className" and "align" values.
-$class_name = 'acf-block lt-process sm:py-[3.375rem_0.875rem] pt-8 pb-0';
+$class_name = 'acf-block lt-process sm:py-[3.375rem_0.875rem] pt-16 pb-0';
 
 if (!empty($block['className'])) {
 	$class_name .= ' ' . $block['className'];

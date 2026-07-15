@@ -41,7 +41,7 @@ $unique_page_class = get_field('unique_page_class');
 					<!-- Header Top -->
 					<div class="site-header__top-inner flex justify-between items-center">
 						<!-- Left -->
-						<div class="site-header__top-left md:inline-flex hidden">
+						<div class="site-header__top-left lg:inline-flex hidden">
 							<a href="tel:02046340122"
 								class="inline-flex items-center gap-2 lt-text-secondary no-underline text-caption-md leading-[1.71] hover:text-lt-brand transition-colors">
 								<span class="icon">
@@ -59,7 +59,7 @@ $unique_page_class = get_field('unique_page_class');
 						<div class="site-header__top-center flex items-center gap-[12px]">
 							<!-- HamnBurger -->
 							<div
-								class="menu-hamn-burger flex flex-col justify-between w-[24px] h-[20px] max-smlr:w-[18px] max-smlr:h-[13px] md:hidden cursor-pointer shrink-0">
+								class="menu-hamn-burger flex flex-col justify-between w-[24px] h-[20px] max-smlr:w-[18px] max-smlr:h-[13px] lg:hidden cursor-pointer shrink-0">
 								<span class="h-[2px] w-full bg-lt-text-secondary rounded-[2px] block"></span>
 								<span class="h-[2px] w-full bg-lt-text-secondary rounded-[2px] block"></span>
 								<span class="h-[2px] w-full bg-lt-text-secondary rounded-[2px] block"></span>

@@ -106,10 +106,10 @@ $categories = get_categories(
 			<?php endif; ?>
 			<!-- Category Filter -->
 			<div class="filter-holder md:w-[54%] w-full overflow-auto scrollbar-thin scrollbar-thumb-[#0a65fc78] scrollbar-track-lt-snow-drift max-md:mr-[-32px] max-md:w-[calc(100%+32px)] max-sm:mr-[-16px] max-sm:w-[calc(100%+16px)]">
-				<ul class="th-filter filter-blog flex gap-4.5 m-0 whitespace-nowrap pb-2" role="list">
+				<ul class="th-filter filter-blog flex sm:gap-4.5 gap-2 m-0 whitespace-nowrap pb-2" role="list">
 					<li>
 						<button
-							class="active filter-btn font-medium sm:tracking-[0.02em] leading-none cursor-pointer p-[11px_14px] bg-transparent text-lt-text-placeholder text-center rounded-[50px] transition-colors duration-360 hover:bg-lt-brand hover:text-lt-white"
+							class="active filter-btn max-sm:text-caption-sm font-medium sm:tracking-[0.02em] leading-none cursor-pointer p-[11px_14px] bg-transparent text-lt-text-placeholder text-center rounded-[50px] transition-colors duration-360 hover:bg-lt-brand hover:text-lt-white"
 							data-category="0" aria-pressed="true">
 							<?php esc_html_e('All Posts', 'lt-theme'); ?>
 						</button>
@@ -117,7 +117,7 @@ $categories = get_categories(
 					<?php foreach ($categories as $cat): ?>
 						<li>
 							<button
-								class="filter-btn font-medium sm:tracking-[0.02em] leading-none cursor-pointer p-[11px_14px] bg-transparent text-lt-text-placeholder text-center rounded-[50px] transition-colors duration-360 hover:bg-lt-brand hover:text-lt-white"
+								class="filter-btn max-sm:text-caption-sm font-medium sm:tracking-[0.02em] leading-none cursor-pointer p-[11px_14px] bg-transparent text-lt-text-placeholder text-center rounded-[50px] transition-colors duration-360 hover:bg-lt-brand hover:text-lt-white"
 								data-category="<?php echo esc_attr($cat->term_id); ?>" aria-pressed="false">
 								<?php echo esc_html($cat->name); ?>
 							</button>

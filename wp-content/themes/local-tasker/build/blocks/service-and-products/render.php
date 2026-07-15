@@ -64,7 +64,7 @@ $section_sub_text = get_field('section_sub_text');
                     $link_title = $link['title'];
                     $link_target = $link['target'] ? $link['target'] : '_self';
                     ?>
-                    <a class="btn btn--brand" href="<?php echo esc_url($link_url); ?>"
+                    <a class="btn btn--brand sm:min-w-[270px]" href="<?php echo esc_url($link_url); ?>"
                         target="<?php echo esc_attr($link_target); ?>"><?php echo esc_html($link_title); ?></a>
                 <?php endif; ?>
             </div>

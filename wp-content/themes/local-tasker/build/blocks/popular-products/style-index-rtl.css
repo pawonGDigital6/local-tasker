@@ -20,9 +20,45 @@
 *
 */
 /**This is the block Style*/
-.th-filter .filter-btn.active {
-  background-color: var(--color-lt-brand);
-  color: var(--color-lt-white);
+.lt-popular-products .th-filter .filter-btn {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  color: #9ca3af;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+@media screen and (min-width: 768px) {
+  .lt-popular-products .th-filter .filter-btn {
+    font-size: 20px;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+}
+.lt-popular-products .th-filter .filter-btn:hover {
+  color: var(--color-lt-brand);
+}
+.lt-popular-products .th-filter .filter-btn.active {
+  background-color: transparent;
+  color: var(--color-lt-brand);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@media screen and (min-width: 768px) {
+  .lt-popular-products .th-filter .filter-btn.active {
+    font-weight: 700;
+  }
+}
+.lt-popular-products .ld-btn-wrap .btn {
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
 }
 
 .lt-popular-products .popular-products-list {

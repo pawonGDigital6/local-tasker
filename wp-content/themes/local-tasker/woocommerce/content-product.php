@@ -21,14 +21,13 @@ $price_inc        = $price_ex * 1.10;
 ?>
 <li
 	id="product-<?php the_ID(); ?>"
-	<?php wc_product_class( 'lt-product-card group relative flex flex-col bg-lt-white rounded-2xl overflow-hidden transition-shadow duration-300 hover:shadow-xl', $product ); ?>
+	<?php wc_product_class( 'lt-product-card group relative flex flex-col gap-3 pb-1', $product ); ?>
 >
 
 	<!-- Image + Badge -->
 	<a
 		href="<?php the_permalink(); ?>"
-		class="lt-product-card__media relative block overflow-hidden bg-lt-white-lilac"
-		style="aspect-ratio:4/3"
+		class="lt-product-card__media relative block aspect-square overflow-hidden bg-lt-snow-drift rounded-2xl wd:rounded-lg"
 		tabindex="-1"
 		aria-hidden="true"
 	>
@@ -39,17 +38,17 @@ $price_inc        = $price_ex * 1.10;
 		<?php endif; ?>
 
 		<?php if ( $is_on_sale ) : ?>
-			<span class="lt-product-card__badge absolute top-3 left-3 z-10 bg-[#E02020] text-lt-white text-caption-xs font-bold uppercase tracking-[0.08em] leading-none px-2 py-[5px] rounded" aria-label="<?php esc_attr_e( 'Sale', 'local-tasker' ); ?>">
+			<span class="lt-product-card__badge absolute top-2 left-2 z-10 bg-[#ff1c1c] text-lt-white text-[12px] font-semibold tracking-[0.48px] leading-4 px-2 py-1 rounded-[4px]" aria-label="<?php esc_attr_e( 'Sale', 'local-tasker' ); ?>">
 				<?php esc_html_e( 'SALE', 'local-tasker' ); ?>
 			</span>
 		<?php endif; ?>
 	</a>
 
 	<!-- Content -->
-	<div class="lt-product-card__content flex flex-col flex-1 p-4 gap-[6px]">
+	<div class="lt-product-card__content flex flex-col flex-1 gap-3">
 
 		<!-- Title -->
-		<h3 class="lt-product-card__title text-caption-md leading-[1.35] font-semibold text-lt-text-primary line-clamp-2 m-0">
+		<h3 class="lt-product-card__title text-base leading-[22px] font-bold text-lt-text-primary line-clamp-2 m-0">
 			<a
 				href="<?php the_permalink(); ?>"
 				class="hover:text-lt-brand transition-colors duration-200"
@@ -61,10 +60,10 @@ $price_inc        = $price_ex * 1.10;
 		<!-- Variable: colour swatches + more options indicator -->
 		<?php if ( $is_variable ) : ?>
 			<?php $swatch_data = lt_get_product_swatches( $product ); ?>
-			<div class="lt-product-card__swatches flex items-center gap-[6px]">
+			<div class="lt-product-card__swatches flex items-center gap-1.5">
 				<?php foreach ( $swatch_data['swatches'] as $swatch ) : ?>
 					<span
-						class="lt-swatch inline-block overflow-hidden rounded-full"
+						class="lt-swatch inline-block w-2.5 h-2.5 shrink-0 overflow-hidden rounded-full"
 						title="<?php echo esc_attr( $swatch['name'] ); ?>"
 						aria-hidden="true"
 					>
@@ -76,25 +75,24 @@ $price_inc        = $price_ex * 1.10;
 						/>
 					</span>
 				<?php endforeach; ?>
-				<p class="lt-product-card__options text-caption-sm text-lt-brand font-medium leading-none m-0">
+				<p class="lt-product-card__options text-[12px] leading-4 tracking-[0.24px] text-lt-text-muted font-normal m-0">
 					<?php esc_html_e( '+ more options', 'local-tasker' ); ?>
 				</p>
 			</div>
 		<?php endif; ?>
 
 		<!-- Price block -->
-		<div class="lt-product-card__price mt-auto pt-1">
+		<div class="lt-product-card__price mt-auto">
 			<?php if ( $carton_sqm > 0 ) : ?>
-				<div class="flex flex-wrap items-baseline gap-x-[6px] gap-y-0.5">
+				<div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
 					<?php if ( $is_on_sale && $regular_price_ex > 0 ) : ?>
 						<span class="text-caption-md text-lt-text-muted line-through leading-none">
 							<?php echo wc_price( $regular_price_ex ); ?>
 						</span>
 					<?php endif; ?>
-					<span class="text-body font-bold text-lt-text-primary leading-none">
-						<?php echo wc_price( $price_ex ); ?>
+					<span class="text-lg font-semibold text-lt-text-primary leading-[21px]">
+						<?php echo wc_price( $price_ex ); ?> / sqm
 					</span>
-					<span class="text-caption-sm font-normal text-lt-text-muted leading-none">/ sqm</span>
 				</div>
 				<p class="text-caption-xs text-lt-text-muted mt-[3px] m-0">
 					<?php

@@ -74,30 +74,28 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 <section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>
 	data-block-id="<?php echo esc_attr($block_id); ?>" data-nonce="<?php echo esc_attr($nonce); ?>"
 	data-posts-per-page="<?php echo esc_attr($pp_posts_per_page); ?>">
-	<div class="wd:container-bx container">
+	<div class="container">
 		<!-- Section Header -->
-		<div class="text-center flex flex-col items-center gap-6 mb-10">
+		<div class="text-center flex flex-col items-center sm:gap-[30px] gap-6 sm:mb-[45px] mb-6">
 			<?php if ($pp_sec_title): ?>
 				<h2
-					class="sec-title sm:text-[1.875rem] text-body-xl sm:leading-[1.2] leading-[normal] text-lt-text-primary sm:tracking-[0.4px] tracking-[-0.95px] max-sm:text-h2">
+					class="sec-title font-semi-ext font-bold text-lt-onyx sm:text-[2.5rem] text-2xl sm:leading-[1.375] leading-8 sm:tracking-[-1px] tracking-normal">
 					<?php echo esc_html($pp_sec_title); ?>
 				</h2>
 			<?php endif; ?>
 			<!-- Category Filter -->
 			<div
 				class="filter-holder w-full overflow-auto scrollbar-thin scrollbar-thumb-[#0a65fc78] scrollbar-track-lt-snow-drift max-md:mr-[-32px] max-md:w-[calc(100%+32px)] max-sm:mr-[-16px] max-sm:w-[calc(100%+16px)]">
-				<ul class="th-filter filter-popular-products flex justify-center gap-2 m-0 whitespace-nowrap pb-2" role="list">
+				<ul class="th-filter filter-popular-products flex justify-center sm:gap-20 gap-6 m-0 whitespace-nowrap sm:pb-0 pb-4"
+					role="list">
 					<li>
-						<button
-							class="filter-btn active font-medium text-base leading-6 cursor-pointer px-4 py-2 rounded-[10px] bg-transparent text-lt-text-muted text-center transition-colors duration-300 hover:bg-lt-brand/10 hover:text-lt-brand"
-							data-category="" aria-pressed="true"><?php esc_html_e('All', 'local-tasker'); ?></button>
+						<button class="filter-btn active" data-category=""
+							aria-pressed="true"><?php esc_html_e('All', 'local-tasker'); ?></button>
 					</li>
 					<?php if (!empty($product_cats)): ?>
 						<?php foreach ($product_cats as $term): ?>
 							<li>
-								<button
-									class="filter-btn font-medium text-base leading-6 cursor-pointer px-4 py-2 rounded-[10px] bg-transparent text-lt-text-muted text-center transition-colors duration-300 hover:bg-lt-brand/10 hover:text-lt-brand"
-									data-category="<?php echo esc_attr($term->slug); ?>" aria-pressed="false">
+								<button class="filter-btn" data-category="<?php echo esc_attr($term->slug); ?>" aria-pressed="false">
 									<?php echo esc_html($term->name); ?>
 								</button>
 							</li>
@@ -107,7 +105,7 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 			</div><!-- End Category Filter -->
 		</div><!-- End Section Header -->
 		<!-- Product Grid — same card markup/classes as the WooCommerce Shop Loop, but 4 columns on desktop -->
-		<ul class="popular-products-list lt-products-grid grid grid-cols-1 smlr:grid-cols-2 md:grid-cols-3 wd:grid-cols-4 gap-5" aria-live="polite" aria-busy="false">
+		<ul class="popular-products-list lt-products-grid grid grid-cols-2 md:grid-cols-3 wd:grid-cols-4 gap-x-4 gap-y-6 wd:gap-[55px]" aria-live="polite" aria-busy="false">
 			<?php
 			if ($initial_query->have_posts()):
 				while ($initial_query->have_posts()):
@@ -125,8 +123,8 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 			?>
 		</ul><!-- End Product Grid -->
 		<!-- View All -->
-		<div class="ld-btn-wrap flex justify-center mt-12">
-			<a href="<?php echo esc_url($pp_view_all_url); ?>" class="btn btn--brand md:min-w-[256px] cursor-pointer max-smlr:w-full"
+		<div class="ld-btn-wrap flex justify-center sm:mt-[45px] mt-10">
+			<a href="<?php echo esc_url($pp_view_all_url); ?>" class="btn btn--brand cursor-pointer max-sm:w-full"
 				aria-label="<?php esc_attr_e('View all products', 'local-tasker'); ?>">
 				<?php esc_html_e('View All', 'local-tasker'); ?>
 			</a>

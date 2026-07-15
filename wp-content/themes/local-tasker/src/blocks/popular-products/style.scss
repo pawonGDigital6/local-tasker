@@ -3,13 +3,55 @@
 
 /**This is the block Style*/
 
-// Active filter pill. Kept in CSS (not inline utilities) because the JS toggles
-// `.active` at runtime. Higher specificity than the inline hover utilities, so a
-// hover over the active pill never flickers to the hover tint.
-.th-filter {
-	.filter-btn.active {
-		background-color: var(--color-lt-brand);
-		color: var(--color-lt-white);
+// ─── Category filter tabs ──────────────────────────────────────────────────
+// Plain text tabs (no pills) per the design: inactive #9ca3af, active brand +
+// underline. Kept in CSS (not inline utilities) because the JS toggles `.active`
+// at runtime. Scoped to this block so the shared `.th-filter` class used by the
+// Projects / Blogs filters keeps its own pill styling.
+.lt-popular-products {
+	.th-filter {
+		.filter-btn {
+			padding: 0;
+			border: 0;
+			border-radius: 0;
+			background-color: transparent;
+			color: #9ca3af;
+			font-size: 16px; // mobile
+			line-height: 24px;
+			font-weight: 500; // Manrope Medium
+			text-align: center;
+			text-decoration: none;
+			cursor: pointer;
+			transition: color 0.3s;
+
+			@include mix.breakpoint(small, true) {
+				font-size: 20px; // desktop
+				line-height: 1.5;
+				font-weight: 400; // Manrope Regular
+			}
+
+			&:hover {
+				color: var(--color-lt-brand);
+			}
+
+			&.active {
+				background-color: transparent;
+				color: var(--color-lt-brand);
+				font-weight: 600; // mobile SemiBold
+				text-decoration: underline;
+				text-underline-offset: 4px;
+
+				@include mix.breakpoint(small, true) {
+					font-weight: 700; // desktop Bold
+				}
+			}
+		}
+	}
+
+	// View All — 56px tall per the design (.btn ships 18/20 vertical padding).
+	.ld-btn-wrap .btn {
+		padding-top: 16px !important;
+		padding-bottom: 16px !important;
 	}
 }
 
