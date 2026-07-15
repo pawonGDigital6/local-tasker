@@ -46,9 +46,9 @@ if ($block_style !== '') {
 }
 
 // ─── ACF Fields ───────────────────────────────────────────────────────────────
-$na_sec_title      = get_field('na_sec_title') ?: __('New Arrivals', 'local-tasker');
+$na_sec_title = get_field('na_sec_title') ?: __('New Arrivals', 'local-tasker');
 $na_posts_per_page = (int) get_field('na_posts_per_page') ?: 4;
-$na_view_all_url   = get_field('na_view_all_url') ?: get_permalink(wc_get_page_id('shop'));
+$na_view_all_url = get_field('na_view_all_url') ?: get_permalink(wc_get_page_id('shop'));
 
 // ─── Query ────────────────────────────────────────────────────────────────────
 // Newest first — the shared shop engine already supports `orderby => 'date'`.
@@ -57,7 +57,7 @@ $initial_query = new WP_Query([]);
 if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) {
 	$initial_state = lt_shop_parse_request([
 		'per_page' => $na_posts_per_page,
-		'orderby'  => 'date',
+		'orderby' => 'date',
 	]);
 	$initial_query = new WP_Query(lt_shop_build_query_args($initial_state));
 }
@@ -74,7 +74,8 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 			</div><!-- End Section Header -->
 		<?php endif; ?>
 		<!-- Product Grid — same card markup/classes as the WooCommerce Shop Loop -->
-		<ul class="new-arrival-products-list lt-products-grid grid grid-cols-2 md:grid-cols-3 wd:grid-cols-4 gap-x-4 gap-y-6 wd:gap-[55px]">
+		<ul
+			class="new-arrival-products-list lt-products-grid grid grid-cols-2 md:grid-cols-3 wd:grid-cols-4 gap-x-4 gap-y-6 wd:gap-[55px]">
 			<?php
 			if ($initial_query->have_posts()):
 				while ($initial_query->have_posts()):
@@ -91,12 +92,20 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 			wp_reset_postdata();
 			?>
 		</ul><!-- End Product Grid -->
-		<!-- Explore -->
-		<div class="ld-btn-wrap flex justify-center sm:mt-[45px] mt-10">
-			<a href="<?php echo esc_url($na_view_all_url); ?>" class="btn btn--brand cursor-pointer max-sm:w-full"
-				aria-label="<?php esc_attr_e('Explore all products', 'local-tasker'); ?>">
-				<?php esc_html_e('Explore', 'local-tasker'); ?>
-			</a>
-		</div><!-- End Explore -->
+		<?php
+		$link = get_field('nap_btbn');
+		if ($link):
+			$link_url = $link['url'];
+			$link_title = $link['title'];
+			$link_target = $link['target'] ? $link['target'] : '_self';
+			?>
+			<!-- Explore -->
+			<div class="ld-btn-wrap flex justify-center sm:mt-[45px] mt-10">
+				<a class="btn btn--brand" href="<?php echo esc_url($link_url); ?>"
+					target="<?php echo esc_attr($link_target); ?>">
+					<?php echo esc_html($link_title); ?>
+				</a>
+			</div><!-- End Explore -->
+		<?php endif; ?>
 	</div>
 </section>

@@ -65,12 +65,12 @@
             "append": ""
         },
         {
-            "key": "field_naf6a72e1c3c05",
-            "label": "View All URL",
-            "name": "na_view_all_url",
+            "key": "field_6a58183c6411d",
+            "label": "Button",
+            "name": "nap_btbn",
             "aria-label": "",
-            "type": "url",
-            "instructions": "Leave blank to link to the main Shop page.",
+            "type": "link",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -78,9 +78,8 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "allow_in_bindings": 0,
-            "placeholder": ""
+            "return_format": "array",
+            "allow_in_bindings": 0
         }
     ],
     "location": [
@@ -104,5 +103,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1784156600
+    "modified": 1784158345
 }

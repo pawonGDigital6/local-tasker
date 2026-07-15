@@ -1379,16 +1379,6 @@ body.opened-search-popup .global-search-pop {
   background-color: var(--color-lt-accent) !important;
 }
 
-body.single-service .lt-popular-products .sec-title {
-  font-size: var(--text-h3);
-}
-body.single-service .lt-popular-products .filter-holder {
-  display: none;
-}
-body.single-service .lt-popular-products .add_to_cart_button {
-  display: none;
-}
-
 .lt-client-brief .cb__content-area > * {
   margin-bottom: 1rem;
 }

@@ -82,19 +82,3 @@
 		background-color: var(--color-lt-accent) !important;
 	}
 }
-
-body {
-	&.single-service {
-		.lt-popular-products {
-			.sec-title{
-				font-size: var(--text-h3);
-			}
-			.filter-holder {
-				display: none;
-			}
-			.add_to_cart_button {
-				display: none;
-			}
-		}
-	}
-}
