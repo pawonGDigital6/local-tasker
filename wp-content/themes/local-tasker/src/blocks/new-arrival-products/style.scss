@@ -1,0 +1,14 @@
+@use "../../global/scss/abstracts/variables" as var;
+@use "../../global/scss/abstracts/mixins" as mix;
+
+/**This is the block Style*/
+
+// Mirrors Popular Products. This block has no category tabs (the design has
+// none), so it needs no filter/AJAX styling — only the CTA sizing.
+.lt-new-arrival-products {
+	// Explore — 56px tall per the design (.btn ships 18/20 vertical padding).
+	.ld-btn-wrap .btn {
+		padding-top: 16px !important;
+		padding-bottom: 16px !important;
+	}
+}
