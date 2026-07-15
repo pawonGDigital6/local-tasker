@@ -19,12 +19,15 @@ $has_install_option  = $install_rate_ex > 0;
 $is_variable         = $product->is_type( 'variable' );
 
 $is_on_sale          = $product->is_on_sale();
+$has_price           = '' !== $product->get_price();
 $regular_price_ex    = (float) $product->get_regular_price();
 $current_price_ex    = (float) $product->get_price();
 
-// Per-sqm prices (ex GST) — derived from box price / carton.
-$price_per_sqm_ex         = ( $carton_sqm > 0 ) ? $current_price_ex / $carton_sqm : 0;
-$regular_price_per_sqm_ex = ( $carton_sqm > 0 ) ? $regular_price_ex / $carton_sqm : 0;
+// Only show a /sqm figure when there's a real price AND a box coverage to divide it by.
+// A missing carton_sqm means "unit is ambiguous", not "no price" — those are different states.
+$show_per_sqm             = $has_price && $carton_sqm > 0;
+$price_per_sqm_ex         = $show_per_sqm ? $current_price_ex / $carton_sqm : 0;
+$regular_price_per_sqm_ex = $show_per_sqm ? $regular_price_ex / $carton_sqm : 0;
 $price_per_sqm_inc        = $price_per_sqm_ex * 1.10;
 
 // Box price ex GST (for calculator).
@@ -156,7 +159,7 @@ if ( $is_variable ) {
 
 	<!-- Pricing -->
 	<div class="lt-product-summary__pricing mb-1">
-		<?php if ( $carton_sqm > 0 ) : ?>
+		<?php if ( $show_per_sqm ) : ?>
 			<div class="flex flex-wrap items-end gap-x-3 gap-y-1">
 				<span id="lt-price-was" class="text-body-lg text-lt-text-muted line-through leading-none<?php echo ( $is_on_sale && $regular_price_per_sqm_ex > 0 ) ? '' : ' hidden'; ?>"><?php echo wc_price( $regular_price_per_sqm_ex ); ?></span>
 				<span id="lt-price-now" class="text-h4 font-bold text-lt-text-primary leading-none"><?php echo wc_price( $price_per_sqm_ex ); ?></span>
@@ -171,6 +174,8 @@ if ( $is_variable ) {
 					<span class="text-lt-text-muted font-normal"><?php esc_html_e( 'ex GST', 'local-tasker' ); ?></span>
 				</span>
 			</div>
+		<?php elseif ( $has_price ) : ?>
+			<div class="text-h4 font-bold text-lt-text-primary leading-none"><?php echo wp_kses_post( $product->get_price_html() ); ?></div>
 		<?php else : ?>
 			<p class="text-body text-lt-text-muted"><?php esc_html_e( 'Price on request', 'local-tasker' ); ?></p>
 		<?php endif; ?>
@@ -234,11 +239,13 @@ if ( $is_variable ) {
 
 	<div class="h-px bg-[#E9EAEC] mb-5"></div>
 
-	<!-- ── Choose Option ── -->
-	<?php get_template_part( 'woocommerce/partials/product-choose-option' ); ?>
+	<!-- ── Choose Option ── (per-sqm purchase/install choice — only meaningful when /sqm pricing is real) -->
+	<?php if ( $show_per_sqm ) : ?>
+		<?php get_template_part( 'woocommerce/partials/product-choose-option' ); ?>
+	<?php endif; ?>
 
 	<!-- ── Box Calculator ── -->
-	<?php if ( $sold_by_box && $carton_sqm > 0 ) : ?>
+	<?php if ( $sold_by_box && $show_per_sqm ) : ?>
 		<?php get_template_part( 'woocommerce/partials/product-calculator' ); ?>
 	<?php else : ?>
 		<!-- Simple add to cart for non-box products -->
