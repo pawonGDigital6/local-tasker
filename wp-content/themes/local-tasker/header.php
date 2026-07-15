@@ -76,7 +76,7 @@ $unique_page_class = get_field('unique_page_class');
 						<!-- Right -->
 						<div class="site-header__top-right flex items-center flex justify-end gap-[20px] max-sm:gap-[12px]">
 							<!-- User  -->
-							<a href="#" class="icon-link">
+							<a href="<?php echo site_url(); ?>/my-account" class="icon-link">
 								<svg class="max-md:w-[16px]" width="20" height="18" viewBox="0 0 20 18" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_774_479)">
@@ -116,7 +116,7 @@ $unique_page_class = get_field('unique_page_class');
 							<?php if ( class_exists( 'WooCommerce' ) && function_exists( 'local_tasker_woocommerce_header_cart' ) ) :
 								local_tasker_woocommerce_header_cart();
 							else : ?>
-								<a href="#" class="cart-icon relative pr-3">
+								<a href="<?php echo site_url(); ?>/cart" class="cart-icon relative pr-3">
 									<span
 										class="cart-count absolute top-[-6px] right-[0] max-sm:top-[-9px] hidden items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] text-caption-sm">0</span>
 									<svg class="max-md:w-[16px]" width="19" height="21" viewBox="0 0 19 21" fill="none"
