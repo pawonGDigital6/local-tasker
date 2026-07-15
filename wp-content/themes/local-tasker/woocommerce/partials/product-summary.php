@@ -54,19 +54,23 @@ if ( $is_variable ) {
 			if ( '' === $slug ) {
 				continue; // "Any" placeholder — not a selectable option.
 			}
-			$term = get_term_by( 'slug', $slug, $taxonomy );
-			$name = $term ? $term->name : $slug;
-			$hex  = '';
+			$term  = get_term_by( 'slug', $slug, $taxonomy );
+			$name  = $term ? $term->name : $slug;
+			$hex   = '';
+			$image = '';
 			if ( 'pa_colour' === $taxonomy ) {
 				$hex = $term ? get_term_meta( $term->term_id, 'lt_swatch_hex', true ) : '';
 				if ( ! $hex ) {
 					$hex = lt_guess_swatch_hex( $name );
 				}
+				// Prefer the variation's own image (matches the archive/loop swatches) over a flat colour.
+				$image = lt_get_variation_attribute_image( $product, $taxonomy, $slug );
 			}
 			$options[] = array(
-				'slug' => $slug,
-				'name' => $name,
-				'hex'  => $hex,
+				'slug'  => $slug,
+				'name'  => $name,
+				'hex'   => $hex,
+				'image' => $image,
 			);
 		}
 		if ( $options ) {
@@ -204,10 +208,15 @@ if ( $is_variable ) {
 							$is_default = isset( $default_attrs[ $group['taxonomy'] ] ) && $default_attrs[ $group['taxonomy'] ] === $option['slug'];
 						?>
 							<?php if ( $group['is_colour'] ) : ?>
+								<?php
+								$swatch_style = $option['image']
+									? 'background-image:url(' . esc_url( $option['image'] ) . ');background-size:cover;background-position:center;'
+									: 'background-color:' . esc_attr( $option['hex'] ) . ';';
+								?>
 								<button
 									type="button"
-									class="lt-variation-option lt-variation-option--swatch w-9 h-9 rounded-full border-2 transition-all duration-150 <?php echo $is_default ? 'border-lt-brand' : 'border-transparent'; ?>"
-									style="background-color: <?php echo esc_attr( $option['hex'] ); ?>"
+									class="lt-variation-option lt-variation-option--swatch w-9 h-9 rounded-full border-2 overflow-hidden transition-all duration-150 <?php echo $is_default ? 'border-lt-brand' : 'border-transparent'; ?>"
+									style="<?php echo esc_attr( $swatch_style ); ?>"
 									data-attribute="<?php echo esc_attr( $group['taxonomy'] ); ?>"
 									data-value="<?php echo esc_attr( $option['slug'] ); ?>"
 									data-name="<?php echo esc_attr( $option['name'] ); ?>"

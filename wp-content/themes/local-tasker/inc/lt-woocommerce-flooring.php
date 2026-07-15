@@ -201,6 +201,38 @@ function lt_get_product_swatches( $product, $limit = 3 ) {
 }
 
 /**
+ * Resolve the image to use for a single variation attribute value (e.g. one colour swatch).
+ * Prefers the matching variation's own image, falling back to the parent product's image.
+ *
+ * @param WC_Product $product  Variable product.
+ * @param string     $taxonomy Attribute taxonomy (e.g. 'pa_colour').
+ * @param string     $slug     Attribute term slug to match.
+ * @return string Image URL, or '' if none found.
+ */
+function lt_get_variation_attribute_image( $product, $taxonomy, $slug ) {
+	$image_id = 0;
+
+	foreach ( $product->get_children() as $variation_id ) {
+		$variation = wc_get_product( $variation_id );
+		if ( ! $variation ) {
+			continue;
+		}
+		$attributes = $variation->get_attributes();
+		if ( ( $attributes[ $taxonomy ] ?? '' ) !== $slug ) {
+			continue;
+		}
+		$image_id = $variation->get_image_id();
+		break;
+	}
+
+	if ( ! $image_id ) {
+		$image_id = $product->get_image_id();
+	}
+
+	return $image_id ? wp_get_attachment_image_url( $image_id, 'thumbnail' ) : '';
+}
+
+/**
  * Best-effort colour-name → hex map for swatch dots (fallback only).
  *
  * @param string $name Colour name.
