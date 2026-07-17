@@ -38,7 +38,7 @@ $price_inc        = $price_ex * 1.10;
 		<?php endif; ?>
 
 		<?php if ( $is_on_sale ) : ?>
-			<span class="lt-product-card__badge absolute top-2 left-2 z-10 bg-[#ff1c1c] text-lt-white sm:text-caption-sm text-caption-xs sm:tracking-[0.48px] tracking-[0.38px] leading-4 px-2 py-1 rounded-[4px]" aria-label="<?php esc_attr_e( 'Sale', 'local-tasker' ); ?>">
+			<span class="lt-product-card__badge absolute top-2 left-2 z-10 bg-[#ff1c1c] text-lt-white sm:text-caption-sm text-caption-xs sm:tracking-[0.48px] sm:leading-4 leading-none px-2 py-1 rounded-[4px]" aria-label="<?php esc_attr_e( 'Sale', 'local-tasker' ); ?>">
 				<?php esc_html_e( 'SALE', 'local-tasker' ); ?>
 			</span>
 		<?php endif; ?>

@@ -86,7 +86,7 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 			<!-- Category Filter -->
 			<div
 				class="filter-holder w-full overflow-auto scrollbar-thin scrollbar-thumb-[#0a65fc78] scrollbar-track-lt-snow-drift max-md:mr-[-32px] max-md:w-[calc(100%+32px)] max-sm:mr-[-16px] max-sm:w-[calc(100%+16px)]">
-				<ul class="th-filter filter-popular-products flex justify-center-safe md:gap-20 sm:gap-10 gap-6 m-0 whitespace-nowrap sm:pb-0 pb-4"
+				<ul class="th-filter filter-popular-products flex justify-center-safe md:gap-20 sm:gap-10 gap-6 m-0 whitespace-nowrap md:pb-0 pb-4"
 					role="list">
 					<li>
 						<button class="filter-btn active" data-category=""
@@ -105,7 +105,7 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 			</div><!-- End Category Filter -->
 		</div><!-- End Section Header -->
 		<!-- Product Grid — same card markup/classes as the WooCommerce Shop Loop, but 4 columns on desktop -->
-		<ul class="popular-products-list lt-products-grid grid grid-cols-2 md:grid-cols-3 wd:grid-cols-4 gap-x-4 gap-y-6 wd:gap-[55px]" aria-live="polite" aria-busy="false">
+		<ul class="popular-products-list lt-products-grid grid xs:grid-cols-2 md:grid-cols-3 wd:grid-cols-4 gap-x-4 gap-y-6 wd:gap-[55px]" aria-live="polite" aria-busy="false">
 			<?php
 			if ($initial_query->have_posts()):
 				while ($initial_query->have_posts()):

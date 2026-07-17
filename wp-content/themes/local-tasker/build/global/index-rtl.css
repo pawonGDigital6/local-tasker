@@ -7646,6 +7646,12 @@ body.woocommerce-account .woocommerce-info .button {
       font-size: var(--text-h3);
     }
   }
+  .sm\:leading-4 {
+    @media (width >= 768px) {
+      --tw-leading: calc(var(--spacing) * 4);
+      line-height: calc(var(--spacing) * 4);
+    }
+  }
   .sm\:leading-5 {
     @media (width >= 768px) {
       --tw-leading: calc(var(--spacing) * 5);
@@ -8408,6 +8414,11 @@ body.woocommerce-account .woocommerce-info .button {
   .md\:pr-10 {
     @media (width >= 992px) {
       padding-left: calc(var(--spacing) * 10);
+    }
+  }
+  .md\:pb-0 {
+    @media (width >= 992px) {
+      padding-bottom: 0;
     }
   }
   .md\:pb-8 {
