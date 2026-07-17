@@ -41,7 +41,7 @@ $size = 'full';
 ?>
 <section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="md:partial-container-left flex flex-wrap-reverse md:justify-end">
-		<div class="why-us__content relative bigLp:w-[48%] wd:w-[42.3%] md:w-[49%] self-end md:pt-[6.938rem] pb-[2.875rem] md:mr-[-4.3rem] z-10 max-md:px-[32px] max-sm:px-4">
+		<div class="why-us__content relative bigLp:w-[48%] wd:w-[42.3%] md:w-[49%] self-end md:pt-[6.938rem] pb-[2.875rem] md:mr-[-4.3rem] z-10 max-md:px-[32px] max-sm:px-4 md:my-12">
 			<?php
 			if ($image_small):
 				?>

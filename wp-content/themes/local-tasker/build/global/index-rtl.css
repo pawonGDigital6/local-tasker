@@ -7809,6 +7809,26 @@ body.woocommerce-account .woocommerce-info .button {
       right: 38px;
     }
   }
+  .md\:my-2 {
+    @media (width >= 992px) {
+      margin-block: calc(var(--spacing) * 2);
+    }
+  }
+  .md\:my-3 {
+    @media (width >= 992px) {
+      margin-block: calc(var(--spacing) * 3);
+    }
+  }
+  .md\:my-6 {
+    @media (width >= 992px) {
+      margin-block: calc(var(--spacing) * 6);
+    }
+  }
+  .md\:my-12 {
+    @media (width >= 992px) {
+      margin-block: calc(var(--spacing) * 12);
+    }
+  }
   .md\:-mt-6\.5 {
     @media (width >= 992px) {
       margin-top: calc(var(--spacing) * -6.5);
