@@ -69,14 +69,14 @@ foreach ($blocks_before as $block) {
 	<!-- ── Results bar ─────────────────────────────────────── -->
 	<div class="lt-shop-archive__bar">
 		<div class="container">
-			<div class="flex flex-wrap justify-between items-center gap-x-4 sm:gap-y-5 gap-y-3">
+			<div class="flex flex-wrap justify-between items-center gap-x-4 md:gap-y-5 gap-y-6">
 				<!-- Title + count -->
-				<div class="flex items-center gap-[5px] shrink-0">
-					<h1 class="text-[24px] leading-none font-bold text-[#0a0d1a] m-0 font-semi-ext tracking-[-0.48px]">
+				<div class="flex items-center md:gap-[5px] gap-3 shrink-0">
+					<h2 class="sm:text-[24px] text-[20px] leading-none font-bold text-[#0a0d1a] m-0 font-semi-ext tracking-[-0.48px]">
 						<?php esc_html_e('All Products', 'local-tasker'); ?>
-					</h1>
+					</h2>
 					<span
-						class="inline-flex items-center h-6 px-3 rounded-full bg-lt-white border border-[#e5e5df] text-[13px] font-semibold text-[#6b7280] shrink-0"
+						class="inline-flex items-center h-6 px-3 rounded-full bg-lt-white border border-[#e5e5df] sm:text-[13px] text-caption-xs font-semibold text-[#6b7280] shrink-0"
 						aria-live="polite" data-lt-result-count>
 						<?php
 						printf(
@@ -87,29 +87,31 @@ foreach ($blocks_before as $block) {
 						?>
 					</span>
 				</div>
-				<div class="right-navs flex justify-end items-start wd:w-[72.9%] gap-4">
+				<div class="right-navs flex md:justify-end items-start wd:w-[72.9%] gap-4 max-md:flex-wrap w-full">
 					<!-- Filter pills -->
-					<nav class="lt-filter-pills flex flex-wrap items-center gap-2 flex-1"
+					<nav class="lt-filter-pills md:flex-1 overflow-auto scrollbar-thin scrollbar-thumb-[#0a65fc78] scrollbar-track-lt-snow-drift max-md:mr-[-32px] max-md:w-[calc(100%+32px)] max-sm:mr-[-16px] max-sm:w-[calc(100%+16px)] max-sm:pb-3"
 						aria-label="<?php esc_attr_e('Quick filters', 'local-tasker'); ?>">
-						<?php foreach ($lt_filter_pills as $key => $pill):
-							$is_active = $active_pill === $key;
-							$pill_url = $key === 'all'
-								? remove_query_arg('filter')
-								: add_query_arg('filter', $key);
-							?>
-							<a href="<?php echo esc_url($pill_url); ?>" data-lt-pill="<?php echo esc_attr($key); ?>"
-								class="lt-filter-pill inline-flex items-center h-8 px-4 rounded-full border text-[13px] font-semibold whitespace-nowrap transition-colors duration-200 <?php echo $is_active ? 'bg-lt-brand text-lt-white border-[#0a0d1a]' : 'bg-lt-white text-[#6b7280] border-[#e5e5df] hover:border-lt-brand hover:text-lt-brand'; ?>"
-								aria-current="<?php echo $is_active ? 'true' : 'false'; ?>">
-								<?php echo esc_html($pill['label']); ?>
+						<div class="holder flex md:flex-wrap items-center gap-2">
+							<?php foreach ($lt_filter_pills as $key => $pill):
+								$is_active = $active_pill === $key;
+								$pill_url = $key === 'all'
+									? remove_query_arg('filter')
+									: add_query_arg('filter', $key);
+								?>
+								<a href="<?php echo esc_url($pill_url); ?>" data-lt-pill="<?php echo esc_attr($key); ?>"
+									class="lt-filter-pill inline-flex items-center h-8 px-4 rounded-full border text-[13px] font-semibold whitespace-nowrap transition-colors duration-200 last:mr-4 <?php echo $is_active ? 'bg-lt-brand text-lt-white border-[#0a0d1a]' : 'bg-lt-white text-[#6b7280] border-[#e5e5df] hover:border-lt-brand hover:text-lt-brand'; ?>"
+									aria-current="<?php echo $is_active ? 'true' : 'false'; ?>">
+									<?php echo esc_html($pill['label']); ?>
+								</a>
+							<?php endforeach; ?>
+							<a href="<?php echo esc_url($lt_clear_all_url); ?>" id="lt-clear-pill"
+								class="hidden! lt-filter-pill lt-filter-pill--clear text-[13px] font-semibold text-[#f26522] hover:underline shrink-0<?php echo $lt_has_any_active_filter ? '' : ' hidden'; ?>">
+								<?php esc_html_e('Clear All Filters', 'local-tasker'); ?>
 							</a>
-						<?php endforeach; ?>
-						<a href="<?php echo esc_url($lt_clear_all_url); ?>" id="lt-clear-pill"
-							class="hidden! lt-filter-pill lt-filter-pill--clear text-[13px] font-semibold text-[#f26522] hover:underline shrink-0<?php echo $lt_has_any_active_filter ? '' : ' hidden'; ?>">
-							<?php esc_html_e('Clear All Filters', 'local-tasker'); ?>
-						</a>
+						</div>
 					</nav>
 					<!-- Sort -->
-					<div class="lt-shop-sort flex items-center gap-2 shrink-0">
+					<div class="lt-shop-sort flex items-center gap-2 shrink-0 max-md:w-full max-md:justify-end">
 						<label for="lt-sort-select" class="text-[13px] text-[#6b7280] shrink-0">
 							<?php esc_html_e('Sort:', 'local-tasker'); ?>
 						</label>
@@ -134,7 +136,8 @@ foreach ($blocks_before as $block) {
 									</option>
 								<?php endforeach; ?>
 							</select>
-							<svg class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-lt-text-muted"
+							<svg
+								class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-lt-text-muted"
 								viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 								<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
 									stroke-linejoin="round" />
@@ -146,7 +149,7 @@ foreach ($blocks_before as $block) {
 		</div>
 	</div><!-- /.lt-shop-archive__bar -->
 	<!-- ── Main content: sidebar + grid ───────────────────── -->
-	<div class="container md:pt-[57px] pt-8 md:pb-[86px] pb-16">
+	<div class="container md:pt-[57px] pt-8 md:pb-[86px] pb-16 max-md:mt-[-66px]">
 		<div class="lt-shop-archive__layout flex flex-wrap wd:gap-[7.7%] md:gap-[4%] gap-0 items-start">
 			<!-- ── Sidebar (Filters) ── -->
 			<?php get_template_part('woocommerce/partials/shop-filters'); ?>

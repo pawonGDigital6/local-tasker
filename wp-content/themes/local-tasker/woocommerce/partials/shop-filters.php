@@ -48,24 +48,46 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 ?>
 
 <!-- Mobile: filter toggle button (hidden on desktop) -->
-<button
-	type="button"
-	id="lt-filter-open"
-	class="lt-filter-open md:hidden inline-flex items-center justify-center gap-2 h-[30px] px-4 mb-6 rounded-[20px] border border-[#e5e7eb] bg-lt-white text-[13px] font-semibold text-[#1e2939] transition-colors hover:border-lt-brand hover:text-lt-brand"
-	aria-expanded="false"
-	aria-controls="lt-filters-sidebar"
->
-	<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-		<path d="M2 5h14M5 9h8M8 13h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-	</svg>
-	<?php esc_html_e( 'Filters', 'local-tasker' ); ?>
-	<?php if ( $has_active_filters ) : ?>
-		<span class="lt-filter-count bg-lt-brand text-lt-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center" aria-label="<?php esc_attr_e( 'Active filters', 'local-tasker' ); ?>">
-			<?php echo esc_html( ( $active_cat !== '' ? 1 : 0 ) + count( $active_colours ) + count( $active_thickness ) + ( $price_min !== '' || $price_max !== '' ? 1 : 0 ) ); ?>
-		</span>
-	<?php endif; ?>
-</button>
+<div class="button-count-holder md:hidden block mb-11">
+	<button
+		type="button"
+		id="lt-filter-open"
+		class="lt-filter-open md:hidden inline-flex items-center justify-center gap-2 h-[30px] px-4 rounded-[20px] border border-[#e5e7eb] bg-lt-white text-[13px] font-semibold text-[#1e2939]"
+		aria-expanded="false"
+		aria-controls="lt-filters-sidebar"
+	>
+		<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<g clip-path="url(#clip0_50513_1204)">
+			<path d="M12.2477 2.33301H8.16504" stroke="#1E2939" stroke-width="1.16648" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M5.83269 2.33301H1.75" stroke="#1E2939" stroke-width="1.16648" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M12.2482 6.99902H6.99902" stroke="#1E2939" stroke-width="1.16648" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M4.66621 6.99902H1.75" stroke="#1E2939" stroke-width="1.16648" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M12.2482 11.665H9.33203" stroke="#1E2939" stroke-width="1.16648" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M6.99917 11.665H1.75" stroke="#1E2939" stroke-width="1.16648" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M8.16504 1.16602V3.49898" stroke="#1E2939" stroke-width="1.16648" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M4.66602 5.83203V8.165" stroke="#1E2939" stroke-width="1.16648" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M9.33203 10.498V12.831" stroke="#1E2939" stroke-width="1.16648" stroke-linecap="round" stroke-linejoin="round"/>
+			</g>
+			<defs>
+			<clipPath id="clip0_50513_1204">
+			<rect width="13.9978" height="13.9978" fill="white"/>
+			</clipPath>
+			</defs>
+		</svg>
 
+		<?php esc_html_e( 'Filters', 'local-tasker' ); ?>
+		<?php if ( $has_active_filters ) : ?>
+			<span class="lt-filter-count bg-lt-brand text-lt-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center" aria-label="<?php esc_attr_e( 'Active filters', 'local-tasker' ); ?>">
+				<?php echo esc_html( ( $active_cat !== '' ? 1 : 0 ) + count( $active_colours ) + count( $active_thickness ) + ( $price_min !== '' || $price_max !== '' ? 1 : 0 ) ); ?>
+			</span>
+		<?php endif; ?>
+	</button>
+	<!-- Span Coount Result -->
+	<span class="count-result text-caption-sm text-[#6A7282] block mt-4">
+		showing 
+		<span class="count">1-6</span> of <span class="total">24</span>
+	</span>
+ </div>
 <!-- Mobile: overlay -->
 <div id="lt-filter-overlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden" aria-hidden="true"></div>
 
@@ -278,7 +300,10 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 					aria-expanded="true"
 					aria-controls="filter-thickness-body"
 				>
-					<span class="font-semi-ext text-[13px] font-bold text-[#0a0d1a]"><?php esc_html_e( 'Thickness', 'local-tasker' ); ?></span>
+				<span class="font-semi-ext text-[13px] font-bold text-[#0a0d1a]"><?php esc_html_e( 'Thickness', 'local-tasker' ); ?></span>
+				<svg class="w-4 h-4 text-lt-text-muted shrink-0 transition-transform duration-200 group-aria-[expanded=false]:rotate-180 mr-[-2px]" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+					<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
 				</button>
 				<ul id="filter-thickness-body" class="mt-3 flex flex-col gap-2 list-none p-0 m-0">
 					<?php foreach ( $thickness_terms as $term ) :
@@ -315,7 +340,7 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 				<a
 					href="<?php echo esc_url( $clear_url ); ?>"
 					id="lt-clear-filters"
-					class="gap-1 items-center font-semi-ext text-[12.5px] font-bold text-[#f26522] hover:underline text-center<?php echo $has_active_filters ? ' inline-flex' : ' hidden'; ?>"
+					class="inline-flex gap-1 items-center font-semi-ext text-[12.5px] font-bold text-[#f26522] hover:underline text-center<?php echo $has_active_filters ? ' ' : ' hidden'; ?>"
 				>
 					<span class="icon mb-[5px]">
 						<svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">

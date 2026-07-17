@@ -139,7 +139,7 @@
 		border: 1px solid var(--lt-line);
 		border-radius: 14px;
 		/* Figma: 240px card with 190px inner content = 25px padding. */
-		padding: 22px 26px 25px 23px;
+		padding: 22px 26px 20px 23px;
 		position: sticky;
 		top: 24px;
 		align-self: flex-start;
@@ -149,7 +149,11 @@
 		padding: 0 !important;
 	}
 }
-
+@media (max-width: 375px) {
+.lt-shop-sort__select {
+	padding-right: 23px;
+}
+}
 /* Sidebar headings + facet titles → PP Formula Semi Extended */
 .lt-shop-filters .lt-filter-group__toggle span:first-child,
 .lt-shop-filters p {

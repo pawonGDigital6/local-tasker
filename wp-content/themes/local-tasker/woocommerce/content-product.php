@@ -45,7 +45,7 @@ $price_inc        = $price_ex * 1.10;
 	</a>
 
 	<!-- Content -->
-	<div class="lt-product-card__content flex flex-col flex-1 gap-3">
+	<div class="lt-product-card__content flex flex-col flex-1 sm:gap-3 gap-1">
 
 		<!-- Title -->
 		<h3 class="lt-product-card__title max-sm:text-caption-sm text-base font-base sm:leading-[22px] leading-[1.25] font-bold text-lt-text-primary line-clamp-2 m-0">
@@ -75,22 +75,22 @@ $price_inc        = $price_ex * 1.10;
 						/>
 					</span>
 				<?php endforeach; ?>
-				<p class="lt-product-card__options text-[12px] leading-4 tracking-[0.24px] text-lt-text-muted font-normal m-0">
+				<p class="lt-product-card__options sm:text-caption-sm text-caption-xs leading-4 tracking-[0.24px] text-lt-text-muted font-normal m-0">
 					<?php esc_html_e( '+ more options', 'local-tasker' ); ?>
 				</p>
 			</div>
 		<?php endif; ?>
 
 		<!-- Price block -->
-		<div class="lt-product-card__price">
+		<div class="lt-product-card__price max-sm:mt-2">
 			<?php if ( $has_price ) : ?>
-				<div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+				<div class="flex flex-wrap items-center sm:gap-x-2 gap-x-1 gap-y-0.5">
 					<?php if ( $is_on_sale && $regular_price_ex > 0 ) : ?>
-						<span class="text-caption-md text-lt-text-muted line-through leading-none mt-px">
+						<span class="sm:text-caption-md text-caption-sm text-lt-text-muted line-through leading-none mt-px">
 							<?php echo wc_price( $regular_price_ex ); ?>
 						</span>
 					<?php endif; ?>
-					<span class="text-lg font-semibold text-lt-text-primary leading-[21px]">
+					<span class="sm:text-lg text-body font-semibold text-lt-text-primary leading-[21px]">
 						<?php echo wc_price( $price_ex ); ?> / sqm
 					</span>
 				</div>
