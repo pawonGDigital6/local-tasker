@@ -82,11 +82,11 @@ $price_inc        = $price_ex * 1.10;
 		<?php endif; ?>
 
 		<!-- Price block -->
-		<div class="lt-product-card__price mt-auto">
+		<div class="lt-product-card__price">
 			<?php if ( $has_price ) : ?>
-				<div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+				<div class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
 					<?php if ( $is_on_sale && $regular_price_ex > 0 ) : ?>
-						<span class="text-caption-md text-lt-text-muted line-through leading-none">
+						<span class="text-caption-md text-lt-text-muted line-through leading-none mt-px">
 							<?php echo wc_price( $regular_price_ex ); ?>
 						</span>
 					<?php endif; ?>
@@ -107,30 +107,30 @@ $price_inc        = $price_ex * 1.10;
 				<span class="text-caption-sm text-lt-text-muted"><?php esc_html_e( 'Price on request', 'local-tasker' ); ?></span>
 			<?php endif; ?>
 		</div>
-
-		<!-- Add to Cart -->
-		<?php if ( $is_variable ) : ?>
-			<a
-				href="<?php the_permalink(); ?>"
-				class="btn btn--brand w-full mt-2 text-center"
-				aria-label="<?php echo esc_attr( sprintf( __( 'Select options for %s', 'local-tasker' ), get_the_title() ) ); ?>"
-			>
-				<?php esc_html_e( 'Select Options', 'local-tasker' ); ?>
-			</a>
-		<?php else : ?>
-			<a
-				href="<?php echo esc_url( $product->add_to_cart_url() ); ?>"
-				data-product-id="<?php echo esc_attr( $product_id ); ?>"
-				data-product-type="simple"
-				data-quantity="1"
-				class="btn btn--brand w-full mt-2 ajax_add_to_cart add_to_cart_button text-center"
-				rel="nofollow"
-				aria-label="<?php echo esc_attr( sprintf( __( 'Add %s to cart', 'local-tasker' ), get_the_title() ) ); ?>"
-			>
-				<?php esc_html_e( 'Add to Cart', 'local-tasker' ); ?>
-			</a>
-		<?php endif; ?>
-
+		<div class="btn-wrap mt-auto">
+			<!-- Add to Cart -->
+			<?php if ( $is_variable ) : ?>
+				<a
+					href="<?php the_permalink(); ?>"
+					class="btn btn--brand w-full mt-[7px] items-center text-center"
+					aria-label="<?php echo esc_attr( sprintf( __( 'Select options for %s', 'local-tasker' ), get_the_title() ) ); ?>"
+				>
+					<?php esc_html_e( 'Select Options', 'local-tasker' ); ?>
+				</a>
+			<?php else : ?>
+				<a
+					href="<?php echo esc_url( $product->add_to_cart_url() ); ?>"
+					data-product-id="<?php echo esc_attr( $product_id ); ?>"
+					data-product-type="simple"
+					data-quantity="1"
+					class="btn btn--brand w-full mt-[7px] items-center text-center ajax_add_to_cart add_to_cart_button"
+					rel="nofollow"
+					aria-label="<?php echo esc_attr( sprintf( __( 'Add %s to cart', 'local-tasker' ), get_the_title() ) ); ?>"
+				>
+					<?php esc_html_e( 'Add to Cart', 'local-tasker' ); ?>
+				</a>
+			<?php endif; ?>
+		</div>
 	</div><!-- /.lt-product-card__content -->
 
 </li>

@@ -35,15 +35,44 @@
 	background: var(--lt-page);
 }
 
+/* Figma mobile (node 29:6930): the page sits on white, not the grey page tint. */
+@media (max-width: 991px) {
+	.lt-shop-archive {
+		background: #fff;
+	}
+}
+
+/* The Shop sort <select> ships its own SVG caret in the template. Guarantee no
+   second caret is painted on top of it by any global WooCommerce select rule. */
+.lt-shop-sort__select {
+	background-image: none !important;
+}
+
+/* Sidebar: divider under the "FILTERS" title (Figma aside 29:4120). */
+@media (min-width: 992px) {
+	.lt-shop-filters .lt-filters-title {
+		border-bottom: 1px solid var(--lt-line);
+		padding-bottom: 10px;
+	}
+}
+
 /* ---- Toolbar: sits on the page background, no white bar ---- */
 .lt-shop-archive__bar {
 	background: transparent !important;
 	border-bottom: 0 !important;
 }
 
+/* Figma: toolbar sits 80px below the section top (64px on mobile); the 57px
+   gap down to the sidebar/grid is applied on the content container itself. */
 .lt-shop-archive__bar .container>div {
-	padding-top: 28px;
-	padding-bottom: 12px;
+	padding-top: 80px;
+	padding-bottom: 0;
+}
+
+@media (max-width: 991px) {
+	.lt-shop-archive__bar .container>div {
+		padding-top: 64px;
+	}
 }
 
 .lt-shop-archive__bar h1 {
@@ -109,7 +138,8 @@
 		background: #fff;
 		border: 1px solid var(--lt-line);
 		border-radius: 14px;
-		padding: 24px;
+		/* Figma: 240px card with 190px inner content = 25px padding. */
+		padding: 22px 26px 25px 23px;
 		position: sticky;
 		top: 24px;
 		align-self: flex-start;
@@ -146,6 +176,12 @@
 .peer:checked~.lt-filter-checkbox__ui {
 	background: var(--lt-brand);
 	border-color: var(--lt-brand);
+}
+
+/* Facet counts — Figma: 11px, muted. */
+.lt-shop-filters .text-caption-xs {
+	font-size: 11px;
+	color: var(--lt-muted-2);
 }
 
 /* Count chips on colour/thickness (subtle pill) */
@@ -188,15 +224,16 @@
 	gap: 8px;
 	min-width: 200px;
 	justify-content: center;
-	height: 48px;
+	/* Figma: 201x45.5 white pill, 14px Manrope Regular. */
+	height: 46px;
 	padding: 0 28px;
 	border-radius: 999px;
 	border: 1px solid var(--lt-line);
 	background: #fff;
 	font-family: var(--font-base, "Manrope", sans-serif);
-	font-weight: 700;
+	font-weight: 400;
 	font-size: 14px;
-	color: var(--lt-ink);
+	color: #1e2939;
 	cursor: pointer;
 	transition: all .18s ease;
 }
@@ -457,7 +494,7 @@
 }
 
 
-.lt-shop-archive__layout {
+/* .lt-shop-archive__layout {
 	gap: 45px;
 }
 
@@ -465,111 +502,4 @@
 	.lt-shop-archive__layout {
 		gap: 28px;
 	}
-}
-
-
-/* 
-.lt-products-grid {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 32px 30px;
-}
-
-@media (max-width: 991px) {
-	.lt-products-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 24px;
-	}
-}
-
-@media (max-width: 567px) {
-	.lt-products-grid {
-		grid-template-columns: 1fr;
-	}
-}
-
-.lt-products-grid.is-loading {
-	opacity: .5;
-	pointer-events: none;
-	transition: opacity .15s ease;
-}
-
-
-.lt-product-card {
-	background: transparent !important;
-	border-radius: 0 !important;
-	box-shadow: none !important;
-	overflow: visible !important;
-	gap: 12px;
-}
-
-.lt-product-card:hover {
-	box-shadow: none !important;
-}
-
-.lt-product-card__media {
-	aspect-ratio: 1 / 1 !important;
-	background: var(--lt-surface) !important;
-	border-radius: 8px !important;
-	overflow: hidden;
-}
-
-.lt-product-card__content {
-	padding: 0 !important;
-	gap: 10px !important;
-}
-
-.lt-product-card__badge {
-	background: var(--lt-sale) !important;
-	border-radius: 4px !important;
-	font-family: var(--font-base, "Manrope", sans-serif);
-	font-weight: 700;
-	font-size: 12px;
-	letter-spacing: .48px;
-	padding: 4px 8px !important;
-	top: 8px !important;
-	left: 8px !important;
-}
-
-.lt-product-card__title {
-	font-family: var(--font-base, "Manrope", sans-serif) !important;
-	font-weight: 700 !important;
-	font-size: 16px !important;
-	line-height: 22px !important;
-	color: var(--lt-ink) !important;
-}
-
-.lt-product-card__price .text-body,
-.lt-product-card__price [class*="text-body"] {
-	font-family: var(--font-base, "Manrope", sans-serif);
-	font-weight: 600;
-	font-size: 18px;
-	color: var(--lt-ink);
-}
-
-.lt-product-card__price .line-through {
-	font-size: 14px;
-	color: var(--lt-muted);
-}
-
-.lt-product-card__options {
-	color: var(--lt-brand);
-}
-
-.lt-product-card__content .btn {
-	width: 100%;
-	border-radius: 20px;
-	padding-top: 12px;
-	padding-bottom: 12px;
-	font-family: var(--font-base, "Manrope", sans-serif);
-	font-weight: 700;
-	font-size: 14px;
-}
-
-
-.lt-product-card .lt-swatch,
-.lt-product-card [data-swatch] {
-	width: 10px;
-	height: 10px;
-	border-radius: 999px;
 } */

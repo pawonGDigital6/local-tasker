@@ -226,10 +226,16 @@
 }
 
 /* --------------------------------------------------------------------------
-   Form fields (shared)
+   Form fields
+
+   Scoped to Cart / Checkout / My Account ONLY. These must NOT leak onto the
+   Shop archive: that template ships its own custom-styled sort <select> with
+   its own SVG caret, and a second caret from the rule below rendered a
+   double-dropdown arrow.
    -------------------------------------------------------------------------- */
-.woocommerce,
-.woocommerce-page {
+.woocommerce-cart,
+.woocommerce-checkout,
+.woocommerce-account {
 	form .form-row {
 		margin-bottom: 20px;
 		padding: 0;

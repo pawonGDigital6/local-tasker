@@ -46,6 +46,12 @@
 				}
 			}
 		}
+
+		li{
+			&:last-child{
+				padding-right: 24px;
+			}
+		}
 	}
 
 	// View All — 56px tall per the design (.btn ships 18/20 vertical padding).

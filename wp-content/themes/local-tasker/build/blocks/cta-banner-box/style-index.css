@@ -25,5 +25,8 @@
     height: 0 !important;
   }
 }
+.lt-cta-box.no-bg-img, .lt-cta-box.no-bg-img + .wp-block-spacer {
+  background-color: #f9fafb;
+}
 
 /*# sourceMappingURL=style-index.css.map*/

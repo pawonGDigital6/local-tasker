@@ -245,7 +245,7 @@ get_header();
 					</div><!-- End of Share -->
 				</div>
 				<!-- Right Side bar -->
-				<div class="aside flex flex-col gap-8 lg:w-[30%] md:w-[35%] w-full">
+				<div class="aside flex flex-col gap-8 lg:w-[30%] md:w-[35%] w-full lg:h-full lg:sticky lg:top-4">
 					<?php
 					$recent_posts_query = new WP_Query([
 						'post_type' => 'post',

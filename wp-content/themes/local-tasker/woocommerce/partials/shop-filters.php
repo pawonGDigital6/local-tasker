@@ -51,7 +51,7 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 <button
 	type="button"
 	id="lt-filter-open"
-	class="md:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-40 btn btn--brand shadow-lg flex items-center gap-2"
+	class="lt-filter-open md:hidden inline-flex items-center justify-center gap-2 h-[30px] px-4 mb-6 rounded-[20px] border border-[#e5e7eb] bg-lt-white text-[13px] font-semibold text-[#1e2939] transition-colors hover:border-lt-brand hover:text-lt-brand"
 	aria-expanded="false"
 	aria-controls="lt-filters-sidebar"
 >
@@ -60,7 +60,7 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 	</svg>
 	<?php esc_html_e( 'Filters', 'local-tasker' ); ?>
 	<?php if ( $has_active_filters ) : ?>
-		<span class="lt-filter-count bg-lt-white text-lt-brand text-caption-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" aria-label="<?php esc_attr_e( 'Active filters', 'local-tasker' ); ?>">
+		<span class="lt-filter-count bg-lt-brand text-lt-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center" aria-label="<?php esc_attr_e( 'Active filters', 'local-tasker' ); ?>">
 			<?php echo esc_html( ( $active_cat !== '' ? 1 : 0 ) + count( $active_colours ) + count( $active_thickness ) + ( $price_min !== '' || $price_max !== '' ? 1 : 0 ) ); ?>
 		</span>
 	<?php endif; ?>
@@ -96,12 +96,14 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 			</button>
 		</div>
 
-		<div class="p-5 md:p-0 flex flex-col gap-6">
+		<div class="p-5 md:p-0 flex flex-col gap-4">
 
-			<!-- Heading (desktop) -->
-			<p class="hidden md:block text-caption-sm font-bold text-lt-text-primary tracking-[0.08em] uppercase m-0">
-				<?php esc_html_e( 'FILTERS', 'local-tasker' ); ?>
-			</p>
+			<!-- Heading (desktop) — divider under the title comes from lt-storefront.css -->
+			<div class="lt-filters-title hidden md:block">
+				<p class="font-semi-ext text-[12px] font-bold text-[#131313] tracking-[0.72px] uppercase m-0">
+					<?php esc_html_e( 'FILTERS', 'local-tasker' ); ?>
+				</p>
+			</div>
 
 			<!-- ── Category ── -->
 			<div class="lt-filter-group" data-filter-group="category">
@@ -111,8 +113,8 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 					aria-expanded="true"
 					aria-controls="filter-category-body"
 				>
-					<span class="text-caption-md font-bold text-lt-text-primary"><?php esc_html_e( 'Category', 'local-tasker' ); ?></span>
-					<svg class="w-4 h-4 text-lt-text-muted shrink-0 transition-transform duration-200 group-aria-[expanded=false]:rotate-180" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+					<span class="font-semi-ext text-[13px] font-bold text-[#0a0d1a]"><?php esc_html_e( 'Category', 'local-tasker' ); ?></span>
+					<svg class="w-4 h-4 text-lt-text-muted shrink-0 transition-transform duration-200 group-aria-[expanded=false]:rotate-180 mr-[-2px]" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 						<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
 				</button>
@@ -132,11 +134,11 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 								<span class="lt-filter-checkbox__ui w-4 h-4 rounded-full border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150" aria-hidden="true">
 									<span class="hidden peer-checked:block w-1.5 h-1.5 rounded-full bg-lt-white"></span>
 								</span>
-								<span class="text-caption-sm text-lt-text-secondary peer-checked:font-semibold peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
+								<span class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
 									<?php esc_html_e( 'All Flooring', 'local-tasker' ); ?>
 								</span>
 							</span>
-							<span class="text-caption-xs text-lt-text-muted"><?php echo esc_html( $total_products_count ); ?></span>
+							<span class="text-[11px] text-[#6b7280] shrink-0"><?php echo esc_html( $total_products_count ); ?></span>
 						</label>
 					</li>
 					<?php if ( ! is_wp_error( $categories ) ) :
@@ -154,13 +156,12 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 										<?php checked( $is_checked ); ?>
 									>
 									<span class="lt-filter-checkbox__ui w-4 h-4 rounded-full border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150" aria-hidden="true">
-										<span class="w-1.5 h-1.5 rounded-full bg-lt-white <?php echo $is_checked ? '' : 'hidden'; ?>"></span>
 									</span>
-									<span class="text-caption-sm text-lt-text-secondary peer-checked:font-semibold peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
+									<span class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
 										<?php echo esc_html( $cat->name ); ?>
 									</span>
 								</span>
-								<span class="text-caption-xs text-lt-text-muted"><?php echo esc_html( $cat->count ); ?></span>
+								<span class="text-[11px] text-[#6b7280] shrink-0"><?php echo esc_html( $cat->count ); ?></span>
 							</label>
 						</li>
 					<?php endforeach; endif; ?>
@@ -177,8 +178,8 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 					aria-expanded="true"
 					aria-controls="filter-price-body"
 				>
-					<span class="text-caption-md font-bold text-lt-text-primary"><?php esc_html_e( 'Price Range', 'local-tasker' ); ?></span>
-					<svg class="w-4 h-4 text-lt-text-muted shrink-0 transition-transform duration-200 group-aria-[expanded=false]:rotate-180" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+					<span class="font-semi-ext text-[13px] font-bold text-[#0a0d1a]"><?php esc_html_e( 'Price Range', 'local-tasker' ); ?></span>
+					<svg class="w-4 h-4 text-lt-text-muted shrink-0 transition-transform duration-200 group-aria-[expanded=false]:rotate-180 mr-[-2px]" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 						<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
 				</button>
@@ -187,7 +188,7 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 						<div class="flex-1">
 							<label for="lt-price-min" class="sr-only"><?php esc_html_e( 'Minimum price', 'local-tasker' ); ?></label>
 							<div class="relative">
-								<span class="absolute left-3 top-1/2 -translate-y-1/2 text-caption-sm text-lt-text-muted pointer-events-none" aria-hidden="true">$</span>
+								<span class="absolute left-3 top-1/2 -translate-y-1/2 text-caption-sm text-[#0A0D1A] pointer-events-none" aria-hidden="true">$</span>
 								<input
 									type="number"
 									id="lt-price-min"
@@ -196,15 +197,15 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 									step="1"
 									value="<?php echo esc_attr( $price_min ); ?>"
 									placeholder="0"
-									class="w-full border border-[#D1D5DB] rounded-lg pl-6 pr-3 py-2 text-caption-sm text-lt-text-primary bg-lt-white focus:outline-none focus:ring-2 focus:ring-lt-brand/30 focus:border-lt-brand"
+									class="placeholder:text-[#0A0D1A] w-full h-[34px] border border-[#e5e5df] rounded-md pl-6 pr-3 text-[13px] text-lt-text-primary bg-lt-white focus:outline-none focus:ring-2 focus:ring-lt-brand/30 focus:border-lt-brand"
 								>
 							</div>
 						</div>
-						<span class="text-caption-sm text-lt-text-muted shrink-0">–</span>
+						<span class="text-caption-sm text-[#0A0D1A] shrink-0">–</span>
 						<div class="flex-1">
 							<label for="lt-price-max" class="sr-only"><?php esc_html_e( 'Maximum price', 'local-tasker' ); ?></label>
 							<div class="relative">
-								<span class="absolute left-3 top-1/2 -translate-y-1/2 text-caption-sm text-lt-text-muted pointer-events-none" aria-hidden="true">$</span>
+								<span class="absolute left-3 top-1/2 -translate-y-1/2 text-caption-sm text-[#0A0D1A] pointer-events-none" aria-hidden="true">$</span>
 								<input
 									type="number"
 									id="lt-price-max"
@@ -213,7 +214,7 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 									step="1"
 									value="<?php echo esc_attr( $price_max ); ?>"
 									placeholder="300"
-									class="w-full border border-[#D1D5DB] rounded-lg pl-6 pr-3 py-2 text-caption-sm text-lt-text-primary bg-lt-white focus:outline-none focus:ring-2 focus:ring-lt-brand/30 focus:border-lt-brand"
+									class="placeholder:text-[#0A0D1A] w-full h-[34px] border border-[#e5e5df] rounded-md pl-6 pr-3 text-[13px] text-lt-text-primary bg-lt-white focus:outline-none focus:ring-2 focus:ring-lt-brand/30 focus:border-lt-brand"
 								>
 							</div>
 						</div>
@@ -232,8 +233,8 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 					aria-expanded="true"
 					aria-controls="filter-colour-body"
 				>
-					<span class="text-caption-md font-bold text-lt-text-primary"><?php esc_html_e( 'Colour / Finish', 'local-tasker' ); ?></span>
-					<svg class="w-4 h-4 text-lt-text-muted shrink-0 transition-transform duration-200 group-aria-[expanded=false]:rotate-180" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+					<span class="font-semi-ext text-[13px] font-bold text-[#0a0d1a]"><?php esc_html_e( 'Colour / Finish', 'local-tasker' ); ?></span>
+					<svg class="w-4 h-4 text-lt-text-muted shrink-0 transition-transform duration-200 group-aria-[expanded=false]:rotate-180 mr-[-2px]" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 						<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
 				</button>
@@ -254,11 +255,11 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 									<span class="lt-filter-checkbox__ui w-4 h-4 rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150" aria-hidden="true">
 										
 									</span>
-									<span class="text-caption-sm text-lt-text-secondary peer-checked:font-semibold peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
+									<span class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
 										<?php echo esc_html( $term->name ); ?>
 									</span>
 								</span>
-								<span class="text-caption-xs text-lt-text-muted"><?php echo esc_html( $term->count ); ?></span>
+								<span class="text-[11px] text-[#6b7280] shrink-0"><?php echo esc_html( $term->count ); ?></span>
 							</label>
 						</li>
 					<?php endforeach; ?>
@@ -277,7 +278,7 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 					aria-expanded="true"
 					aria-controls="filter-thickness-body"
 				>
-					<span class="text-caption-md font-bold text-lt-text-primary"><?php esc_html_e( 'Thickness', 'local-tasker' ); ?></span>
+					<span class="font-semi-ext text-[13px] font-bold text-[#0a0d1a]"><?php esc_html_e( 'Thickness', 'local-tasker' ); ?></span>
 				</button>
 				<ul id="filter-thickness-body" class="mt-3 flex flex-col gap-2 list-none p-0 m-0">
 					<?php foreach ( $thickness_terms as $term ) :
@@ -295,26 +296,33 @@ $total_products_count = isset( $total_products_obj->publish ) ? (int) $total_pro
 									>
 									<span class="lt-filter-checkbox__ui w-4 h-4 rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150" aria-hidden="true">
 									</span>
-									<span class="text-caption-sm text-lt-text-secondary peer-checked:font-semibold peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
+									<span class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
 										<?php echo esc_html( $term->name ); ?>
 									</span>
 								</span>
-								<span class="text-caption-xs text-lt-text-muted"><?php echo esc_html( $term->count ); ?></span>
+								<span class="text-[11px] text-[#6b7280] shrink-0"><?php echo esc_html( $term->count ); ?></span>
 							</label>
 						</li>
 					<?php endforeach; ?>
 				</ul>
 			</div><!-- /.lt-filter-group thickness -->
 			<?php endif; ?>
+			
+			<div class="h-px bg-[#E9EAEC]"></div>
 
 			<!-- Clear all + Apply (mobile) -->
 			<div class="flex flex-col gap-3 pt-2">
 				<a
 					href="<?php echo esc_url( $clear_url ); ?>"
 					id="lt-clear-filters"
-					class="text-caption-sm font-semibold text-lt-accent hover:underline text-center<?php echo $has_active_filters ? '' : ' hidden'; ?>"
+					class="gap-1 items-center font-semi-ext text-[12.5px] font-bold text-[#f26522] hover:underline text-center<?php echo $has_active_filters ? ' inline-flex' : ' hidden'; ?>"
 				>
-					<?php esc_html_e( 'Clear All Filters', 'local-tasker' ); ?>
+					<span class="icon mb-[5px]">
+						<svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M7.19824 3.94824L5.85254 5.28125L7.19824 6.61426C7.2321 6.65658 7.2596 6.70101 7.28076 6.74756C7.30192 6.79411 7.3125 6.84701 7.3125 6.90625C7.3125 7.01628 7.2723 7.11149 7.19189 7.19189C7.11149 7.2723 7.01628 7.3125 6.90625 7.3125C6.84701 7.3125 6.79411 7.30192 6.74756 7.28076C6.70101 7.2596 6.65658 7.2321 6.61426 7.19824L5.28125 5.85254L3.94824 7.19824C3.90592 7.2321 3.86149 7.2596 3.81494 7.28076C3.76839 7.30192 3.71549 7.3125 3.65625 7.3125C3.54622 7.3125 3.45101 7.2723 3.37061 7.19189C3.2902 7.11149 3.25 7.01628 3.25 6.90625C3.25 6.84701 3.26058 6.79411 3.28174 6.74756C3.3029 6.70101 3.3304 6.65658 3.36426 6.61426L4.70996 5.28125L3.36426 3.94824C3.3304 3.90592 3.3029 3.86149 3.28174 3.81494C3.26058 3.76839 3.25 3.71549 3.25 3.65625C3.25 3.54622 3.2902 3.45101 3.37061 3.37061C3.45101 3.2902 3.54622 3.25 3.65625 3.25C3.71549 3.25 3.76839 3.26058 3.81494 3.28174C3.86149 3.3029 3.90592 3.3304 3.94824 3.36426L5.28125 4.70996L6.61426 3.36426C6.65658 3.3304 6.70101 3.3029 6.74756 3.28174C6.79411 3.26058 6.84701 3.25 6.90625 3.25C7.01628 3.25 7.11149 3.2902 7.19189 3.37061C7.2723 3.45101 7.3125 3.54622 7.3125 3.65625C7.3125 3.71549 7.30192 3.76839 7.28076 3.81494C7.2596 3.86149 7.2321 3.90592 7.19824 3.94824ZM10.5625 5.28125C10.5625 6.00911 10.4229 6.69466 10.1436 7.33789C9.87272 7.98112 9.49821 8.54183 9.02002 9.02002C8.54183 9.49821 7.98112 9.87272 7.33789 10.1436C6.69466 10.4229 6.00911 10.5625 5.28125 10.5625C4.55339 10.5625 3.86784 10.4229 3.22461 10.1436C2.58138 9.87272 2.02067 9.49821 1.54248 9.02002C1.06429 8.54183 0.689779 7.98112 0.418945 7.33789C0.139648 6.69466 0 6.00911 0 5.28125C0 4.55339 0.139648 3.86784 0.418945 3.22461C0.689779 2.58138 1.06429 2.02067 1.54248 1.54248C2.02067 1.06429 2.58138 0.689778 3.22461 0.418945C3.86784 0.139648 4.55339 0 5.28125 0C6.00911 0 6.69466 0.139648 7.33789 0.418945C7.98112 0.698242 8.53971 1.07487 9.01367 1.54883C9.48763 2.02279 9.86426 2.58138 10.1436 3.22461C10.4229 3.86784 10.5625 4.55339 10.5625 5.28125ZM9.75 5.28125C9.75 4.66341 9.63151 4.08366 9.39453 3.54199C9.16602 3.00033 8.84863 2.52637 8.44238 2.12012C8.03613 1.71387 7.56217 1.39648 7.02051 1.16797C6.47884 0.930989 5.89909 0.8125 5.28125 0.8125C4.66341 0.8125 4.08366 0.930989 3.54199 1.16797C3.00033 1.39648 2.52637 1.71387 2.12012 2.12012C1.71387 2.52637 1.39648 3.00033 1.16797 3.54199C0.93099 4.08366 0.8125 4.66341 0.8125 5.28125C0.8125 5.89909 0.93099 6.47884 1.16797 7.02051C1.39648 7.56217 1.71387 8.03613 2.12012 8.44238C2.52637 8.84863 3.00033 9.16602 3.54199 9.39453C4.08366 9.63151 4.66341 9.75 5.28125 9.75C5.89909 9.75 6.47884 9.63151 7.02051 9.39453C7.56217 9.16602 8.03613 8.84863 8.44238 8.44238C8.84863 8.03613 9.16602 7.56217 9.39453 7.02051C9.63151 6.47884 9.75 5.89909 9.75 5.28125Z" fill="#F26522"/>
+						</svg>
+					</span>
+						<span class="text"><?php esc_html_e( 'Clear All Filters', 'local-tasker' ); ?></span>
 				</a>
 				<button type="submit" class="md:hidden btn btn--brand w-full">
 					<?php esc_html_e( 'Apply Filters', 'local-tasker' ); ?>

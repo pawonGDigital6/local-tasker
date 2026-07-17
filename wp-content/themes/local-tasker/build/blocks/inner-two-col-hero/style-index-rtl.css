@@ -50,6 +50,12 @@
     background: var(--secGradColor);
   }
 }
+.lt-inner-two-col-hero .left-col:not(:has(.icon-title)) {
+  justify-content: center;
+}
+.lt-inner-two-col-hero .left-col:not(:has(.icon-title)) .btn-wrap {
+  margin: 0;
+}
 .lt-inner-two-col-hero .in-testimonial__content *:last-child {
   margin-bottom: 0;
 }

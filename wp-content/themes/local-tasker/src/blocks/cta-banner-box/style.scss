@@ -5,7 +5,12 @@
 .lt-cta-box {
 	&:not(.no-bg-img) + .wp-block-spacer {
 		@include mix.breakpoint(small) {
-			height: 0 !important; 
+			height: 0 !important;
 		}
+	}
+
+	&.no-bg-img,
+	&.no-bg-img + .wp-block-spacer {
+		background-color: #f9fafb;
 	}
 }

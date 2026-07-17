@@ -28,6 +28,14 @@
 		@include mix.breakpoint(small, true) {
 			background: var(--secGradColor);
 		}
+
+		&:not(:has(.icon-title)) {
+			justify-content: center;
+
+			.btn-wrap{
+				margin: 0;
+			}
+		}
 	}
 
 	.in-testimonial {
@@ -51,7 +59,7 @@
 		}
 	}
 
-	.no-testimonial{
+	.no-testimonial {
 		.breadcrumb {
 			.bread-lists {
 				justify-content: center;

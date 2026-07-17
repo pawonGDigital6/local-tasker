@@ -65,17 +65,19 @@ foreach ($blocks_before as $block) {
 	echo render_block($block); // phpcs:ignore WordPress.Security.EscapeOutput
 }
 ?>
-<main id="primary" class="site-main lt-shop-archive bg-lt-white-lilac">
+<main id="primary" class="site-main lt-shop-archive bg-lt-white md:bg-[#f7f7f5]">
 	<!-- ── Results bar ─────────────────────────────────────── -->
-	<div class="lt-shop-archive__bar border-b border-[#E9EAEC] bg-lt-white">
+	<div class="lt-shop-archive__bar">
 		<div class="container">
-			<div class="flex flex-wrap items-center gap-x-4 gap-y-3 py-4">
+			<div class="flex flex-wrap justify-between items-center gap-x-4 sm:gap-y-5 gap-y-3">
 				<!-- Title + count -->
-				<div class="flex items-center gap-3 shrink-0">
-					<h1 class="text-body font-bold text-lt-text-primary m-0 font-semi-ext">
+				<div class="flex items-center gap-[5px] shrink-0">
+					<h1 class="text-[24px] leading-none font-bold text-[#0a0d1a] m-0 font-semi-ext tracking-[-0.48px]">
 						<?php esc_html_e('All Products', 'local-tasker'); ?>
 					</h1>
-					<span class="text-caption-sm text-lt-text-muted" aria-live="polite" data-lt-result-count>
+					<span
+						class="inline-flex items-center h-6 px-3 rounded-full bg-lt-white border border-[#e5e5df] text-[13px] font-semibold text-[#6b7280] shrink-0"
+						aria-live="polite" data-lt-result-count>
 						<?php
 						printf(
 							/* translators: %d: product count */
@@ -85,69 +87,71 @@ foreach ($blocks_before as $block) {
 						?>
 					</span>
 				</div>
-				<!-- Filter pills -->
-				<nav class="lt-filter-pills flex flex-wrap items-center gap-2 flex-1"
-					aria-label="<?php esc_attr_e('Quick filters', 'local-tasker'); ?>">
-					<?php foreach ($lt_filter_pills as $key => $pill):
-						$is_active = $active_pill === $key;
-						$pill_url = $key === 'all'
-							? remove_query_arg('filter')
-							: add_query_arg('filter', $key);
-						?>
-						<a href="<?php echo esc_url($pill_url); ?>" data-lt-pill="<?php echo esc_attr($key); ?>"
-							class="lt-filter-pill text-caption-sm font-semibold px-4 py-2 rounded-full border transition-colors duration-200 <?php echo $is_active ? 'bg-lt-brand text-lt-white border-lt-brand' : 'bg-lt-white text-lt-text-secondary border-[#E9EAEC] hover:border-lt-brand hover:text-lt-brand'; ?>"
-							aria-current="<?php echo $is_active ? 'true' : 'false'; ?>">
-							<?php echo esc_html($pill['label']); ?>
+				<div class="right-navs flex justify-end items-start wd:w-[72.9%] gap-4">
+					<!-- Filter pills -->
+					<nav class="lt-filter-pills flex flex-wrap items-center gap-2 flex-1"
+						aria-label="<?php esc_attr_e('Quick filters', 'local-tasker'); ?>">
+						<?php foreach ($lt_filter_pills as $key => $pill):
+							$is_active = $active_pill === $key;
+							$pill_url = $key === 'all'
+								? remove_query_arg('filter')
+								: add_query_arg('filter', $key);
+							?>
+							<a href="<?php echo esc_url($pill_url); ?>" data-lt-pill="<?php echo esc_attr($key); ?>"
+								class="lt-filter-pill inline-flex items-center h-8 px-4 rounded-full border text-[13px] font-semibold whitespace-nowrap transition-colors duration-200 <?php echo $is_active ? 'bg-lt-brand text-lt-white border-[#0a0d1a]' : 'bg-lt-white text-[#6b7280] border-[#e5e5df] hover:border-lt-brand hover:text-lt-brand'; ?>"
+								aria-current="<?php echo $is_active ? 'true' : 'false'; ?>">
+								<?php echo esc_html($pill['label']); ?>
+							</a>
+						<?php endforeach; ?>
+						<a href="<?php echo esc_url($lt_clear_all_url); ?>" id="lt-clear-pill"
+							class="hidden! lt-filter-pill lt-filter-pill--clear text-[13px] font-semibold text-[#f26522] hover:underline shrink-0<?php echo $lt_has_any_active_filter ? '' : ' hidden'; ?>">
+							<?php esc_html_e('Clear All Filters', 'local-tasker'); ?>
 						</a>
-					<?php endforeach; ?>
-					<a href="<?php echo esc_url($lt_clear_all_url); ?>" id="lt-clear-pill"
-						class="lt-filter-pill lt-filter-pill--clear text-caption-sm font-semibold text-lt-accent hover:underline shrink-0<?php echo $lt_has_any_active_filter ? '' : ' hidden'; ?>">
-						<?php esc_html_e('Clear All Filters', 'local-tasker'); ?>
-					</a>
-				</nav>
-				<!-- Sort -->
-				<div class="lt-shop-sort flex items-center gap-2 shrink-0 ml-auto">
-					<label for="lt-sort-select" class="text-caption-sm text-lt-text-muted shrink-0">
-						<?php esc_html_e('Sort:', 'local-tasker'); ?>
-					</label>
-					<div class="relative">
-						<select id="lt-sort-select"
-							class="lt-shop-sort__select appearance-none bg-lt-white border border-[#E9EAEC] rounded-lg text-caption-sm font-semibold text-lt-text-primary pl-3 pr-8 py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-lt-brand/30 focus:border-lt-brand"
-							aria-label="<?php esc_attr_e('Sort products', 'local-tasker'); ?>">
-							<?php
-							$current_orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : apply_filters('woocommerce_default_catalog_orderby', get_option('woocommerce_default_catalog_orderby'));
-							$orderby_options = apply_filters('woocommerce_catalog_orderby', [
-								'menu_order' => __('Default sorting', 'local-tasker'),
-								'popularity' => __('Best Selling', 'local-tasker'),
-								'rating' => __('Average rating', 'local-tasker'),
-								'date' => __('Latest', 'local-tasker'),
-								'price' => __('Price: low to high', 'local-tasker'),
-								'price-desc' => __('Price: high to low', 'local-tasker'),
-							]);
-							foreach ($orderby_options as $id => $name):
-								?>
-								<option value="<?php echo esc_attr($id); ?>" <?php selected($current_orderby, $id); ?>>
-									<?php echo esc_html($name); ?>
-								</option>
-							<?php endforeach; ?>
-						</select>
-						<svg class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-lt-text-muted"
-							viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-								stroke-linejoin="round" />
-						</svg>
+					</nav>
+					<!-- Sort -->
+					<div class="lt-shop-sort flex items-center gap-2 shrink-0">
+						<label for="lt-sort-select" class="text-[13px] text-[#6b7280] shrink-0">
+							<?php esc_html_e('Sort:', 'local-tasker'); ?>
+						</label>
+						<div class="relative">
+							<select id="lt-sort-select"
+								class="lt-shop-sort__select appearance-none h-9 bg-lt-white border border-[#e5e5df] rounded-md text-[13px] font-semibold text-[#0a0d1a] pl-3 pr-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-lt-brand/30 focus:border-lt-brand"
+								aria-label="<?php esc_attr_e('Sort products', 'local-tasker'); ?>">
+								<?php
+								$current_orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : apply_filters('woocommerce_default_catalog_orderby', get_option('woocommerce_default_catalog_orderby'));
+								$orderby_options = apply_filters('woocommerce_catalog_orderby', [
+									'menu_order' => __('Default sorting', 'local-tasker'),
+									'popularity' => __('Best Selling', 'local-tasker'),
+									'rating' => __('Average rating', 'local-tasker'),
+									'date' => __('Latest', 'local-tasker'),
+									'price' => __('Price: low to high', 'local-tasker'),
+									'price-desc' => __('Price: high to low', 'local-tasker'),
+								]);
+								foreach ($orderby_options as $id => $name):
+									?>
+									<option value="<?php echo esc_attr($id); ?>" <?php selected($current_orderby, $id); ?>>
+										<?php echo esc_html($name); ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
+							<svg class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-lt-text-muted"
+								viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+								<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+									stroke-linejoin="round" />
+							</svg>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div><!-- /.lt-shop-archive__bar -->
 	<!-- ── Main content: sidebar + grid ───────────────────── -->
-	<div class="container py-8 md:py-12">
-		<div class="lt-shop-archive__layout flex gap-8 items-start">
+	<div class="container md:pt-[57px] pt-8 md:pb-[86px] pb-16">
+		<div class="lt-shop-archive__layout flex flex-wrap wd:gap-[7.7%] md:gap-[4%] gap-0 items-start">
 			<!-- ── Sidebar (Filters) ── -->
 			<?php get_template_part('woocommerce/partials/shop-filters'); ?>
 			<!-- ── Product grid ── -->
-			<div class="lt-shop-archive__main flex-1 min-w-0" id="lt-product-grid">
+			<div class="lt-shop-archive__main md:flex-1 md:min-w-0" id="lt-product-grid">
 				<?php if (woocommerce_product_loop()): ?>
 					<?php woocommerce_product_loop_start(); ?>
 					<?php

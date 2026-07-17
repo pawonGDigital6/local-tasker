@@ -82,3 +82,11 @@
 		background-color: var(--color-lt-accent) !important;
 	}
 }
+
+
+// ---------------------------- Service Page
+@include mix.breakpoint(small) {
+	body.cs-service-page .lt-ms-content {
+		padding-top: 0;
+	}
+}
