@@ -20,6 +20,8 @@
 
 	var grid        = document.querySelector('.lt-products-grid');
 	var countEl     = document.querySelector('[data-lt-result-count]');
+	var rangeCount  = document.querySelector('.count-result .count');
+	var rangeTotal  = document.querySelector('.count-result .total');
 	var loadWrap    = document.querySelector('[data-lt-loadmore]');
 	var loadBtn     = document.querySelector('[data-lt-loadmore-btn]');
 	var pills       = Array.prototype.slice.call(document.querySelectorAll('[data-lt-pill]'));
@@ -150,6 +152,12 @@
 
 				if (countEl) {
 					countEl.textContent = d.found + ' ' + (d.found === 1 ? 'result' : 'results');
+				}
+				// "Showing X-Y of Z" — Y = cards currently in the grid, Z = total.
+				if (rangeCount || rangeTotal) {
+					var shown = grid.querySelectorAll('li.product').length;
+					if (rangeCount) rangeCount.textContent = shown > 0 ? '1-' + shown : '0';
+					if (rangeTotal) rangeTotal.textContent = d.found;
 				}
 				if (loadWrap) {
 					loadWrap.dataset.page = d.page;
