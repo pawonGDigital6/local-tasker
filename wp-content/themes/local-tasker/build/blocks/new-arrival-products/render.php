@@ -75,7 +75,7 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 		<?php endif; ?>
 		<!-- Product Grid — same card markup/classes as the WooCommerce Shop Loop -->
 		<ul
-			class="new-arrival-products-list lt-products-grid grid grid-cols-2 md:grid-cols-3 wd:grid-cols-4 gap-x-4 gap-y-6 wd:gap-[55px]">
+			class="new-arrival-products-list lt-products-grid grid xs:grid-cols-2 md:grid-cols-3 wd:grid-cols-4 gap-x-4 gap-y-6 wd:gap-[55px]">
 			<?php
 			if ($initial_query->have_posts()):
 				while ($initial_query->have_posts()):
