@@ -1,26 +1,15 @@
 <?php
 /**
- * Local Tasker — Flooring / sqm commerce engine.
+ * Local Tasker — Flooring catalogue helpers on top of stock WooCommerce.
  *
- * Adds the domain logic the flooring catalogue needs on top of stock WooCommerce:
+ * The one place that controls box pricing/coverage/install rate is the
+ * "Product Options & Specs" ACF panel on the product edit screen (see
+ * inc/acf-product-fields.php: Sold by the Box / Carton Coverage / Install
+ * Rate). This file does NOT duplicate that — it only adds:
  *
- *   • Per-product "sold by the box, priced per m²" metadata
- *       - _lt_pricing_unit      sqm | length | each   (default: each)
- *       - _lt_sqm_per_box       coverage of one box in m²  (the "Carton Size")
- *       - _lt_price_per_sqm     display $/m² (optional — derived from box price if blank)
- *       - _lt_install_available whether "Purchase & Install" is offered
- *       - _lt_install_per_sqm   optional install price per m² (adds a fee line)
- *
- *   • Helpers used by the archive card, single product template and calculator.
- *   • Cart + order plumbing so a chosen coverage / install option survives to the order.
- *   • Installation notification emails (customer + store manager) per the brief.
- *
- * NOTE ON THE PRICING MODEL
- * -------------------------
- * The native WooCommerce price is treated as the price of ONE BOX (the unit the
- * customer actually buys). $/m² is a display + calculator figure. The calculator
- * converts the desired area into a whole number of boxes and adds that quantity to
- * the cart, so all totals, tax and shipping stay 100% native WooCommerce.
+ *   • Colour swatch helpers used by the archive card and single product page.
+ *   • Cart line display + order meta so the chosen area/install option is
+ *     visible on the cart, order, and in the installation notification email.
  *
  * @package local-tasker
  */
@@ -30,115 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /* -------------------------------------------------------------------------
- *  Read helpers
+ *  Colour swatches (archive card + single product variation selector)
  * ---------------------------------------------------------------------- */
-
-/**
- * Resolve a WC_Product from an id or object.
- *
- * @param int|WC_Product $product Product id or object.
- * @return WC_Product|null
- */
-function lt_resolve_product( $product ) {
-	if ( $product instanceof WC_Product ) {
-		return $product;
-	}
-	if ( is_numeric( $product ) ) {
-		$resolved = wc_get_product( (int) $product );
-		return $resolved ? $resolved : null;
-	}
-	return null;
-}
-
-/**
- * Pricing unit for a product: 'sqm', 'length' or 'each'.
- *
- * @param int|WC_Product $product Product.
- * @return string
- */
-function lt_get_pricing_unit( $product ) {
-	$product = lt_resolve_product( $product );
-	if ( ! $product ) {
-		return 'each';
-	}
-	$unit = $product->get_meta( '_lt_pricing_unit' );
-	return in_array( $unit, array( 'sqm', 'length', 'each' ), true ) ? $unit : 'each';
-}
-
-/** Whether a product is priced/sold by the square metre. */
-function lt_is_sqm_product( $product ) {
-	return 'sqm' === lt_get_pricing_unit( $product );
-}
-
-/**
- * Coverage of a single box in m² (the carton size).
- *
- * @param int|WC_Product $product Product.
- * @return float 0 when not set.
- */
-function lt_get_sqm_per_box( $product ) {
-	$product = lt_resolve_product( $product );
-	if ( ! $product ) {
-		return 0.0;
-	}
-	return (float) $product->get_meta( '_lt_sqm_per_box' );
-}
-
-/**
- * Display price per m². Falls back to (box price ÷ sqm per box).
- *
- * @param int|WC_Product $product Product.
- * @param bool           $sale    Use the sale price when true, regular otherwise.
- * @return float
- */
-function lt_get_price_per_sqm( $product, $sale = true ) {
-	$product = lt_resolve_product( $product );
-	if ( ! $product ) {
-		return 0.0;
-	}
-
-	$explicit = $product->get_meta( '_lt_price_per_sqm' );
-	if ( '' !== $explicit && null !== $explicit && ! $sale ) {
-		return (float) $explicit;
-	}
-
-	$sqm_per_box = lt_get_sqm_per_box( $product );
-	$box_price   = (float) ( $sale ? $product->get_price() : $product->get_regular_price() );
-
-	if ( $sqm_per_box > 0 ) {
-		return $box_price / $sqm_per_box;
-	}
-
-	// Last resort: use the explicit figure even for the sale slot.
-	return '' !== $explicit ? (float) $explicit : 0.0;
-}
-
-/** Regular (non-sale) price of one box. */
-function lt_get_box_price( $product, $sale = true ) {
-	$product = lt_resolve_product( $product );
-	if ( ! $product ) {
-		return 0.0;
-	}
-	return (float) ( $sale ? $product->get_price() : $product->get_regular_price() );
-}
-
-/** Whether "Purchase & Install" is offered for a product. */
-function lt_install_available( $product ) {
-	$product = lt_resolve_product( $product );
-	if ( ! $product ) {
-		return false;
-	}
-	return wc_string_to_bool( $product->get_meta( '_lt_install_available' ) );
-}
-
-/** Optional install price per m² (0 when not charging in-cart). */
-function lt_get_install_per_sqm( $product ) {
-	$product = lt_resolve_product( $product );
-	if ( ! $product ) {
-		return 0.0;
-	}
-	return (float) $product->get_meta( '_lt_install_per_sqm' );
-}
 
 /**
  * Variation image swatches for a product, one per `pa_colour` attribute term.
@@ -153,9 +35,11 @@ function lt_get_install_per_sqm( $product ) {
  * @return array{swatches: array<int,array{name:string,image:string}>, total:int}
  */
 function lt_get_product_swatches( $product, $limit = 3 ) {
-	$product = lt_resolve_product( $product );
-	$out     = array( 'swatches' => array(), 'total' => 0 );
-	if ( ! $product || ! $product->is_type( 'variable' ) ) {
+	if ( is_numeric( $product ) ) {
+		$product = wc_get_product( (int) $product );
+	}
+	$out = array( 'swatches' => array(), 'total' => 0 );
+	if ( ! $product instanceof WC_Product || ! $product->is_type( 'variable' ) ) {
 		return $out;
 	}
 
@@ -265,167 +149,13 @@ function lt_guess_swatch_hex( $name ) {
 }
 
 /* -------------------------------------------------------------------------
- *  Price display markup (shared by card + single)
- * ---------------------------------------------------------------------- */
-
-/**
- * Price HTML matching the Figma card / single: struck regular + emphasised $/m².
- *
- * @param int|WC_Product $product Product.
- * @return string
- */
-function lt_price_html( $product ) {
-	$product = lt_resolve_product( $product );
-	if ( ! $product ) {
-		return '';
-	}
-
-	// Non-flooring products fall back to WooCommerce's own price html.
-	if ( ! lt_is_sqm_product( $product ) ) {
-		return '<span class="lt-price">' . $product->get_price_html() . '</span>';
-	}
-
-	$sale_sqm = lt_get_price_per_sqm( $product, true );
-	$reg_sqm  = lt_get_price_per_sqm( $product, false );
-	$on_sale  = $product->is_on_sale() && $reg_sqm > $sale_sqm;
-
-	ob_start();
-	?>
-	<span class="lt-price lt-price--sqm">
-		<?php if ( $on_sale ) : ?>
-			<del class="lt-price__was"><?php echo wp_kses_post( wc_price( $reg_sqm ) ); ?></del>
-		<?php endif; ?>
-		<ins class="lt-price__now">
-			<?php echo wp_kses_post( wc_price( $sale_sqm ) ); ?><span class="lt-price__unit"> / sqm</span>
-		</ins>
-	</span>
-	<?php
-	return ob_get_clean();
-}
-
-/* -------------------------------------------------------------------------
- *  Admin — product data fields
- * ---------------------------------------------------------------------- */
-
-/**
- * Render the flooring fields inside the "Product data → General" panel.
- */
-function lt_add_product_flooring_fields() {
-	echo '<div class="options_group lt-flooring-options">';
-
-	woocommerce_wp_select(
-		array(
-			'id'      => '_lt_pricing_unit',
-			'label'   => __( 'Pricing unit', 'local-tasker' ),
-			'options' => array(
-				'each'   => __( 'Each / standard', 'local-tasker' ),
-				'sqm'    => __( 'Per m² (sold by the box)', 'local-tasker' ),
-				'length' => __( 'Per length (structural)', 'local-tasker' ),
-			),
-			'desc_tip' => true,
-			'description' => __( 'Choose “Per m²” for flooring so the box calculator and $/m² pricing appear.', 'local-tasker' ),
-		)
-	);
-
-	woocommerce_wp_text_input(
-		array(
-			'id'          => '_lt_sqm_per_box',
-			'label'       => __( 'Coverage per box (m²)', 'local-tasker' ),
-			'placeholder' => 'e.g. 0.983',
-			'desc_tip'    => true,
-			'description' => __( 'Carton size in m². Used to convert an area into a whole number of boxes.', 'local-tasker' ),
-			'type'        => 'number',
-			'custom_attributes' => array( 'step' => '0.0001', 'min' => '0' ),
-		)
-	);
-
-	woocommerce_wp_text_input(
-		array(
-			'id'          => '_lt_price_per_sqm',
-			'label'       => __( 'Price per m² (optional)', 'local-tasker' ),
-			'placeholder' => __( 'Auto from box price', 'local-tasker' ),
-			'desc_tip'    => true,
-			'description' => __( 'Leave blank to derive from the box price ÷ coverage.', 'local-tasker' ),
-			'type'        => 'number',
-			'custom_attributes' => array( 'step' => '0.01', 'min' => '0' ),
-		)
-	);
-
-	woocommerce_wp_checkbox(
-		array(
-			'id'          => '_lt_install_available',
-			'label'       => __( 'Offer installation', 'local-tasker' ),
-			'description' => __( 'Show the “Purchase & Install” option on the product page.', 'local-tasker' ),
-		)
-	);
-
-	woocommerce_wp_text_input(
-		array(
-			'id'          => '_lt_install_per_sqm',
-			'label'       => __( 'Install price per m² (optional)', 'local-tasker' ),
-			'placeholder' => '0.00',
-			'desc_tip'    => true,
-			'description' => __( 'If set, an installation fee (this × coverage) is added to the cart line.', 'local-tasker' ),
-			'type'        => 'number',
-			'custom_attributes' => array( 'step' => '0.01', 'min' => '0' ),
-		)
-	);
-
-	echo '</div>';
-}
-add_action( 'woocommerce_product_options_general_product_data', 'lt_add_product_flooring_fields' );
-
-/**
- * Persist the flooring fields on save.
- *
- * @param int $post_id Product id.
- */
-function lt_save_product_flooring_fields( $post_id ) {
-	$product = wc_get_product( $post_id );
-	if ( ! $product ) {
-		return;
-	}
-
-	$unit = isset( $_POST['_lt_pricing_unit'] ) ? sanitize_text_field( wp_unslash( $_POST['_lt_pricing_unit'] ) ) : 'each';
-	$product->update_meta_data( '_lt_pricing_unit', in_array( $unit, array( 'sqm', 'length', 'each' ), true ) ? $unit : 'each' );
-
-	$product->update_meta_data( '_lt_sqm_per_box', isset( $_POST['_lt_sqm_per_box'] ) ? wc_format_decimal( wp_unslash( $_POST['_lt_sqm_per_box'] ) ) : '' );
-	$product->update_meta_data( '_lt_price_per_sqm', isset( $_POST['_lt_price_per_sqm'] ) && '' !== $_POST['_lt_price_per_sqm'] ? wc_format_decimal( wp_unslash( $_POST['_lt_price_per_sqm'] ) ) : '' );
-	$product->update_meta_data( '_lt_install_available', isset( $_POST['_lt_install_available'] ) ? 'yes' : 'no' );
-	$product->update_meta_data( '_lt_install_per_sqm', isset( $_POST['_lt_install_per_sqm'] ) && '' !== $_POST['_lt_install_per_sqm'] ? wc_format_decimal( wp_unslash( $_POST['_lt_install_per_sqm'] ) ) : '' );
-
-	$product->save();
-}
-add_action( 'woocommerce_process_product_meta', 'lt_save_product_flooring_fields' );
-
-/* -------------------------------------------------------------------------
  *  Cart / order — carry the chosen coverage + install option
  * ---------------------------------------------------------------------- */
 
 /**
- * Capture the coverage (m²) and install choice posted from the single product form.
- *
- * @param array $data     Existing cart item data.
- * @param int   $product_id Product id.
- * @return array
- */
-function lt_add_cart_item_data( $data, $product_id ) {
-	if ( isset( $_POST['lt_area_sqm'] ) && '' !== $_POST['lt_area_sqm'] ) {
-		$data['lt_area_sqm'] = round( (float) wp_unslash( $_POST['lt_area_sqm'] ), 2 );
-	}
-	if ( isset( $_POST['lt_install'] ) && 'yes' === $_POST['lt_install'] && lt_install_available( $product_id ) ) {
-		$data['lt_install'] = 'yes';
-	}
-	// Ensure each configuration is treated as a distinct line.
-	if ( ! empty( $data['lt_area_sqm'] ) || ! empty( $data['lt_install'] ) ) {
-		$data['lt_unique'] = md5( microtime() . wp_rand() );
-	}
-	return $data;
-}
-add_filter( 'woocommerce_add_cart_item_data', 'lt_add_cart_item_data', 10, 2 );
-
-/**
- * Show coverage / install details under the cart line item.
+ * Show coverage / install details under the cart line item. Reads the same
+ * 'lt_area_sqm' / 'lt_install' cart-item-data keys that the box-calculator
+ * AJAX handler (inc/woocommerce.php) sets on add-to-cart.
  *
  * @param array $items Item data.
  * @param array $cart_item Cart item.
@@ -449,41 +179,13 @@ function lt_cart_item_display( $items, $cart_item ) {
 add_filter( 'woocommerce_get_item_data', 'lt_cart_item_display', 10, 2 );
 
 /**
- * Add an installation fee line when the product carries an install $/m² and the
- * customer selected install. Runs during totals calculation.
- *
- * @param WC_Cart $cart Cart.
- */
-function lt_add_install_fee( $cart ) {
-	if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
-		return;
-	}
-
-	$fee = 0.0;
-	foreach ( $cart->get_cart() as $cart_item ) {
-		if ( empty( $cart_item['lt_install'] ) || empty( $cart_item['lt_area_sqm'] ) ) {
-			continue;
-		}
-		$per_sqm = lt_get_install_per_sqm( $cart_item['product_id'] );
-		if ( $per_sqm > 0 ) {
-			$fee += $per_sqm * (float) $cart_item['lt_area_sqm'];
-		}
-	}
-
-	if ( $fee > 0 ) {
-		$cart->add_fee( __( 'Installation', 'local-tasker' ), round( $fee, 2 ), true );
-	}
-}
-add_action( 'woocommerce_cart_calculate_fees', 'lt_add_install_fee' );
-
-/**
  * Persist coverage / install onto the order line item.
  *
- * @param WC_Order_Item_Product $item          Order item.
- * @param string                $cart_item_key Cart key.
- * @param array                 $values        Cart values.
+ * @param WC_Order_Item_Product $item   Order item.
+ * @param string                $unused Cart key (unused, required by the hook signature).
+ * @param array                 $values Cart values.
  */
-function lt_add_order_item_meta( $item, $cart_item_key, $values ) {
+function lt_add_order_item_meta( $item, $unused, $values ) {
 	if ( ! empty( $values['lt_area_sqm'] ) ) {
 		$item->add_meta_data( __( 'Area (m²)', 'local-tasker' ), $values['lt_area_sqm'], true );
 	}

@@ -1,15 +1,37 @@
 /**
  * Shop archive — AJAX filtering, sort, quick-pills, Load More + sidebar UX.
  *
- * Progressive enhancement: if the localized ltShopFilter object is missing, the
- * script falls back to plain GET form submission (full page reload) so the shop
- * still works. With AJAX available, filter/sort/pill changes swap the grid in
- * place and "Load More" appends the next page.
+ * Category pills vs. sidebar Category filter — independent, both apply (AND)
+ * ─────────────────────────────────────────────────────────────────────────
+ * • Category pills (spc-hybrid, engineered, porcelain, …) and the sidebar
+ *   Category radio are independent controls: clicking a pill never checks a
+ *   sidebar radio, and changing the sidebar radio never (de)activates a pill.
+ * • Every request always sends BOTH signals when present: `filter=<pillKey>`
+ *   for whichever pill is active, and `product_cat=<slug>` for whichever
+ *   sidebar category is checked. The backend (lt_shop_build_query() /
+ *   lt_shop_filter_product_query() in inc/woocommerce.php) resolves each into
+ *   its own tax_query clause and combines them with the default AND relation
+ *   — so picking a pill AND a sidebar category narrows to products matching
+ *   both, exactly like any other pair of filter facets (colour + thickness,
+ *   etc). No client-side "pick a winner" logic needed.
+ * • Flag pills (on-sale, new-arrivals, in-stock) send filter= the same way;
+ *   the backend applies them as their own, separate condition.
+ *
+ * Taxonomy archive page support
+ * ──────────────────────────────
+ * On category archive URLs (/product-category/…), PHP independently computes
+ * both the active pill and the checked sidebar radio from the same queried
+ * term — they naturally agree on first page load without any JS involved.
+ *
+ * Progressive enhancement: if ltShopFilter is missing, the script falls back
+ * to plain GET form submission so the shop still works without JS.
  *
  * Vanilla JS, no framework.
  */
 (function () {
 	'use strict';
+
+	/* ─────────────────────── element refs ─────────────────────── */
 
 	var form     = document.getElementById('lt-filter-form');
 	var sidebar  = document.getElementById('lt-filters-sidebar');
@@ -24,6 +46,7 @@
 	var rangeTotal  = document.querySelector('.count-result .total');
 	var loadWrap    = document.querySelector('[data-lt-loadmore]');
 	var loadBtn     = document.querySelector('[data-lt-loadmore-btn]');
+	var pillsNav    = document.querySelector('[data-lt-archive-cat]'); // pills <nav>
 	var pills       = Array.prototype.slice.call(document.querySelectorAll('[data-lt-pill]'));
 	var clearLink   = document.getElementById('lt-clear-filters');
 	var clearPill   = document.getElementById('lt-clear-pill');
@@ -34,7 +57,9 @@
 		loading: false
 	};
 
-	/* ───────────────────────── helpers ───────────────────────── */
+	var FLAG_PILLS = { 'on-sale': true, 'new-arrivals': true, 'in-stock': true };
+
+	/* ─────────────────────── helpers ───────────────────────── */
 
 	function debounce(fn, wait) {
 		var t;
@@ -53,7 +78,8 @@
 		});
 	}
 
-	function activePill() {
+	/** Return the currently active pill key ('all' if none). */
+	function activePillKey() {
 		var el = pills.find(function (p) { return p.classList.contains('is-active') || p.getAttribute('aria-current') === 'true'; });
 		return el ? el.dataset.ltPill : 'all';
 	}
@@ -63,44 +89,68 @@
 		var checkedCat = form && form.querySelector('[name="product_cat"]:checked');
 		var min = document.getElementById('lt-price-min');
 		var max = document.getElementById('lt-price-max');
+		var pill = activePillKey();
 
 		var hasActive = !!(
 			(checkedCat && checkedCat.value) ||
+			pill !== 'all' ||
 			(form && form.querySelector('[name="filter_colour[]"]:checked')) ||
 			(form && form.querySelector('[name="filter_thickness[]"]:checked')) ||
 			(min && min.value !== '') ||
-			(max && max.value !== '') ||
-			activePill() !== 'all'
+			(max && max.value !== '')
 		);
 
 		if (clearLink) clearLink.classList.toggle('hidden', !hasActive);
 		if (clearPill) clearPill.classList.toggle('hidden', !hasActive);
 	}
 
-	/** Collect the current filter state into URLSearchParams. */
+	/** Collect the current filter state into URLSearchParams for AJAX. */
 	function collectParams() {
 		var params = new URLSearchParams();
+		var pill = activePillKey();
 
-		var checkedCat = form.querySelector('[name="product_cat"]:checked');
-		if (checkedCat && checkedCat.value) params.set('product_cat', checkedCat.value);
-		form.querySelectorAll('[name="filter_colour[]"]:checked').forEach(function (c) {
-			params.append('filter_colour[]', c.value);
-		});
-		form.querySelectorAll('[name="filter_thickness[]"]:checked').forEach(function (c) {
-			params.append('filter_thickness[]', c.value);
-		});
+		// Pill and sidebar category are independent — send both whenever present.
+		// The backend ANDs them together with everything else (see file header).
+		if (pill !== 'all') {
+			params.set('filter', pill);
+		}
+		var checkedCat = form && form.querySelector('[name="product_cat"]:checked');
+		if (checkedCat && checkedCat.value) {
+			params.set('product_cat', checkedCat.value);
+		}
+
+		// Colour checkboxes.
+		if (form) {
+			form.querySelectorAll('[name="filter_colour[]"]:checked').forEach(function (c) {
+				params.append('filter_colour[]', c.value);
+			});
+			// Thickness checkboxes.
+			form.querySelectorAll('[name="filter_thickness[]"]:checked').forEach(function (c) {
+				params.append('filter_thickness[]', c.value);
+			});
+		}
 
 		var min = document.getElementById('lt-price-min');
 		var max = document.getElementById('lt-price-max');
 		if (min && min.value !== '') params.set('min_price', min.value);
 		if (max && max.value !== '') params.set('max_price', max.value);
 
-		var pill = activePill();
-		if (pill && pill !== 'all') params.set('filter', pill);
-
 		if (sortSel && sortSel.value) params.set('orderby', sortSel.value);
 
 		return params;
+	}
+
+	/**
+	 * Activate a pill by key, updating aria-current and is-active classes.
+	 * Does NOT trigger AJAX — callers do that. Purely visual; does not touch
+	 * the sidebar Category radios (the two controls are independent).
+	 */
+	function activatePill(key) {
+		pills.forEach(function (p) {
+			var match = p.dataset.ltPill === key;
+			p.classList.toggle('is-active', match);
+			p.setAttribute('aria-current', match ? 'true' : 'false');
+		});
 	}
 
 	/* ───────────────────── AJAX fetch + render ───────────────────── */
@@ -192,7 +242,7 @@
 	/* ───────────────────────── bindings ───────────────────────── */
 
 	if (form) {
-		// Category (radio) / colour / thickness (checkboxes).
+		// Category radios + colour/thickness checkboxes.
 		form.querySelectorAll('.lt-filter-checkbox').forEach(function (cb) {
 			cb.addEventListener('change', function () {
 				refreshClearVisibility();
@@ -235,9 +285,8 @@
 		pill.addEventListener('click', function (e) {
 			if (!AJAX) return; // let the link navigate
 			e.preventDefault();
-			pills.forEach(function (p) { p.classList.remove('is-active'); p.setAttribute('aria-current', 'false'); });
-			pill.classList.add('is-active');
-			pill.setAttribute('aria-current', 'true');
+			var pillKey = pill.dataset.ltPill;
+			activatePill(pillKey);
 			refreshClearVisibility();
 			fetchProducts(false);
 		});
@@ -248,17 +297,19 @@
 		if (el && AJAX) {
 			el.addEventListener('click', function (e) {
 				e.preventDefault();
-				form.querySelectorAll('input[type="checkbox"]').forEach(function (c) { c.checked = false; });
-				var allCatEl = form.querySelector('[data-all-cats]');
-				if (allCatEl) allCatEl.checked = true;
-				['lt-price-min', 'lt-price-max'].forEach(function (id) {
-					var input = document.getElementById(id); if (input) input.value = '';
-				});
-				pills.forEach(function (p) {
-					var isAll = p.dataset.ltPill === 'all';
-					p.classList.toggle('is-active', isAll);
-					p.setAttribute('aria-current', isAll ? 'true' : 'false');
-				});
+				// Reset all checkboxes (colour, thickness).
+				if (form) {
+					form.querySelectorAll('input[type="checkbox"]').forEach(function (c) { c.checked = false; });
+					// Reset category radio to "All Flooring".
+					var allCatEl = form.querySelector('[data-all-cats]');
+					if (allCatEl) allCatEl.checked = true;
+					// Clear price inputs.
+					['lt-price-min', 'lt-price-max'].forEach(function (id) {
+						var input = document.getElementById(id); if (input) input.value = '';
+					});
+				}
+				// Reset pills to "All".
+				activatePill('all');
 				if (sortSel) sortSel.value = 'menu_order';
 				refreshClearVisibility();
 				fetchProducts(false);
@@ -309,4 +360,9 @@
 	document.addEventListener('keydown', function (e) {
 		if (e.key === 'Escape' && overlay && !overlay.classList.contains('hidden')) closeSidebar();
 	});
+
+	// No initial pill/sidebar reconciliation needed: PHP computes both the
+	// active pill and the checked sidebar radio independently from the same
+	// queried term/GET params, so they already agree without any JS involved.
+
 })();

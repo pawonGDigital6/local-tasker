@@ -252,6 +252,63 @@
 	cursor: default;
 }
 
+/* AJAX filtering overlay — soft veil + spinner over the product grid while a
+   filter/sort/pill/load-more request is in flight. Pseudo-elements survive the
+   grid's innerHTML swap since only its <li> children are replaced. */
+.lt-products-grid {
+	position: relative;
+	min-height: 120px;
+}
+
+.lt-products-grid::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	background-color: rgba(248, 248, 247, .7);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity .2s ease, visibility .2s ease;
+}
+
+.lt-products-grid::before {
+	content: "";
+	position: absolute;
+	z-index: 3;
+	top: 50%;
+	left: 50%;
+	width: 40px;
+	height: 40px;
+	margin: -20px 0 0 -20px;
+	border: 3px solid rgba(10, 101, 252, .25);
+	border-top-color: var(--lt-brand);
+	border-radius: 50%;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity .2s ease, visibility .2s ease;
+}
+
+.lt-products-grid.is-loading::after,
+.lt-products-grid.is-loading::before {
+	opacity: 1;
+	visibility: visible;
+}
+
+.lt-products-grid.is-loading::after {
+	pointer-events: auto;
+}
+
+.lt-products-grid.is-loading::before {
+	animation: lt-spin .7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lt-products-grid.is-loading::before {
+		animation: none;
+	}
+}
+
 .lt-load-more__spinner {
 	width: 16px;
 	height: 16px;

@@ -186,7 +186,7 @@ if ( ! function_exists( 'local_tasker_woocommerce_cart_link' ) ) {
 	 * @return void
 	 */
 	function local_tasker_woocommerce_cart_link() {
-		$count = WC()->cart->get_cart_contents_count();
+		$count = count( WC()->cart->get_cart() );
 		?>
 		<a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="cart-icon cart-contents relative pr-3" title="<?php esc_attr_e( 'View your shopping cart', 'local-tasker' ); ?>" data-lt-cart-toggle aria-haspopup="dialog" aria-controls="lt-mini-cart-panel" aria-expanded="false">
 			<span class="cart-count absolute top-[-6px] right-[0] max-sm:top-[-9px] items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] text-caption-sm <?php echo $count > 0 ? 'flex' : 'hidden'; ?>"><?php echo esc_html( $count ); ?></span>
@@ -242,6 +242,7 @@ function lt_ajax_add_flooring_to_cart(): void {
 		'lt_boxes'       => $quantity,
 		'lt_coverage_sqm'=> $quantity * $carton_sqm,
 		'lt_option'      => $option,
+		'lt_install'     => ( 'purchase-install' === $option ) ? 'yes' : '',
 	];
 
 	$added = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_attrs, $cart_item_data );
@@ -257,6 +258,45 @@ function lt_ajax_add_flooring_to_cart(): void {
 }
 add_action( 'wp_ajax_lt_add_flooring_to_cart',        'lt_ajax_add_flooring_to_cart' );
 add_action( 'wp_ajax_nopriv_lt_add_flooring_to_cart', 'lt_ajax_add_flooring_to_cart' );
+
+/**
+ * Flooring is sold by the box but the WooCommerce cart quantity added by
+ * lt_ajax_add_flooring_to_cart() is the number of BOXES, priced at the
+ * product's raw $/sqm price — so without this, cart/checkout totals come
+ * out as (boxes × $/sqm) instead of (boxes × box price). Re-derive each
+ * flooring line's unit price from scratch on every totals pass so it
+ * matches the box price (and install add-on) shown on the product page.
+ */
+function lt_apply_flooring_box_pricing( WC_Cart $cart ): void {
+	if ( is_admin() && ! wp_doing_ajax() ) {
+		return;
+	}
+
+	foreach ( $cart->get_cart() as $cart_item ) {
+		if ( empty( $cart_item['lt_boxes'] ) ) {
+			continue;
+		}
+
+		$carton_sqm = (float) get_post_meta( $cart_item['product_id'], 'carton_sqm', true );
+		if ( $carton_sqm <= 0 ) {
+			continue;
+		}
+
+		$priced_product         = $cart_item['variation_id'] ? wc_get_product( $cart_item['variation_id'] ) : $cart_item['data'];
+		$price_per_sqm          = (float) $priced_product->get_price();
+		$regular_price_per_sqm  = (float) $priced_product->get_regular_price();
+
+		if ( 'yes' === ( $cart_item['lt_install'] ?? '' ) ) {
+			$install_rate            = (float) get_post_meta( $cart_item['product_id'], 'install_rate_per_sqm', true );
+			$price_per_sqm          += $install_rate;
+			$regular_price_per_sqm  += $install_rate;
+		}
+
+		$cart_item['data']->set_price( $price_per_sqm * $carton_sqm );
+		$cart_item['data']->set_regular_price( $regular_price_per_sqm * $carton_sqm );
+	}
+}
+add_action( 'woocommerce_before_calculate_totals', 'lt_apply_flooring_box_pricing' );
 
 /**
  * Enqueue shop archive JS on the shop/archive pages only.
@@ -298,11 +338,12 @@ function lt_product_single_scripts(): void {
 	// product-single.js is bundled as part of the global build into build/global/.
 	// The entry is registered in src/global/js/main.js — import it there or
 	// register a separate entry via the build system. Handle as external script for now.
+	$product_single_path = get_template_directory() . '/build/global/product-single.js';
 	wp_enqueue_script(
 		'lt-product-single',
 		get_template_directory_uri() . '/build/global/product-single.js',
 		[],
-		'1.0.0',
+		file_exists( $product_single_path ) ? (string) filemtime( $product_single_path ) : '1.0.0',
 		[ 'strategy' => 'defer', 'in_footer' => true ]
 	);
 
@@ -318,6 +359,25 @@ function lt_product_single_scripts(): void {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'lt_product_single_scripts' );
+
+/**
+ * Map quick-filter pill keys to their real product_cat slug.
+ *
+ * Single source of truth for the pill→category mapping — shared by the query
+ * filter below, the AJAX query builder, and the archive template (which reads
+ * the same slugs to render `data-lt-cat` on each pill and to pre-highlight the
+ * active pill on category archive pages). Keep in sync with the pill labels
+ * defined in woocommerce/archive-product.php.
+ *
+ * @return array<string,string>
+ */
+function lt_shop_pill_category_map(): array {
+	return [
+		'spc-hybrid' => 'spc-hybrid-flooring',
+		'engineered' => 'engineered-timber-flooring',
+		'porcelain'  => 'tiles',
+	];
+}
 
 /**
  * Apply sidebar + quick-pill filters to the WooCommerce product loop.
@@ -397,7 +457,7 @@ function lt_shop_filter_product_query( WP_Query $q ): void {
 	}
 
 	// ── Quick-pill: category shortcuts ─────────────────────────────────────
-	$pill_cat_map = [ 'spc-hybrid' => 'spc-hybrid', 'engineered' => 'engineered', 'porcelain' => 'porcelain' ];
+	$pill_cat_map = lt_shop_pill_category_map();
 	if ( isset( $_GET['filter'] ) ) {
 		$pill = sanitize_key( $_GET['filter'] );
 		if ( array_key_exists( $pill, $pill_cat_map ) ) {
@@ -544,7 +604,8 @@ function lt_shop_build_query( array $f, int $per_page ): WP_Query {
 		case 'spc-hybrid':
 		case 'engineered':
 		case 'porcelain':
-			$args['tax_query'][] = [ 'taxonomy' => 'product_cat', 'field' => 'slug', 'terms' => [ $f['filter'] ], 'operator' => 'IN' ];
+			$pill_cat_map = lt_shop_pill_category_map();
+			$args['tax_query'][] = [ 'taxonomy' => 'product_cat', 'field' => 'slug', 'terms' => [ $pill_cat_map[ $f['filter'] ] ], 'operator' => 'IN' ];
 			break;
 	}
 

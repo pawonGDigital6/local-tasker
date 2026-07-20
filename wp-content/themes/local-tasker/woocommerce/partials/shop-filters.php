@@ -10,6 +10,18 @@ defined( 'ABSPATH' ) || exit;
 
 // Active filter values from query string (sanitised).
 $active_cat        = isset( $_GET['product_cat'] ) ? sanitize_text_field( (string) ( is_array( $_GET['product_cat'] ) ? reset( $_GET['product_cat'] ) : $_GET['product_cat'] ) ) : '';
+
+// On taxonomy archive pages (e.g. /product-category/spc-hybrid-flooring/), the
+// category is encoded in the URL path — there is no ?product_cat= param. Detect
+// this and use the queried term slug as the active category so the sidebar radio
+// is pre-selected when a user lands directly on a category archive URL.
+if ( $active_cat === '' && function_exists( 'is_product_category' ) && is_product_category() ) {
+	$queried = get_queried_object();
+	if ( $queried instanceof WP_Term ) {
+		$active_cat = $queried->slug;
+	}
+}
+
 $price_min         = ( isset( $_GET['min_price'] ) && $_GET['min_price'] !== '' ) ? (float) $_GET['min_price'] : '';
 $price_max         = ( isset( $_GET['max_price'] ) && $_GET['max_price'] !== '' ) ? (float) $_GET['max_price'] : '';
 $active_colours    = isset( $_GET['filter_colour'] ) ? array_map( 'sanitize_text_field', (array) $_GET['filter_colour'] ) : [];
@@ -185,6 +197,7 @@ $lt_result_range = $lt_result_shown > 0 ? '1-' . $lt_result_shown : '0';
 										<?php checked( $is_checked ); ?>
 									>
 									<span class="lt-filter-checkbox__ui w-4 h-4 rounded-full border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150" aria-hidden="true">
+										<span class="hidden peer-checked:block w-1.5 h-1.5 rounded-full bg-lt-white"></span>
 									</span>
 									<span class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
 										<?php echo esc_html( $cat->name ); ?>

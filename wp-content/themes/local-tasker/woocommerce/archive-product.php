@@ -11,20 +11,52 @@
 
 defined('ABSPATH') || exit;
 
-// Filter pill taxonomy map.
+// Filter pill taxonomy map. 'term' must be the REAL product_cat slug — pulled
+// from lt_shop_pill_category_map() (inc/woocommerce.php) so this can never drift
+// out of sync with the AJAX/query layer that uses the same map again.
+$lt_pill_cat_map = function_exists('lt_shop_pill_category_map') ? lt_shop_pill_category_map() : [];
 $lt_filter_pills = [
 	'all' => ['label' => __('All', 'local-tasker')],
 	'on-sale' => ['label' => __('On Sale', 'local-tasker')],
 	'new-arrivals' => ['label' => __('New Arrivals', 'local-tasker')],
 	'in-stock' => ['label' => __('In Stock', 'local-tasker')],
-	'spc-hybrid' => ['label' => __('SPC Hybrid', 'local-tasker'), 'tax' => 'product_cat', 'term' => 'spc-hybrid'],
-	'engineered' => ['label' => __('Engineered', 'local-tasker'), 'tax' => 'product_cat', 'term' => 'engineered'],
-	'porcelain' => ['label' => __('Porcelain', 'local-tasker'), 'tax' => 'product_cat', 'term' => 'porcelain'],
+	'spc-hybrid' => ['label' => __('SPC Hybrid', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['spc-hybrid'] ?? ''],
+	'engineered' => ['label' => __('Engineered', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['engineered'] ?? ''],
+	'porcelain' => ['label' => __('Porcelain', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['porcelain'] ?? ''],
 ];
 
 $active_pill = isset($_GET['filter']) ? sanitize_key($_GET['filter']) : 'all';
 if (!array_key_exists($active_pill, $lt_filter_pills)) {
 	$active_pill = 'all';
+}
+
+// On taxonomy archive pages (e.g. /product-category/spc-hybrid-flooring/, or any
+// of its sub-categories), there is no ?filter= GET param. Map the queried term
+// (or any of its ancestor terms) to the pill key so the correct pill is
+// highlighted on initial load. Uses real term hierarchy, not slug-string guessing,
+// so it correctly matches sub-categories regardless of slug naming pattern
+// (e.g. "9mm-spc-hybrid-flooring" is a child of "spc-hybrid-flooring" but doesn't
+// share a string prefix with it).
+$lt_archive_cat_slug = ''; // The current archive's term slug (for JS sync).
+if ($active_pill === 'all' && function_exists('is_product_category') && is_product_category()) {
+	$lt_queried = get_queried_object();
+	if ($lt_queried instanceof WP_Term) {
+		$lt_archive_cat_slug = $lt_queried->slug;
+		$lt_ancestor_ids = get_ancestors($lt_queried->term_id, 'product_cat', 'taxonomy');
+		foreach ($lt_filter_pills as $key => $pill) {
+			if (empty($pill['tax']) || empty($pill['term'])) {
+				continue;
+			}
+			$pill_term = get_term_by('slug', $pill['term'], 'product_cat');
+			if (!$pill_term) {
+				continue;
+			}
+			if ($lt_queried->term_id === $pill_term->term_id || in_array($pill_term->term_id, $lt_ancestor_ids, true)) {
+				$active_pill = $key;
+				break;
+			}
+		}
+	}
 }
 
 // Any filter active — quick pill or sidebar (category, price, colour, thickness).
@@ -90,7 +122,8 @@ foreach ($blocks_before as $block) {
 				<div class="right-navs flex md:justify-end items-start wd:w-[72.9%] gap-4 max-md:flex-wrap w-full">
 					<!-- Filter pills -->
 					<nav class="lt-filter-pills md:flex-1 overflow-auto scrollbar-thin scrollbar-thumb-[#0a65fc78] scrollbar-track-lt-snow-drift max-md:mr-[-32px] max-md:w-[calc(100%+32px)] max-sm:mr-[-16px] max-sm:w-[calc(100%+16px)] max-sm:pb-3"
-						aria-label="<?php esc_attr_e('Quick filters', 'local-tasker'); ?>">
+						aria-label="<?php esc_attr_e('Quick filters', 'local-tasker'); ?>"
+						data-lt-archive-cat="<?php echo esc_attr($lt_archive_cat_slug); ?>">
 						<div class="holder flex md:flex-wrap items-center gap-2">
 							<?php foreach ($lt_filter_pills as $key => $pill):
 								$is_active = $active_pill === $key;
@@ -99,6 +132,7 @@ foreach ($blocks_before as $block) {
 									: add_query_arg('filter', $key);
 								?>
 								<a href="<?php echo esc_url($pill_url); ?>" data-lt-pill="<?php echo esc_attr($key); ?>"
+									<?php if (!empty($pill['term'])) : ?>data-lt-cat="<?php echo esc_attr($pill['term']); ?>"<?php endif; ?>
 									class="lt-filter-pill inline-flex items-center h-8 px-4 rounded-full border text-[13px] font-semibold whitespace-nowrap transition-colors duration-200 last:mr-4 <?php echo $is_active ? 'bg-lt-brand text-lt-white border-[#0a0d1a]' : 'bg-lt-white text-[#6b7280] border-[#e5e5df] hover:border-lt-brand hover:text-lt-brand'; ?>"
 									aria-current="<?php echo $is_active ? 'true' : 'false'; ?>">
 									<?php echo esc_html($pill['label']); ?>

@@ -83,7 +83,26 @@ import 'swiper/css/bundle';
 			});
 		}
 
+		// WooCommerce renders its own attribute <select> dropdowns alongside our
+		// custom swatches/pills (needed so its native variation-matching JS keeps
+		// the Add to Cart button + hidden variation_id in sync). Those selects are
+		// hidden via CSS; clicking a swatch must drive them the same way a user
+		// picking from the dropdown would, via a real `change` event.
+		function syncNativeSelects() {
+			const form = summary.querySelector('.variations_form');
+			if (!form) return;
+			Object.keys(selectedAttributes).forEach(function (attr) {
+				const select = form.querySelector('select[name="attribute_' + attr + '"]');
+				if (select && select.value !== selectedAttributes[attr]) {
+					select.value = selectedAttributes[attr];
+					select.dispatchEvent(new Event('change', { bubbles: true }));
+				}
+			});
+		}
+
 		function applyVariation() {
+			syncNativeSelects();
+
 			const matched = findVariation();
 			selectedVariationId = matched ? matched.variation_id : null;
 			variationInStock    = matched ? !!matched.in_stock : false;
@@ -254,7 +273,7 @@ import 'swiper/css/bundle';
 		}
 
 		// Stepper buttons.
-		const STEP = 0.5;
+		const STEP = 1;
 		if (minusBtn) {
 			minusBtn.addEventListener('click', function () {
 				const v = parseFloat(areaInput.value) || 0;

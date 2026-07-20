@@ -30,8 +30,8 @@
 				return response.json();
 			})
 			.then(function (data) {
-				if (data && typeof data.items_count !== 'undefined') {
-					updateBadge(data.items_count);
+				if (data && Array.isArray(data.items)) {
+					updateBadge(data.items.length);
 				}
 			})
 			.catch(function () {});
@@ -54,9 +54,9 @@
 					return;
 				}
 				var cartData = store.getCartData ? store.getCartData() : null;
-				if (cartData && typeof cartData.itemsCount !== 'undefined' && cartData.itemsCount !== lastCount) {
-					lastCount = cartData.itemsCount;
-					updateBadge(cartData.itemsCount);
+				if (cartData && Array.isArray(cartData.items) && cartData.items.length !== lastCount) {
+					lastCount = cartData.items.length;
+					updateBadge(cartData.items.length);
 				}
 			});
 		}

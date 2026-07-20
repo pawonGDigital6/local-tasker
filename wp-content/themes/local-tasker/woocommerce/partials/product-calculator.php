@@ -41,7 +41,7 @@ $nonce        = wp_create_nonce( 'lt_add_to_cart_' . $product_id );
 				class="lt-stepper__input w-16 text-center border-x border-[#E9EAEC] h-11 text-body font-bold text-lt-text-primary bg-transparent focus:outline-none"
 				value="0"
 				min="0"
-				step="0.1"
+				step="1"
 				inputmode="decimal"
 				aria-live="polite"
 			>

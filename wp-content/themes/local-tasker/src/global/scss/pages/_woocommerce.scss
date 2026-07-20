@@ -1117,6 +1117,22 @@ body.woocommerce-account {
 }
 
 /* --------------------------------------------------------------------------
+   Single product — variation selector
+
+   Our custom swatch/pill selector (`.lt-variation-selector`) replaces
+   WooCommerce's native attribute dropdowns. The dropdowns are left in the
+   DOM (so WooCommerce's own variation-matching JS keeps working and the
+   Add to Cart button still activates correctly) but are visually hidden —
+   selecting a swatch syncs the hidden `<select>` via a `change` event.
+   -------------------------------------------------------------------------- */
+.lt-product-summary {
+	.variations_form .variations,
+	.variations_form .reset_variations {
+		display: none;
+	}
+}
+
+/* --------------------------------------------------------------------------
    [Product Card]
 -------------------------------------------------------------------------- */
 .filter-holder .th-filter > li:last-child {
