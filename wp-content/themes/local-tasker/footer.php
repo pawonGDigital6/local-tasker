@@ -68,7 +68,7 @@ $copyright_text = get_field('copyright_text', 'options');
 								?>
 								<li>
 									<?php if ($link_url): ?>
-										<a class="w-[32px] h-[32px] rounded-full bg-lt-text-secondary flex justify-center items-center  hover:translate-y-[-2px] p-1"
+										<a class="w-[32px] h-[32px] rounded-full bg-lt-text-secondary flex justify-center items-center  hover:translate-y-[-2px] p-1.5"
 											target="_blank" href="<?php echo esc_html($link_url); ?>">
 											<?php
 											if ($social_icon) {

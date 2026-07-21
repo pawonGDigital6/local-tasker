@@ -140,8 +140,8 @@
 		border-radius: 14px;
 		/* Figma: 240px card with 190px inner content = 25px padding. */
 		padding: 22px 26px 20px 23px;
-		position: sticky;
-		top: 24px;
+		/* position: sticky;
+		top: 24px; */
 		align-self: flex-start;
 	}
 

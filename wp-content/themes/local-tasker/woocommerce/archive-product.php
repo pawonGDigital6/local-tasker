@@ -156,12 +156,12 @@ foreach ($blocks_before as $block) {
 								<?php
 								$current_orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : apply_filters('woocommerce_default_catalog_orderby', get_option('woocommerce_default_catalog_orderby'));
 								$orderby_options = apply_filters('woocommerce_catalog_orderby', [
-									'menu_order' => __('Default sorting', 'local-tasker'),
+									'menu_order' => __('Default Sorting', 'local-tasker'),
 									'popularity' => __('Best Selling', 'local-tasker'),
-									'rating' => __('Average rating', 'local-tasker'),
 									'date' => __('Latest', 'local-tasker'),
-									'price' => __('Price: low to high', 'local-tasker'),
-									'price-desc' => __('Price: high to low', 'local-tasker'),
+									'price' => __('Price: Low to High', 'local-tasker'),
+									'price-desc' => __('Price: High to Low', 'local-tasker'),
+									'rating' => __('Average Rating', 'local-tasker'),
 								]);
 								foreach ($orderby_options as $id => $name):
 									?>

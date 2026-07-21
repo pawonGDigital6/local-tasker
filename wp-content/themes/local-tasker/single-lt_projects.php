@@ -198,7 +198,7 @@ get_header();
 										<?php endif; ?>
 										<?php if ($po_list_heading): ?>
 											<span
-												class="text-body-xl font-semi-ext text-2xl font-bold leading-[1.2] tracking-[-0.02em] text-lt-onyx"><?php echo esc_html($po_list_heading); ?></span>
+												class="smlr:text-body-xl font-semi-ext sm:text-2xl text-body font-bold leading-[1.2] tracking-[-0.02em] text-lt-onyx"><?php echo esc_html($po_list_heading); ?></span>
 										<?php endif; ?>
 									</div>
 								</div><!-- Ebd of List -->
