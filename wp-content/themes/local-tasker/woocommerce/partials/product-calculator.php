@@ -111,12 +111,12 @@ $nonce        = wp_create_nonce( 'lt_add_to_cart_' . $product_id );
 	</div>
 
 	<!-- Wastage confirmation banner -->
-	<div id="lt-wastage-banner" class="hidden items-center gap-2 bg-lt-brand/8 border border-lt-brand/20 rounded-lg px-4 py-3 mb-4" role="status" aria-live="polite">
-		<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="text-lt-brand shrink-0">
+	<div id="lt-wastage-banner" class="hidden items-center gap-2 bg-lt-accent/8 border border-lt-accent/20 rounded-lg px-4 py-3 mb-4" role="status" aria-live="polite">
+		<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="text-lt-accent shrink-0">
 			<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3"/>
 			<path d="M8 5v3.5M8 10.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
 		</svg>
-		<span class="text-caption-sm text-lt-brand font-medium">
+		<span class="text-caption-sm text-lt-accent font-medium">
 			<?php esc_html_e( '10% wastage has been included in your calculation.', 'local-tasker' ); ?>
 		</span>
 	</div>
@@ -124,22 +124,21 @@ $nonce        = wp_create_nonce( 'lt_add_to_cart_' . $product_id );
 	<!-- Result cards -->
 	<div class="grid grid-cols-3 gap-3 mb-5" role="region" aria-label="<?php esc_attr_e( 'Calculator results', 'local-tasker' ); ?>">
 
-		<div class="lt-calc-result flex flex-col items-center text-center bg-lt-snow-drift rounded-xl p-4 gap-1">
-			<span class="text-h5 font-bold text-lt-text-primary leading-none" id="lt-result-coverage" aria-live="polite">0</span>
-			<span class="text-caption-xs text-lt-text-muted leading-[1.3]"><?php esc_html_e( 'Coverage approx', 'local-tasker' ); ?></span>
-			<span class="text-caption-xs text-lt-text-muted"><?php esc_html_e( '(sqm)', 'local-tasker' ); ?></span>
+		<div class="lt-calc-result flex flex-col items-center text-center bg-lt-white border border-[#E9EAEC] rounded-lg px-3 py-3 gap-1">
+			<span class="text-caption-xs text-lt-text-muted leading-[1.3]"><?php esc_html_e( 'Coverage approx.', 'local-tasker' ); ?></span>
+			<span class="text-body-lg font-bold text-lt-text-primary leading-none" id="lt-result-coverage" aria-live="polite">0</span>
+			<span class="text-caption-xs text-lt-text-muted"><?php esc_html_e( 'sqm', 'local-tasker' ); ?></span>
 		</div>
 
-		<div class="lt-calc-result flex flex-col items-center text-center bg-lt-snow-drift rounded-xl p-4 gap-1">
-			<span class="text-h5 font-bold text-lt-text-primary leading-none" id="lt-result-boxes" aria-live="polite">0</span>
-			<span class="text-caption-xs text-lt-text-muted leading-[1.3]"><?php esc_html_e( 'Boxes approx', 'local-tasker' ); ?></span>
-			<span class="text-caption-xs text-lt-text-muted"><?php esc_html_e( '(count)', 'local-tasker' ); ?></span>
+		<div class="lt-calc-result flex flex-col items-center text-center bg-lt-white border border-[#E9EAEC] rounded-lg px-3 py-3 gap-1">
+			<span class="text-caption-xs text-lt-text-muted leading-[1.3]"><?php esc_html_e( 'Boxes approx.', 'local-tasker' ); ?></span>
+			<span class="text-body-lg font-bold text-lt-text-primary leading-none" id="lt-result-boxes" aria-live="polite">0</span>
+			<span class="text-caption-xs text-lt-text-muted"><?php esc_html_e( 'boxes', 'local-tasker' ); ?></span>
 		</div>
 
-		<div class="lt-calc-result flex flex-col items-center text-center bg-lt-brand rounded-xl p-4 gap-1">
-			<span class="text-h5 font-bold text-lt-white leading-none" id="lt-result-total" aria-live="polite">$0.00</span>
-			<span class="text-caption-xs text-lt-white/80 leading-[1.3]"><?php esc_html_e( 'Total incl.', 'local-tasker' ); ?></span>
-			<span class="text-caption-xs text-lt-white/80"><?php esc_html_e( 'GST', 'local-tasker' ); ?></span>
+		<div class="lt-calc-result flex flex-col items-center text-center bg-lt-white border border-[#E9EAEC] rounded-lg px-3 py-3 gap-1">
+			<span class="text-caption-xs text-lt-text-muted leading-[1.3]"><?php esc_html_e( 'Total incl. GST', 'local-tasker' ); ?></span>
+			<span class="text-body-lg font-bold text-lt-brand leading-none" id="lt-result-total" aria-live="polite">$0.00</span>
 		</div>
 
 	</div>

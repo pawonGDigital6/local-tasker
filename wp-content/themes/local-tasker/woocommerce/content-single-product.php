@@ -14,10 +14,10 @@ global $product;
 	<!-- ── Gallery + Summary ────────────────────────────────── -->
 	<section class="lt-product-single__top bg-lt-white py-8 md:py-12">
 		<div class="container">
-			<div class="flex flex-wrap lg:flex-nowrap gap-8 lg:gap-12">
+			<div class="flex flex-wrap lg:flex-nowrap gap-8 lg:gap-[61px]">
 
 				<!-- Gallery -->
-				<div class="lt-product-gallery w-full lg:w-[48%] shrink-0">
+				<div class="lt-product-gallery w-full lg:w-[45%] shrink-0">
 					<?php get_template_part( 'woocommerce/partials/product-gallery' ); ?>
 				</div>
 

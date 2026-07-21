@@ -473,61 +473,75 @@
 	color: var(--lt-muted);
 }
 
-/* Box price pill */
+/* Box price pill — accent highlight (Figma 29:4618: bg rgba(246,146,34,.08), text #f69222).
+   Scoped to the snow-drift variant only so the accent pill keeps its own colours. */
 .lt-product-summary__pricing .bg-lt-snow-drift {
 	background: var(--lt-surface);
 	border-color: var(--lt-line);
 }
 
-/* Calculator card wrapper */
+/* Calculator card wrapper — Figma 29:4633: bg #f0ede8, border #e2ddd7, r10, pad 21 */
 .lt-calculator {
-	background: #fff;
-	border: 1px solid var(--lt-line);
-	border-radius: 16px;
-	padding: 22px;
+	background: #f0ede8;
+	border: 1px solid #e2ddd7;
+	border-radius: 10px;
+	padding: 21px;
 	margin-top: 4px;
 }
 
 .lt-calculator>h2 {
 	font-family: var(--font-semi-ext, "PP Formula Semi Extended", sans-serif);
-	font-size: 18px;
+	font-size: 16px;
 }
 
-/* Stepper */
+/* Stepper — Figma 29:4637: 132x40.5 white, 1px #e2ddd7, r6; buttons 37px; the
+   input keeps left/right divider rules and sits flush (no padding/gap on the shell). */
 .lt-stepper {
-	border-color: var(--lt-line);
-	border-radius: 12px;
+	background: #fff;
+	border: 1px solid #e2ddd7;
+	border-radius: 6px;
+	padding: 0;
+	gap: 0;
+	overflow: hidden;
+}
+
+.lt-stepper__btn {
+	width: 37px;
+	background: transparent;
+	border-radius: 0;
+	font-size: 16px;
+	color: var(--lt-muted-2);
+}
+
+.lt-stepper__btn:hover {
+	background: var(--lt-surface);
 }
 
 .lt-stepper__input {
 	font-family: var(--font-base, "Manrope", sans-serif);
-	font-weight: 700;
-	font-size: 18px;
+	font-weight: 500;
+	font-size: 14px;
+	border-left: 1px solid #e2ddd7;
+	border-right: 1px solid #e2ddd7;
+	color: var(--lt-ink);
 }
 
-/* Result cards */
+/* Result cards — Figma 29:4675: three WHITE boxes, 1px #e2ddd7, r6.
+   The total's emphasis is its brand-coloured VALUE, not a filled blue card.
+   (The old `:nth-child(3) { background: brand }` rule forced a blue fill and
+   is deliberately gone — it fought the markup and hid the brand-coloured value.) */
 .lt-calc-result {
-	border-radius: 12px;
+	background: #fff;
+	border: 1px solid #e2ddd7;
+	border-radius: 6px;
 }
 
-.lt-calc-result .text-h5 {
-	font-size: 22px;
-}
-
-.lt-calc-result.bg-lt-brand,
-.lt-calc-result:nth-child(3) {
-	background: var(--lt-brand);
-}
-
-/* Choose option rows */
+/* Choose option — Figma 29:4706 renders one bordered table, so the rows must stay
+   square-cornered and rely on their own top divider (no pill radius / 1.5px ring). */
 .lt-choose-option__row {
-	border-radius: 12px;
-	border-width: 1.5px;
-}
-
-.lt-choose-option__row.border-lt-brand {
-	background: rgba(10, 101, 252, .05);
-	border-color: var(--lt-brand);
+	border-radius: 0;
+	border-width: 0;
+	border-top-width: 1px;
 }
 
 /* Area calculator */

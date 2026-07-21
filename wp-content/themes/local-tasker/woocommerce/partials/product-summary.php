@@ -173,9 +173,9 @@ if ( $is_variable ) {
 
 			<!-- Box price badge -->
 			<div class="mt-3<?php echo ( $sold_by_box && $has_box_price ) ? '' : ' hidden'; ?>" id="lt-price-box-wrap">
-				<span class="inline-block text-caption-sm font-semibold text-lt-text-primary bg-lt-snow-drift border border-[#E9EAEC] rounded-full px-3 py-[5px]">
+				<span class="inline-block text-caption-sm font-medium text-lt-accent bg-lt-accent/8 rounded-[4px] px-[7px] py-[3px]">
 					<?php esc_html_e( 'Box price', 'local-tasker' ); ?> <span id="lt-price-box"><?php echo wc_price( $box_price_ex ); ?></span>
-					<span class="text-lt-text-muted font-normal"><?php esc_html_e( 'ex GST', 'local-tasker' ); ?></span>
+					<span class="font-normal"><?php esc_html_e( 'ex GST', 'local-tasker' ); ?></span>
 				</span>
 			</div>
 		<?php else : ?>

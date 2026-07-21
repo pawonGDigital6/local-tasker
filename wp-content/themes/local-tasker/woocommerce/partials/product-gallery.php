@@ -20,7 +20,7 @@ $count   = count( $all_ids );
 <div class="lt-gallery" id="lt-gallery" data-count="<?php echo esc_attr( $count ); ?>">
 
 	<!-- Main image -->
-	<div class="lt-gallery__main relative overflow-hidden rounded-2xl bg-lt-white-lilac aspect-[4/3]">
+	<div class="lt-gallery__main relative overflow-hidden rounded-2xl bg-lt-white-lilac aspect-[560/448]">
 
 		<!-- Slides -->
 		<div class="lt-gallery__track flex transition-transform duration-400 ease-in-out h-full" id="lt-gallery-track">
@@ -81,11 +81,11 @@ $count   = count( $all_ids );
 
 	<!-- Thumbnails -->
 	<?php if ( $count > 1 ) : ?>
-		<div class="lt-gallery__thumbs flex gap-3 mt-4 overflow-x-auto pb-1" role="tablist" aria-label="<?php esc_attr_e( 'Image thumbnails', 'local-tasker' ); ?>">
+		<div class="lt-gallery__thumbs grid grid-cols-4 gap-2 mt-3" role="tablist" aria-label="<?php esc_attr_e( 'Image thumbnails', 'local-tasker' ); ?>">
 			<?php foreach ( $all_ids as $index => $id ) : ?>
 				<button
 					type="button"
-					class="lt-gallery__thumb shrink-0 w-[72px] h-[72px] md:w-[80px] md:h-[80px] rounded-xl overflow-hidden border-2 transition-all duration-200 <?php echo $index === 0 ? 'border-lt-brand' : 'border-transparent hover:border-[#D1D5DB]'; ?>"
+					class="lt-gallery__thumb w-full aspect-square rounded-xl overflow-hidden border-2 transition-all duration-200 <?php echo $index === 0 ? 'border-lt-brand' : 'border-transparent hover:border-[#D1D5DB]'; ?>"
 					role="tab"
 					aria-selected="<?php echo $index === 0 ? 'true' : 'false'; ?>"
 					aria-controls="lt-slide-<?php echo esc_attr( $index ); ?>"
