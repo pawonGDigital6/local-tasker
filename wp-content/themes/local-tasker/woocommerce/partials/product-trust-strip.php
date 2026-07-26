@@ -26,7 +26,7 @@ $items = [
 ];
 ?>
 
-<section class="lt-product-trust-strip bg-lt-white border-y border-[#E9EAEC] py-8 md:py-10" aria-label="<?php esc_attr_e( 'Why choose us', 'local-tasker' ); ?>">
+<section class="lt-product-trust-strip bg-lt-white border-y border-[#E9EAEC] py-8 md:py-10 hidden" aria-label="<?php esc_attr_e( 'Why choose us', 'local-tasker' ); ?>">
 	<div class="container">
 		<div class="grid sm:grid-cols-3 gap-6 md:gap-10">
 			<?php foreach ( $items as $item ) : ?>

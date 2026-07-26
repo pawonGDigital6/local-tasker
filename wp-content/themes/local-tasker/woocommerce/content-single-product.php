@@ -12,7 +12,7 @@ global $product;
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class( '', $product ); ?>>
 
 	<!-- ── Gallery + Summary ────────────────────────────────── -->
-	<section class="lt-product-single__top bg-lt-white py-8 md:py-12">
+	<section class="lt-product-single__top bg-[#F7F6F4] py-8 md:py-12">
 		<div class="container">
 			<div class="flex flex-wrap lg:flex-nowrap gap-8 lg:gap-[61px]">
 
@@ -40,7 +40,7 @@ global $product;
 	$_sold_by_box = (bool)  get_post_meta( $_product_id, 'sold_by_box', true );
 	if ( $_sold_by_box && $_carton_sqm > 0 ) :
 	?>
-	<section class="lt-product-calc-explainer bg-lt-white py-10 md:py-14">
+	<section class="lt-product-calc-explainer bg-[#F7F6F4] py-10 md:py-14">
 		<div class="container">
 			<div class="flex flex-wrap lg:flex-nowrap gap-10 lg:gap-16 items-start">
 
@@ -72,15 +72,6 @@ global $product;
 		get_template_part( 'woocommerce/partials/product-related', null, [ 'ids' => $related_ids ] );
 	}
 	?>
-
-	<!-- ── Supply + Install CTA ─────────────────────────────── -->
-	<?php get_template_part( 'woocommerce/partials/product-supply-cta' ); ?>
-
-	<!-- ── Customer reviews ─────────────────────────────────── -->
-	<?php get_template_part( 'woocommerce/partials/product-reviews' ); ?>
-
-	<!-- ── Let's Work Together CTA ──────────────────────────── -->
-	<?php get_template_part( 'woocommerce/partials/product-work-together-cta' ); ?>
 
 	<?php do_action( 'woocommerce_after_single_product' ); ?>
 
