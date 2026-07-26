@@ -76,7 +76,7 @@ $unique_page_class = get_field('unique_page_class');
 						<!-- Right -->
 						<div class="site-header__top-right flex items-center flex justify-end gap-[20px] max-sm:gap-[12px]">
 							<!-- User  -->
-							<a href="#" class="icon-link">
+							<a href="<?php echo esc_url( home_url( '/my-account' ) ); ?>" class="icon-link">
 								<svg class="max-md:w-[16px]" width="20" height="18" viewBox="0 0 20 18" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_774_479)">

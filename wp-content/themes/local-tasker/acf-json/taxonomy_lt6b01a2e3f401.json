@@ -1,0 +1,54 @@
+{
+    "key": "taxonomy_lt6b01a2e3f401",
+    "title": "Category Content Page",
+    "fields": [
+        {
+            "key": "field_lt6b01a2e3f402",
+            "label": "Content Page",
+            "name": "lt_category_content_page",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "Optional. Pick a Page built with ACF blocks (including the \"WooCommerce Shop Loop\" placeholder block) to use as this category's archive content instead of the default Shop page content. Leave blank to fall back to the Shop page.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "page"
+            ],
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 0,
+            "allow_null": 1,
+            "bidirectional": 0,
+            "ui": 1,
+            "allow_in_bindings": 0,
+            "bidirectional_target": []
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "product_cat"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Assigns a Page (built with ACF blocks) as the source of above/below-loop content for a product category archive.",
+    "show_in_rest": 0,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1785103200
+}

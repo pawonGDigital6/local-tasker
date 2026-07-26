@@ -72,9 +72,25 @@ $lt_clear_all_url = remove_query_arg(['filter', 'product_cat', 'min_price', 'max
 global $wp_query;
 $result_count = $wp_query ? $wp_query->found_posts : 0;
 
-// ── Parse shop page blocks, split around wc-shop-loop placeholder ──────────
-$shop_page_id = wc_get_page_id('shop');
-$shop_content = get_post_field('post_content', $shop_page_id);
+// ── Resolve which page's blocks power this archive ──────────────────────────
+// Category archives can override the default Shop page content by assigning
+// a "Content Page" via ACF (taxonomy_lt6b01a2e3f401, field lt_category_content_page,
+// location: taxonomy == product_cat). That page should be built with the same
+// acf-block/wc-shop-loop placeholder pattern as the Shop page. Falls back to
+// the Shop page when no override is assigned (or we're not on a category archive).
+$content_page_id = wc_get_page_id('shop');
+if (function_exists('is_product_category') && is_product_category()) {
+	$lt_cat_term = get_queried_object();
+	if ($lt_cat_term instanceof WP_Term && function_exists('get_field')) {
+		$lt_cat_content_page_id = get_field('lt_category_content_page', $lt_cat_term);
+		if ($lt_cat_content_page_id) {
+			$content_page_id = (int) $lt_cat_content_page_id;
+		}
+	}
+}
+
+// ── Parse content page blocks, split around wc-shop-loop placeholder ───────
+$shop_content = get_post_field('post_content', $content_page_id);
 $all_blocks = parse_blocks($shop_content);
 
 $loop_index = null;

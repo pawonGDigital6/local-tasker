@@ -3224,7 +3224,7 @@ body.woocommerce-account .woocommerce-info .button {
       left: 0;
       width: 20px;
       height: 20px;
-      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzUxMzM1XzU3MTApIj4KPHBhdGggZD0iTTEwLjAwMDMgMTguMzMzN0MxNC42MDI3IDE4LjMzMzcgMTguMzMzNyAxNC42MDI3IDE4LjMzMzcgMTAuMDAwM0MxOC4zMzM3IDUuMzk3OTUgMTQuNjAyNyAxLjY2Njk5IDEwLjAwMDMgMS42NjY5OUM1LjM5Nzk1IDEuNjY2OTkgMS42NjY5OSA1LjM5Nzk1IDEuNjY2OTkgMTAuMDAwM0MxLjY2Njk5IDE0LjYwMjcgNS4zOTc5NSAxOC4zMzM3IDEwLjAwMDMgMTguMzMzN1oiIHN0cm9rZT0iIzJBNDI5QiIgc3Ryb2tlLXdpZHRoPSIxLjY2NjY3IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTcuNSA5Ljk5OTY3TDkuMTY2NjcgMTEuNjY2M0wxMi41IDguMzMzMDEiIHN0cm9rZT0iIzJBNDI5QiIgc3Ryb2tlLXdpZHRoPSIxLjY2NjY3IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF81MTMzNV81NzEwIj4KPHJlY3Qgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo=);
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF81MTMzNV81NzEwKSI+DQo8cGF0aCBkPSJNMTAuMDAwMyAxOC4zMzM3QzE0LjYwMjcgMTguMzMzNyAxOC4zMzM3IDE0LjYwMjcgMTguMzMzNyAxMC4wMDAzQzE4LjMzMzcgNS4zOTc5NSAxNC42MDI3IDEuNjY2OTkgMTAuMDAwMyAxLjY2Njk5QzUuMzk3OTUgMS42NjY5OSAxLjY2Njk5IDUuMzk3OTUgMS42NjY5OSAxMC4wMDAzQzEuNjY2OTkgMTQuNjAyNyA1LjM5Nzk1IDE4LjMzMzcgMTAuMDAwMyAxOC4zMzM3WiIgc3Ryb2tlPSIjMkE0MjlCIiBzdHJva2Utd2lkdGg9IjEuNjY2NjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPg0KPHBhdGggZD0iTTcuNSA5Ljk5OTY3TDkuMTY2NjcgMTEuNjY2M0wxMi41IDguMzMzMDEiIHN0cm9rZT0iIzJBNDI5QiIgc3Ryb2tlLXdpZHRoPSIxLjY2NjY3IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4NCjwvZz4NCjxkZWZzPg0KPGNsaXBQYXRoIGlkPSJjbGlwMF81MTMzNV81NzEwIj4NCjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0id2hpdGUiLz4NCjwvY2xpcFBhdGg+DQo8L2RlZnM+DQo8L3N2Zz4NCg==);
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
@@ -3251,7 +3251,7 @@ body.woocommerce-account .woocommerce-info .button {
       left: 0;
       width: 16px;
       height: 16px;
-      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzI5XzIxNTEpIj4KPHBhdGggZD0iTTE0LjUzMzEgNi42NjY2NkMxNC44Mzc2IDguMTYwODYgMTQuNjIwNiA5LjcxNDI4IDEzLjkxODMgMTEuMDY3OUMxMy4yMTYxIDEyLjQyMTQgMTIuMDcxIDEzLjQ5MzQgMTAuNjc0MSAxNC4xMDQ5QzkuMjc3MTggMTQuNzE2NCA3LjcxMjg0IDE0LjgzMDUgNi4yNDE5NiAxNC40MjgyQzQuNzcxMDcgMTQuMDI2IDMuNDgyNTUgMTMuMTMxNiAyLjU5MTI3IDExLjg5NDNDMS43IDEwLjY1NyAxLjI1OTg0IDkuMTUxNDggMS4zNDQyIDcuNjI4OTJDMS40Mjg1NiA2LjEwNjM1IDIuMDMyMzQgNC42NTg3MiAzLjA1NDg2IDMuNTI3NDRDNC4wNzczNyAyLjM5NjE2IDUuNDU2ODEgMS42NDk2MSA2Ljk2MzEzIDEuNDEyM0M4LjQ2OTQ2IDEuMTc0OTggMTAuMDExNiAxLjQ2MTIzIDExLjMzMjQgMi4yMjMzMyIgc3Ryb2tlPSIjMTU1REZDIiBzdHJva2Utd2lkdGg9IjEuMzMzMzMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNNiA3LjMzMzY2TDggOS4zMzM2NkwxNC42NjY3IDIuNjY2OTkiIHN0cm9rZT0iIzE1NURGQyIgc3Ryb2tlLXdpZHRoPSIxLjMzMzMzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF8yOV8yMTUxIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo=);
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF8yOV8yMTUxKSI+DQo8cGF0aCBkPSJNMTQuNTMzMSA2LjY2NjY2QzE0LjgzNzYgOC4xNjA4NiAxNC42MjA2IDkuNzE0MjggMTMuOTE4MyAxMS4wNjc5QzEzLjIxNjEgMTIuNDIxNCAxMi4wNzEgMTMuNDkzNCAxMC42NzQxIDE0LjEwNDlDOS4yNzcxOCAxNC43MTY0IDcuNzEyODQgMTQuODMwNSA2LjI0MTk2IDE0LjQyODJDNC43NzEwNyAxNC4wMjYgMy40ODI1NSAxMy4xMzE2IDIuNTkxMjcgMTEuODk0M0MxLjcgMTAuNjU3IDEuMjU5ODQgOS4xNTE0OCAxLjM0NDIgNy42Mjg5MkMxLjQyODU2IDYuMTA2MzUgMi4wMzIzNCA0LjY1ODcyIDMuMDU0ODYgMy41Mjc0NEM0LjA3NzM3IDIuMzk2MTYgNS40NTY4MSAxLjY0OTYxIDYuOTYzMTMgMS40MTIzQzguNDY5NDYgMS4xNzQ5OCAxMC4wMTE2IDEuNDYxMjMgMTEuMzMyNCAyLjIyMzMzIiBzdHJva2U9IiMxNTVERkMiIHN0cm9rZS13aWR0aD0iMS4zMzMzMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+DQo8cGF0aCBkPSJNNiA3LjMzMzY2TDggOS4zMzM2NkwxNC42NjY3IDIuNjY2OTkiIHN0cm9rZT0iIzE1NURGQyIgc3Ryb2tlLXdpZHRoPSIxLjMzMzMzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4NCjwvZz4NCjxkZWZzPg0KPGNsaXBQYXRoIGlkPSJjbGlwMF8yOV8yMTUxIj4NCjxyZWN0IHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0id2hpdGUiLz4NCjwvY2xpcFBhdGg+DQo8L2RlZnM+DQo8L3N2Zz4NCg==);
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
@@ -3298,9 +3298,6 @@ body.woocommerce-account .woocommerce-info .button {
   .-top-26 {
     top: calc(var(--spacing) * -26);
   }
-  .-top-31 {
-    top: calc(var(--spacing) * -31);
-  }
   .top-0 {
     top: 0;
   }
@@ -3318,9 +3315,6 @@ body.woocommerce-account .woocommerce-info .button {
   }
   .top-\[-6px\] {
     top: -6px;
-  }
-  .top-\[-124px\] {
-    top: -124px;
   }
   .top-\[17px\] {
     top: 17px;
@@ -3832,9 +3826,6 @@ body.woocommerce-account .woocommerce-info .button {
   .h-31 {
     height: calc(var(--spacing) * 31);
   }
-  .h-45 {
-    height: calc(var(--spacing) * 45);
-  }
   .h-\[2px\] {
     height: 2px;
   }
@@ -3966,9 +3957,6 @@ body.woocommerce-account .woocommerce-info .button {
   }
   .w-31 {
     width: calc(var(--spacing) * 31);
-  }
-  .w-45 {
-    width: calc(var(--spacing) * 45);
   }
   .w-\[8px\] {
     width: 8px;
@@ -4903,9 +4891,6 @@ body.woocommerce-account .woocommerce-info .button {
   }
   .pr-\[30px\] {
     padding-right: 30px;
-  }
-  .pb-0 {
-    padding-bottom: 0;
   }
   .pb-1 {
     padding-bottom: var(--spacing);
@@ -6138,11 +6123,6 @@ body.woocommerce-account .woocommerce-info .button {
       margin-right: -32px;
     }
   }
-  .max-md\:hidden {
-    @media (width < 992px) {
-      display: none;
-    }
-  }
   .max-md\:h-\[287px\] {
     @media (width < 992px) {
       height: 287px;
@@ -6684,39 +6664,9 @@ body.woocommerce-account .woocommerce-info .button {
       text-align: center;
     }
   }
-  .max-xs\:text-\[10px\] {
-    @media (width < 375px) {
-      font-size: 10px;
-    }
-  }
-  .max-xs\:text-\[12px\] {
-    @media (width < 375px) {
-      font-size: 12px;
-    }
-  }
-  .max-xs\:text-\[18px\] {
-    @media (width < 375px) {
-      font-size: 18px;
-    }
-  }
-  .max-xs\:text-body {
-    @media (width < 375px) {
-      font-size: var(--text-body);
-    }
-  }
-  .max-xs\:text-body-lg {
-    @media (width < 375px) {
-      font-size: var(--text-body-lg);
-    }
-  }
   .xs\:grid-cols-2 {
     @media (width >= 375px) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  .xs\:text-body-xl {
-    @media (width >= 375px) {
-      font-size: var(--text-body-xl);
     }
   }
   .smlr\:right-\[-16px\] {
@@ -7456,11 +7406,6 @@ body.woocommerce-account .woocommerce-info .button {
       padding-block: 2.075rem;
     }
   }
-  .sm\:py-\[3\.375rem_0\.875rem\] {
-    @media (width >= 768px) {
-      padding-block: 3.375rem 0.875rem;
-    }
-  }
   .sm\:py-\[5\.4375rem_7\.625rem\] {
     @media (width >= 768px) {
       padding-block: 5.4375rem 7.625rem;
@@ -7499,11 +7444,6 @@ body.woocommerce-account .woocommerce-info .button {
   .sm\:pt-\[3\.375rem\] {
     @media (width >= 768px) {
       padding-top: 3.375rem;
-    }
-  }
-  .sm\:pt-\[3\.375rem_0\.875rem\] {
-    @media (width >= 768px) {
-      padding-top: 3.375rem 0.875rem;
     }
   }
   .sm\:pr-4 {
@@ -8548,16 +8488,6 @@ body.woocommerce-account .woocommerce-info .button {
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
   }
-  .lg\:sticky {
-    @media (width >= 1025px) {
-      position: sticky;
-    }
-  }
-  .lg\:top-4 {
-    @media (width >= 1025px) {
-      top: calc(var(--spacing) * 4);
-    }
-  }
   .lg\:mx-0 {
     @media (width >= 1025px) {
       margin-inline: 0;
@@ -8586,11 +8516,6 @@ body.woocommerce-account .woocommerce-info .button {
   .lg\:inline-flex {
     @media (width >= 1025px) {
       display: inline-flex;
-    }
-  }
-  .lg\:h-full {
-    @media (width >= 1025px) {
-      height: 100%;
     }
   }
   .lg\:min-h-\[470px\] {
