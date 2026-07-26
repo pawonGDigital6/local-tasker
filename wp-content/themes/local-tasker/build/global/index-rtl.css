@@ -1331,6 +1331,9 @@ body.opened-search-popup .global-search-pop {
 .default-single .entry-content > *:last-child {
   margin-bottom: 0;
 }
+.default-single .entry-content a:not(.btn) {
+  color: var(--color-lt-accent);
+}
 .default-single .entry-content blockquote {
   font-size: 16px;
   line-height: 1.5;
@@ -1346,6 +1349,21 @@ body.opened-search-popup .global-search-pop {
 }
 .default-single .entry-content blockquote > *:last-child {
   margin-bottom: 0;
+}
+.default-single .entry-content ul {
+  list-style-type: disc;
+  padding-right: 30px;
+}
+.default-single .entry-content ul li {
+  margin-bottom: 8px;
+}
+.default-single .entry-content .wp-block-rank-math-toc-block h2 {
+  margin-bottom: 1rem;
+}
+@media screen and (max-width: 781px) {
+  .default-single .entry-content .wp-block-columns.is-layout-flex {
+    gap: 8px;
+  }
 }
 
 .default-sing-page .wp-block-heading {
@@ -1367,6 +1385,46 @@ body.opened-search-popup .global-search-pop {
 }
 .default-sing-page a:hover {
   text-decoration: none;
+}
+
+.blog-content .entry-content h2 {
+  font-size: var(--text-h4);
+}
+.blog-content .entry-content h3 {
+  font-size: var(--text-h5);
+}
+.blog-content .entry-content .lt-ms-content {
+  padding: 24px;
+  border-radius: 20px;
+}
+@media screen and (max-width: 767px) {
+  .blog-content .entry-content .lt-ms-content {
+    padding: 0 8px 8px;
+    border-radius: 0;
+  }
+}
+.blog-content .entry-content .lt-ms-content__img-holder {
+  aspect-ratio: 3/1.8;
+  min-height: initial;
+}
+.blog-content .entry-content .lt-ms-content .rows {
+  gap: 24px;
+}
+.blog-content .entry-content .lt-ms-content .rows,
+.blog-content .entry-content .container {
+  padding: 0;
+}
+.blog-content .entry-content .lt-ms-content .rows > * {
+  width: 100%;
+}
+.blog-content .entry-content .lt-ms-content .rows.flex-wrap-reverse {
+  flex-wrap: wrap;
+}
+@media screen and (max-width: 767px) {
+  .blog-content .entry-content .lt-ms-content .btn {
+    padding-inline: 8px;
+    line-height: 1.2;
+  }
 }
 
 .related-post .swiper-pagination-bullet {
@@ -2545,6 +2603,10 @@ body.woocommerce-account .woocommerce-info .button {
     padding-block: 14px;
   }
 }
+
+body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-header .cart-icon {
+  display: none;
+}
 /*!************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[9].use[0]!./src/global/tailwind/tailwind.css ***!
   \************************************************************************************************************************************************************************************************************************************************************/
@@ -3615,6 +3677,9 @@ body.woocommerce-account .woocommerce-info .button {
   }
   .mb-13\.5 {
     margin-bottom: calc(var(--spacing) * 13.5);
+  }
+  .mb-16 {
+    margin-bottom: calc(var(--spacing) * 16);
   }
   .mb-\[1\.25rem\] {
     margin-bottom: 1.25rem;
@@ -7798,6 +7863,11 @@ body.woocommerce-account .woocommerce-info .button {
   .md\:mb-12 {
     @media (width >= 992px) {
       margin-bottom: calc(var(--spacing) * 12);
+    }
+  }
+  .md\:mb-16 {
+    @media (width >= 992px) {
+      margin-bottom: calc(var(--spacing) * 16);
     }
   }
   .md\:ml-\[-3\.2rem\] {

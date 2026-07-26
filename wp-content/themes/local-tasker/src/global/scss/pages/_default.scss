@@ -28,6 +28,10 @@
 			margin-bottom: 0;
 		}
 
+		a:not(.btn) {
+			color: var(--color-lt-accent);
+		}
+
 		blockquote {
 			font-size: 16px;
 			line-height: 1.5;
@@ -41,6 +45,26 @@
 
 			> *:last-child {
 				margin-bottom: 0;
+			}
+		}
+
+		ul {
+			list-style-type: disc;
+			padding-left: 30px;
+
+			li {
+				margin-bottom: 8px;
+			}
+		}
+
+		.wp-block-rank-math-toc-block {
+			h2 {
+				margin-bottom: 1rem;
+			}
+		}
+		@media screen and (max-width: 781px) {
+			.wp-block-columns.is-layout-flex {
+				gap: 8px;
 			}
 		}
 	}
@@ -72,6 +96,46 @@
 	}
 }
 
+.blog-content .entry-content {
+	h2 {
+		font-size: var(--text-h4);
+	}
+	h3 {
+		font-size: var(--text-h5);
+	}
+	.lt-ms-content {
+		padding: 24px;
+		border-radius: 20px;
+		@media screen and (max-width: 767px) {
+			padding: 0 8px 8px;
+			border-radius: 0;
+		}
+	}
+	.lt-ms-content__img-holder {
+		aspect-ratio: 3/1.8;
+		min-height: initial;
+	}
+	.lt-ms-content .rows {
+		gap: 24px;
+	}
+	.lt-ms-content .rows,
+	.container {
+		padding: 0;
+	}
+	.lt-ms-content .rows > * {
+		width: 100%;
+	}
+	.lt-ms-content .rows.flex-wrap-reverse {
+		flex-wrap: wrap;
+	}
+	.lt-ms-content .btn {
+		@media screen and (max-width: 767px) {
+			padding-inline: 8px;
+			line-height: 1.2;
+		}
+	}
+}
+
 .related-post .swiper-pagination-bullet {
 	--swiper-pagination-bullet-width: 11px;
 	--swiper-pagination-bullet-height: 11px;
@@ -82,7 +146,6 @@
 		background-color: var(--color-lt-accent) !important;
 	}
 }
-
 
 // ---------------------------- Service Page
 @include mix.breakpoint(small) {
