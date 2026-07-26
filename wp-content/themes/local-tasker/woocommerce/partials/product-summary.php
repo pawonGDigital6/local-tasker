@@ -125,7 +125,7 @@ if ($is_variable) {
 		</div>
 	<?php endif; ?>
 	<!-- Title -->
-	<h1 class="lt-product-summary__title text-h5 leading-[1.2] font-bold font-semi-ext text-lt-text-primary mb-3">
+	<h1 class="lt-product-summary__title text-h5 leading-[1.37] font-bold font-semi-ext text-lt-text-primary mb-3">
 		<?php the_title(); ?>
 	</h1>
 	<!-- Star rating + review count -->
@@ -172,7 +172,7 @@ if ($is_variable) {
 			<!-- Box price badge -->
 			<div class="mt-3<?php echo ($sold_by_box && $has_box_price) ? '' : ' hidden'; ?>" id="lt-price-box-wrap">
 				<span
-					class="inline-block text-caption-sm font-medium text-lt-accent bg-lt-accent/8 rounded-[4px] px-[7px] py-[3px]">
+					class="inline-block text-caption-xs font-medium text-lt-accent bg-lt-accent/8 rounded-[4px] px-[7px] py-[3px]">
 					<?php esc_html_e('Box price', 'local-tasker'); ?> <span
 						id="lt-price-box"><?php echo wc_price($box_price_ex); ?></span>
 					<span class="font-normal"><?php esc_html_e('ex GST', 'local-tasker'); ?></span>

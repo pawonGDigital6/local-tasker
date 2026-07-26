@@ -14,7 +14,7 @@ global $product;
 	<!-- ── Gallery + Summary ────────────────────────────────── -->
 	<section class="lt-product-single__top bg-[#F7F6F4] py-8 md:py-12">
 		<div class="container">
-			<div class="flex flex-wrap lg:flex-nowrap gap-8 lg:gap-[61px]">
+			<div class="flex flex-wrap lg:flex-nowrap gap-8 lg:gap-9">
 
 				<!-- Gallery -->
 				<div class="lt-product-gallery w-full lg:w-[45%] shrink-0">
@@ -42,18 +42,15 @@ global $product;
 	?>
 	<section class="lt-product-calc-explainer bg-[#F7F6F4] py-10 md:py-14">
 		<div class="container">
-			<div class="flex flex-wrap lg:flex-nowrap gap-10 lg:gap-16 items-start">
+			<div class="flex flex-wrap lg:flex-nowrap gap-8 lg:gap-9 items-stretch">
 
 				<!-- Area Calculator — card has its own built-in header/title -->
-				<div class="w-full lg:w-[480px] shrink-0">
+				<div class="w-full lg:flex-1 min-w-0">
 					<?php get_template_part( 'woocommerce/partials/area-calculator' ); ?>
 				</div>
 
-				<!-- How it works -->
-				<div class="flex-1 min-w-0">
-					<h2 class="text-h4 font-bold font-semi-ext text-lt-text-primary mb-6">
-						<?php esc_html_e( 'How it works', 'local-tasker' ); ?>
-					</h2>
+				<!-- How it works — self-contained card with its own header -->
+				<div class="w-full lg:flex-1 min-w-0">
 					<?php get_template_part( 'woocommerce/partials/product-how-it-works' ); ?>
 				</div>
 

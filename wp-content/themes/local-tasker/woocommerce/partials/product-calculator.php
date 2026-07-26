@@ -14,7 +14,7 @@ $nonce = wp_create_nonce('lt_add_to_cart_' . $product_id);
 ?>
 <div class="lt-calculator" id="lt-calculator"
 	aria-label="<?php esc_attr_e('Flooring quantity calculator', 'local-tasker'); ?>">
-	<h2 class="text-caption-md font-bold text-lt-text-primary mb-4 font-semi-ext">
+	<h2 class="text-caption-sm font-bold text-lt-text-primary mb-4 font-semi-ext">
 		<?php esc_html_e('How much flooring do you need?', 'local-tasker'); ?>
 	</h2>
 	<!-- sqm input row -->
@@ -78,7 +78,7 @@ $nonce = wp_create_nonce('lt_add_to_cart_' . $product_id);
 		<label class="flex items-start gap-3 cursor-pointer select-none">
 			<input type="checkbox" id="lt-calc-round-up" class="sr-only peer" checked>
 			<span
-				class="lt-checkbox__ui mt-[2px] w-4 h-4 rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
+				class="lt-checkbox__ui mt-[2px] w-4 h-4 bg-white rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
 				aria-hidden="true">
 				<svg class="w-3 h-3 text-lt-white" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round"
@@ -92,7 +92,7 @@ $nonce = wp_create_nonce('lt_add_to_cart_' . $product_id);
 		<label class="flex items-start gap-3 cursor-pointer select-none">
 			<input type="checkbox" id="lt-calc-wastage" class="sr-only peer">
 			<span
-				class="lt-checkbox__ui mt-[2px] w-4 h-4 rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
+				class="lt-checkbox__ui mt-[2px] w-4 h-4 bg-white rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
 				aria-hidden="true">
 				<svg class="w-3 h-3 text-lt-white" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round"
@@ -147,13 +147,13 @@ $nonce = wp_create_nonce('lt_add_to_cart_' . $product_id);
 	<!-- Actions -->
 	<div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
 		<button type="button" id="lt-add-to-cart"
-			class="btn btn--brand flex-1 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors duration-75"
+			class="btn btn--brand flex-1 py-[14px]! disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors duration-75"
 			data-product-id="<?php echo esc_attr($product_id); ?>" data-nonce="<?php echo esc_attr($nonce); ?>"
 			disabled aria-label="<?php esc_attr_e('Add to cart', 'local-tasker'); ?>">
 			<?php esc_html_e('Add to Cart', 'local-tasker'); ?>
 		</button>
 		<a href="<?php echo esc_url(wc_get_checkout_url()); ?>" id="lt-checkout-btn"
-			class="btn bg-transparent flex-1 border border-[#A5A5A5] text-center hidden hover:bg-lt-brand hover:text-lt-white hover:border-lt-brand transition-colors duration-75"
+			class="btn bg-transparent flex-1 py-[14px]! border border-[#A5A5A5] text-center hidden hover:bg-lt-brand hover:text-lt-white hover:border-lt-brand transition-colors duration-75"
 			aria-label="<?php esc_attr_e('Proceed to checkout', 'local-tasker'); ?>">
 			<?php esc_html_e('Proceed to Checkout', 'local-tasker'); ?>
 		</a>

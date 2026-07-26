@@ -10830,8 +10830,10 @@ __webpack_require__.r(__webpack_exports__);
         s.setAttribute('aria-hidden', i !== current ? 'true' : 'false');
       });
       thumbs.forEach(function (t, i) {
-        t.classList.toggle('border-lt-brand', i === current);
-        t.classList.toggle('border-transparent', i !== current);
+        t.classList.toggle('border-lt-accent', i === current);
+        t.classList.toggle('border-[#E2DDD7]', i !== current);
+        t.classList.toggle('opacity-100', i === current);
+        t.classList.toggle('opacity-50', i !== current);
         t.setAttribute('aria-selected', i === current ? 'true' : 'false');
       });
       dots.forEach(function (d, i) {
@@ -10898,6 +10900,14 @@ __webpack_require__.r(__webpack_exports__);
       if (resultCoverage) resultCoverage.textContent = coverageSqm.toFixed(2);
       if (resultBoxes) resultBoxes.textContent = boxes;
       if (resultTotal) resultTotal.textContent = formatCurrency(totalInc);
+
+      // Mirror into the "How it works" Quick estimate box (if present).
+      var qeArea = document.getElementById('lt-qe-area');
+      var qeBoxes = document.getElementById('lt-qe-boxes');
+      var qeTotal = document.getElementById('lt-qe-total');
+      if (qeArea) qeArea.textContent = (areaSqm > 0 ? Math.round(areaSqm * 100) / 100 : 0) + ' sqm';
+      if (qeBoxes) qeBoxes.textContent = boxes + ' boxes (' + coverageSqm.toFixed(2) + ' sqm)';
+      if (qeTotal) qeTotal.textContent = formatCurrency(totalInc);
       const variationOk = !requiresVariation || selectedVariationId && variationInStock;
       const enabled = boxes > 0 && variationOk;
       if (addToCartBtn) {

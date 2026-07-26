@@ -20,7 +20,7 @@ $count   = count( $all_ids );
 <div class="lt-gallery" id="lt-gallery" data-count="<?php echo esc_attr( $count ); ?>">
 
 	<!-- Main image -->
-	<div class="lt-gallery__main relative overflow-hidden rounded-2xl bg-lt-white-lilac aspect-[560/448]">
+	<div class="lt-gallery__main relative overflow-hidden rounded-xl border border-[#E2DDD7] bg-lt-white-lilac aspect-[560/448]">
 
 		<!-- Slides -->
 		<div class="lt-gallery__track flex transition-transform duration-400 ease-in-out h-full" id="lt-gallery-track">
@@ -43,7 +43,7 @@ $count   = count( $all_ids );
 			<button
 				type="button"
 				id="lt-gallery-prev"
-				class="lt-gallery__arrow lt-gallery__arrow--prev absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-lt-white/80 hover:bg-lt-white border border-[#E9EAEC] transition-colors duration-200 shadow-sm"
+				class="lt-gallery__arrow cursor-pointer lt-gallery__arrow--prev absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-lt-white/80 hover:bg-lt-white border border-[#E9EAEC] transition-colors duration-200 shadow-sm"
 				aria-label="<?php esc_attr_e( 'Previous image', 'local-tasker' ); ?>"
 			>
 				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -53,7 +53,7 @@ $count   = count( $all_ids );
 			<button
 				type="button"
 				id="lt-gallery-next"
-				class="lt-gallery__arrow lt-gallery__arrow--next absolute right-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-lt-white/80 hover:bg-lt-white border border-[#E9EAEC] transition-colors duration-200 shadow-sm"
+				class="lt-gallery__arrow cursor-pointer lt-gallery__arrow--next absolute right-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-lt-white/80 hover:bg-lt-white border border-[#E9EAEC] transition-colors duration-200 shadow-sm"
 				aria-label="<?php esc_attr_e( 'Next image', 'local-tasker' ); ?>"
 			>
 				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -66,7 +66,7 @@ $count   = count( $all_ids );
 				<?php foreach ( $all_ids as $index => $id ) : ?>
 					<button
 						type="button"
-						class="lt-gallery__dot w-[8px] h-[8px] rounded-full border-0 transition-all duration-200 <?php echo $index === 0 ? 'bg-lt-brand w-[20px]' : 'bg-lt-white/60 hover:bg-lt-white'; ?>"
+						class="cursor-pointer lt-gallery__dot w-[8px] h-[8px] rounded-full border-0 transition-all duration-200 <?php echo $index === 0 ? 'bg-lt-brand w-[20px]' : 'bg-lt-white/60 hover:bg-lt-white'; ?>"
 						role="tab"
 						aria-selected="<?php echo $index === 0 ? 'true' : 'false'; ?>"
 						aria-controls="lt-slide-<?php echo esc_attr( $index ); ?>"
@@ -85,7 +85,7 @@ $count   = count( $all_ids );
 			<?php foreach ( $all_ids as $index => $id ) : ?>
 				<button
 					type="button"
-					class="lt-gallery__thumb w-full aspect-square rounded-xl overflow-hidden border-2 transition-all duration-200 <?php echo $index === 0 ? 'border-lt-brand' : 'border-transparent hover:border-[#D1D5DB]'; ?>"
+					class="lt-gallery__thumb w-full aspect-square rounded-md overflow-hidden border-2 transition-all duration-200 cursor-pointer outline-none! <?php echo $index === 0 ? 'border-lt-accents' : 'border-[#E2DDD7] hover:border-[#D1D5DB] opacity-50'; ?>"
 					role="tab"
 					aria-selected="<?php echo $index === 0 ? 'true' : 'false'; ?>"
 					aria-controls="lt-slide-<?php echo esc_attr( $index ); ?>"

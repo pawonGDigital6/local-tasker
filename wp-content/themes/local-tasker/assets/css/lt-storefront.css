@@ -489,10 +489,8 @@
 	margin-top: 4px;
 }
 
-.lt-calculator>h2 {
-	font-family: var(--font-semi-ext, "PP Formula Semi Extended", sans-serif);
-	font-size: 16px;
-}
+
+
 
 /* Stepper — Figma 29:4637: 132x40.5 white, 1px #e2ddd7, r6; buttons 37px; the
    input keeps left/right divider rules and sits flush (no padding/gap on the shell). */
