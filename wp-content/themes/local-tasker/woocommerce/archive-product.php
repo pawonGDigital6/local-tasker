@@ -20,9 +20,9 @@ $lt_filter_pills = [
 	'on-sale' => ['label' => __('On Sale', 'local-tasker')],
 	'new-arrivals' => ['label' => __('New Arrivals', 'local-tasker')],
 	'in-stock' => ['label' => __('In Stock', 'local-tasker')],
-	'spc-hybrid' => ['label' => __('SPC Hybrid', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['spc-hybrid'] ?? ''],
-	'engineered' => ['label' => __('Engineered', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['engineered'] ?? ''],
-	'porcelain' => ['label' => __('Porcelain', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['porcelain'] ?? ''],
+	// 'spc-hybrid' => ['label' => __('SPC Hybrid', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['spc-hybrid'] ?? ''],
+	// 'engineered' => ['label' => __('Engineered', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['engineered'] ?? ''],
+	// 'porcelain' => ['label' => __('Porcelain', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['porcelain'] ?? ''],
 ];
 
 $active_pill = isset($_GET['filter']) ? sanitize_key($_GET['filter']) : 'all';

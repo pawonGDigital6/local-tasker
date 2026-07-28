@@ -47,8 +47,8 @@
 			}
 		}
 
-		li{
-			&:last-child{
+		li {
+			&:last-child {
 				padding-right: 24px;
 			}
 		}
@@ -58,6 +58,10 @@
 	.ld-btn-wrap .btn {
 		padding-top: 16px !important;
 		padding-bottom: 16px !important;
+	}
+
+	.th-filter li:nth-child(6n) ~ li {
+		display: none;
 	}
 }
 
@@ -79,7 +83,9 @@
 			opacity: 0;
 			visibility: hidden;
 			pointer-events: none;
-			transition: opacity 0.25s ease, visibility 0.25s ease;
+			transition:
+				opacity 0.25s ease,
+				visibility 0.25s ease;
 		}
 
 		// Spinner.
@@ -97,7 +103,9 @@
 			border-radius: 50%;
 			opacity: 0;
 			visibility: hidden;
-			transition: opacity 0.25s ease, visibility 0.25s ease;
+			transition:
+				opacity 0.25s ease,
+				visibility 0.25s ease;
 		}
 	}
 

@@ -2,44 +2,88 @@
 @use "../abstracts/mixins" as mix;
 
 .site-footer {
-    a {
-        text-decoration: none;
-        transition: all 0.36s;
-        &:hover {
-            color: var(--color-lt-accent);
-        }
-    }
+	a {
+		text-decoration: none;
+		transition: all 0.36s;
+		&:hover {
+			color: var(--color-lt-accent);
+		}
+	}
 
-    ul {
-        margin: 0;
-    }
+	ul {
+		margin: 0;
+	}
 }
 .footer-top {
-    .menu {
-        display: flex;
-        flex-wrap: nowrap;
-        flex-direction: column;
-        gap: 0.71875rem;
-    }
+	.menu {
+		display: flex;
+		flex-wrap: nowrap;
+		flex-direction: column;
+		gap: 0.71875rem;
+	}
 }
 
 .footer-bottom {
-    .menu {
-        font-weight: 800;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
+	.menu {
+		font-weight: 800;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+}
+
+// ----------------------------------------- Search Form
+.global-search-pop {
+	.search-form {
+		display: flex;
+		background-color: #ffffff;
+		height: 52px;
+		justify-content: space-between;
+		width: 580px;
+		@media screen and (max-width: 767px) {
+			width: 100%;
+		}
+
+		> label {
+			flex: 1 0 0;
+		}
+		input {
+			height: 100%;
+			border-radius: 0;
+			border: 0;
+
+			&:hover,
+			&:foucs,
+			&:focus-visible,
+			&:focus-within {
+				outline: none !important;
+			}
+		}
+
+		input[type="search"] {
+			width: 100%;
+			padding: 8px 18px;
+		}
+		input[type="submit"] {
+			padding: 8px 24px;
+			background-color: var(--color-lt-brand);
+			color: #ffffff;
+			cursor: pointer;
+			flex-shrink: 0;
+		}
+	}
 }
 
 // ------------------------------- Search Pop Opened
 body {
-    &.opened-search-popup {
-        overflow: hidden;
-        .global-search-pop {
-            transition: visibility 0.32s, opacity 0.32s;
-            visibility: visible;
-            opacity: 1;
-        }
-    }
+	&.opened-search-popup {
+		overflow: hidden;
+		.global-search-pop {
+			transition:
+				visibility 0.32s,
+				opacity 0.32s;
+			visibility: visible;
+			opacity: 1;
+		}
+	}
 }

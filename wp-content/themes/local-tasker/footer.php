@@ -28,8 +28,9 @@ $copyright_text = get_field('copyright_text', 'options');
 		</div>
 		<div class="global-search-pop__holder h-full w-full flex items-center justify-center">
 			<?php
-			if (function_exists('get_product_search_form')) {
-				get_product_search_form();
+			// Check if the native search form function exists before running it
+			if (function_exists('get_search_form')) {
+				get_search_form();
 			}
 			?>
 		</div>

@@ -195,6 +195,10 @@
     min-width: 0;
   }
 }
+.lt-hero .hero-search__field:last-child:not(:has(option + option)) .hero-search__select {
+  opacity: 0.4;
+  cursor: not-allowed !important;
+}
 
 body:not(.home) .lt-hero .hero-search,
 body:not(.home) .lt-hero .hero-ctas {

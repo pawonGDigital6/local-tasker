@@ -63,6 +63,9 @@
   padding-top: 16px !important;
   padding-bottom: 16px !important;
 }
+.lt-popular-products .th-filter li:nth-child(6n) ~ li {
+  display: none;
+}
 
 .lt-popular-products .popular-products-list {
   position: relative;

@@ -30,7 +30,7 @@ $unique_page_class = get_field('unique_page_class');
 			<div class="container">
 				<span
 					class="uppercase text-lt-white text-center block md:text-caption-sm text-caption-xs tracking-[1px] leading-[1.30]">Free
-					Shipping | Seamless returns | CALL ON </span>
+					Shipping | Seamless returns | CALL ON: <a class="text-lt-accent hover:underline" href="tel:02046340122">020 4634 0122</a></span>
 			</div>
 		</div>
 		<!-- Site Header -->

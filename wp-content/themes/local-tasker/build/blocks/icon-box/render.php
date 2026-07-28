@@ -35,7 +35,12 @@ if ($block_style !== '') {
 ?>
 <section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container">
-		<div class="grid <?php echo get_field('four_column') ? 'md:grid-cols-4 has-four-col' : 'md:grid-cols-3'; ?> sm:grid-cols-2 grid-cols-1 gap-x-8 gap-y-[50px] wd:px-6">
+		<?php
+		$ib_lists = get_field('ib_lists');
+		$count = $ib_lists ? count($ib_lists) : 0;
+		?>
+		<div
+			class="grid item-count-<?php echo $count; ?> <?php echo get_field('four_column') ? 'md:grid-cols-4 has-four-col' : 'md:grid-cols-3'; ?> sm:grid-cols-2 grid-cols-1 gap-x-8 gap-y-[50px] wd:px-6">
 			<?php if (have_rows('ib_lists')): ?>
 				<?php while (have_rows('ib_lists')):
 					the_row();

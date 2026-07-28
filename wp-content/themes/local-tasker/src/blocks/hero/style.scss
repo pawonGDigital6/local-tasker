@@ -192,6 +192,11 @@
 			}
 		}
 	}
+
+	.hero-search__field:last-child:not(:has(option + option)) .hero-search__select {
+		opacity: 0.4;
+		cursor: not-allowed !important;
+	}
 }
 
 body {
