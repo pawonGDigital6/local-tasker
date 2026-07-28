@@ -18,7 +18,8 @@
 		display: block;
 	}
 	input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
-	textarea {
+	textarea,
+	select {
 		background-color: #f8f8f7;
 		border-radius: 4px;
 		border: 1px solid var(--Border-Default, #e5e7eb);
@@ -30,7 +31,15 @@
 		width: 100%;
 		height: 52px;
 	}
-
+	select {
+		cursor: pointer;
+		appearance: none;
+		-webkit-appearance: none;
+		background-image: url("../../../images/icons/lt-dropdown-icon.svg");
+		background-repeat: no-repeat;
+		background-position: right 16px center;
+		background-size: 15px;
+	}
 	textarea {
 		vertical-align: top;
 	}
@@ -185,6 +194,39 @@
 }
 
 /*=======================================================================
+   # G Form
+====================================================================*/
+.gqf-form {
+	.th-form-style {
+		.rows .cols:not(:last-child) {
+			margin-bottom: 24px;
+		}
+		label {
+			font-size: 16px;
+		}
+		input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+		textarea,
+		select {
+			border-color: #e6e6e6;
+			background-color: #f9fafb;
+			border-radius: 8px;
+		}
+		textarea {
+			height: 118px;
+		}
+		.type-submit {
+			margin-top: 0;
+			.wpcf7-submit {
+				width: initial;
+				@include mix.breakpoint(smaller, true) {
+					min-width: 229px;
+				}
+			}
+		}
+	}
+}
+
+/*=======================================================================
    # Contact Form 7 Error message
 ====================================================================*/
 .wpcf7-form {
@@ -245,7 +287,7 @@
 		gap: 12px;
 		flex-wrap: wrap;
 		justify-content: space-between;
-		@include mix.breakpoint(iPhone5){
+		@include mix.breakpoint(iPhone5) {
 			flex-direction: column;
 			flex-wrap: nowrap;
 			align-items: center;

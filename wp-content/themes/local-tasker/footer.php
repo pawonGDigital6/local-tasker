@@ -16,6 +16,43 @@ $nav_heading_three = get_field('nav_heading_three', 'options');
 $nav_heading_four = get_field('nav_heading_four', 'options');
 $copyright_text = get_field('copyright_text', 'options');
 ?>
+<!-- Global Quote Form -->
+<div class="global-quote-form-pop fixed inset-0 bg-[rgba(0,0,0,0.8)] z-98 h-dvh overflow-auto invisible opacity-0">
+	<div class="container h-full w-full">
+		<div class="holder py-10">
+			<div class="gqf-form max-w-[819px] mx-auto theme-shadow rounded-[20px] overflow-hidden">
+				<!-- Header -->
+				<div class="gqf-form__header sm:p-10 p-6 theme-bg-grad">
+					<div class="top sm:pb-8 pb-6 border-b border-[#FFFFFF33] relative">
+						<div class="logo flex justify-center">
+							<img class="sm:w-[228px] w-[140px]" src="<?php echo site_url(); ?>/wp-content/uploads/2026/06/logo-white.png"
+								alt="">
+						</div>
+						<div class="absolute right-0 sm:top-2 top-0 max-sm:w-[17px] cursor-pointer quote-pop-closer">
+							<svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" clip-rule="evenodd"
+									d="M10.5099 13.3392L17.5806 20.4099C17.9557 20.7851 18.4646 20.9959 18.9952 20.9959C19.5258 20.9959 20.0347 20.7851 20.4099 20.4099C20.7851 20.0347 20.9959 19.5258 20.9959 18.9952C20.9959 18.4646 20.7851 17.9558 20.4099 17.5806L13.3366 10.5099L20.4086 3.43925C20.5942 3.25347 20.7415 3.03294 20.842 2.79024C20.9424 2.54755 20.9941 2.28744 20.9941 2.02477C20.994 1.76211 20.9422 1.50203 20.8416 1.25938C20.741 1.01673 20.5937 0.796268 20.4079 0.610579C20.2221 0.42489 20.0016 0.277611 19.7589 0.17715C19.5162 0.0766893 19.2561 0.0250146 18.9934 0.0250765C18.7308 0.0251384 18.4707 0.0769354 18.228 0.177511C17.9854 0.278086 17.7649 0.425469 17.5792 0.611246L10.5099 7.68191L3.43922 0.611246C3.25482 0.420141 3.0342 0.267674 2.79024 0.162743C2.54628 0.0578111 2.28387 0.00251585 2.01832 8.38717e-05C1.75276 -0.00234811 1.48938 0.0481315 1.24354 0.148577C0.997699 0.249023 0.774326 0.397424 0.586453 0.58512C0.39858 0.772816 0.249969 0.996049 0.149291 1.24179C0.0486138 1.48754 -0.00211408 1.75087 6.7489e-05 2.01643C0.00224906 2.28199 0.0572962 2.54445 0.161998 2.78851C0.266699 3.03257 0.418957 3.25333 0.609889 3.43791L7.68322 10.5099L0.611223 17.5819C0.420291 17.7665 0.268033 17.9873 0.163331 18.2313C0.0586301 18.4754 0.0035823 18.7378 0.00140073 19.0034C-0.000780844 19.269 0.0499471 19.5323 0.150625 19.778C0.251302 20.0238 0.399913 20.247 0.587786 20.4347C0.77566 20.6224 0.999032 20.7708 1.24487 20.8712C1.49071 20.9717 1.75409 21.0222 2.01965 21.0197C2.2852 21.0173 2.54762 20.962 2.79158 20.8571C3.03553 20.7522 3.25615 20.5997 3.44056 20.4086L10.5099 13.3392Z"
+									fill="white" />
+							</svg>
+						</div>
+					</div>
+					<!-- Bottom -->
+					<div class="bottom sm:pt-8 pt-6 ">
+						<h2 class="sm:text-h3 text-h4 text-center text-white">Request a Quote</h2>
+					</div>
+					<!--  -->
+				</div><!-- End of Header -->
+				<!-- Body -->
+				<div class="gqf-form__body sm:p-8 p-6 bg-white">
+					<div class="th-form-style">
+						<?php echo do_shortcode('[contact-form-7 id="ffcf842" title="Quote Form"]'); ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Global Search Form -->
 <div class="global-search-pop fixed inset-0 bg-lt-onyx z-[98] pt-10 pb-[9rem] invisible opacity-0">
 	<div class="container h-full w-full">
 		<div class="global-search-pop__closer-holder w-[18px] h-[18px] ml-auto cursor-pointer search-pop-closer">
@@ -91,8 +128,7 @@ $copyright_text = get_field('copyright_text', 'options');
 				<!-- Cols -->
 				<div class="cols md:w-[21%] max-sm:w-[46%] max-smlr:w-full">
 					<?php if ($nav_heading_one): ?>
-						<h2
-							class="title text-[15px] sm:mb-[1.3125rem] mb-[1.0125rem] font-semi-ext font-bold leading-[1.46]">
+						<h2 class="title text-[15px] sm:mb-[1.3125rem] mb-[1.0125rem] font-semi-ext font-bold leading-[1.46]">
 							<?php echo esc_html($nav_heading_one); ?>
 						</h2>
 					<?php endif; ?>
@@ -108,8 +144,7 @@ $copyright_text = get_field('copyright_text', 'options');
 				<!-- Cols -->
 				<div class="cols md:w-[21%] max-sm:w-[46%] max-smlr:w-full">
 					<?php if ($nav_heading_two): ?>
-						<h2
-							class="title text-[15px] sm:mb-[1.3125rem] mb-[1.0125rem] font-semi-ext font-bold leading-[1.46]">
+						<h2 class="title text-[15px] sm:mb-[1.3125rem] mb-[1.0125rem] font-semi-ext font-bold leading-[1.46]">
 							<?php echo esc_html($nav_heading_two); ?>
 						</h2>
 					<?php endif; ?>
@@ -125,8 +160,7 @@ $copyright_text = get_field('copyright_text', 'options');
 				<!-- Cols -->
 				<div class="cols md:w-[21%] max-sm:w-[46%] max-smlr:w-full">
 					<?php if ($nav_heading_three): ?>
-						<h2
-							class="title text-[15px] sm:mb-[1.3125rem] mb-[1.0125rem] font-semi-ext font-bold leading-[1.46]">
+						<h2 class="title text-[15px] sm:mb-[1.3125rem] mb-[1.0125rem] font-semi-ext font-bold leading-[1.46]">
 							<?php echo esc_html($nav_heading_three); ?>
 						</h2>
 					<?php endif; ?>
@@ -142,8 +176,7 @@ $copyright_text = get_field('copyright_text', 'options');
 				<!-- Cols -->
 				<div class="cols md:w-[21%] max-sm:w-[46%] max-smlr:w-full">
 					<?php if ($nav_heading_four): ?>
-						<h2
-							class="title text-[15px] sm:mb-[1.3125rem] mb-[1.0125rem] font-semi-ext font-bold leading-[1.46]">
+						<h2 class="title text-[15px] sm:mb-[1.3125rem] mb-[1.0125rem] font-semi-ext font-bold leading-[1.46]">
 							<?php echo esc_html($nav_heading_four); ?>
 						</h2>
 					<?php endif; ?>
@@ -180,9 +213,7 @@ $copyright_text = get_field('copyright_text', 'options');
 	</div>
 </footer><!-- #colophon -->
 </div><!-- #page -->
-
 <?php wp_footer(); ?>
-
 </body>
 
 </html>

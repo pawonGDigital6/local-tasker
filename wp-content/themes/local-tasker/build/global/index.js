@@ -200,6 +200,45 @@ const navigation = {
 
 /***/ },
 
+/***/ "./src/global/js/components/quote-popup.js"
+/*!*************************************************!*\
+  !*** ./src/global/js/components/quote-popup.js ***!
+  \*************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const quotePop = {
+  init: function () {
+    this.cacheDom();
+    this.bindEvents();
+  },
+  cacheDom: function () {
+    this.quoteOpeners = document.querySelectorAll('a[href="#quote-popup"]');
+    this.quoteCloser = document.querySelector('.quote-pop-closer');
+  },
+  bindEvents: function () {
+    this.quoteOpeners.forEach(quoteOpener => {
+      // Pass 'e' from the event listener argument into the function
+      quoteOpener.addEventListener('click', e => this.quotePopOpen(e));
+    });
+    this.quoteCloser?.addEventListener('click', () => this.quotePopClose());
+  },
+  // Accept 'e' as a parameter here
+  quotePopOpen: function (e) {
+    e.preventDefault();
+    document.body.classList.add('opened-quote-popup');
+  },
+  quotePopClose: function () {
+    document.body.classList.remove('opened-quote-popup');
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (quotePop);
+
+/***/ },
+
 /***/ "./src/global/js/components/search-popup.js"
 /*!**************************************************!*\
   !*** ./src/global/js/components/search-popup.js ***!
@@ -220,13 +259,15 @@ const searchPop = {
     this.searchCloser = document.querySelector('.search-pop-closer');
   },
   bindEvents: function () {
-    // Arrow function preserves 'this' context
-    this.searchOpeners.forEach(searchOpener => {
-      searchOpener.addEventListener('click', () => this.searchPopOpen());
-    });
-
-    // Optional chaining (?.) prevents crashes if closer doesn't exist
-    this.searchCloser?.addEventListener('click', () => this.searchPopClose());
+    // Classic check guarantees no crash even without optional chaining support
+    if (this.searchOpeners && this.searchOpeners.length > 0) {
+      this.searchOpeners.forEach(searchOpener => {
+        searchOpener.addEventListener('click', () => this.searchPopOpen());
+      });
+    }
+    if (this.searchCloser) {
+      this.searchCloser.addEventListener('click', () => this.searchPopClose());
+    }
   },
   searchPopOpen: function () {
     document.body.classList.add('opened-search-popup');
@@ -249,9 +290,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/dom-ready */ "@wordpress/dom-ready");
 /* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_navigation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/navigation */ "./src/global/js/components/navigation.js");
-/* harmony import */ var _components_search_popup__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/search-popup */ "./src/global/js/components/search-popup.js");
-/* harmony import */ var _components_global_carousel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/global-carousel */ "./src/global/js/components/global-carousel.js");
-/* harmony import */ var _components_global_fancybox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/global-fancybox */ "./src/global/js/components/global-fancybox.js");
+/* harmony import */ var _components_quote_popup__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/quote-popup */ "./src/global/js/components/quote-popup.js");
+/* harmony import */ var _components_search_popup__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/search-popup */ "./src/global/js/components/search-popup.js");
+/* harmony import */ var _components_global_carousel__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/global-carousel */ "./src/global/js/components/global-carousel.js");
+/* harmony import */ var _components_global_fancybox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/global-fancybox */ "./src/global/js/components/global-fancybox.js");
+
 
 
 
@@ -259,10 +302,11 @@ __webpack_require__.r(__webpack_exports__);
 
 _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default()(() => {
   _components_navigation__WEBPACK_IMPORTED_MODULE_1__["default"].init();
-  _components_search_popup__WEBPACK_IMPORTED_MODULE_2__["default"].init();
-  (0,_components_global_carousel__WEBPACK_IMPORTED_MODULE_3__.relatedCarousel)();
-  (0,_components_global_fancybox__WEBPACK_IMPORTED_MODULE_4__["default"])();
-  (0,_components_global_carousel__WEBPACK_IMPORTED_MODULE_3__.projectGallery)();
+  _components_quote_popup__WEBPACK_IMPORTED_MODULE_2__["default"].init();
+  _components_search_popup__WEBPACK_IMPORTED_MODULE_3__["default"].init();
+  (0,_components_global_carousel__WEBPACK_IMPORTED_MODULE_4__.relatedCarousel)();
+  (0,_components_global_fancybox__WEBPACK_IMPORTED_MODULE_5__["default"])();
+  (0,_components_global_carousel__WEBPACK_IMPORTED_MODULE_4__.projectGallery)();
 });
 
 /***/ },

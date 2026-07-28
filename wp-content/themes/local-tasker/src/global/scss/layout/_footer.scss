@@ -87,3 +87,17 @@ body {
 		}
 	}
 }
+
+// ------------------------------- Quote Form Pop Opened
+body{
+	&.opened-quote-popup {
+		overflow: hidden;
+		.global-quote-form-pop {
+			transition:
+				visibility 0.32s,
+				opacity 0.32s;
+			visibility: visible;
+			opacity: 1;
+		}
+	}
+}

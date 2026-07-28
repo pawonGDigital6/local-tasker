@@ -1,31 +1,34 @@
 const searchPop = {
-    init: function () {
-        this.cacheDom();
-        this.bindEvents();
-    },
+	init: function () {
+		this.cacheDom();
+		this.bindEvents();
+	},
 
-    cacheDom: function () {
-        this.searchOpeners = document.querySelectorAll('.search-pop-opener');
-        this.searchCloser = document.querySelector('.search-pop-closer');
-    },
+	cacheDom: function () {
+		this.searchOpeners = document.querySelectorAll('.search-pop-opener');
+		this.searchCloser = document.querySelector('.search-pop-closer');
+	},
 
-    bindEvents: function () {
-        // Arrow function preserves 'this' context
-        this.searchOpeners.forEach((searchOpener) => {
-            searchOpener.addEventListener('click', () => this.searchPopOpen());
-        });
+	bindEvents: function () {
+		// Classic check guarantees no crash even without optional chaining support
+		if (this.searchOpeners && this.searchOpeners.length > 0) {
+			this.searchOpeners.forEach((searchOpener) => {
+				searchOpener.addEventListener('click', () => this.searchPopOpen());
+			});
+		}
 
-        // Optional chaining (?.) prevents crashes if closer doesn't exist
-        this.searchCloser?.addEventListener('click', () => this.searchPopClose());
-    },
+		if (this.searchCloser) {
+			this.searchCloser.addEventListener('click', () => this.searchPopClose());
+		}
+	},
 
-    searchPopOpen: function () {
-        document.body.classList.add('opened-search-popup');
-    },
+	searchPopOpen: function () {
+		document.body.classList.add('opened-search-popup');
+	},
 
-    searchPopClose: function () {
-        document.body.classList.remove('opened-search-popup');
-    },
+	searchPopClose: function () {
+		document.body.classList.remove('opened-search-popup');
+	},
 };
 
 export default searchPop;
