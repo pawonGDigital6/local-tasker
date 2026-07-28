@@ -19,7 +19,7 @@ get_header();
 					the_archive_description('<div class="archive-description">', '</div>');
 					?>
 				</header><!-- .page-header -->
-				<div class="blog-lists grid wd:grid-cols-3 sm:grid-cols-2 grid-cols-1 sm:gap-7 gap-10">
+				<div class="grid wd:grid-cols-3 sm:grid-cols-2 grid-cols-1 sm:gap-7 gap-10">
 					<?php
 					/* Start the Loop */
 					while (have_posts()):
