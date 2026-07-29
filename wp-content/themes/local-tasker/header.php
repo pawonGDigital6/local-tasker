@@ -29,8 +29,9 @@ $unique_page_class = get_field('unique_page_class');
 		<div class="top-bar bg-lt-onyx py-2">
 			<div class="container">
 				<span
-					class="uppercase text-lt-white text-center block md:text-caption-sm text-caption-xs tracking-[1px] leading-[1.30]">Free
-					Shipping | Seamless returns | CALL ON: <a class="text-lt-accent hover:underline" href="tel:02046340122">020 4634 0122</a></span>
+					class="uppercase text-lt-white text-center block md:text-caption-sm text-caption-xs tracking-[1px] leading-[1.30]">
+					flat rate shipping across Melbourne | Seamless returns | CALL ON: <a
+						class="text-lt-accent hover:underline" href="tel:0373020482">(03) 7302 0482</a></span>
 			</div>
 		</div>
 		<!-- Site Header -->
@@ -42,7 +43,7 @@ $unique_page_class = get_field('unique_page_class');
 					<div class="site-header__top-inner flex justify-between items-center">
 						<!-- Left -->
 						<div class="site-header__top-left lg:inline-flex hidden">
-							<a href="tel:02046340122"
+							<a href="tel:0373020482"
 								class="inline-flex items-center gap-2 lt-text-secondary no-underline text-caption-md leading-[1.71] hover:text-lt-brand transition-colors">
 								<span class="icon">
 									<svg width="15" height="14" viewBox="0 0 15 14" fill="none"
@@ -52,7 +53,7 @@ $unique_page_class = get_field('unique_page_class');
 											fill="#2E2E2E" />
 									</svg>
 								</span>
-								<span class="text"> 020 4634 0122</span>
+								<span class="text">(03) 7302 0482</span>
 							</a>
 						</div>
 						<!-- Center -->
@@ -76,7 +77,7 @@ $unique_page_class = get_field('unique_page_class');
 						<!-- Right -->
 						<div class="site-header__top-right flex items-center flex justify-end gap-[20px] max-sm:gap-[12px]">
 							<!-- User  -->
-							<a href="<?php echo esc_url( home_url( '/my-account' ) ); ?>" class="icon-link">
+							<a href="<?php echo esc_url(home_url('/my-account')); ?>" class="icon-link">
 								<svg class="max-md:w-[16px]" width="20" height="18" viewBox="0 0 20 18" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_774_479)">
@@ -113,9 +114,9 @@ $unique_page_class = get_field('unique_page_class');
 								</svg>
 							</button>
 							<!-- Cart  -->
-							<?php if ( class_exists( 'WooCommerce' ) && function_exists( 'local_tasker_woocommerce_header_cart' ) ) :
+							<?php if (class_exists('WooCommerce') && function_exists('local_tasker_woocommerce_header_cart')):
 								local_tasker_woocommerce_header_cart();
-							else : ?>
+							else: ?>
 								<a href="#" class="cart-icon relative pr-3">
 									<span
 										class="cart-count absolute top-[-6px] right-[0] max-sm:top-[-9px] hidden items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] text-caption-sm">0</span>
