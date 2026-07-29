@@ -301,7 +301,7 @@
     const quote = getQuote();
     const subject = encodeURIComponent("LVL & MGP10 Quote Request");
     const body = encodeURIComponent(buildQuoteSummary(quote));
-    window.location.href = `mailto:sales@example.com?subject=${subject}&body=${body}`;
+	  window.location.href = `mailto:pawan@digitalsix.com.au?subject=${subject}&body=${body}`;
   });
 
   addRowBtn.addEventListener("click", createRow);
