@@ -1487,10 +1487,6 @@ body.opened-quote-popup .global-quote-form-pop {
   }
 }
 
-.search-listing .blog-card .meta, .search-listing .blog-card__excerpt {
-  display: none !important;
-}
-
 .default-sing-page .wp-block-heading {
   margin-bottom: 1.4rem;
 }

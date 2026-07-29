@@ -385,3 +385,57 @@ add_filter('block_editor_settings_all', function ($settings) {
 	$settings['styles'] = array(); // Disabling custom block styles often drops the iframe
 	return $settings;
 });
+
+
+/* 
+============================================================
+# Default WP function to search only product
+==============================================================
+*/
+function filter_search_by_woocommerce_products($query)
+{
+	// Check if it is the front-end search page and the main database query
+	if (!is_admin() && $query->is_main_query() && $query->is_search()) {
+		$query->set('post_type', 'product');
+	}
+	return $query;
+}
+add_filter('pre_get_posts', 'filter_search_by_woocommerce_products');
+
+/* 
+============================================================
+# Default WP function to search placeholder to search products
+==============================================================
+*/
+function custom_search_placeholder($form)
+{
+	// Replace the default placeholder text with 'Search products...'
+	$form = str_replace('placeholder="Search &hellip;"', 'placeholder="Search products..."', $form);
+	$form = str_replace('placeholder="Search..."', 'placeholder="Search products..."', $form);
+	return $form;
+}
+add_filter('get_search_form', 'custom_search_placeholder', 20);
+
+
+/* 
+============================================================
+# Default WP function to search listing post navigation
+==============================================================
+*/
+function rename_search_pagination_text($translated_text, $text, $domain)
+{
+	if (!is_admin() && is_search()) {
+		switch ($text) {
+			case 'Older posts':
+			case '&larr; Older posts':
+				$translated_text = '&larr; &nbsp; Previous';
+				break;
+			case 'Newer posts':
+			case 'Newer posts &rarr;':
+				$translated_text = 'Next &nbsp; &rarr;';
+				break;
+		}
+	}
+	return $translated_text;
+}
+add_filter('gettext', 'rename_search_pagination_text', 20, 3);

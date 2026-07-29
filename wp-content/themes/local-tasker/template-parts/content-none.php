@@ -10,7 +10,7 @@
 ?>
 
 <section class="no-results not-found">
-	<header class="page-header">
+	<header class="page-header text-center mb-6">
 		<h1 class="page-title"><?php esc_html_e( 'Nothing Found', 'local-tasker' ); ?></h1>
 	</header><!-- .page-header -->
 
@@ -34,9 +34,8 @@
 		elseif ( is_search() ) :
 			?>
 
-			<p><?php esc_html_e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', 'local-tasker' ); ?></p>
+			<p class="text-center"><?php esc_html_e( 'Sorry, but nothing matched your search terms.', 'local-tasker' ); ?></p>
 			<?php
-			get_search_form();
 
 		else :
 			?>
