@@ -48,9 +48,9 @@ if ($block_style !== '') {
 $block_id = !empty($block['id']) ? $block['id'] : 'ppf-' . wp_unique_id();
 
 // ─── ACF Fields ───────────────────────────────────────────────────────────────
-$pp_sec_title      = get_field('pp_sec_title') ?: __('Popular Products', 'local-tasker');
-$pp_posts_per_page  = (int) get_field('pp_posts_per_page') ?: 8;
-$pp_view_all_url    = get_field('pp_view_all_url') ?: get_permalink(wc_get_page_id('shop'));
+$pp_sec_title = get_field('pp_sec_title') ?: __('Popular Products', 'local-tasker');
+$pp_posts_per_page = (int) get_field('pp_posts_per_page') ?: 8;
+$pp_view_all_url = get_field('pp_view_all_url') ?: get_permalink(wc_get_page_id('shop'));
 
 $nonce = wp_create_nonce('ppf_ajax_nonce');
 
@@ -66,7 +66,7 @@ $initial_query = new WP_Query([]);
 if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) {
 	$initial_state = lt_shop_parse_request([
 		'per_page' => $pp_posts_per_page,
-		'orderby'  => 'popularity',
+		'orderby' => 'popularity',
 	]);
 	$initial_query = new WP_Query(lt_shop_build_query_args($initial_state));
 }
@@ -94,6 +94,12 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 					</li>
 					<?php if (!empty($product_cats)): ?>
 						<?php foreach ($product_cats as $term): ?>
+							<?php
+							// Skip rendering this item if the category slug is exactly 'products'
+							if ($term->slug === 'products') {
+								continue;
+							}
+							?>
 							<li>
 								<button class="filter-btn" data-category="<?php echo esc_attr($term->slug); ?>" aria-pressed="false">
 									<?php echo esc_html($term->name); ?>
@@ -105,7 +111,8 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 			</div><!-- End Category Filter -->
 		</div><!-- End Section Header -->
 		<!-- Product Grid — same card markup/classes as the WooCommerce Shop Loop, but 4 columns on desktop -->
-		<ul class="popular-products-list lt-products-grid grid xs:grid-cols-2 md:grid-cols-3 wd:grid-cols-4 gap-x-4 gap-y-6 wd:gap-[55px]" aria-live="polite" aria-busy="false">
+		<ul class="popular-products-list lt-products-grid grid xs:grid-cols-2 md:grid-cols-3 wd:grid-cols-4 gap-x-4 gap-y-6 wd:gap-[55px]"
+			aria-live="polite" aria-busy="false">
 			<?php
 			if ($initial_query->have_posts()):
 				while ($initial_query->have_posts()):
