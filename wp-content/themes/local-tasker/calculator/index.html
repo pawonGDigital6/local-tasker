@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LVL & MGP10 Materials Quote Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="calculator-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Instant Estimate</p>
+        <h2>LVL & MGP10 Quote Calculator</h2>
+        <p class="intro">Select Category, Product and Size. LM products only show stocked lengths. Non-LM products without length options use Price per Unit automatically.</p>
+      </div>
+      <div class="hero-actions">
+        <button type="button" id="printQuoteBtn" class="secondary-btn">Generate PDF / Print Quote</button>
+        <button type="button" id="emailQuoteBtn" class="secondary-btn">Email Quote</button>
+      </div>
+    </section>
+
+    <form id="quoteForm">
+      <div class="table-header">
+        <span>Category</span><span>Product</span><span>Size</span><span>Length</span>
+        <span>Unit</span><span>Quantity</span><span>Subtotal</span><span></span>
+      </div>
+      <div id="rows"></div>
+      <button type="button" id="addRowBtn" class="add-btn">+ Add More Products</button>
+
+      <section class="customer-details">
+        <h2>Customer / Quote Details</h2>
+        <div class="details-grid">
+          <label>Name<input id="customerName" type="text" placeholder="Customer name"></label>
+          <label>Email<input id="customerEmail" type="email" placeholder="customer@email.com"></label>
+          <label>Phone<input id="customerPhone" type="tel" placeholder="Phone number"></label>
+          <label>Project suburb<input id="projectSuburb" type="text" placeholder="Project suburb"></label>
+        </div>
+        <label>Notes<textarea id="quoteNotes" rows="3" placeholder="Delivery notes, project details, preferred contact time..."></textarea></label>
+      </section>
+
+      <section class="totals-card">
+        <div><span>Grand Total excluding GST</span><strong id="grandExGST">$0.00</strong></div>
+        <div><span>GST</span><strong id="gstAmount">$0.00</strong></div>
+        <div class="inc-total"><span>Grand Total including GST</span><strong id="grandIncGST">$0.00</strong></div>
+      </section>
+
+      <input type="hidden" id="quoteJson" name="quoteJson">
+    </form>
+  </main>
+
+  <template id="rowTemplate">
+    <div class="product-row">
+      <div class="search-select" data-field="category"></div>
+      <div class="search-select" data-field="product"></div>
+      <div class="search-select" data-field="size"></div>
+      <div class="search-select" data-field="length"></div>
+      <input class="unit-field" type="text" readonly placeholder="Unit">
+      <input class="quantity-field" type="number" min="1" step="1" inputmode="numeric" pattern="[0-9]*" placeholder="Qty">
+      <input class="subtotal-field" type="text" readonly value="$0.00">
+      <button type="button" class="remove-row" aria-label="Remove product">×</button>
+      <input class="sku-hidden" type="hidden" name="sku[]">
+      <input class="price-hidden" type="hidden" name="unitPrice[]">
+      <input class="line-json-hidden" type="hidden" name="lineJson[]">
+    </div>
+  </template>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

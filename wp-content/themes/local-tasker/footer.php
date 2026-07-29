@@ -20,7 +20,7 @@ $copyright_text = get_field('copyright_text', 'options');
 <div class="global-quote-form-pop fixed inset-0 bg-[rgba(0,0,0,0.8)] z-98 h-dvh overflow-auto invisible opacity-0">
 	<div class="container h-full w-full">
 		<div class="holder py-10">
-			<div class="gqf-form max-w-[819px] mx-auto theme-shadow rounded-[20px] overflow-hidden">
+			<div class="gqf-form max-w-[1224px] mx-auto theme-shadow rounded-[20px] overflow-hidden">
 				<!-- Header -->
 				<div class="gqf-form__header sm:p-10 p-6 theme-bg-grad">
 					<div class="top sm:pb-8 pb-6 border-b border-[#FFFFFF33] relative">
@@ -38,14 +38,15 @@ $copyright_text = get_field('copyright_text', 'options');
 					</div>
 					<!-- Bottom -->
 					<div class="bottom sm:pt-8 pt-6 ">
-						<h2 class="sm:text-h3 text-h4 text-center text-white">Request a Quote</h2>
+						<h2 class="text-h4 text-center text-white">Request a Quote</h2>
 					</div>
 					<!--  -->
 				</div><!-- End of Header -->
 				<!-- Body -->
 				<div class="gqf-form__body sm:p-8 p-6 bg-white">
 					<div class="th-form-style">
-						<?php echo do_shortcode('[contact-form-7 id="ffcf842" title="Quote Form"]'); ?>
+						<iframe src="<?php echo get_template_directory_uri(); ?>/calculator/index.html" style="width:100%;height:1200px;border:0;" loading="lazy"></iframe>
+						<?php //echo do_shortcode('[contact-form-7 id="ffcf842" title="Quote Form"]'); ?>
 					</div>
 				</div>
 			</div>

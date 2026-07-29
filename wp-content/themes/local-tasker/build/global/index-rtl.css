@@ -909,6 +909,9 @@ button.swiper-pagination-bullet {
   flex-wrap: wrap;
   gap: 1rem;
 }
+.footer-bottom .c-text p {
+  margin: 0;
+}
 
 .global-search-pop .search-form {
   display: flex;
@@ -4299,9 +4302,6 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .max-w-\[800px\] {
     max-width: 800px;
   }
-  .max-w-\[819px\] {
-    max-width: 819px;
-  }
   .max-w-\[892px\] {
     max-width: 892px;
   }
@@ -4310,6 +4310,9 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   }
   .max-w-\[920px\] {
     max-width: 920px;
+  }
+  .max-w-\[1224px\] {
+    max-width: 1224px;
   }
   .max-w-\[1300px\] {
     max-width: 1300px;

@@ -1,0 +1,17 @@
+Update the Jotform calculator with this stock/pricing logic:
+
+1. Columns under “Length Options” represent length-specific stock and sale prices.
+2. For items with Unit = “lm”:
+   - If there is no valid price under a length column, that length is not stocked and must not appear.
+   - If the lm item has no valid length prices at all, exclude that size/item entirely from the form because it is not stocked.
+   - lm items must only calculate from valid selected length prices.
+3. For items where Unit is NOT “lm”:
+   - If there are valid length prices, show those valid length options.
+   - If there are no valid length prices, treat it as a single product with no Length choice.
+   - In that case, disable/hide Length and calculate from the “Price per Unit” column.
+4. Blank, #N/A, empty and non-numeric length cells must never be shown as selectable Lengths.
+5. Quantity must be whole numbers only.
+6. Subtotal = Quantity × selected length price for length-priced items.
+7. Subtotal = Quantity × Price per Unit for non-lm single products.
+8. Display all currency in AUD with 2 decimals.
+9. Maintain repeatable rows, remove buttons, GST totals, hidden SKU/price/line JSON fields, customer details, PDF print and email quote actions.

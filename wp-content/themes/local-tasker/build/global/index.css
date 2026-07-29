@@ -909,6 +909,9 @@ button.swiper-pagination-bullet {
   flex-wrap: wrap;
   gap: 1rem;
 }
+.footer-bottom .c-text p {
+  margin: 0;
+}
 
 .global-search-pop .search-form {
   display: flex;
@@ -4239,9 +4242,6 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .w-\[140px\] {
     width: 140px;
   }
-  .w-\[228px\] {
-    width: 228px;
-  }
   .w-\[240px\] {
     width: 240px;
   }
@@ -4302,9 +4302,6 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .max-w-\[800px\] {
     max-width: 800px;
   }
-  .max-w-\[819px\] {
-    max-width: 819px;
-  }
   .max-w-\[892px\] {
     max-width: 892px;
   }
@@ -4313,6 +4310,9 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   }
   .max-w-\[920px\] {
     max-width: 920px;
+  }
+  .max-w-\[1224px\] {
+    max-width: 1224px;
   }
   .max-w-\[1300px\] {
     max-width: 1300px;
@@ -5039,12 +5039,6 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   }
   .p-6 {
     padding: calc(var(--spacing) * 6);
-  }
-  .p-8 {
-    padding: calc(var(--spacing) * 8);
-  }
-  .p-10 {
-    padding: calc(var(--spacing) * 10);
   }
   .p-\[1\.5rem_1\.5rem_2\.6rem_1\.5rem\] {
     padding: 1.5rem 1.5rem 2.6rem 1.5rem;
