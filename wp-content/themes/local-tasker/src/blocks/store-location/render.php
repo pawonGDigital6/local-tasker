@@ -125,31 +125,16 @@ $section_title = get_field('section_title');
 												</svg>
 											</span>
 											<span class="sm:text-body text-caption-sm font-medium leading-[1.4] text-lt-text-secondary">
-												<?php echo esc_html($time); ?>
+												<?php echo $time; ?>
 											</span>
 										</li>
 									<?php endif; ?>
 									<?php if ($address): ?>
 										<li class="flex items-start gap-3">
 											<span class="sm:mt-0.5 shrink-0 text-lt-text-muted max-sm:w-[16px]" aria-hidden="true">
-												<svg width="18" height="19" viewBox="0 0 18 19" fill="none"
-													xmlns="http://www.w3.org/2000/svg">
-													<g clip-path="url(#clip0_173_6545)">
-														<path
-															d="M11.5 17.5V10.8333C11.5 10.6123 11.4122 10.4004 11.2559 10.2441C11.0996 10.0878 10.8877 10 10.6667 10H7.33333C7.11232 10 6.90036 10.0878 6.74408 10.2441C6.5878 10.4004 6.5 10.6123 6.5 10.8333V17.5"
-															stroke="#0A65FC" stroke-width="1.66667" stroke-linecap="round"
-															stroke-linejoin="round" />
-														<path
-															d="M1.5 8.33322C1.49994 8.09078 1.55278 7.85124 1.65482 7.63132C1.75687 7.4114 1.90566 7.21639 2.09083 7.05989L7.92417 2.06073C8.22499 1.80648 8.60613 1.66699 9 1.66699C9.39387 1.66699 9.77501 1.80648 10.0758 2.06073L15.9092 7.05989C16.0943 7.21639 16.2431 7.4114 16.3452 7.63132C16.4472 7.85124 16.5001 8.09078 16.5 8.33322V15.8332C16.5 16.2753 16.3244 16.6992 16.0118 17.0117C15.6993 17.3243 15.2754 17.4999 14.8333 17.4999H3.16667C2.72464 17.4999 2.30072 17.3243 1.98816 17.0117C1.67559 16.6992 1.5 16.2753 1.5 15.8332V8.33322Z"
-															stroke="#0A65FC" stroke-width="1.66667" stroke-linecap="round"
-															stroke-linejoin="round" />
-													</g>
-													<defs>
-														<clipPath id="clip0_173_6545">
-															<rect width="18" height="19" fill="white" />
-														</clipPath>
-													</defs>
-												</svg>
+												<svg class="w-5" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0A65FC" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round">
+														<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+													</svg>
 											</span>
 											<span class="sm:text-body text-caption-sm font-medium leading-[1.4] text-lt-text-secondary">
 												<?php echo esc_html($address); ?>

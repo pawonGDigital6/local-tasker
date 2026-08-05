@@ -294,37 +294,5 @@ radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52,
 			</form>
 		</div>
 		<!-- CTA Buttons -->
-		<?php
-		// Fall back to the design's default CTAs when the ACF link fields are
-		// empty, so the two hero buttons always render (still overridable in ACF).
-		if (empty($hero_cta_primary)) {
-			$hero_cta_primary = [
-				'url' => $shop_page_id > 0 ? get_permalink($shop_page_id) : home_url('/'),
-				'title' => __('Shop Materials', 'local-tasker'),
-				'target' => '',
-			];
-		}
-		if (empty($hero_cta_secondary)) {
-			$hero_cta_secondary = [
-				'url' => home_url('/contact'),
-				'title' => __('Book an Installation', 'local-tasker'),
-				'target' => '',
-			];
-		}
-		?>
-		<?php if ($hero_cta_primary || $hero_cta_secondary): ?>
-			<div class="hero-ctas flex flex-wrap gap-4 justify-center sm:mt-12 mt-[25px]">
-				<?php if ($hero_cta_primary): ?>
-					<a href="<?php echo esc_url($hero_cta_primary['url']); ?>"
-						target="<?php echo esc_attr($hero_cta_primary['target'] ?: '_self'); ?>"
-						class="btn btn--brand"><?php echo esc_html($hero_cta_primary['title']); ?></a>
-				<?php endif; ?>
-				<?php if ($hero_cta_secondary): ?>
-					<a href="<?php echo esc_url($hero_cta_secondary['url']); ?>"
-						target="<?php echo esc_attr($hero_cta_secondary['target'] ?: '_self'); ?>"
-						class="btn bg-lt-white text-lt-brand border-[1.5px] border-[#e5e7eb] transition-colors duration-[360ms] hover:bg-lt-brand hover:text-lt-white hover:border-lt-brand"><?php echo esc_html($hero_cta_secondary['title']); ?></a>
-				<?php endif; ?>
-			</div>
-		<?php endif; ?>
 	</div>
 </section>
