@@ -885,6 +885,41 @@ button.swiper-pagination-bullet {
   box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.1490196078) inset;
 }
 
+.lt-search .search-form {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 16px;
+  background: var(--Surface-Subtle, #f8f8f7);
+  padding: 13px 24px;
+  border-radius: 32px;
+  border: 1px solid var(--Border-Default, #e5e7eb);
+  min-width: 500px;
+  color: var(--color-lt-text-secondary);
+}
+.lt-search .search-form label {
+  flex-grow: 1;
+}
+.lt-search .search-form input::placeholder {
+  color: var(--color-lt-text-secondary);
+  opacity: 1;
+}
+.lt-search .search-form input[type=search] {
+  width: 100%;
+}
+.lt-search .search-form input[type=search]:focus {
+  outline: none;
+}
+.lt-search .search-form input[type=submit] {
+  cursor: pointer;
+  flex-shrink: 0;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzc2XzExMCkiPgo8cGF0aCBkPSJNOC4zNjM4OCAwLjk5OTUyM0M3LjM4OTY3IDAuOTg4MTcgNi40MjI4OSAxLjE3MDI1IDUuNTE5NTUgMS41MzUyQzQuNjE2MjEgMS45MDAxNiAzLjc5NDI4IDIuNDQwNzUgMy4xMDEzNiAzLjEyNTY0QzIuNDA4NDQgMy44MTA1MyAxLjg1ODMxIDQuNjI2MTEgMS40ODI4NSA1LjUyNTEzQzEuMTA3MzkgNi40MjQxNiAwLjkxNDA2MiA3LjM4ODc1IDAuOTE0MDYyIDguMzYzMDJDMC45MTQwNjIgOS4zMzczIDEuMTA3MzkgMTAuMzAxOSAxLjQ4Mjg1IDExLjIwMDlDMS44NTgzMSAxMi4wOTk5IDIuNDA4NDQgMTIuOTE1NSAzLjEwMTM2IDEzLjYwMDRDMy43OTQyOCAxNC4yODUzIDQuNjE2MjEgMTQuODI1OSA1LjUxOTU1IDE1LjE5MDhDNi40MjI4OSAxNS41NTU4IDcuMzg5NjcgMTUuNzM3OSA4LjM2Mzg4IDE1LjcyNjVDMTAuMzAxOSAxNS43MDM5IDEyLjE1MjkgMTQuOTE4MiAxMy41MTU0IDEzLjUzOTdDMTQuODc3OSAxMi4xNjEzIDE1LjY0MjEgMTAuMzAxMiAxNS42NDIxIDguMzYzMDJDMTUuNjQyMSA2LjQyNDgzIDE0Ljg3NzkgNC41NjQ3OSAxMy41MTU0IDMuMTg2MzJDMTIuMTUyOSAxLjgwNzg1IDEwLjMwMTkgMS4wMjIxMSA4LjM2Mzg4IDAuOTk5NTIzWiIgc3Ryb2tlPSIjMkUyRTJFIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiLz4KPHBhdGggZD0iTTEzLjg1NjkgMTMuODU4NEwxOC45OTk5IDE5LjAwMTQiIHN0cm9rZT0iIzJFMkUyRSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF83Nl8xMTAiPgo8cmVjdCB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==);
+  background-size: contain;
+  background-repeat: no-repeat;
+  text-indent: -9999px;
+  width: 22px;
+  height: 22px;
+}
+
 .site-footer a {
   text-decoration: none;
   transition: all 0.36s;
@@ -4331,6 +4366,9 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .shrink-0 {
     flex-shrink: 0;
   }
+  .flex-grow {
+    flex-grow: 1;
+  }
   .border-collapse {
     border-collapse: collapse;
   }
@@ -6774,6 +6812,11 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
       min-height: calc(100% - 187px);
     }
   }
+  .max-sm\:w-3 {
+    @media (width < 768px) {
+      width: calc(var(--spacing) * 3);
+    }
+  }
   .max-sm\:w-\[7\.5px\] {
     @media (width < 768px) {
       width: 7.5px;
@@ -6993,6 +7036,16 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
       min-height: 390px;
     }
   }
+  .max-smlr\:w-3 {
+    @media (width < 568px) {
+      width: calc(var(--spacing) * 3);
+    }
+  }
+  .max-smlr\:w-4 {
+    @media (width < 568px) {
+      width: calc(var(--spacing) * 4);
+    }
+  }
   .max-smlr\:w-\[18px\] {
     @media (width < 568px) {
       width: 18px;
@@ -7012,6 +7065,16 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
     @media (width < 568px) {
       --tw-translate-x: -50%;
       translate: var(--tw-translate-x) var(--tw-translate-y);
+    }
+  }
+  .max-smlr\:flex-col {
+    @media (width < 568px) {
+      flex-direction: column;
+    }
+  }
+  .max-smlr\:items-center {
+    @media (width < 568px) {
+      align-items: center;
     }
   }
   .max-smlr\:pr-6 {
@@ -7401,6 +7464,11 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .sm\:inline {
     @media (width >= 768px) {
       display: inline;
+    }
+  }
+  .sm\:inline-flex {
+    @media (width >= 768px) {
+      display: inline-flex;
     }
   }
   .sm\:h-10 {
@@ -8236,6 +8304,11 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .md\:hidden {
     @media (width >= 992px) {
       display: none;
+    }
+  }
+  .md\:inline-flex {
+    @media (width >= 992px) {
+      display: inline-flex;
     }
   }
   .md\:aspect-square {

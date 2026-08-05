@@ -29,9 +29,20 @@ $unique_page_class = get_field('unique_page_class');
 		<div class="top-bar bg-lt-onyx py-2">
 			<div class="container">
 				<span
-					class="uppercase text-lt-white text-center block md:text-caption-sm text-caption-xs tracking-[1px] leading-[1.30]">
-					flat rate shipping across Melbourne | Seamless returns | CALL ON: <a
-						class="text-lt-accent hover:underline" href="tel:0373020482">(03) 7302 0482</a></span>
+					class="uppercase text-lt-white text-center items-center block md:text-caption-sm text-caption-xs tracking-[1px] leading-[1.30] flex max-smlr:flex-col max-smlr:items-center gap-1 justify-between">
+					<span class="text">flat rate shipping across Melbourne | Seamless returns | </span>
+					<a href="tel:0373020482"
+						class="inline-flex items-center gap-2 lt-text-secondary no-underline md:text-caption-md text-caption-xs leading-[1.71] hover:text-lt-accent transition-colors">
+						<span class="icon max-sm:w-3">
+							<svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" clip-rule="evenodd"
+									d="M1.86227 0.594972C2.77502 -0.312528 4.27802 -0.151277 5.04227 0.870223L5.98877 2.13322C6.61127 2.96422 6.55577 4.12522 5.81702 4.85947L5.63852 5.03797C5.61828 5.1129 5.61622 5.19159 5.63252 5.26747C5.67977 5.57347 5.93552 6.22147 7.00652 7.28647C8.07752 8.35147 8.73002 8.60647 9.04052 8.65447C9.11876 8.67021 9.19956 8.6679 9.27677 8.64772L9.58277 8.34322C10.2398 7.69072 11.2478 7.56847 12.0608 8.01022L13.4933 8.79022C14.721 9.45622 15.0308 11.1242 14.0258 12.124L12.96 13.183C12.624 13.5167 12.1725 13.795 11.622 13.8467C10.2645 13.9735 7.10177 13.8115 3.77702 10.5062C0.674271 7.42072 0.0787703 4.72972 0.00302025 3.40372C-0.0344797 2.73322 0.28202 2.16622 0.68552 1.76572L1.86227 0.594972ZM4.14227 1.54447C3.76202 1.03672 3.05402 0.996223 2.65502 1.39297L1.47752 2.56297C1.23002 2.80897 1.11152 3.08047 1.12652 3.33997C1.18652 4.39372 1.66652 6.82147 4.57052 9.70897C7.61702 12.7375 10.4303 12.8282 11.5178 12.7262C11.7398 12.706 11.9603 12.5905 12.1665 12.3857L13.2315 11.326C13.665 10.8955 13.5698 10.111 12.9563 9.77797L11.5238 8.99872C11.1278 8.78422 10.6643 8.85472 10.3763 9.14122L10.035 9.48097L9.63752 9.08197C10.035 9.48097 10.0343 9.48172 10.0335 9.48172L10.0328 9.48322L10.0305 9.48547L10.0253 9.48997L10.014 9.50047C9.98237 9.52986 9.94825 9.55646 9.91202 9.57997C9.85202 9.61972 9.77252 9.66397 9.67277 9.70072C9.47027 9.77647 9.20177 9.81697 8.87027 9.76597C8.22002 9.66622 7.35827 9.22297 6.21302 8.08447C5.06852 6.94597 4.62152 6.08947 4.52102 5.43997C4.46927 5.10847 4.51052 4.83997 4.58702 4.63747C4.62912 4.52352 4.6894 4.41715 4.76552 4.32247L4.78952 4.29622L4.80002 4.28497L4.80452 4.28047L4.80677 4.27822L4.80827 4.27672L5.02427 4.06222C5.34527 3.74197 5.39027 3.21172 5.08802 2.80747L4.14227 1.54447Z"
+									fill="#ffffff" />
+							</svg>
+						</span>
+						<span class="text">(03) 7302 0482</span>
+					</a>
+				</span>
 			</div>
 		</div>
 		<!-- Site Header -->
@@ -41,23 +52,8 @@ $unique_page_class = get_field('unique_page_class');
 				<div class="container flex flex-col nowrap">
 					<!-- Header Top -->
 					<div class="site-header__top-inner flex justify-between items-center">
-						<!-- Left -->
-						<div class="site-header__top-left lg:inline-flex hidden">
-							<a href="tel:0373020482"
-								class="inline-flex items-center gap-2 lt-text-secondary no-underline text-caption-md leading-[1.71] hover:text-lt-brand transition-colors">
-								<span class="icon">
-									<svg width="15" height="14" viewBox="0 0 15 14" fill="none"
-										xmlns="http://www.w3.org/2000/svg">
-										<path fill-rule="evenodd" clip-rule="evenodd"
-											d="M1.86227 0.594972C2.77502 -0.312528 4.27802 -0.151277 5.04227 0.870223L5.98877 2.13322C6.61127 2.96422 6.55577 4.12522 5.81702 4.85947L5.63852 5.03797C5.61828 5.1129 5.61622 5.19159 5.63252 5.26747C5.67977 5.57347 5.93552 6.22147 7.00652 7.28647C8.07752 8.35147 8.73002 8.60647 9.04052 8.65447C9.11876 8.67021 9.19956 8.6679 9.27677 8.64772L9.58277 8.34322C10.2398 7.69072 11.2478 7.56847 12.0608 8.01022L13.4933 8.79022C14.721 9.45622 15.0308 11.1242 14.0258 12.124L12.96 13.183C12.624 13.5167 12.1725 13.795 11.622 13.8467C10.2645 13.9735 7.10177 13.8115 3.77702 10.5062C0.674271 7.42072 0.0787703 4.72972 0.00302025 3.40372C-0.0344797 2.73322 0.28202 2.16622 0.68552 1.76572L1.86227 0.594972ZM4.14227 1.54447C3.76202 1.03672 3.05402 0.996223 2.65502 1.39297L1.47752 2.56297C1.23002 2.80897 1.11152 3.08047 1.12652 3.33997C1.18652 4.39372 1.66652 6.82147 4.57052 9.70897C7.61702 12.7375 10.4303 12.8282 11.5178 12.7262C11.7398 12.706 11.9603 12.5905 12.1665 12.3857L13.2315 11.326C13.665 10.8955 13.5698 10.111 12.9563 9.77797L11.5238 8.99872C11.1278 8.78422 10.6643 8.85472 10.3763 9.14122L10.035 9.48097L9.63752 9.08197C10.035 9.48097 10.0343 9.48172 10.0335 9.48172L10.0328 9.48322L10.0305 9.48547L10.0253 9.48997L10.014 9.50047C9.98237 9.52986 9.94825 9.55646 9.91202 9.57997C9.85202 9.61972 9.77252 9.66397 9.67277 9.70072C9.47027 9.77647 9.20177 9.81697 8.87027 9.76597C8.22002 9.66622 7.35827 9.22297 6.21302 8.08447C5.06852 6.94597 4.62152 6.08947 4.52102 5.43997C4.46927 5.10847 4.51052 4.83997 4.58702 4.63747C4.62912 4.52352 4.6894 4.41715 4.76552 4.32247L4.78952 4.29622L4.80002 4.28497L4.80452 4.28047L4.80677 4.27822L4.80827 4.27672L5.02427 4.06222C5.34527 3.74197 5.39027 3.21172 5.08802 2.80747L4.14227 1.54447Z"
-											fill="#2E2E2E" />
-									</svg>
-								</span>
-								<span class="text">(03) 7302 0482</span>
-							</a>
-						</div>
 						<!-- Center -->
-						<div class="site-header__top-center flex items-center gap-[12px]">
+						<div class="site-header__top-left flex items-center gap-[12px]">
 							<!-- HamnBurger -->
 							<div
 								class="menu-hamn-burger flex flex-col justify-between w-[24px] h-[20px] max-smlr:w-[18px] max-smlr:h-[13px] lg:hidden cursor-pointer shrink-0">
@@ -73,6 +69,17 @@ $unique_page_class = get_field('unique_page_class');
 								?>
 							</div>
 							<!-- End of Site Logo -->
+						</div>
+						<!-- Left -->
+						<div class="site-header__top-center md:inline-flex hidden">
+							<div class="lt-search">
+								<?php
+								// Check if the native search form function exists before running it
+								if (function_exists('get_search_form')) {
+									get_search_form();
+								}
+								?>
+							</div>
 						</div>
 						<!-- Right -->
 						<div class="site-header__top-right flex items-center flex justify-end gap-[20px] max-sm:gap-[12px]">
@@ -96,7 +103,7 @@ $unique_page_class = get_field('unique_page_class');
 								</svg>
 							</a>
 							<!-- search  -->
-							<button class="search-button search-pop-opener appearance-button cursor-pointer">
+							<button class="search-button search-pop-opener appearance-button cursor-pointer md:hidden">
 								<svg class="max-md:w-[16px]" width="20" height="20" viewBox="0 0 20 20" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_774_483)">
