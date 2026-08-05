@@ -26,7 +26,7 @@ if (!empty($block['anchor'])) {
 
 // Create class attribute allowing for custom "className" and "align" values.
 
-$class_name = 'acf-block lt-hero relative md:pt-[5.3125rem] md:pb-[5.8rem] py-16';
+$class_name = 'acf-block lt-hero relative md:pt-[5.3125rem] md:pb-[5.8rem] pt-13 pb-8';
 
 
 
@@ -211,7 +211,7 @@ radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52,
 			</h1>
 		<?php endif; ?>
 		<!-- Feature Lists -->
-		<div class="feature-list grid sm:grid-cols-3 sm:gap-6 gap-[21px] sm:mt-[48px] mt-10 wd:px-5">
+		<div class="feature-list grid sm:grid-cols-3 gap-6 sm:mt-[48px] mt-10 wd:px-5">
 			<?php if (have_rows('features_item')): ?>
 				<?php while (have_rows('features_item')):
 
@@ -225,19 +225,15 @@ radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52,
 
 					?>
 					<!-- Item -->
-					<div class="feature-list__item text-center text-lt-white">
+					<div class="feature-list__item text-center text-lt-white max-sml:flex max-sml:gap-4">
 						<?php
 
 						if ($feature_item_icon):
 
 							?>
-							<div class="icon sm:mb-[18px] mb-4 flex justify-center">
+							<div class="icon sm:mb-[18px] mb-4 flex justify-center shrink-0 max-sm:w-[21px] max-sm:h-[21px] max-sm:mt-[3px] sml:mx-auto">
 								<?php
-
-								$url = wp_get_attachment_url($feature_item_icon);
-
 								echo wp_get_attachment_image($feature_item_icon, $size);
-
 								; ?>
 							</div>
 							<?php
@@ -245,22 +241,24 @@ radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52,
 						endif;
 
 						?>
-						<?php if ($feature_title): ?>
-							<h2
-								class="feature-heading text-body-xl leading-[1.4] font-bold tracking-[-0.8px] font-semi-ext sm:mb-[11px] mb-2">
-								<?php echo esc_html($feature_title); ?>
-							</h2>
-						<?php endif; ?>
-						<?php if ($feature_text): ?>
-							<div class="feature-text max-w-[302px] mx-auto tracking-[0.02em]"><?php echo $feature_text; ?></div>
-						<?php endif; ?>
+						<div class="content-holder max-sml:text-left">
+							<?php if ($feature_title): ?>
+								<h2
+									class="feature-heading sm:text-body-xl text-body-lg leading-[1.4] font-bold tracking-[-0.8px] font-semi-ext sm:mb-[11px] mb-2">
+									<?php echo esc_html($feature_title); ?>
+								</h2>
+							<?php endif; ?>
+							<?php if ($feature_text): ?>
+								<div class="feature-text max-w-[302px] mx-auto tracking-[0.02em] max-sml:text-caption-md"><?php echo $feature_text; ?></div>
+							<?php endif; ?>
+						</div>
 					</div><!-- End of Item -->
 				<?php endwhile; ?>
 			<?php endif; ?>
 		</div>
 		<!-- End of Feature Lists -->
 		<!-- Hero Search Form -->
-		<div class="hero-search sm:mt-14 mt-8">
+		<div class="hero-search sm:mt-14 mt-12">
 			<form action="<?php echo esc_url($hero_search_url); ?>" method="get" class="hero-search__form"
 				data-sub-cats="<?php echo esc_attr(wp_json_encode($sub_cats_map)); ?>">
 				<div class="hero-search__bar">

@@ -67,6 +67,7 @@
 	/* Breakpoints */
 	--breakpoint-xxs: 320px;
 	--breakpoint-xs: 375px;
+	--breakpoint-sml: 479px;
 	--breakpoint-smlr: 568px;
 	--breakpoint-sm: 768px;
 	--breakpoint-md: 992px;
