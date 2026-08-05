@@ -115,27 +115,6 @@
             "append": ""
         },
         {
-            "key": "field_6a3bf0f4a6d71",
-            "label": "Content",
-            "name": "in_two_hero_content",
-            "aria-label": "",
-            "type": "wysiwyg",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "allow_in_bindings": 0,
-            "tabs": "all",
-            "toolbar": "full",
-            "media_upload": 1,
-            "delay": 0
-        },
-        {
             "key": "field_6a3bf11aa6d72",
             "label": "Button One",
             "name": "in_two_hero_button_one",
@@ -411,5 +390,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1783181405
+    "modified": 1785916072
 }

@@ -138,50 +138,43 @@ $section_sub_text = get_field('section_sub_text');
 					</div><!--  End of Tab List    -->
 					<!--  Tab List    -->
 					<div id="tab-2" class="tab-content">
-						<div class="content"><?php
-						// Retrieve the data from the ACF field
-						$categories = get_field('prod_services');
+						<div class="content">
+							<?php
+							// Retrieve the array of WooCommerce product category IDs from the ACF Taxonomy field
+							$category_ids = get_field('prod_services');
 
-						// Check if we have data and ensure it's an array
-						if ($categories && is_array($categories)):
-							?>
+							// Check if we have data and ensure it's an array
+							if ($category_ids && is_array($category_ids)):
+								?>
 								<!-- Grid Wrapper -->
 								<div class="products-grid grid sm:grid-cols-2 gap-x-[0.875rem] gap-y-[1.18rem]">
 									<?php
-									foreach ($categories as $category):
-										// CRITICAL FIX: Ensure $category is a valid WP_Term object
-										// If it's a WP_Post object, we dynamically extract its product categories instead
-										if (is_object($category) && isset($category->post_type)) {
-											// Fallback: If ACF returned a product post, grab its first product category
-											$post_cats = wp_get_post_terms($category->ID, 'product_cat');
-											if (!empty($post_cats) && !is_wp_error($post_cats)) {
-												$category = $post_cats[0];
-											} else {
-												continue; // Skip if this product has no category
-											}
-										}
+									foreach ($category_ids as $cat_id):
+										// Fetch the full term object using the ID from ACF
+										$category = get_term($cat_id, 'product_cat');
 
-										// Double check we now have a valid term object before processing
-										if (!$category instanceof WP_Term) {
+										// Skip this iteration if the category doesn't exist or returns an error
+										if (!$category || is_wp_error($category)) {
 											continue;
 										}
 
-										// Safely grab category link and image
+										// Get the category link
 										$category_link = get_term_link($category);
+
+										// Get the WooCommerce category thumbnail ID
 										$thumbnail_id = get_term_meta($category->term_id, 'thumbnail_id', true);
 										?>
 										<!-- Single Category HTML Item -->
 										<article id="category-<?php echo esc_attr($category->term_id); ?>"
 											class="product-card transition-shadow duration-[420ms] hover:shadow-lg flex items-center gap-4 sm:p-[14px] p-[14px_19px_14px_16px] bg-lt-white rounded-lg relative">
-											
-												<div class="product-card__media w-[73px] h-[73px] shrink-0 rounded-lg overflow-hidden bg-lt-snow-drift">
-													<?php
-													echo wp_get_attachment_image($thumbnail_id, 'medium', false, array(
-														'class' => 'product-card__image w-full h-full object-cover'
-													));
-													?>
-												</div>
-										
+											<div class="product-card__media w-[73px] h-[73px] shrink-0 rounded-lg overflow-hidden bg-lt-snow-drift">
+												<?php
+												// Fetches the WooCommerce Category Image
+												echo wp_get_attachment_image($thumbnail_id, 'medium', false, array(
+													'class' => 'product-card__image w-full h-full object-cover'
+												));
+												?>
+											</div>
 											<div class="product-card__content">
 												<h3
 													class="product-card__title sm:text-body text-caption-md line-clamp-2 overflow-hidden font-regular sm:leading-[1.4] mb-1 font-base tracking-[-0.02em] text-lt-onyx">
@@ -189,6 +182,7 @@ $section_sub_text = get_field('section_sub_text');
 												</h3>
 												<div class="text-caption-sm leading-[1.33] tracking-[0.25px] text-body">
 													<?php
+													// Pulls from the WooCommerce category description field and limits length
 													echo wp_trim_words($category->description, 8, '&hellip;');
 													?>
 												</div>
