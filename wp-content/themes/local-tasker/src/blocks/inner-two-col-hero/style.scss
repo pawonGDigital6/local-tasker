@@ -24,15 +24,25 @@
 	@include mix.breakpoint(small) {
 		background: var(--secGradColor);
 	}
+	.breadcrumb {
+		@include mix.breakpoint(medium) {
+			margin-bottom: 32px;
+		}
+	}
+
 	.left-col {
 		@include mix.breakpoint(small, true) {
 			background: var(--secGradColor);
 		}
-
+		@include mix.breakpoint(smaller) {
+			.btn {
+				padding-block: 15px;
+			}
+		}
 		&:not(:has(.icon-title)) {
 			justify-content: center;
 
-			.btn-wrap{
+			.btn-wrap {
 				margin: 0;
 			}
 		}

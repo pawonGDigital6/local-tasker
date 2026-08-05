@@ -4570,6 +4570,12 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .gap-y-2 {
     row-gap: calc(var(--spacing) * 2);
   }
+  .gap-y-4 {
+    row-gap: calc(var(--spacing) * 4);
+  }
+  .gap-y-4\.5 {
+    row-gap: calc(var(--spacing) * 4.5);
+  }
   .gap-y-6 {
     row-gap: calc(var(--spacing) * 6);
   }
@@ -6397,6 +6403,11 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
       padding-right: max(40px, calc((100vw - 1365px) / 2));
     }
   }
+  .max-wd\:min-h-\[380px\] {
+    @media (width < 1200px) {
+      min-height: 380px;
+    }
+  }
   .max-wd\:min-h-\[451px\] {
     @media (width < 1200px) {
       min-height: 451px;
@@ -7297,6 +7308,11 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
       margin-bottom: calc(var(--spacing) * 4);
     }
   }
+  .sm\:mb-5\.25 {
+    @media (width >= 768px) {
+      margin-bottom: calc(var(--spacing) * 5.25);
+    }
+  }
   .sm\:mb-6 {
     @media (width >= 768px) {
       margin-bottom: calc(var(--spacing) * 6);
@@ -7325,6 +7341,11 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .sm\:mb-12 {
     @media (width >= 768px) {
       margin-bottom: calc(var(--spacing) * 12);
+    }
+  }
+  .sm\:mb-12\.5 {
+    @media (width >= 768px) {
+      margin-bottom: calc(var(--spacing) * 12.5);
     }
   }
   .sm\:mb-14 {
@@ -7748,6 +7769,11 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .sm\:py-1\.5 {
     @media (width >= 768px) {
       padding-block: calc(var(--spacing) * 1.5);
+    }
+  }
+  .sm\:py-4 {
+    @media (width >= 768px) {
+      padding-block: calc(var(--spacing) * 4);
     }
   }
   .sm\:py-7 {
@@ -9096,6 +9122,11 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .wd\:ml-\[2\.3rem\] {
     @media (width >= 1200px) {
       margin-left: 2.3rem;
+    }
+  }
+  .wd\:min-h-\[650px\] {
+    @media (width >= 1200px) {
+      min-height: 650px;
     }
   }
   .wd\:min-h-\[690px\] {

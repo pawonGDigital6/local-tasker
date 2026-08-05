@@ -12,7 +12,7 @@ if (!empty($block['anchor'])) {
 }
 
 // Create class attribute allowing for custom "className" and "align" values.
-$class_name = 'acf-block lt-inner-two-col-hero sm:py-[2.075rem] py-16 overflow-hidden';
+$class_name = 'acf-block lt-inner-two-col-hero sm:py-[2.075rem] py-8 overflow-hidden';
 
 if (!empty($block['className'])) {
 	$class_name .= ' ' . $block['className'];
@@ -42,17 +42,17 @@ $testimoial_hero_off = get_field('turn_off_hero_testimonial');
 ?>
 <section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container">
-		<div class="rows flex justify-between flex-wrap md:gap-5 gap-14">
+		<div class="rows flex justify-between flex-wrap md:gap-5 gap-12">
 			<!-- Left Col -->
 			<div
-				class="left-col relative rounded-[20px] w-full sm:p-[3.8125rem_3.1875rem_3.8125rem_2.375rem] max-lg:text-center flex flex-col wd:min-h-[690px] <?php echo $testimoial_hero_off ? 'no-testimonial justify-center items-center text-center' : 'wd:w-[57.6%] justify-between' ?>">
+				class="left-col relative rounded-[20px] w-full sm:p-[3.8125rem_3.1875rem_3.8125rem_2.375rem] max-lg:text-center flex flex-col wd:min-h-[650px] <?php echo $testimoial_hero_off ? 'no-testimonial justify-center items-center text-center' : 'wd:w-[57.6%] justify-center' ?>">
 				<div class="upper relative z-10 <?php echo $testimoial_hero_off ? 'max-w-[652px]' : '' ?>">
 					<!-- BreadCrumb -->
 					<?php get_template_part('template-parts/components/breadcrumb'); ?>
 					<!-- End of BreadCrumb -->
 					<!-- Pre Heading -->
 					<div
-						class="pre-header flex  max-wd:justify-center sm:gap-4 max-sm:flex-col max-sm:items-center max-md:justify-center <?php echo $testimoial_hero_off ? 'justify-center sm:mb-10.5 mb-5.5' : 'mb-5.25' ?>">
+						class="pre-header flex  max-wd:justify-center sm:gap-4 max-sm:flex-col max-sm:items-center max-md:justify-center <?php echo $testimoial_hero_off ? 'justify-center sm:mb-10.5 mb-5.5' : 'sm:mb-5.25 mb-6' ?>">
 						<div class="imgs flex gap-2 items-center">
 							<?php
 							if ($rating_image_one):
@@ -75,19 +75,13 @@ $testimoial_hero_off = get_field('turn_off_hero_testimonial');
 					<!-- Title -->
 					<?php if ($in_two_hero_main_heading = get_field('in_two_hero_main_heading')): ?>
 						<h1
-							class="text-h2 leading-[1.20] font-bold font-semi-ext sm:tracking-[-0.02em] tracking-[0.4px] md:mb-3 mb-3 text-lt-white">
+							class="text-h2 leading-[1.20] font-bold font-semi-ext sm:tracking-[-0.02em] tracking-[0.4px] md:mb-3 mb-6 text-lt-white">
 							<?php echo esc_html($in_two_hero_main_heading); ?>
 						</h1>
 					<?php endif; ?>
-					<!-- Content -->
-					<?php if ($in_two_hero_content): ?>
-						<div class="content md:mb-7.5 mb-11.25 lp:pr-10 text-white sm:text-body-xl">
-							<?php echo $in_two_hero_content; ?>
-						</div>
-					<?php endif; ?>
 					<!-- Btn wrap -->
 					<div
-						class="btn-wrap flex max-wd:justify-center sm:flex-wrap max-sm:flex-col gap-4 md:mb-10 mb-12.5 <?php echo $testimoial_hero_off ? 'justify-center' : '' ?>">
+						class="btn-wrap flex max-wd:justify-center sm:flex-wrap max-sm:flex-col gap-4 md:mb-10 mb-6 <?php echo $testimoial_hero_off ? 'justify-center' : '' ?>">
 						<?php
 						$link = get_field('in_two_hero_button_one');
 						if ($link):
@@ -113,7 +107,7 @@ $testimoial_hero_off = get_field('turn_off_hero_testimonial');
 				</div>
 				<!-- Icon Title -->
 				<div
-					class="icon-title-list flex max-wd:justify-center md:flex-wrap items-center max-sm:flex-col gap-x-9 sm:gap-y-4 gap-y-7.5">
+					class="icon-title-list flex max-wd:justify-center md:flex-wrap items-center max-sm:flex-col gap-x-9 gap-y-4.5 w-full <?php echo $testimoial_hero_off ? ' justify-center' : '' ?>">
 					<?php if (have_rows('in_two_hero_ic_lists')): ?>
 						<?php while (have_rows('in_two_hero_ic_lists')):
 							the_row();
@@ -176,7 +170,7 @@ $testimoial_hero_off = get_field('turn_off_hero_testimonial');
 			</div><!-- End of Left Col -->
 			<?php if (!$testimoial_hero_off): ?>
 				<!-- Right Col -->
-				<div class="right-col lp:w-[40.8%] wd:w-[40%] w-full relative max-wd:min-h-[451px]">
+				<div class="right-col lp:w-[40.8%] wd:w-[40%] w-full relative max-wd:min-h-[380px]">
 					<!-- Testimonial -->
 					<div class="swiper in-testimonial h-full">
 						<div class="swiper-wrapper">
