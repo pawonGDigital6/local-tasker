@@ -16,7 +16,7 @@
 		border: 1px solid var(--Border-Default, #e5e7eb);
 		min-width: 500px;
 		color: var(--color-lt-text-secondary);
-		
+
 		label {
 			flex-grow: 1;
 		}
@@ -53,8 +53,9 @@
 			background-size: contain;
 			background-repeat: no-repeat;
 			text-indent: -9999px;
-			width: 22px;
+			width: 20px;
 			height: 22px;
+			background-position: center 2px;
 		}
 	}
 }
