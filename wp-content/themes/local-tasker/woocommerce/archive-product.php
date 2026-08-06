@@ -117,12 +117,13 @@ foreach ($blocks_before as $block) {
 	<!-- ── Results bar ─────────────────────────────────────── -->
 	<div class="lt-shop-archive__bar">
 		<div class="container">
+			<?php get_template_part('template-parts/components/breadcrumb'); ?>
 			<div class="flex flex-wrap justify-between items-center gap-x-4 md:gap-y-5 gap-y-6">
 				<!-- Title + count -->
 				<div class="flex items-center md:gap-[5px] gap-3 shrink-0">
-					<h2 class="sm:text-[24px] text-[20px] leading-none font-bold text-[#0a0d1a] m-0 font-semi-ext tracking-[-0.48px]">
+					<h1 class="sm:text-[24px] text-[20px] leading-none font-bold text-[#0a0d1a] m-0 font-semi-ext tracking-[-0.48px]">
 						<?php esc_html_e('All Products', 'local-tasker'); ?>
-					</h2>
+					</h1>
 					<span
 						class="inline-flex items-center h-6 px-3 rounded-full bg-lt-white border border-[#e5e5df] sm:text-[13px] text-caption-xs font-semibold text-[#6b7280] shrink-0"
 						aria-live="polite" data-lt-result-count>

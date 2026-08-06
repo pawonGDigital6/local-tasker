@@ -6490,6 +6490,21 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
       z-index: 50;
     }
   }
+  .max-md\:z-99 {
+    @media (width < 992px) {
+      z-index: 99;
+    }
+  }
+  .max-md\:z-100 {
+    @media (width < 992px) {
+      z-index: 100;
+    }
+  }
+  .max-md\:z-899 {
+    @media (width < 992px) {
+      z-index: 899;
+    }
+  }
   .max-md\:mt-\[-27px\] {
     @media (width < 992px) {
       margin-top: -27px;

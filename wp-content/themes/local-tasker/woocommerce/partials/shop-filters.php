@@ -115,7 +115,7 @@ $lt_result_range = $lt_result_shown > 0 ? '1-' . $lt_result_shown : '0';
 	id="lt-filters-sidebar"
 	class="lt-shop-filters
 		w-[240px] shrink-0
-		max-md:fixed max-md:inset-y-0 max-md:left-0 max-md:z-50 max-md:w-[300px] max-md:max-w-[85vw]
+		max-md:fixed max-md:inset-y-0 max-md:left-0 max-md:z-100 max-md:w-[300px] max-md:max-w-[85vw]
 		max-md:bg-lt-white max-md:overflow-y-auto max-md:shadow-2xl
 		max-md:-translate-x-full max-md:transition-transform max-md:duration-300
 	"

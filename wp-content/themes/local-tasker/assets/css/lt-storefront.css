@@ -60,20 +60,49 @@
 .lt-shop-archive__bar {
 	background: transparent !important;
 	border-bottom: 0 !important;
+	padding-top: 54px;
+}
+
+@media (max-width: 991px) {
+	.lt-shop-archive__bar {
+		padding-top: 40px;
+	}
+
+	.lt-shop-archive__bar .breadcrumb {
+		margin-bottom: 48px;
+	}
+}
+
+@media (max-width: 767px) {
+	.lt-shop-archive__bar {
+		padding-top: 32px;
+	}
+
+	.lt-shop-archive__bar .breadcrumb {
+		margin-bottom: 32px;
+	}
+}
+
+.lt-shop-archive__bar .breadcrumb .bread-lists {
+	justify-content: flex-start;
+}
+
+.lt-shop-archive__bar .breadcrumb svg path {
+	stroke: var(--lt-muted-2);
 }
 
 /* Figma: toolbar sits 80px below the section top (64px on mobile); the 57px
    gap down to the sidebar/grid is applied on the content container itself. */
 .lt-shop-archive__bar .container>div {
-	padding-top: 80px;
+	/* padding-top: 80px; */
 	padding-bottom: 0;
 }
 
-@media (max-width: 991px) {
+/* @media (max-width: 991px) {
 	.lt-shop-archive__bar .container>div {
 		padding-top: 64px;
 	}
-}
+} */
 
 .lt-shop-archive__bar h1 {
 	font-family: var(--font-semi-ext, "PP Formula Semi Extended", sans-serif);
@@ -149,11 +178,13 @@
 		padding: 0 !important;
 	}
 }
+
 @media (max-width: 375px) {
-.lt-shop-sort__select {
-	padding-right: 23px;
+	.lt-shop-sort__select {
+		padding-right: 23px;
+	}
 }
-}
+
 /* Sidebar headings + facet titles → PP Formula Semi Extended */
 .lt-shop-filters .lt-filter-group__toggle span:first-child,
 .lt-shop-filters p {
