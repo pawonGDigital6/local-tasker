@@ -83,3 +83,24 @@
 .lt-inner-two-col-hero .no-testimonial .breadcrumb .bread-lists {
   justify-content: center;
 }
+
+@media screen and (max-width: 1199px) {
+  body.woocommerce-shop .lt-inner-two-col-hero .rows {
+    gap: 24px;
+  }
+}
+body.woocommerce-shop .lt-inner-two-col-hero h1 {
+  margin: 0;
+}
+body.woocommerce-shop .lt-inner-two-col-hero .breadcrumb,
+body.woocommerce-shop .lt-inner-two-col-hero .pre-header,
+body.woocommerce-shop .lt-inner-two-col-hero .btn-wrap,
+body.woocommerce-shop .lt-inner-two-col-hero .icon-title-list,
+body.woocommerce-shop .lt-inner-two-col-hero .in-testimonial__content {
+  display: none;
+}
+@media screen and (min-width: 1200px) {
+  body.woocommerce-shop .lt-inner-two-col-hero .left-col {
+    min-height: 460px;
+  }
+}
