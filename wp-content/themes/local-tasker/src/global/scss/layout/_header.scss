@@ -3,6 +3,18 @@
 
 .site-header {
 	box-shadow: 0px -1px 0px 0px #00000026 inset;
+	position: sticky;
+	top: 0;
+	background-color: var(--color-lt-white);
+	z-index: 99;
+	// transition: padding 1s;
+	// will-change: padding;
+
+	// &.is-sticky{
+	// 	@include mix.breakpoint(wide, true){
+	// 		padding-block: 13px;
+	// 	}
+	// }
 }
 
 .lt-search {

@@ -883,6 +883,10 @@ button.swiper-pagination-bullet {
 }
 .site-header {
   box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.1490196078) inset;
+  position: sticky;
+  top: 0;
+  background-color: var(--color-lt-white);
+  z-index: 99;
 }
 
 .lt-search .search-form {
@@ -3665,6 +3669,9 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   }
   .z-98 {
     z-index: 98;
+  }
+  .z-99 {
+    z-index: 99;
   }
   .z-\[98\] {
     z-index: 98;

@@ -17,7 +17,7 @@ $nav_heading_four = get_field('nav_heading_four', 'options');
 $copyright_text = get_field('copyright_text', 'options');
 ?>
 <!-- Global Quote Form -->
-<div class="global-quote-form-pop fixed inset-0 bg-[rgba(0,0,0,0.8)] z-98 h-dvh overflow-auto invisible opacity-0">
+<div class="global-quote-form-pop fixed inset-0 bg-[rgba(0,0,0,0.8)] z-99 h-dvh overflow-auto invisible opacity-0">
 	<div class="container h-full w-full">
 		<div class="holder py-10">
 			<div class="gqf-form max-w-[1224px] mx-auto theme-shadow rounded-[20px] overflow-hidden">

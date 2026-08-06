@@ -77,31 +77,3 @@
 		}
 	}
 }
-
-// ------------------------ Shop page specific
-body {
-	&.woocommerce-shop {
-		.lt-inner-two-col-hero {
-			.rows {
-				@include mix.breakpoint(wide) {
-					gap: 24px;
-				}
-			}
-			h1 {
-				margin: 0;
-			}
-			.breadcrumb,
-			.pre-header,
-			.btn-wrap,
-			.icon-title-list,
-			.in-testimonial__content {
-				display: none;
-			}
-			.left-col {
-				@include mix.breakpoint(wide, true) {
-					min-height: 460px;
-				}
-			}
-		}
-	}
-}
