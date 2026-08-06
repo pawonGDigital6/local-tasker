@@ -258,7 +258,7 @@ radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52,
 		</div>
 		<!-- End of Feature Lists -->
 		<!-- Hero Search Form -->
-		<div class="hero-search sm:mt-14 mt-12">
+		<div class="hero-search sm:mt-14 mt-12 hidden">
 			<form action="<?php echo esc_url($hero_search_url); ?>" method="get" class="hero-search__form"
 				data-sub-cats="<?php echo esc_attr(wp_json_encode($sub_cats_map)); ?>">
 				<div class="hero-search__bar">
