@@ -96,25 +96,91 @@ $hero_search_url = get_field('hero_search_url') ?: ($shop_page_id > 0 ? get_perm
 
 
 
-// Build product category data for the search dropdowns.
+// Build static navigation items for the search dropdowns.
+$shop_page_url = function_exists('wc_get_page_id') ? get_permalink(wc_get_page_id('shop')) : home_url('/shop/');
 
-$top_cats = [];
+// Helper function to safely get WooCommerce term link or fallback
+if (!function_exists('lt_get_product_cat_url')) {
+	function lt_get_product_cat_url($slug) {
+		$link = get_term_link($slug, 'product_cat');
+		if (is_wp_error($link)) {
+			return home_url('/product-category/' . $slug . '/');
+		}
+		return $link;
+	}
+}
 
+$flooring_subcategories = [
+	[
+		'name' => __('SPC Hybrid', 'local-tasker'),
+		'url'  => lt_get_product_cat_url('spc-hybrid-flooring'),
+	],
+	[
+		'name' => __('European Oak Engineered Timber', 'local-tasker'),
+		'url'  => lt_get_product_cat_url('engineered-timber-flooring'),
+	],
+	[
+		'name' => __('Australian Species Engineered Timber', 'local-tasker'),
+		'url'  => lt_get_product_cat_url('australian-species-engineered-timber'),
+	],
+	[
+		'name' => __('Flooring Accessories', 'local-tasker'),
+		'url'  => lt_get_product_cat_url('flooring-accessories'),
+	],
+	[
+		'name' => __('Tiles', 'local-tasker'),
+		'url'  => lt_get_product_cat_url('tiles'),
+	],
+];
+
+$structural_subcategories = [
+	[
+		'name' => __('LVL F11', 'local-tasker'),
+		'url'  => lt_get_product_cat_url('lvl-f11'),
+	],
+	[
+		'name' => __('LVL F17', 'local-tasker'),
+		'url'  => lt_get_product_cat_url('lvl-f17'),
+	],
+];
+
+// Top-level static navigation items definition
+$static_navigation = [
+	'flooring' => [
+		'name'         => __('Flooring', 'local-tasker'),
+		'url'          => $shop_page_url,
+		'redirect'     => 'false',
+		'subcategories' => $flooring_subcategories,
+	],
+	'structural-materials' => [
+		'name'         => __('Structural Materials', 'local-tasker'),
+		'url'          => lt_get_product_cat_url('structural-materials'),
+		'redirect'     => 'false',
+		'subcategories' => $structural_subcategories,
+	],
+	'renovations' => [
+		'name'         => __('Renovations', 'local-tasker'),
+		'url'          => home_url('/services/home-renovations/'),
+		'redirect'     => 'true',
+		'subcategories' => [],
+	],
+	'cabinetry' => [
+		'name'         => __('Cabinetry', 'local-tasker'),
+		'url'          => home_url('/services/custom-cabinetry/'),
+		'redirect'     => 'true',
+		'subcategories' => [],
+	],
+];
+
+// Reformat subcategories map for passing to JavaScript
 $sub_cats_map = [];
-
-$all_cats = get_terms([
-	'taxonomy' => 'product_cat',
-	'hide_empty' => false,
-	'exclude' => array_filter([(int) get_option('default_product_cat')]),
-	'orderby' => 'name',
-]);
-
-if (!is_wp_error($all_cats) && !empty($all_cats)) {
-	foreach ($all_cats as $cat) {
-		if ($cat->parent === 0) {
-			$top_cats[] = $cat;
-		} else {
-			$sub_cats_map[$cat->parent][] = ['slug' => $cat->slug, 'name' => $cat->name];
+foreach ($static_navigation as $key => $item) {
+	if (!empty($item['subcategories'])) {
+		foreach ($item['subcategories'] as $subcat) {
+			$sub_cats_map[$key][] = [
+				'slug' => $subcat['url'],
+				'name' => $subcat['name'],
+			];
 		}
 	}
 }
@@ -268,10 +334,11 @@ radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52,
 							aria-label="<?php echo esc_attr($search_placeholder_service); ?>"
 							data-placeholder="<?php echo esc_attr($search_placeholder_service); ?>">
 							<option value=""><?php echo esc_html($search_placeholder_service); ?></option>
-							<?php foreach ($top_cats as $cat): ?>
-								<option value="<?php echo esc_attr($cat->slug); ?>"
-									data-term-id="<?php echo esc_attr($cat->term_id); ?>">
-									<?php echo esc_html($cat->name); ?>
+							<?php foreach ($static_navigation as $key => $item): ?>
+								<option value="<?php echo esc_url($item['url']); ?>"
+									data-term-id="<?php echo esc_attr($key); ?>"
+									data-redirect="<?php echo esc_attr($item['redirect']); ?>">
+									<?php echo esc_html($item['name']); ?>
 								</option>
 							<?php endforeach; ?>
 						</select>

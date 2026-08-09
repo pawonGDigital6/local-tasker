@@ -318,6 +318,12 @@ const searchPop = {
   },
   searchPopOpen: function () {
     document.body.classList.add('opened-search-popup');
+    const searchInput = document.querySelector('.global-search-pop input[type="search"]');
+    if (searchInput) {
+      setTimeout(() => {
+        searchInput.focus();
+      }, 100);
+    }
   },
   searchPopClose: function () {
     document.body.classList.remove('opened-search-popup');

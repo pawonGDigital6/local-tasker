@@ -3667,11 +3667,11 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .z-50 {
     z-index: 50;
   }
-  .z-98 {
-    z-index: 98;
-  }
   .z-99 {
     z-index: 99;
+  }
+  .z-100 {
+    z-index: 100;
   }
   .z-\[98\] {
     z-index: 98;
@@ -6485,24 +6485,9 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
       right: calc(1 / 2 * 100%);
     }
   }
-  .max-md\:z-50 {
-    @media (width < 992px) {
-      z-index: 50;
-    }
-  }
-  .max-md\:z-99 {
-    @media (width < 992px) {
-      z-index: 99;
-    }
-  }
   .max-md\:z-100 {
     @media (width < 992px) {
       z-index: 100;
-    }
-  }
-  .max-md\:z-899 {
-    @media (width < 992px) {
-      z-index: 899;
     }
   }
   .max-md\:mt-\[-27px\] {

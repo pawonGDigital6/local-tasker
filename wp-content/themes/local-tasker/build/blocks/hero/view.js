@@ -8,6 +8,8 @@ const heroSearch = {
     if (!this.form) return;
     this.subCatsMap = JSON.parse(this.form.dataset.subCats || '{}');
     this.bindEvents();
+    // Populate subcategories on load based on default selection
+    this.onMainCatChange();
   },
   cacheDom() {
     this.form = document.querySelector('.hero-search__form');
@@ -22,7 +24,8 @@ const heroSearch = {
   },
   onMainCatChange() {
     const selectedOption = this.mainCatSelect.selectedOptions[0];
-    const termId = selectedOption?.dataset.termId;
+    if (!selectedOption) return;
+    const termId = selectedOption.dataset.termId;
     const children = termId && this.subCatsMap[termId] || [];
     const placeholder = this.subCatSelect.dataset.placeholder || '';
     this.subCatSelect.innerHTML = `<option value="">${placeholder}</option>`;
@@ -41,12 +44,10 @@ const heroSearch = {
   },
   onSubmit(e) {
     e.preventDefault();
-    const catSlug = this.subCatSelect.value || this.mainCatSelect.value;
-    const url = new URL(this.form.action || window.location.href);
-    if (catSlug) {
-      url.searchParams.set('product_cat', catSlug);
+    const targetUrl = this.subCatSelect.value || this.mainCatSelect.value;
+    if (targetUrl) {
+      window.location.href = targetUrl;
     }
-    window.location.href = url.toString();
   },
   updateSelectState(select) {
     select.classList.toggle('is-selected', !!select.value);
