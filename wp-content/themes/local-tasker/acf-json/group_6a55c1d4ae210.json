@@ -1,0 +1,241 @@
+{
+    "key": "group_6a55c1d4ae210",
+    "title": "Block: Area Calculator",
+    "fields": [
+        {
+            "key": "field_6a55c1d4ae211",
+            "label": "Content",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_6a55c1d4ae212",
+            "label": "Section Title",
+            "name": "ac_sec_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Optional heading shown above the calculator card.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6a55c1d4ae213",
+            "label": "Section Content",
+            "name": "ac_sec_content",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Optional intro text shown under the heading.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
+            "key": "field_6a55c1d4ae214",
+            "label": "Card Title",
+            "name": "ac_card_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Heading inside the calculator card.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Area Calculator",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Area Calculator",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6a55c1d4ae215",
+            "label": "Card Subtitle",
+            "name": "ac_card_subtitle",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Small note on the right of the card header. Leave empty to hide.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Calculate your total area",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Calculate your total area",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6a55c1d4ae216",
+            "label": "Wastage (%)",
+            "name": "ac_wastage",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Percentage added on top of the total area. Defaults to 10%.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 10,
+            "allow_in_bindings": 0,
+            "min": 0,
+            "max": 100,
+            "placeholder": "10",
+            "step": "",
+            "prepend": "",
+            "append": "%"
+        },
+        {
+            "key": "field_6a55c1d4ae217",
+            "label": "Narrow Width?",
+            "name": "ac_narrow",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Constrain the card to a centred, narrower column.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_6a55c1d4ae218",
+            "label": "Light Background?",
+            "name": "ac_light_bg",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Adds the light section background used on the product page.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_6a55c1d4ae219",
+            "label": "Show CTA Button?",
+            "name": "ac_show_cta",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Shows the full-width button under the totals.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_6a55c1d4ae21a",
+            "label": "CTA Button",
+            "name": "ac_cta",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Label and destination for the button.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6a55c1d4ae219",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "allow_in_bindings": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf-block\/area-calculator"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1786320000
+}
