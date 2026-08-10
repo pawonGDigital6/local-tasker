@@ -161,6 +161,26 @@
 		});
 	}
 
+	/**
+	 * Write the server-computed availability counts into the sidebar.
+	 *
+	 * The payload is authoritative — it comes from the same query that produced
+	 * the grid — so a missing/!malformed value leaves the existing number alone
+	 * rather than showing a guess.
+	 *
+	 * @param {{in_stock:number, out_of_stock:number}|undefined} counts
+	 */
+	function updateAvailabilityCounts(counts) {
+		if (!counts) return;
+		Object.keys(counts).forEach(function (key) {
+			var value = counts[key];
+			if (typeof value === 'undefined' || value === null) return;
+			document
+				.querySelectorAll('[data-lt-avail-count="' + key + '"]')
+				.forEach(function (el) { el.textContent = value; });
+		});
+	}
+
 	/* ───────────────────── AJAX fetch + render ───────────────────── */
 
 	function fetchProducts(append) {
@@ -221,6 +241,10 @@
 					loadWrap.dataset.page = d.page;
 					loadWrap.classList.toggle('is-hidden', !d.has_more);
 				}
+
+				// Availability counts — recomputed server-side against the same
+				// filter set as the grid, so they stay in step with the results.
+				updateAvailabilityCounts(d.availability);
 
 				// Re-init WooCommerce AJAX add-to-cart on new nodes.
 				if (window.jQuery && window.jQuery.fn.wc_setup_ajax_add_to_cart) {

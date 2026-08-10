@@ -447,12 +447,15 @@ function lt_shop_filter_product_query( WP_Query $q ): void {
 	}
 
 	// ── Quick-pill: in-stock ────────────────────────────────────────────────
+	// `product_visibility` has no "instock" term — WooCommerce only tags products
+	// that are OUT of stock, so "in stock" is the absence of that term. Matching
+	// on 'instock' returned zero products and disagreed with the AJAX path.
 	if ( isset( $_GET['filter'] ) && sanitize_key( $_GET['filter'] ) === 'in-stock' ) {
 		$tax_query[] = [
 			'taxonomy' => 'product_visibility',
 			'field'    => 'name',
-			'terms'    => 'instock',
-			'operator' => 'IN',
+			'terms'    => 'outofstock',
+			'operator' => 'NOT IN',
 		];
 	}
 
@@ -650,6 +653,38 @@ function lt_shop_build_query( array $f, int $per_page ): WP_Query {
 }
 
 /**
+ * Count in-stock / out-of-stock products within the current filter set.
+ *
+ * Deliberately reuses lt_shop_build_query() rather than assembling its own
+ * conditions: the counts are produced by exactly the same category, attribute,
+ * price, pill and visibility logic as the product grid, so the two can never
+ * drift apart. Availability itself is neutralised first, so the numbers answer
+ * "within everything else currently selected, how many are in / out of stock".
+ *
+ * Stock state comes from WooCommerce's own `product_visibility` → `outofstock`
+ * term, the same signal WooCommerce uses for "hide out of stock items".
+ *
+ * @param array $f Filter state from lt_shop_get_filters().
+ * @return array{in_stock:int,out_of_stock:int}
+ */
+function lt_shop_availability_counts( array $f ): array {
+	$base                        = $f;
+	$base['filter_availability'] = '';
+	$base['paged']               = 1;
+
+	$count = static function ( array $state, string $availability ): int {
+		$state['filter_availability'] = $availability;
+		// per_page of 1 keeps the row fetch trivial; found_posts is still the full total.
+		return (int) lt_shop_build_query( $state, 1 )->found_posts;
+	};
+
+	return [
+		'in_stock'     => $count( $base, 'in_stock' ),
+		'out_of_stock' => $count( $base, 'out_of_stock' ),
+	];
+}
+
+/**
  * AJAX: filtered / paginated product grid for the shop archive.
  * Returns rendered product cards + pagination metadata.
  */
@@ -683,11 +718,13 @@ function lt_ajax_shop_load(): void {
 	wp_reset_postdata();
 
 	wp_send_json_success( [
-		'html'        => $html,
-		'found'       => (int) $query->found_posts,
-		'max_pages'   => (int) $query->max_num_pages,
-		'page'        => $f['paged'],
-		'has_more'    => $f['paged'] < (int) $query->max_num_pages,
+		'html'         => $html,
+		'found'        => (int) $query->found_posts,
+		'max_pages'    => (int) $query->max_num_pages,
+		'page'         => $f['paged'],
+		'has_more'     => $f['paged'] < (int) $query->max_num_pages,
+		// Recomputed per request so the sidebar counts track the active filters.
+		'availability' => lt_shop_availability_counts( $f ),
 	] );
 }
 add_action( 'wp_ajax_lt_shop_load', 'lt_ajax_shop_load' );

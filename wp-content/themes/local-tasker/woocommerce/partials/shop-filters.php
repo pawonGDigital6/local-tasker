@@ -64,81 +64,22 @@ if (is_wp_error($thickness_terms)) {
 $clear_url = remove_query_arg(['product_cat', 'min_price', 'max_price', 'filter_colour', 'filter_thickness', 'filter_availability', 'filter', 'paged']);
 
 // ── Dynamic availability counts ──────────────────────────────────────────────
-// Build a base query that mirrors ALL active sidebar + pill filters EXCEPT
-// availability itself, so the counts update as the user narrows by category,
-// price, attributes, etc.
-function lt_availability_count(string $visibility_term, array $active_cats, array $colours, array $thickness, ?float $min_p, ?float $max_p, string $pill): int
-{
-	$tax_query = ['relation' => 'AND'];
+// Delegated to lt_shop_availability_counts() (inc/woocommerce.php), which builds
+// them with the very same lt_shop_build_query() used for the product results —
+// so the numbers and the grid can never disagree. The AJAX endpoint returns the
+// same pair on every request, and js/shop-archive.js writes them back into the
+// [data-lt-avail-count] spans below.
+$lt_avail_state = lt_shop_get_filters($_GET); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only, sanitised inside.
 
-	// Always exclude catalog-hidden products.
-	$hidden = ['exclude-from-catalog'];
-	if ('yes' === get_option('woocommerce_hide_out_of_stock_items')) {
-		$hidden[] = 'outofstock';
-	}
-	$tax_query[] = ['taxonomy' => 'product_visibility', 'field' => 'name', 'terms' => $hidden, 'operator' => 'NOT IN'];
-
-	// The availability term we're counting.
-	$tax_query[] = ['taxonomy' => 'product_visibility', 'field' => 'name', 'terms' => $visibility_term, 'operator' => 'IN'];
-
-	if (!empty($active_cats)) {
-		$tax_query[] = ['taxonomy' => 'product_cat', 'field' => 'slug', 'terms' => $active_cats, 'operator' => 'IN'];
-	}
-	if (!empty($colours)) {
-		$tax_query[] = ['taxonomy' => 'pa_colour', 'field' => 'slug', 'terms' => $colours, 'operator' => 'IN'];
-	}
-	if (!empty($thickness)) {
-		$tax_query[] = ['taxonomy' => 'pa_thickness', 'field' => 'slug', 'terms' => $thickness, 'operator' => 'IN'];
-	}
-
-	// Quick-pill filters (on-sale / new-arrivals / in-stock pill).
-	$extra_args = [];
-	switch ($pill) {
-		case 'on-sale':
-			$sale_ids = wc_get_product_ids_on_sale();
-			$extra_args['post__in'] = $sale_ids ?: [0];
-			break;
-		case 'new-arrivals':
-			$extra_args['date_query'] = [['after' => '30 days ago', 'inclusive' => true]];
-			break;
-		// case 'in-stock':
-		// 	$tax_query[] = ['taxonomy' => 'product_visibility', 'field' => 'name', 'terms' => 'outofstock', 'operator' => 'NOT IN'];
-		// 	break;
-	}
-
-	$args = array_merge(
-		[
-			'post_type' => 'product',
-			'post_status' => 'publish',
-			'posts_per_page' => -1,
-			'fields' => 'ids',
-			'no_found_rows' => false,
-			'ignore_sticky_posts' => true,
-			'tax_query' => $tax_query,
-			'meta_query' => ['relation' => 'AND'],
-		],
-		$extra_args
-	);
-
-	if (null !== $min_p) {
-		$args['meta_query'][] = ['key' => '_price', 'value' => $min_p, 'compare' => '>=', 'type' => 'DECIMAL(12,2)'];
-	}
-	if (null !== $max_p) {
-		$args['meta_query'][] = ['key' => '_price', 'value' => $max_p, 'compare' => '<=', 'type' => 'DECIMAL(12,2)'];
-	}
-
-	$q = new WP_Query($args);
-	return (int) $q->found_posts;
+// On a taxonomy archive (/product-category/…) the category lives in the URL path
+// rather than ?product_cat=, so carry the resolved slug across.
+if (empty($lt_avail_state['product_cat']) && $active_cat !== '') {
+	$lt_avail_state['product_cat'] = [$active_cat];
 }
 
-// Active category slugs (may come from URL path on taxonomy archives).
-$_avail_cats = !empty($active_cat) ? [$active_cat] : [];
-$_avail_pill = isset($_GET['filter']) ? sanitize_key($_GET['filter']) : 'all';
-$_price_min = ($price_min !== '') ? (float) $price_min : null;
-$_price_max = ($price_max !== '') ? (float) $price_max : null;
-
-$count_in_stock = lt_availability_count('instock', $_avail_cats, $active_colours, $active_thickness, $_price_min, $_price_max, $_avail_pill);
-$count_out_of_stock = lt_availability_count('outofstock', $_avail_cats, $active_colours, $active_thickness, $_price_min, $_price_max, $_avail_pill);
+$lt_avail_counts = lt_shop_availability_counts($lt_avail_state);
+$count_in_stock = $lt_avail_counts['in_stock'];
+$count_out_of_stock = $lt_avail_counts['out_of_stock'];
 
 // Total published products (used for "All Flooring" count label).
 $total_products_obj = wp_count_posts('product');
