@@ -456,6 +456,24 @@ function lt_shop_filter_product_query( WP_Query $q ): void {
 		];
 	}
 
+	// ── Sidebar: Availability (in_stock / out_of_stock) ─────────────────────
+	$sidebar_avail = isset( $_GET['filter_availability'] ) ? sanitize_key( $_GET['filter_availability'] ) : '';
+	if ( 'in_stock' === $sidebar_avail ) {
+		$tax_query[] = [
+			'taxonomy' => 'product_visibility',
+			'field'    => 'name',
+			'terms'    => 'outofstock',
+			'operator' => 'NOT IN',
+		];
+	} elseif ( 'out_of_stock' === $sidebar_avail ) {
+		$tax_query[] = [
+			'taxonomy' => 'product_visibility',
+			'field'    => 'name',
+			'terms'    => 'outofstock',
+			'operator' => 'IN',
+		];
+	}
+
 	// ── Quick-pill: category shortcuts ─────────────────────────────────────
 	$pill_cat_map = lt_shop_pill_category_map();
 	if ( isset( $_GET['filter'] ) ) {
@@ -509,15 +527,19 @@ function lt_shop_get_filters( array $req ): array {
 	$slugs = static function ( $v ) {
 		return array_values( array_filter( array_map( 'sanitize_title', (array) $v ) ) );
 	};
+	// Normalise filter_availability: accept 'in_stock' or 'out_of_stock'; anything else is treated as empty.
+	$raw_avail = isset( $req['filter_availability'] ) ? sanitize_key( $req['filter_availability'] ) : '';
+	$avail     = in_array( $raw_avail, [ 'in_stock', 'out_of_stock' ], true ) ? $raw_avail : '';
 	return [
-		'product_cat'      => isset( $req['product_cat'] ) ? $slugs( $req['product_cat'] ) : [],
-		'filter_colour'    => isset( $req['filter_colour'] ) ? $slugs( $req['filter_colour'] ) : [],
-		'filter_thickness' => isset( $req['filter_thickness'] ) ? $slugs( $req['filter_thickness'] ) : [],
-		'min_price'        => ( isset( $req['min_price'] ) && $req['min_price'] !== '' ) ? (float) $req['min_price'] : null,
-		'max_price'        => ( isset( $req['max_price'] ) && $req['max_price'] !== '' && (float) $req['max_price'] > 0 ) ? (float) $req['max_price'] : null,
-		'filter'           => isset( $req['filter'] ) ? sanitize_key( $req['filter'] ) : 'all',
-		'orderby'          => isset( $req['orderby'] ) ? sanitize_text_field( $req['orderby'] ) : '',
-		'paged'            => max( 1, absint( $req['paged'] ?? 1 ) ),
+		'product_cat'         => isset( $req['product_cat'] ) ? $slugs( $req['product_cat'] ) : [],
+		'filter_colour'       => isset( $req['filter_colour'] ) ? $slugs( $req['filter_colour'] ) : [],
+		'filter_thickness'    => isset( $req['filter_thickness'] ) ? $slugs( $req['filter_thickness'] ) : [],
+		'min_price'           => ( isset( $req['min_price'] ) && $req['min_price'] !== '' ) ? (float) $req['min_price'] : null,
+		'max_price'           => ( isset( $req['max_price'] ) && $req['max_price'] !== '' && (float) $req['max_price'] > 0 ) ? (float) $req['max_price'] : null,
+		'filter'              => isset( $req['filter'] ) ? sanitize_key( $req['filter'] ) : 'all',
+		'filter_availability' => $avail,
+		'orderby'             => isset( $req['orderby'] ) ? sanitize_text_field( $req['orderby'] ) : '',
+		'paged'               => max( 1, absint( $req['paged'] ?? 1 ) ),
 	];
 }
 
@@ -607,6 +629,13 @@ function lt_shop_build_query( array $f, int $per_page ): WP_Query {
 			$pill_cat_map = lt_shop_pill_category_map();
 			$args['tax_query'][] = [ 'taxonomy' => 'product_cat', 'field' => 'slug', 'terms' => [ $pill_cat_map[ $f['filter'] ] ], 'operator' => 'IN' ];
 			break;
+	}
+
+	// ── Sidebar: Availability filter ─────────────────────────────────────────
+	if ( 'in_stock' === $f['filter_availability'] ) {
+		$args['tax_query'][] = [ 'taxonomy' => 'product_visibility', 'field' => 'name', 'terms' => 'outofstock', 'operator' => 'NOT IN' ];
+	} elseif ( 'out_of_stock' === $f['filter_availability'] ) {
+		$args['tax_query'][] = [ 'taxonomy' => 'product_visibility', 'field' => 'name', 'terms' => 'outofstock', 'operator' => 'IN' ];
 	}
 
 	// Price range.

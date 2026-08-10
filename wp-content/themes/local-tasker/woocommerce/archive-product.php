@@ -19,7 +19,7 @@ $lt_filter_pills = [
 	'all' => ['label' => __('All', 'local-tasker')],
 	'on-sale' => ['label' => __('On Sale', 'local-tasker')],
 	'new-arrivals' => ['label' => __('New Arrivals', 'local-tasker')],
-	'in-stock' => ['label' => __('In Stock', 'local-tasker')],
+	// 'in-stock' => ['label' => __('In Stock', 'local-tasker')],
 	// 'spc-hybrid' => ['label' => __('SPC Hybrid', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['spc-hybrid'] ?? ''],
 	// 'engineered' => ['label' => __('Engineered', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['engineered'] ?? ''],
 	// 'porcelain' => ['label' => __('Porcelain', 'local-tasker'), 'tax' => 'product_cat', 'term' => $lt_pill_cat_map['porcelain'] ?? ''],
@@ -121,7 +121,8 @@ foreach ($blocks_before as $block) {
 			<div class="flex flex-wrap justify-between items-center gap-x-4 md:gap-y-5 gap-y-6">
 				<!-- Title + count -->
 				<div class="flex items-center md:gap-[5px] gap-3 shrink-0">
-					<h1 class="sm:text-[24px] text-[20px] leading-none font-bold text-[#0a0d1a] m-0 font-semi-ext tracking-[-0.48px]">
+					<h1
+						class="sm:text-[24px] text-[20px] leading-none font-bold text-[#0a0d1a] m-0 font-semi-ext tracking-[-0.48px]">
 						<?php esc_html_e('All Products', 'local-tasker'); ?>
 					</h1>
 					<span
@@ -149,7 +150,8 @@ foreach ($blocks_before as $block) {
 									: add_query_arg('filter', $key);
 								?>
 								<a href="<?php echo esc_url($pill_url); ?>" data-lt-pill="<?php echo esc_attr($key); ?>"
-									<?php if (!empty($pill['term'])) : ?>data-lt-cat="<?php echo esc_attr($pill['term']); ?>"<?php endif; ?>
+									<?php if (!empty($pill['term'])): ?>data-lt-cat="<?php echo esc_attr($pill['term']); ?>"
+									<?php endif; ?>
 									class="lt-filter-pill inline-flex items-center h-8 px-4 rounded-full border text-[13px] font-semibold whitespace-nowrap transition-colors duration-200 last:mr-4 <?php echo $is_active ? 'bg-lt-brand text-lt-white border-[#0a0d1a]' : 'bg-lt-white text-[#6b7280] border-[#e5e5df] hover:border-lt-brand hover:text-lt-brand'; ?>"
 									aria-current="<?php echo $is_active ? 'true' : 'false'; ?>">
 									<?php echo esc_html($pill['label']); ?>
@@ -187,8 +189,7 @@ foreach ($blocks_before as $block) {
 									</option>
 								<?php endforeach; ?>
 							</select>
-							<svg
-								class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-lt-text-muted"
+							<svg class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-lt-text-muted"
 								viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 								<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
 									stroke-linejoin="round" />

@@ -90,6 +90,7 @@
 		var min = document.getElementById('lt-price-min');
 		var max = document.getElementById('lt-price-max');
 		var pill = activePillKey();
+		var checkedAvail = form && form.querySelector('[name="filter_availability"]:checked');
 
 		var hasActive = !!(
 			(checkedCat && checkedCat.value) ||
@@ -97,7 +98,8 @@
 			(form && form.querySelector('[name="filter_colour[]"]:checked')) ||
 			(form && form.querySelector('[name="filter_thickness[]"]:checked')) ||
 			(min && min.value !== '') ||
-			(max && max.value !== '')
+			(max && max.value !== '') ||
+			(checkedAvail && checkedAvail.value)
 		);
 
 		if (clearLink) clearLink.classList.toggle('hidden', !hasActive);
@@ -136,6 +138,12 @@
 		if (max && max.value !== '') params.set('max_price', max.value);
 
 		if (sortSel && sortSel.value) params.set('orderby', sortSel.value);
+
+		// Availability radio (sidebar).
+		var checkedAvail = form && form.querySelector('[name="filter_availability"]:checked');
+		if (checkedAvail && checkedAvail.value) {
+			params.set('filter_availability', checkedAvail.value);
+		}
 
 		return params;
 	}
@@ -307,6 +315,8 @@
 					['lt-price-min', 'lt-price-max'].forEach(function (id) {
 						var input = document.getElementById(id); if (input) input.value = '';
 					});
+					// Reset availability radios.
+					form.querySelectorAll('[name="filter_availability"]').forEach(function (r) { r.checked = false; });
 				}
 				// Reset pills to "All".
 				activatePill('all');
