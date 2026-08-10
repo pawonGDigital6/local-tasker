@@ -153,16 +153,72 @@ function lt_guess_swatch_hex( $name ) {
  * ---------------------------------------------------------------------- */
 
 /**
- * Show coverage / install details under the cart line item. Reads the same
- * 'lt_area_sqm' / 'lt_install' cart-item-data keys that the box-calculator
- * AJAX handler (inc/woocommerce.php) sets on add-to-cart.
+ * Is this cart line a flooring line sold by the box?
+ *
+ * True only for lines added through the box calculator (which sets 'lt_boxes')
+ * on a product that actually carries a carton size. Those are exactly the lines
+ * lt_apply_flooring_box_pricing() re-prices per box, so the two stay in step: if
+ * a line is priced by the box, its quantity is a box count, and vice versa.
+ *
+ * @param array $cart_item Cart item.
+ * @return bool
+ */
+function lt_cart_item_is_boxed( array $cart_item ): bool {
+	if ( empty( $cart_item['product_id'] ) ) {
+		return false;
+	}
+	// 'lt_boxed' is the marker set on every calculator line; 'lt_boxes' is the
+	// pre-existing one, accepted so carts already in a session keep working.
+	if ( empty( $cart_item['lt_boxed'] ) && empty( $cart_item['lt_boxes'] ) ) {
+		return false;
+	}
+	return (float) get_post_meta( $cart_item['product_id'], 'carton_sqm', true ) > 0;
+}
+
+/**
+ * Format a per-box coverage for display.
+ *
+ * Keeps up to three decimals but drops trailing zeros, so 2.888 stays "2.888",
+ * 2.880 reads "2.88" and a whole number reads "3" rather than "3.000".
+ *
+ * @param float $carton_sqm Square metres covered by one box.
+ * @return string
+ */
+function lt_format_coverage( float $carton_sqm ): string {
+	return rtrim( rtrim( number_format( $carton_sqm, 3, '.', '' ), '0' ), '.' );
+}
+
+/**
+ * Show coverage / install details under the cart line item.
+ *
+ * Boxed lines show the product's per-box coverage; everything else falls back to
+ * the 'lt_area_sqm' the box-calculator AJAX handler (inc/woocommerce.php) records
+ * on add-to-cart.
+ *
+ * Feeds `wc_get_formatted_cart_item_data()`, so this one function drives the
+ * line detail in the mini-cart drawer, the cart page and the checkout review —
+ * they cannot disagree with each other.
  *
  * @param array $items Item data.
  * @param array $cart_item Cart item.
  * @return array
  */
 function lt_cart_item_display( $items, $cart_item ) {
-	if ( ! empty( $cart_item['lt_area_sqm'] ) ) {
+	if ( lt_cart_item_is_boxed( $cart_item ) ) {
+		// Per-box coverage, straight from the product's "Carton Coverage (sqm)"
+		// field — the same value that drives the calculator and the box price, so
+		// nothing here is hardcoded or product-specific. The box count itself is
+		// already visible on the quantity line ("4 × $132.48").
+		$carton_sqm = (float) get_post_meta( $cart_item['product_id'], 'carton_sqm', true );
+
+		$items[] = array(
+			'key'   => __( 'Coverage', 'local-tasker' ),
+			/* translators: %s: square metres covered by one box, e.g. "2.888". */
+			'value' => sprintf( __( '%s sqm / box', 'local-tasker' ), lt_format_coverage( $carton_sqm ) ),
+		);
+	} elseif ( ! empty( $cart_item['lt_area_sqm'] ) ) {
+		// No usable box data — keep the original area line rather than show a
+		// box count we cannot verify.
 		$items[] = array(
 			'key'   => __( 'Area', 'local-tasker' ),
 			'value' => wc_clean( $cart_item['lt_area_sqm'] ) . ' m²',
@@ -186,6 +242,20 @@ add_filter( 'woocommerce_get_item_data', 'lt_cart_item_display', 10, 2 );
  * @param array                 $values Cart values.
  */
 function lt_add_order_item_meta( $item, $unused, $values ) {
+	// Mirror the "Coverage" line the cart / mini-cart showed, plus the box count
+	// the quantity column implied, so the order record matches what the customer
+	// confirmed and the warehouse can pick against it.
+	if ( lt_cart_item_is_boxed( (array) $values ) ) {
+		$carton_sqm = (float) get_post_meta( $values['product_id'], 'carton_sqm', true );
+
+		$item->add_meta_data(
+			__( 'Coverage', 'local-tasker' ),
+			/* translators: %s: square metres covered by one box, e.g. "2.888". */
+			sprintf( __( '%s sqm / box', 'local-tasker' ), lt_format_coverage( $carton_sqm ) ),
+			true
+		);
+		$item->add_meta_data( __( 'Boxes', 'local-tasker' ), (int) $item->get_quantity(), true );
+	}
 	if ( ! empty( $values['lt_area_sqm'] ) ) {
 		$item->add_meta_data( __( 'Area (m²)', 'local-tasker' ), $values['lt_area_sqm'], true );
 	}

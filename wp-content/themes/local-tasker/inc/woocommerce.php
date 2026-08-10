@@ -237,17 +237,46 @@ function lt_ajax_add_flooring_to_cart(): void {
 
 	$carton_sqm = (float) get_post_meta( $product_id, 'carton_sqm', true );
 
-	$cart_item_data = [
-		'lt_area_sqm'    => $area_sqm,
-		'lt_boxes'       => $quantity,
-		'lt_coverage_sqm'=> $quantity * $carton_sqm,
-		'lt_option'      => $option,
-		'lt_install'     => ( 'purchase-install' === $option ) ? 'yes' : '',
+	/*
+	 * Only data that genuinely makes two lines DIFFERENT belongs in the cart-item
+	 * data passed to add_to_cart(). WC_Cart::generate_cart_id() hashes every key
+	 * *and value* of that array into the cart item id, so including the per-add
+	 * measurements (area / boxes / coverage) gave every add a unique id and forced
+	 * a brand new cart line instead of topping up the existing one.
+	 *
+	 * The purchase option is a real differentiator — it changes the unit price via
+	 * lt_apply_flooring_box_pricing() — so it stays. 'lt_boxed' is a constant
+	 * marker that flags the line as box-priced from the moment it is created,
+	 * which matters because add_to_cart() calculates totals before we get a chance
+	 * to write anything back.
+	 */
+	$identity_data = [
+		'lt_boxed'   => 'yes',
+		'lt_option'  => $option,
+		'lt_install' => ( 'purchase-install' === $option ) ? 'yes' : '',
 	];
 
-	$added = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_attrs, $cart_item_data );
+	$added = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_attrs, $identity_data );
 
 	if ( $added ) {
+		/*
+		 * Measurements are recorded on the resulting line rather than in its
+		 * identity. When an existing line was topped up, WooCommerce has already
+		 * summed the quantities, so read the line back for the true box count and
+		 * accumulate the area the shopper asked for.
+		 */
+		$contents = WC()->cart->get_cart_contents();
+		if ( isset( $contents[ $added ] ) ) {
+			$boxes = (int) $contents[ $added ]['quantity'];
+
+			$contents[ $added ]['lt_boxes']        = $boxes;
+			$contents[ $added ]['lt_area_sqm']     = round( (float) ( $contents[ $added ]['lt_area_sqm'] ?? 0 ) + $area_sqm, 2 );
+			$contents[ $added ]['lt_coverage_sqm'] = round( $boxes * $carton_sqm, 4 );
+
+			WC()->cart->set_cart_contents( $contents );
+			WC()->cart->set_session();
+		}
+
 		wp_send_json_success( [
 			'cart_count' => WC()->cart->get_cart_contents_count(),
 			'cart_url'   => wc_get_cart_url(),
@@ -273,7 +302,10 @@ function lt_apply_flooring_box_pricing( WC_Cart $cart ): void {
 	}
 
 	foreach ( $cart->get_cart() as $cart_item ) {
-		if ( empty( $cart_item['lt_boxes'] ) ) {
+		// 'lt_boxed' marks lines created by the box calculator; 'lt_boxes' is the
+		// pre-existing marker, kept so carts already in a customer session on the
+		// day this shipped keep their box pricing.
+		if ( empty( $cart_item['lt_boxed'] ) && empty( $cart_item['lt_boxes'] ) ) {
 			continue;
 		}
 
@@ -282,7 +314,20 @@ function lt_apply_flooring_box_pricing( WC_Cart $cart ): void {
 			continue;
 		}
 
-		$priced_product         = $cart_item['variation_id'] ? wc_get_product( $cart_item['variation_id'] ) : $cart_item['data'];
+		/*
+		 * Read the per-sqm rate from a FRESH product object, never from
+		 * $cart_item['data'] — that is the object we are about to overwrite with
+		 * the box price. woocommerce_before_calculate_totals can fire more than
+		 * once per request (session load, then add_to_cart), and re-reading the
+		 * mutated object would multiply the already-multiplied price by the
+		 * carton size a second time. Deriving from the stored price keeps this
+		 * idempotent however many times it runs.
+		 */
+		$priced_id              = $cart_item['variation_id'] ? $cart_item['variation_id'] : $cart_item['product_id'];
+		$priced_product         = wc_get_product( $priced_id );
+		if ( ! $priced_product ) {
+			continue;
+		}
 		$price_per_sqm          = (float) $priced_product->get_price();
 		$regular_price_per_sqm  = (float) $priced_product->get_regular_price();
 
