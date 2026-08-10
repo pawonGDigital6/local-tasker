@@ -4434,6 +4434,9 @@ body.woocommerce-cart .site-header .cart-icon, body.woocommerce-checkout .site-h
   .grid-cols-\[minmax\(0\,1fr\)_minmax\(0\,1fr\)_minmax\(0\,1fr\)_minmax\(40px\,auto\)_24px\] {
     grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(40px,auto) 24px;
   }
+  .grid-cols-\[minmax\(0\,1fr\)_minmax\(0\,1fr\)_minmax\(0\,1fr\)_minmax\(70px\,auto\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(70px,auto);
+  }
   .flex-col {
     flex-direction: column;
   }

@@ -133,9 +133,17 @@
             "name": "ac_narrow",
             "aria-label": "",
             "type": "true_false",
-            "instructions": "Constrain the card to a centred, narrower column.",
+            "instructions": "Constrain the card to a centred, narrower column. Only applies when the \"How It Works\" column is off.",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6a55c1d4ae21b",
+                        "operator": "!=",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "25",
                 "class": "",
@@ -214,6 +222,213 @@
             },
             "return_format": "array",
             "allow_in_bindings": 0
+        },
+        {
+            "key": "field_6a55c1d4ae21c",
+            "label": "How It Works",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_6a55c1d4ae21b",
+            "label": "Show \"How It Works\" Column?",
+            "name": "ac_show_hiw",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Places the calculator and the \"How it works\" card side by side, as on the single product page.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_6a55c1d4ae21d",
+            "label": "Card Title",
+            "name": "ac_hiw_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Heading inside the \"How it works\" card.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6a55c1d4ae21b",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "How it works",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "How it works",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6a55c1d4ae21e",
+            "label": "Steps",
+            "name": "ac_hiw_steps",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Numbered steps. Leave empty to use the default three steps.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6a55c1d4ae21b",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "field_6a55c1d4ae21f",
+            "button_label": "Add Step",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_6a55c1d4ae21f",
+                    "label": "Step Title",
+                    "name": "hiw_step_title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_6a55c1d4ae21e"
+                },
+                {
+                    "key": "field_6a55c1d4ae220",
+                    "label": "Step Text",
+                    "name": "hiw_step_text",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "rows": 3,
+                    "placeholder": "",
+                    "new_lines": "",
+                    "parent_repeater": "field_6a55c1d4ae21e"
+                }
+            ]
+        },
+        {
+            "key": "field_6a55c1d4ae221",
+            "label": "Show Summary Box?",
+            "name": "ac_hiw_show_summary",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Adds the highlighted box at the bottom of the card. It mirrors this block's calculator totals — no pricing.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6a55c1d4ae21b",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_6a55c1d4ae222",
+            "label": "Summary Box Title",
+            "name": "ac_hiw_summary_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6a55c1d4ae21b",
+                        "operator": "==",
+                        "value": "1"
+                    },
+                    {
+                        "field": "field_6a55c1d4ae221",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Your total",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Your total",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -237,5 +452,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1786320000
+    "modified": 1786350321
 }

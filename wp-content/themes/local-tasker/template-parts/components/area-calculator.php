@@ -53,10 +53,13 @@ $lt_ac_wastage = max(0, (float) $lt_ac['wastage']);
 // Trim trailing zeros so "10.0" reads as "10" in the labels.
 $lt_ac_wastage_label = rtrim(rtrim(number_format($lt_ac_wastage, 2, '.', ''), '0'), '.');
 
-// Shared grid track: three flexible input columns + area value + remove button.
+// Shared grid track: three flexible input columns + one trailing column holding
+// the area value and the remove button together (they share the `.holder` span,
+// so this is four tracks, not five — a fifth track left a dead ~24px gutter on
+// the right of every row, which squeezed the inputs on mobile).
 // `minmax(0,1fr)` lets the input columns shrink on narrow screens instead of
 // overflowing the card (the previous fixed-px tracks broke on mobile).
-$lt_area_cols = 'grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(40px,auto)_24px] gap-2 sm:gap-3';
+$lt_area_cols = 'grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(70px,auto)] gap-2 sm:gap-3';
 
 // CTA attributes — the button only talks to the host page when it is told to.
 $lt_ac_cta_attrs = '';
@@ -109,7 +112,7 @@ if ($lt_ac['cta_scroll_to']) {
 	</div>
 	<div class="sm:py-10 sm:px-6 p-4">
 		<!-- Column headers -->
-		<div class="pb-4 border-b-[1.2px] border-[#E2DDD766] <?php echo esc_attr($lt_area_cols); ?> mb-2 px-1">
+		<div class="pb-4 border-b-[1.2px] border-[#E2DDD766] <?php echo esc_attr($lt_area_cols); ?> mb-2">
 			<span
 				class="text-caption-sm font-semibold text-lt-text-muted tracking-[0.04em] truncate"><?php esc_html_e('Room', 'local-tasker'); ?></span>
 			<span class="text-caption-sm font-semibold text-lt-text-muted tracking-[0.04em] truncate">
@@ -120,11 +123,12 @@ if ($lt_ac['cta_scroll_to']) {
 				<span class="sm:hidden">W (m)</span><span
 					class="hidden sm:inline"><?php esc_html_e('Width (m)', 'local-tasker'); ?></span>
 			</span>
+			<!-- Last column covers the area value + the remove button, so its label carries both -->
 			<span class="text-caption-sm font-semibold text-lt-text-muted tracking-[0.04em] truncate">
 				<span class="sm:hidden">sqm</span><span
 					class="hidden sm:inline"><?php esc_html_e('Area (sqm)', 'local-tasker'); ?></span>
+				<span class="sr-only"><?php esc_html_e('and remove row', 'local-tasker'); ?></span>
 			</span>
-			<span class="sr-only"><?php esc_html_e('Remove row', 'local-tasker'); ?></span>
 		</div>
 		<!-- Room rows container -->
 		<div class="lt-area-calc__rows flex flex-col gap-2">

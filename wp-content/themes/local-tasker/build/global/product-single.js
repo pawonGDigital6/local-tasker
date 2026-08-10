@@ -24,6 +24,8 @@ __webpack_require__.r(__webpack_exports__);
  *   - recalculates length × width per row plus the grand total,
  *   - keeps the "with wastage" figure in sync (percentage from `data-wastage`),
  *   - always keeps at least one row on screen,
+ *   - mirrors both totals into any companion box that points back at the card
+ *     (`data-lt-area-mirror="<card id>"`, e.g. the "How it works" summary),
  *   - optionally pushes the total into a host input (`data-target` on the CTA)
  *     and scrolls to another element (`data-scroll-to`).
  *
@@ -54,6 +56,9 @@ class AreaCalculator {
     // Wastage is authored as a percentage (10 → ×1.10).
     const wastage = parseFloat(root.dataset.wastage);
     this.wastageFactor = 1 + (isNaN(wastage) ? DEFAULT_WASTAGE : wastage) / 100;
+
+    // Companion boxes (e.g. the "How it works" summary) that mirror the totals.
+    this.mirrors = null;
     this.updateTotals = this.updateTotals.bind(this);
     this.addRow = this.addRow.bind(this);
     this.handleUse = this.handleUse.bind(this);
@@ -66,6 +71,22 @@ class AreaCalculator {
 
     // Init one row.
     this.addRow();
+  }
+
+  /**
+   * Companion boxes that mirror this card's totals.
+   *
+   * Looked up lazily (and cached once found) because the mirroring markup is a
+   * sibling rendered after the card — with `data-lt-area-mirror` set to this
+   * card's id, so several calculators on a page each drive their own box.
+   *
+   * @return {HTMLElement[]} Matching mirror containers.
+   */
+  getMirrors() {
+    if (this.mirrors && this.mirrors.length) return this.mirrors;
+    if (!this.root.id) return [];
+    this.mirrors = Array.from(document.querySelectorAll('[data-lt-area-mirror="' + this.root.id + '"]'));
+    return this.mirrors;
   }
 
   /**
@@ -83,9 +104,17 @@ class AreaCalculator {
       if (areaEl) areaEl.textContent = area.toFixed(2);
       total += area;
     });
-    if (this.totalEl) this.totalEl.textContent = total.toFixed(2) + ' sqm';
-    if (this.wastageEl) this.wastageEl.textContent = (total * this.wastageFactor).toFixed(2) + ' sqm';
+    const totalText = total.toFixed(2) + ' sqm';
+    const wastageText = (total * this.wastageFactor).toFixed(2) + ' sqm';
+    if (this.totalEl) this.totalEl.textContent = totalText;
+    if (this.wastageEl) this.wastageEl.textContent = wastageText;
     this.root.dataset.totalArea = total;
+    this.getMirrors().forEach(box => {
+      const mirrorTotal = box.querySelector('[data-lt-area-mirror-field="total"]');
+      const mirrorWastage = box.querySelector('[data-lt-area-mirror-field="wastage"]');
+      if (mirrorTotal) mirrorTotal.textContent = totalText;
+      if (mirrorWastage) mirrorWastage.textContent = wastageText;
+    });
     return total;
   }
 
