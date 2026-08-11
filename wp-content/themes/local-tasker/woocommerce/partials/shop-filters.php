@@ -41,6 +41,19 @@ function lt_filter_url(array $params): string
 	return add_query_arg(array_map('rawurlencode', $params), $base);
 }
 
+// Categories hidden from this filter only — the terms themselves are left
+// untouched in WooCommerce, and products in them still appear under "All
+// Flooring" and every other filter. Slugs are resolved to term IDs so a renamed
+// or deleted term simply drops out of the list instead of breaking the query.
+$excluded_cat_slugs = (array) apply_filters('lt_shop_filter_excluded_categories', ['products']);
+$excluded_cat_ids = [];
+foreach ($excluded_cat_slugs as $excluded_slug) {
+	$excluded_term = get_term_by('slug', $excluded_slug, 'product_cat');
+	if ($excluded_term instanceof WP_Term) {
+		$excluded_cat_ids[] = $excluded_term->term_id;
+	}
+}
+
 // Fetch product categories with counts. Only top-level (parent) categories are
 // offered — 'parent' => 0 keeps this driven by the real taxonomy hierarchy, so
 // any future category slots in automatically. Selecting a parent still returns
@@ -51,6 +64,7 @@ $categories = get_terms([
 	'taxonomy' => 'product_cat',
 	'hide_empty' => true,
 	'parent' => 0,
+	'exclude' => $excluded_cat_ids,
 	'orderby' => 'count',
 	'order' => 'DESC',
 ]);
@@ -70,6 +84,12 @@ if ($active_cat !== '') {
 			$active_cat_radio = $top_term->slug;
 		}
 	}
+}
+
+// An excluded category has no radio to check, so fall back to "All Flooring"
+// rather than leaving the whole group visually unselected.
+if (in_array($active_cat_radio, $excluded_cat_slugs, true)) {
+	$active_cat_radio = '';
 }
 
 // Fetch pa_colour attribute terms (display attribute).
