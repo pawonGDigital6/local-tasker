@@ -41,13 +41,36 @@ function lt_filter_url(array $params): string
 	return add_query_arg(array_map('rawurlencode', $params), $base);
 }
 
-// Fetch product categories with counts.
+// Fetch product categories with counts. Only top-level (parent) categories are
+// offered — 'parent' => 0 keeps this driven by the real taxonomy hierarchy, so
+// any future category slots in automatically. Selecting a parent still returns
+// its sub-category products because WP_Query's tax_query defaults
+// include_children to true, and WooCommerce's own term recount rolls child
+// product counts up into the parent, so the counts below stay accurate.
 $categories = get_terms([
 	'taxonomy' => 'product_cat',
 	'hide_empty' => true,
+	'parent' => 0,
 	'orderby' => 'count',
 	'order' => 'DESC',
 ]);
+
+// A sub-category can still be the active term (landing on a sub-category archive
+// URL, or an existing ?product_cat=<child> link). Resolve it up to its top-level
+// ancestor so the matching parent radio is pre-selected instead of nothing.
+// $active_cat itself is left untouched — the query/availability counts must keep
+// using the term actually being filtered on.
+$active_cat_radio = $active_cat;
+if ($active_cat !== '') {
+	$active_term = get_term_by('slug', $active_cat, 'product_cat');
+	if ($active_term instanceof WP_Term && $active_term->parent) {
+		$ancestors = get_ancestors($active_term->term_id, 'product_cat', 'taxonomy');
+		$top_term = !empty($ancestors) ? get_term((int) end($ancestors), 'product_cat') : null; // Nearest-first, so the last is top-level.
+		if ($top_term instanceof WP_Term) {
+			$active_cat_radio = $top_term->slug;
+		}
+	}
+}
 
 // Fetch pa_colour attribute terms (display attribute).
 $colour_terms = get_terms(['taxonomy' => 'pa_colour', 'hide_empty' => true]);
@@ -257,7 +280,7 @@ $lt_result_range = $lt_result_shown > 0 ? '1-' . $lt_result_shown : '0';
 						<label class="flex items-center justify-between gap-2 cursor-pointer group/label">
 							<span class="flex items-center gap-2">
 								<input type="radio" name="product_cat" value="" class="lt-filter-checkbox sr-only peer"
-									<?php checked($active_cat === ''); ?> data-all-cats>
+									<?php checked($active_cat_radio === ''); ?> data-all-cats>
 								<span
 									class="lt-filter-checkbox__ui w-4 h-4 rounded-full border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
 									aria-hidden="true">
@@ -274,7 +297,7 @@ $lt_result_range = $lt_result_shown > 0 ? '1-' . $lt_result_shown : '0';
 					</li>
 					<?php if (!is_wp_error($categories)):
 						foreach ($categories as $cat):
-							$is_checked = $active_cat === $cat->slug;
+							$is_checked = $active_cat_radio === $cat->slug;
 							?>
 							<li>
 								<label class="flex items-center justify-between gap-2 cursor-pointer group/label">
