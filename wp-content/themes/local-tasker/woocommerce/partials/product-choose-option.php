@@ -60,7 +60,7 @@ if ( $install_rate_ex <= 0 ) {
 				printf(
 					/* translators: %s: phone link */
 					esc_html__( 'Need More Information? %s', 'local-tasker' ),
-					'<a href="tel:' . esc_attr( get_option( 'woocommerce_store_phone', '' ) ) . '" class="text-lt-accent underline hover:no-underline">' . esc_html__( 'Call Us', 'local-tasker' ) . '</a>'
+					'<a href="tel:+61373020482' . esc_attr( get_option( 'woocommerce_store_phone', '' ) ) . '" class="text-lt-accent underline hover:no-underline">' . esc_html__( 'Call Us', 'local-tasker' ) . '</a>'
 				);
 				?>
 			</p>
