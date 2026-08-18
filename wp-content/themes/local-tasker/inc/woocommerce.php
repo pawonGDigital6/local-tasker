@@ -209,8 +209,12 @@ function lt_ajax_add_flooring_to_cart(): void {
 	$product_id   = absint( $_POST['product_id'] ?? 0 );
 	$quantity     = absint( $_POST['quantity']   ?? 0 );
 	$area_sqm     = (float) ( $_POST['area_sqm'] ?? 0 );
-	$option       = sanitize_text_field( $_POST['option'] ?? 'purchase-only' );
 	$variation_id = absint( $_POST['variation_id'] ?? 0 );
+
+	// "I would also like an installation quote" — a request for a quote, not a
+	// purchased add-on. It records intent only and must never move the price.
+	$install_quote = isset( $_POST['install_quote'] )
+		&& in_array( (string) $_POST['install_quote'], [ '1', 'yes', 'true', 'on' ], true );
 
 	if ( ! $product_id || $quantity < 1 ) {
 		wp_send_json_error( [ 'message' => 'Invalid product or quantity.' ] );
@@ -244,16 +248,17 @@ function lt_ajax_add_flooring_to_cart(): void {
 	 * measurements (area / boxes / coverage) gave every add a unique id and forced
 	 * a brand new cart line instead of topping up the existing one.
 	 *
-	 * The purchase option is a real differentiator — it changes the unit price via
-	 * lt_apply_flooring_box_pricing() — so it stays. 'lt_boxed' is a constant
-	 * marker that flags the line as box-priced from the moment it is created,
-	 * which matters because add_to_cart() calculates totals before we get a chance
-	 * to write anything back.
+	 * The installation-quote flag no longer changes the price, but it still
+	 * belongs in the identity: a line the customer wants quoted and a line they
+	 * do not are different requests, and merging them would silently drop the
+	 * request from one of them. 'lt_boxed' is a constant marker that flags the
+	 * line as box-priced from the moment it is created, which matters because
+	 * add_to_cart() calculates totals before we get a chance to write anything
+	 * back.
 	 */
 	$identity_data = [
 		'lt_boxed'   => 'yes',
-		'lt_option'  => $option,
-		'lt_install' => ( 'purchase-install' === $option ) ? 'yes' : '',
+		'lt_install' => $install_quote ? 'yes' : '',
 	];
 
 	$added = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_attrs, $identity_data );
@@ -331,11 +336,12 @@ function lt_apply_flooring_box_pricing( WC_Cart $cart ): void {
 		$price_per_sqm          = (float) $priced_product->get_price();
 		$regular_price_per_sqm  = (float) $priced_product->get_regular_price();
 
-		if ( 'yes' === ( $cart_item['lt_install'] ?? '' ) ) {
-			$install_rate            = (float) get_post_meta( $cart_item['product_id'], 'install_rate_per_sqm', true );
-			$price_per_sqm          += $install_rate;
-			$regular_price_per_sqm  += $install_rate;
-		}
+		/*
+		 * Installation is quoted separately, not sold here: 'lt_install' marks a
+		 * request for a quote and deliberately does NOT feed into the price. The
+		 * product's Installation Rate is only the "do we install this?" switch
+		 * that decides whether the opt-in is offered at all.
+		 */
 
 		$cart_item['data']->set_price( $price_per_sqm * $carton_sqm );
 		$cart_item['data']->set_regular_price( $regular_price_per_sqm * $carton_sqm );

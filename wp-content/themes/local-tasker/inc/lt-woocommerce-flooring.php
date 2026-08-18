@@ -226,8 +226,8 @@ function lt_cart_item_display( $items, $cart_item ) {
 	}
 	if ( ! empty( $cart_item['lt_install'] ) ) {
 		$items[] = array(
-			'key'   => __( 'Service', 'local-tasker' ),
-			'value' => __( 'Purchase & Install', 'local-tasker' ),
+			'key'   => __( 'Installation', 'local-tasker' ),
+			'value' => __( 'Quote requested', 'local-tasker' ),
 		);
 	}
 	return $items;
@@ -260,8 +260,11 @@ function lt_add_order_item_meta( $item, $unused, $values ) {
 		$item->add_meta_data( __( 'Area (m²)', 'local-tasker' ), $values['lt_area_sqm'], true );
 	}
 	if ( ! empty( $values['lt_install'] ) ) {
+		// '_lt_install' stays the machine-readable flag the order-processed hook
+		// reads; the visible line is what the customer and the office both see on
+		// the order, so it must read as a request rather than a purchase.
 		$item->add_meta_data( '_lt_install', 'yes', true );
-		$item->add_meta_data( __( 'Service', 'local-tasker' ), __( 'Purchase & Install', 'local-tasker' ), true );
+		$item->add_meta_data( __( 'Installation', 'local-tasker' ), __( 'Quote requested', 'local-tasker' ), true );
 	}
 }
 add_action( 'woocommerce_checkout_create_order_line_item', 'lt_add_order_item_meta', 10, 3 );
@@ -309,25 +312,25 @@ function lt_maybe_send_install_emails( $order_id ) {
 
 	/* --- Customer --- */
 	$cust_to      = $order->get_billing_email();
-	$cust_subject = sprintf( __( '%s — we\'ll be in touch about installation', 'local-tasker' ), $store_name );
+	$cust_subject = sprintf( __( '%s — your installation quote request', 'local-tasker' ), $store_name );
 	$cust_body    = '<p>' . sprintf( esc_html__( 'Thanks for your order #%s.', 'local-tasker' ), esc_html( $order_no ) ) . '</p>'
-		. '<p>' . esc_html__( 'You selected installation on the following item(s):', 'local-tasker' ) . '</p>'
+		. '<p>' . esc_html__( 'You asked for an installation quote on the following item(s):', 'local-tasker' ) . '</p>'
 		. $list_html
-		. '<p>' . esc_html__( 'A member of our team will contact you shortly to arrange the installation details.', 'local-tasker' ) . '</p>';
+		. '<p>' . esc_html__( 'A member of our team will be in touch shortly with a quote. Installation is not included in your order total.', 'local-tasker' ) . '</p>';
 
 	if ( $cust_to ) {
 		$mailer->send(
 			$cust_to,
 			$cust_subject,
-			$mailer->wrap_message( __( 'Installation requested', 'local-tasker' ), $cust_body )
+			$mailer->wrap_message( __( 'Installation quote requested', 'local-tasker' ), $cust_body )
 		);
 	}
 
 	/* --- Store manager --- */
 	$admin_to      = apply_filters( 'lt_install_admin_recipient', get_option( 'admin_email' ), $order );
-	$admin_subject = sprintf( __( '[%1$s] Installation requested — order #%2$s', 'local-tasker' ), $store_name, $order_no );
+	$admin_subject = sprintf( __( '[%1$s] Installation quote requested — order #%2$s', 'local-tasker' ), $store_name, $order_no );
 	$admin_body    = '<p>' . sprintf(
-			esc_html__( 'Order #%1$s from %2$s requested installation.', 'local-tasker' ),
+			esc_html__( 'Order #%1$s from %2$s requested an installation quote.', 'local-tasker' ),
 			esc_html( $order_no ),
 			esc_html( trim( $order->get_formatted_billing_full_name() ) )
 		) . '</p>'
@@ -338,7 +341,7 @@ function lt_maybe_send_install_emails( $order_id ) {
 	$mailer->send(
 		$admin_to,
 		$admin_subject,
-		$mailer->wrap_message( __( 'Installation requested', 'local-tasker' ), $admin_body )
+		$mailer->wrap_message( __( 'Installation quote requested', 'local-tasker' ), $admin_body )
 	);
 
 	$order->update_meta_data( '_lt_install_notified', current_time( 'mysql' ) );

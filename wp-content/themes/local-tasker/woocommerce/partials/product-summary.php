@@ -274,9 +274,12 @@ if ($is_variable) {
 		<!-- Simple add to cart for non-box products -->
 		<?php woocommerce_template_single_add_to_cart(); ?>
 	<?php endif; ?>
-	<div class="h-px bg-[#E9EAEC] mb-5"></div>
-	<!-- ── Choose Option ── (purchase/install choice — only meaningful when there's a box price to base it on) -->
-	<?php if ($has_box_price): ?>
+	<!-- ── Installation quote opt-in ──
+	     No longer tied to the box price: it asks for a quote rather than pricing
+	     anything, so the only condition is whether we install this product at
+	     all. The partial self-gates on the Installation Rate field. -->
+	<?php if ($has_install_option): ?>
+		<div class="h-px bg-[#E9EAEC] mb-5"></div>
 		<?php get_template_part('woocommerce/partials/product-choose-option'); ?>
 	<?php endif; ?>
 </div><!-- /.lt-product-summary -->

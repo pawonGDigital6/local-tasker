@@ -27,7 +27,8 @@ import { initAreaCalculators } from './components/area-calculator';
 	let cartonSqm       = parseFloat(summary.dataset.cartonSqm) || 0;
 	let boxPriceEx      = parseFloat(summary.dataset.boxPriceEx) || 0;
 	let pricePerSqmEx   = parseFloat(summary.dataset.pricePerSqmEx) || 0;
-	const installRateEx  = parseFloat(summary.dataset.installRateEx) || 0;
+	// NOTE: the installation opt-in is a QUOTE REQUEST, not a priced add-on, so
+	// no install rate is read here and no price on this page depends on it.
 
 	/* ── Variable product state ────────────────────────────── */
 	const requiresVariation = summary.dataset.isVariable === '1';
@@ -52,10 +53,6 @@ import { initAreaCalculators } from './components/area-calculator';
 		const priceNow     = document.getElementById('lt-price-now');
 		const priceInc     = document.getElementById('lt-price-inc');
 		const priceBox     = document.getElementById('lt-price-box');
-		const optPurchase  = document.getElementById('lt-option-price-purchase-only');
-		const optInstall   = document.getElementById('lt-option-price-purchase-install');
-		const radioPurchase = document.querySelector('[name="lt_purchase_option"][value="purchase-only"]');
-		const radioInstall  = document.querySelector('[name="lt_purchase_option"][value="purchase-install"]');
 		const addToCartBtnEl = document.getElementById('lt-add-to-cart');
 
 		function findVariation() {
@@ -134,19 +131,8 @@ import { initAreaCalculators } from './components/area-calculator';
 					if (onSale) priceWas.textContent = formatCurrency(regularPerSqm);
 				}
 
-				const installPerSqm = installRateEx > 0 ? pricePerSqmEx + installRateEx : 0;
-				if (radioPurchase) radioPurchase.dataset.pricePerSqmEx = pricePerSqmEx;
-				if (radioInstall)  radioInstall.dataset.pricePerSqmEx  = installPerSqm;
-				if (optPurchase)   optPurchase.textContent = formatCurrency(pricePerSqmEx);
-				if (optInstall)    optInstall.textContent  = formatCurrency(installPerSqm);
-
-				// Keep the calculator using whichever option is currently checked.
-				const checkedOption = document.querySelector('[name="lt_purchase_option"]:checked');
-				if (checkedOption && checkedOption.dataset.pricePerSqmEx) {
-					const chosen = parseFloat(checkedOption.dataset.pricePerSqmEx) || pricePerSqmEx;
-					pricePerSqmEx = chosen;
-					boxPriceEx    = cartonSqm > 0 ? chosen * cartonSqm : boxPriceEx;
-				}
+				// The installation opt-in never alters the price, so the selected
+				// variation's own price is the final one — nothing to reconcile.
 			}
 
 			if (addToCartBtnEl) {
@@ -330,7 +316,7 @@ import { initAreaCalculators } from './components/area-calculator';
 				formData.append('quantity',   boxes);
 				formData.append('nonce',      nonce);
 				formData.append('area_sqm',   areaInput ? areaInput.value : 0);
-				formData.append('option',     document.querySelector('[name="lt_purchase_option"]:checked')?.value || 'purchase-only');
+				formData.append('install_quote', document.getElementById('lt-install-quote-input')?.checked ? '1' : '0');
 				formData.append('variation_id', addToCartBtn.dataset.variationId || 0);
 				if (requiresVariation) {
 					const attrs = {};
@@ -368,31 +354,11 @@ import { initAreaCalculators } from './components/area-calculator';
 	}
 
 	/* ══════════════════════════════════════════════════════════
-	   3. CHOOSE OPTION — switches effective price in calculator
+	   3. INSTALLATION QUOTE OPT-IN
+	   A quote request, not a priced add-on — the checkbox deliberately has no
+	   price side effects. Its state is read straight off the input when the
+	   line is added to the cart, so there is nothing to wire up here.
 	══════════════════════════════════════════════════════════ */
-	document.querySelectorAll('[name="lt_purchase_option"]').forEach(function (radio) {
-		radio.addEventListener('change', function () {
-			// Update visual state.
-			document.querySelectorAll('.lt-choose-option__row').forEach(function (row) {
-				const inp = row.querySelector('[name="lt_purchase_option"]');
-				const isActive = inp && inp.checked;
-				row.classList.toggle('border-lt-brand', isActive);
-				row.classList.toggle('bg-lt-brand/5',   isActive);
-				row.classList.toggle('border-[#E9EAEC]', !isActive);
-			});
-
-			// Update price used by calculator.
-			const newPricePerSqm = parseFloat(radio.dataset.pricePerSqmEx) || pricePerSqmEx;
-			pricePerSqmEx = newPricePerSqm;
-			boxPriceEx    = cartonSqm > 0 ? newPricePerSqm * cartonSqm : boxPriceEx;
-			// Re-read boxPriceEx via summary attr update then recompute.
-			summary.dataset.boxPriceEx    = boxPriceEx;
-			summary.dataset.pricePerSqmEx = pricePerSqmEx;
-			// Re-trigger calculator compute (event on area input).
-			const areaInput = document.getElementById('lt-calc-area');
-			if (areaInput) areaInput.dispatchEvent(new Event('input'));
-		});
-	});
 
 	/* ══════════════════════════════════════════════════════════
 	   4. AREA CALCULATOR

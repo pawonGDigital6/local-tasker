@@ -565,12 +565,13 @@
 	border-radius: 6px;
 }
 
-/* Choose option — Figma 29:4706 renders one bordered table, so the rows must stay
-   square-cornered and rely on their own top divider (no pill radius / 1.5px ring). */
-.lt-choose-option__row {
+/* Installation quote opt-in — one bordered card, so the row stays square-cornered
+   and relies on the card's own divider (no pill radius / 1.5px ring). Replaces
+   the former .lt-choose-option__row rule from the Purchase Only / Purchase &
+   Install table. */
+.lt-install-quote__row {
 	border-radius: 0;
 	border-width: 0;
-	border-top-width: 1px;
 }
 
 /* Area calculator */
