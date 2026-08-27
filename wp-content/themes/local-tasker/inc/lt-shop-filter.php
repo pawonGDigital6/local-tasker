@@ -15,6 +15,8 @@
  *   product_cat    Category      (SPC Hybrid, Engineered Timber, Tiles, Decking, …)
  *   pa_colour      Colour/Finish (Natural Oak, Dark Grey, Warm White, …)
  *   pa_thickness   Thickness     (6mm, 7mm, 8.5mm, 9mm, 10mm, 12mm+)
+ *   pa_grade       Grade         (AB, ABC, ABCD, Rustic, Standard Plus)
+ *   pa_veneer      Veneer        (2mm, 3mm, 4mm)
  *
  * @package local-tasker
  */
@@ -43,6 +45,8 @@ function lt_shop_parse_request( array $req ) {
 		'category'   => ! empty( $req['category'] ) ? sanitize_title( wp_unslash( $req['category'] ) ) : '',
 		'colour'     => isset( $req['colour'] ) ? $to_slugs( wp_unslash( $req['colour'] ) ) : array(),
 		'thickness'  => isset( $req['thickness'] ) ? $to_slugs( wp_unslash( $req['thickness'] ) ) : array(),
+		'grade'      => isset( $req['grade'] ) ? $to_slugs( wp_unslash( $req['grade'] ) ) : array(),
+		'veneer'     => isset( $req['veneer'] ) ? $to_slugs( wp_unslash( $req['veneer'] ) ) : array(),
 		'min_price'  => isset( $req['min_price'] ) && '' !== $req['min_price'] ? (float) $req['min_price'] : null,
 		'max_price'  => isset( $req['max_price'] ) && '' !== $req['max_price'] ? (float) $req['max_price'] : null,
 		'on_sale'    => ! empty( $req['on_sale'] ),
@@ -105,6 +109,26 @@ function lt_shop_build_query_args( array $state ) {
 			'taxonomy' => 'pa_thickness',
 			'field'    => 'slug',
 			'terms'    => $state['thickness'],
+			'operator' => 'IN',
+		);
+	}
+
+	// Grade.
+	if ( ! empty( $state['grade'] ) ) {
+		$args['tax_query'][] = array(
+			'taxonomy' => 'pa_grade',
+			'field'    => 'slug',
+			'terms'    => $state['grade'],
+			'operator' => 'IN',
+		);
+	}
+
+	// Veneer.
+	if ( ! empty( $state['veneer'] ) ) {
+		$args['tax_query'][] = array(
+			'taxonomy' => 'pa_veneer',
+			'field'    => 'slug',
+			'terms'    => $state['veneer'],
 			'operator' => 'IN',
 		);
 	}
@@ -319,7 +343,7 @@ function lt_shop_render_toolbar( array $state, $found ) {
  * Render one collapsible sidebar group of checkbox filters.
  *
  * @param string $title    Group title.
- * @param string $filter   Filter key (colour|thickness).
+ * @param string $filter   Filter key (colour|thickness|grade|veneer).
  * @param string $taxonomy Source taxonomy.
  * @param array  $selected Selected slugs.
  * @return void
@@ -353,7 +377,8 @@ function lt_shop_render_filter_group( $title, $filter, $taxonomy, array $selecte
 }
 
 /**
- * Render the full sidebar (category list, price range, colour, thickness).
+ * Render the full sidebar (category list, price range, colour, thickness,
+ * grade, veneer).
  *
  * @param array $state Parsed filter state.
  * @return void
@@ -407,6 +432,12 @@ function lt_shop_render_sidebar( array $state ) {
 
 		<!-- Thickness -->
 		<?php lt_shop_render_filter_group( __( 'Thickness', 'local-tasker' ), 'thickness', 'pa_thickness', $state['thickness'] ); ?>
+
+		<!-- Grade -->
+		<?php lt_shop_render_filter_group( __( 'Grade', 'local-tasker' ), 'grade', 'pa_grade', $state['grade'] ); ?>
+
+		<!-- Veneer -->
+		<?php lt_shop_render_filter_group( __( 'Veneer', 'local-tasker' ), 'veneer', 'pa_veneer', $state['veneer'] ); ?>
 
 		<button type="button" class="lt-shop__clear" data-lt-clear>
 			<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>

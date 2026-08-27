@@ -1,12 +1,78 @@
 <?php
 /**
- * Filters sidebar — Category (single-select), Price Range, Colour/Finish, Thickness.
+ * Filters sidebar — Category (single-select), Price Range, Colour/Finish,
+ * Thickness, Grade and Veneer.
  * Desktop: persistent column. Mobile: off-canvas drawer triggered by a button.
  *
  * @package local-tasker
  */
 
 defined('ABSPATH') || exit;
+
+/**
+ * Render one collapsible attribute facet in the filters sidebar.
+ *
+ * Colour / Finish, Thickness, Grade and Veneer are identical in markup and
+ * behaviour, so they share this renderer: the checkbox name is what the query
+ * layer reads (lt_shop_filter_product_query() / lt_shop_build_query() in
+ * inc/woocommerce.php) and what shop-archive.js collects for the AJAX request.
+ *
+ * @param string    $key          Facet key used for data-filter-group and element ids.
+ * @param string    $label        Human-readable group heading.
+ * @param string    $input_name   Request key, e.g. 'filter_grade'.
+ * @param WP_Term[] $terms        Terms to list.
+ * @param string[]  $active       Currently selected term slugs.
+ * @param bool      $with_divider Print the hairline rule after the group.
+ * @return void
+ */
+function lt_render_filter_facet(string $key, string $label, string $input_name, array $terms, array $active, bool $with_divider = true): void
+{
+	if (empty($terms)) {
+		return;
+	}
+	?>
+	<div class="lt-filter-group" data-filter-group="<?php echo esc_attr($key); ?>">
+		<button type="button"
+			class="lt-filter-group__toggle w-full flex items-center justify-between text-left gap-2 group"
+			aria-expanded="true" aria-controls="filter-<?php echo esc_attr($key); ?>-body">
+			<span class="font-semi-ext text-[13px] font-bold text-[#0a0d1a]"><?php echo esc_html($label); ?></span>
+			<svg class="w-4 h-4 text-lt-text-muted shrink-0 transition-transform duration-200 group-aria-[expanded=false]:rotate-180 mr-[-2px]"
+				viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+				<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+					stroke-linejoin="round" />
+			</svg>
+		</button>
+		<ul id="filter-<?php echo esc_attr($key); ?>-body" class="mt-3 flex flex-col gap-2 list-none p-0 m-0">
+			<?php foreach ($terms as $term):
+				$is_checked = in_array($term->slug, $active, true);
+				?>
+				<li>
+					<label class="flex items-center justify-between gap-2 cursor-pointer group/label">
+						<span class="flex items-center gap-2">
+							<input type="checkbox" name="<?php echo esc_attr($input_name); ?>[]"
+								value="<?php echo esc_attr($term->slug); ?>" class="lt-filter-checkbox sr-only peer"
+								<?php checked($is_checked); ?>>
+							<span
+								class="lt-filter-checkbox__ui w-4 h-4 rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
+								aria-hidden="true">
+							</span>
+							<span
+								class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
+								<?php echo esc_html($term->name); ?>
+							</span>
+						</span>
+						<span
+							class="text-[11px] text-[#6b7280] shrink-0"><?php echo esc_html($term->count); ?></span>
+					</label>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	</div><!-- /.lt-filter-group <?php echo esc_html($key); ?> -->
+	<?php if ($with_divider) : ?>
+		<div class="h-px bg-[#E9EAEC]"></div>
+	<?php endif;
+}
+
 
 // Active filter values from query string (sanitised).
 $active_cat = isset($_GET['product_cat']) ? sanitize_text_field((string) (is_array($_GET['product_cat']) ? reset($_GET['product_cat']) : $_GET['product_cat'])) : '';
@@ -26,13 +92,15 @@ $price_min = (isset($_GET['min_price']) && $_GET['min_price'] !== '') ? (float) 
 $price_max = (isset($_GET['max_price']) && $_GET['max_price'] !== '') ? (float) $_GET['max_price'] : '';
 $active_colours = isset($_GET['filter_colour']) ? array_map('sanitize_text_field', (array) $_GET['filter_colour']) : [];
 $active_thickness = isset($_GET['filter_thickness']) ? array_map('sanitize_text_field', (array) $_GET['filter_thickness']) : [];
+$active_grade = isset($_GET['filter_grade']) ? array_map('sanitize_text_field', (array) $_GET['filter_grade']) : [];
+$active_veneer = isset($_GET['filter_veneer']) ? array_map('sanitize_text_field', (array) $_GET['filter_veneer']) : [];
 $active_pill_get = isset($_GET['filter']) ? sanitize_key($_GET['filter']) : '';
 
 $active_availability = isset($_GET['filter_availability']) && in_array(sanitize_key($_GET['filter_availability']), ['in_stock', 'out_of_stock'], true)
 	? sanitize_key($_GET['filter_availability'])
 	: '';
 
-$has_active_filters = $active_cat !== '' || $price_min !== '' || $price_max !== '' || !empty($active_colours) || !empty($active_thickness) || $active_availability !== '' || ($active_pill_get !== '' && $active_pill_get !== 'all');
+$has_active_filters = $active_cat !== '' || $price_min !== '' || $price_max !== '' || !empty($active_colours) || !empty($active_thickness) || !empty($active_grade) || !empty($active_veneer) || $active_availability !== '' || ($active_pill_get !== '' && $active_pill_get !== 'all');
 
 // Helper: build a filter URL preserving current query minus pagination.
 function lt_filter_url(array $params): string
@@ -104,7 +172,19 @@ if (is_wp_error($thickness_terms)) {
 	$thickness_terms = [];
 }
 
-$clear_url = remove_query_arg(['product_cat', 'min_price', 'max_price', 'filter_colour', 'filter_thickness', 'filter_availability', 'filter', 'paged']);
+// Fetch pa_grade attribute terms.
+$grade_terms = get_terms(['taxonomy' => 'pa_grade', 'hide_empty' => true, 'orderby' => 'name', 'order' => 'ASC']);
+if (is_wp_error($grade_terms)) {
+	$grade_terms = [];
+}
+
+// Fetch pa_veneer attribute terms.
+$veneer_terms = get_terms(['taxonomy' => 'pa_veneer', 'hide_empty' => true, 'orderby' => 'name', 'order' => 'ASC']);
+if (is_wp_error($veneer_terms)) {
+	$veneer_terms = [];
+}
+
+$clear_url = remove_query_arg(['product_cat', 'min_price', 'max_price', 'filter_colour', 'filter_thickness', 'filter_grade', 'filter_veneer', 'filter_availability', 'filter', 'paged']);
 
 // ── Dynamic availability counts ──────────────────────────────────────────────
 // Delegated to lt_shop_availability_counts() (inc/woocommerce.php), which builds
@@ -174,7 +254,7 @@ $lt_result_range = $lt_result_shown > 0 ? '1-' . $lt_result_shown : '0';
 			<span
 				class="lt-filter-count bg-lt-brand text-lt-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
 				aria-label="<?php esc_attr_e('Active filters', 'local-tasker'); ?>">
-				<?php echo esc_html(($active_cat !== '' ? 1 : 0) + count($active_colours) + count($active_thickness) + ($price_min !== '' || $price_max !== '' ? 1 : 0)); ?>
+				<?php echo esc_html(($active_cat !== '' ? 1 : 0) + count($active_colours) + count($active_thickness) + count($active_grade) + count($active_veneer) + ($price_min !== '' || $price_max !== '' ? 1 : 0)); ?>
 			</span>
 		<?php endif; ?>
 	</button>
@@ -390,92 +470,26 @@ $lt_result_range = $lt_result_shown > 0 ? '1-' . $lt_result_shown : '0';
 
 			<div class="h-px bg-[#E9EAEC]"></div>
 
-			<!-- ── Colour / Finish ── -->
-			<?php if (!empty($colour_terms)): ?>
-				<div class="lt-filter-group" data-filter-group="colour">
-					<button type="button"
-						class="lt-filter-group__toggle w-full flex items-center justify-between text-left gap-2 group"
-						aria-expanded="true" aria-controls="filter-colour-body">
-						<span
-							class="font-semi-ext text-[13px] font-bold text-[#0a0d1a]"><?php esc_html_e('Colour / Finish', 'local-tasker'); ?></span>
-						<svg class="w-4 h-4 text-lt-text-muted shrink-0 transition-transform duration-200 group-aria-[expanded=false]:rotate-180 mr-[-2px]"
-							viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-								stroke-linejoin="round" />
-						</svg>
-					</button>
-					<ul id="filter-colour-body" class="mt-3 flex flex-col gap-2 list-none p-0 m-0">
-						<?php foreach ($colour_terms as $term):
-							$is_checked = in_array($term->slug, $active_colours, true);
-							?>
-							<li>
-								<label class="flex items-center justify-between gap-2 cursor-pointer group/label">
-									<span class="flex items-center gap-2">
-										<input type="checkbox" name="filter_colour[]"
-											value="<?php echo esc_attr($term->slug); ?>" class="lt-filter-checkbox sr-only peer"
-											<?php checked($is_checked); ?>>
-										<span
-											class="lt-filter-checkbox__ui w-4 h-4 rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
-											aria-hidden="true">
-
-										</span>
-										<span
-											class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
-											<?php echo esc_html($term->name); ?>
-										</span>
-									</span>
-									<span
-										class="text-[11px] text-[#6b7280] shrink-0"><?php echo esc_html($term->count); ?></span>
-								</label>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				</div><!-- /.lt-filter-group colour -->
-
-				<div class="h-px bg-[#E9EAEC]"></div>
-			<?php endif; ?>
-
-			<!-- ── Thickness ── -->
-			<?php if (!empty($thickness_terms)): ?>
-				<div class="lt-filter-group" data-filter-group="thickness">
-					<button type="button"
-						class="lt-filter-group__toggle w-full flex items-center justify-between text-left gap-2 group"
-						aria-expanded="true" aria-controls="filter-thickness-body">
-						<span
-							class="font-semi-ext text-[13px] font-bold text-[#0a0d1a]"><?php esc_html_e('Thickness', 'local-tasker'); ?></span>
-						<svg class="w-4 h-4 text-lt-text-muted shrink-0 transition-transform duration-200 group-aria-[expanded=false]:rotate-180 mr-[-2px]"
-							viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-								stroke-linejoin="round" />
-						</svg>
-					</button>
-					<ul id="filter-thickness-body" class="mt-3 flex flex-col gap-2 list-none p-0 m-0">
-						<?php foreach ($thickness_terms as $term):
-							$is_checked = in_array($term->slug, $active_thickness, true);
-							?>
-							<li>
-								<label class="flex items-center justify-between gap-2 cursor-pointer group/label">
-									<span class="flex items-center gap-2">
-										<input type="checkbox" name="filter_thickness[]"
-											value="<?php echo esc_attr($term->slug); ?>" class="lt-filter-checkbox sr-only peer"
-											<?php checked($is_checked); ?>>
-										<span
-											class="lt-filter-checkbox__ui w-4 h-4 rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
-											aria-hidden="true">
-										</span>
-										<span
-											class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
-											<?php echo esc_html($term->name); ?>
-										</span>
-									</span>
-									<span
-										class="text-[11px] text-[#6b7280] shrink-0"><?php echo esc_html($term->count); ?></span>
-								</label>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				</div><!-- /.lt-filter-group thickness -->
-			<?php endif; ?>
+			<!-- ── Attribute facets: Colour / Finish, Thickness, Grade, Veneer ── -->
+			<?php
+			// Rendered from one helper so every facet stays identical in markup and
+			// behaviour; a facet with no terms in the catalogue renders nothing at all.
+			$lt_facets = [
+				['colour',    __('Colour / Finish', 'local-tasker'), 'filter_colour',    $colour_terms,    $active_colours],
+				['thickness', __('Thickness', 'local-tasker'),       'filter_thickness', $thickness_terms, $active_thickness],
+				['grade',     __('Grade', 'local-tasker'),           'filter_grade',     $grade_terms,     $active_grade],
+				['veneer',    __('Veneer', 'local-tasker'),          'filter_veneer',    $veneer_terms,    $active_veneer],
+			];
+			// The trailing divider belongs between facets, never after the last one
+			// that actually rendered - the sidebar prints its own rule below.
+			$lt_visible = array_values(array_filter($lt_facets, static function ($f) {
+				return !empty($f[3]);
+			}));
+			foreach ($lt_visible as $lt_i => $lt_facet) {
+				list($lt_key, $lt_label, $lt_name, $lt_terms, $lt_active) = $lt_facet;
+				lt_render_filter_facet($lt_key, $lt_label, $lt_name, $lt_terms, $lt_active, $lt_i < count($lt_visible) - 1);
+			}
+			?>
 
 			<div class="h-px bg-[#E9EAEC]"></div>
 			<!-- Clear all + Apply (mobile) -->

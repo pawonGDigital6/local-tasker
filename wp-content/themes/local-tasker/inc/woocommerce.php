@@ -360,7 +360,7 @@ function lt_shop_archive_scripts() {
 			'lt-shop-archive',
 			get_template_directory_uri() . '/js/shop-archive.js',
 			[],
-			'1.1.0',
+			'1.2.0',
 			[ 'strategy' => 'defer', 'in_footer' => true ]
 		);
 
@@ -467,6 +467,32 @@ function lt_shop_filter_product_query( WP_Query $q ): void {
 			'taxonomy' => 'pa_thickness',
 			'field'    => 'slug',
 			'terms'    => $thickness,
+			'operator' => 'IN',
+		];
+	}
+
+	// ── Sidebar: Grade ──────────────────────────────────────────────────────
+	$grades = isset( $_GET['filter_grade'] )
+		? array_filter( array_map( 'sanitize_text_field', (array) $_GET['filter_grade'] ) )
+		: [];
+	if ( ! empty( $grades ) ) {
+		$tax_query[] = [
+			'taxonomy' => 'pa_grade',
+			'field'    => 'slug',
+			'terms'    => $grades,
+			'operator' => 'IN',
+		];
+	}
+
+	// ── Sidebar: Veneer ─────────────────────────────────────────────────────
+	$veneers = isset( $_GET['filter_veneer'] )
+		? array_filter( array_map( 'sanitize_text_field', (array) $_GET['filter_veneer'] ) )
+		: [];
+	if ( ! empty( $veneers ) ) {
+		$tax_query[] = [
+			'taxonomy' => 'pa_veneer',
+			'field'    => 'slug',
+			'terms'    => $veneers,
 			'operator' => 'IN',
 		];
 	}
@@ -590,6 +616,8 @@ function lt_shop_get_filters( array $req ): array {
 		'product_cat'         => isset( $req['product_cat'] ) ? $slugs( $req['product_cat'] ) : [],
 		'filter_colour'       => isset( $req['filter_colour'] ) ? $slugs( $req['filter_colour'] ) : [],
 		'filter_thickness'    => isset( $req['filter_thickness'] ) ? $slugs( $req['filter_thickness'] ) : [],
+		'filter_grade'        => isset( $req['filter_grade'] ) ? $slugs( $req['filter_grade'] ) : [],
+		'filter_veneer'       => isset( $req['filter_veneer'] ) ? $slugs( $req['filter_veneer'] ) : [],
 		'min_price'           => ( isset( $req['min_price'] ) && $req['min_price'] !== '' ) ? (float) $req['min_price'] : null,
 		'max_price'           => ( isset( $req['max_price'] ) && $req['max_price'] !== '' && (float) $req['max_price'] > 0 ) ? (float) $req['max_price'] : null,
 		'filter'              => isset( $req['filter'] ) ? sanitize_key( $req['filter'] ) : 'all',
@@ -665,6 +693,12 @@ function lt_shop_build_query( array $f, int $per_page ): WP_Query {
 	}
 	if ( ! empty( $f['filter_thickness'] ) ) {
 		$args['tax_query'][] = [ 'taxonomy' => 'pa_thickness', 'field' => 'slug', 'terms' => $f['filter_thickness'], 'operator' => 'IN' ];
+	}
+	if ( ! empty( $f['filter_grade'] ) ) {
+		$args['tax_query'][] = [ 'taxonomy' => 'pa_grade', 'field' => 'slug', 'terms' => $f['filter_grade'], 'operator' => 'IN' ];
+	}
+	if ( ! empty( $f['filter_veneer'] ) ) {
+		$args['tax_query'][] = [ 'taxonomy' => 'pa_veneer', 'field' => 'slug', 'terms' => $f['filter_veneer'], 'operator' => 'IN' ];
 	}
 
 	// Quick pills.

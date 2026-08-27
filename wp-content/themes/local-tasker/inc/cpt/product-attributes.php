@@ -1,6 +1,7 @@
 <?php
 /**
- * WooCommerce product attribute taxonomies: Colour / Finish and Thickness.
+ * WooCommerce product attribute taxonomies: Colour / Finish, Thickness,
+ * Grade and Veneer.
  *
  * On the first request this seeds each attribute into WooCommerce's attribute
  * table (so it appears under Products → Attributes in the admin) and immediately
@@ -18,7 +19,8 @@ defined( 'ABSPATH' ) || exit;
 add_action( 'init', 'lt_register_product_attributes', 10 );
 
 /**
- * Ensure pa_colour and pa_thickness exist as WC attribute taxonomies.
+ * Ensure pa_colour, pa_thickness, pa_grade and pa_veneer exist as WC
+ * attribute taxonomies.
  */
 function lt_register_product_attributes(): void {
 	if ( ! function_exists( 'wc_create_attribute' ) || ! function_exists( 'wc_attribute_taxonomy_name' ) ) {
@@ -36,6 +38,20 @@ function lt_register_product_attributes(): void {
 		[
 			'name'         => 'Thickness',
 			'slug'         => 'thickness',
+			'type'         => 'select',
+			'order_by'     => 'name',
+			'has_archives' => false,
+		],
+		[
+			'name'         => 'Grade',
+			'slug'         => 'grade',
+			'type'         => 'select',
+			'order_by'     => 'name',
+			'has_archives' => false,
+		],
+		[
+			'name'         => 'Veneer',
+			'slug'         => 'veneer',
 			'type'         => 'select',
 			'order_by'     => 'name',
 			'has_archives' => false,

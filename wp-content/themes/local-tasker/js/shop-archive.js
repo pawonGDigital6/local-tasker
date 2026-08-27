@@ -84,6 +84,19 @@
 		return el ? el.dataset.ltPill : 'all';
 	}
 
+	// Attribute facets rendered by lt_render_filter_facet() in
+	// woocommerce/partials/shop-filters.php. Adding a facet there only needs its
+	// request key appended here for AJAX filtering and clear-state to follow.
+	var ATTR_FACETS = ['filter_colour', 'filter_thickness', 'filter_grade', 'filter_veneer'];
+
+	/** Any attribute facet checkbox currently ticked? */
+	function hasCheckedFacet() {
+		if (!form) return false;
+		return ATTR_FACETS.some(function (name) {
+			return !!form.querySelector('[name="' + name + '[]"]:checked');
+		});
+	}
+
 	/** Show/hide both "Clear All Filters" controls based on the live filter state. */
 	function refreshClearVisibility() {
 		var checkedCat = form && form.querySelector('[name="product_cat"]:checked');
@@ -95,8 +108,7 @@
 		var hasActive = !!(
 			(checkedCat && checkedCat.value) ||
 			pill !== 'all' ||
-			(form && form.querySelector('[name="filter_colour[]"]:checked')) ||
-			(form && form.querySelector('[name="filter_thickness[]"]:checked')) ||
+			hasCheckedFacet() ||
 			(min && min.value !== '') ||
 			(max && max.value !== '') ||
 			(checkedAvail && checkedAvail.value)
@@ -121,14 +133,12 @@
 			params.set('product_cat', checkedCat.value);
 		}
 
-		// Colour checkboxes.
+		// Attribute facet checkboxes (colour, thickness, grade, veneer).
 		if (form) {
-			form.querySelectorAll('[name="filter_colour[]"]:checked').forEach(function (c) {
-				params.append('filter_colour[]', c.value);
-			});
-			// Thickness checkboxes.
-			form.querySelectorAll('[name="filter_thickness[]"]:checked').forEach(function (c) {
-				params.append('filter_thickness[]', c.value);
+			ATTR_FACETS.forEach(function (name) {
+				form.querySelectorAll('[name="' + name + '[]"]:checked').forEach(function (c) {
+					params.append(name + '[]', c.value);
+				});
 			});
 		}
 
@@ -274,7 +284,7 @@
 	/* ───────────────────────── bindings ───────────────────────── */
 
 	if (form) {
-		// Category radios + colour/thickness checkboxes.
+		// Category radios + attribute facet checkboxes.
 		form.querySelectorAll('.lt-filter-checkbox').forEach(function (cb) {
 			cb.addEventListener('change', function () {
 				refreshClearVisibility();
