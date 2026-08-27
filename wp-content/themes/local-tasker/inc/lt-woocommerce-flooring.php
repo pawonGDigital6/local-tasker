@@ -2,12 +2,13 @@
 /**
  * Local Tasker — Flooring catalogue helpers on top of stock WooCommerce.
  *
- * The one place that controls box pricing/coverage/install rate is the
- * "Product Options & Specs" ACF panel on the product edit screen (see
- * inc/acf-product-fields.php: Sold by the Box / Carton Coverage / Install
- * Rate). This file does NOT duplicate that — it only adds:
+ * The one place that controls box pricing/coverage is the "Product Options &
+ * Specs" ACF panel on the product edit screen (see inc/acf-product-fields.php:
+ * Sold by the Box / Carton Coverage). This file does NOT duplicate that — it
+ * only adds:
  *
  *   • Colour swatch helpers used by the archive card and single product page.
+ *   • The installation opt-in, offered on every product and priced nowhere.
  *   • Cart line display + order meta so the chosen area/install option is
  *     visible on the cart, order, and in the installation notification email.
  *
@@ -147,6 +148,96 @@ function lt_guess_swatch_hex( $name ) {
 	}
 	return '#c9b79c';
 }
+
+/* -------------------------------------------------------------------------
+ *  Installation opt-in on the stock add-to-cart form
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Does this product offer the installation option?
+ *
+ * Driven by the "Installation Quote" toggle in the Product Options & Specs
+ * panel, which defaults to ON. The theme reads product meta directly rather
+ * than through get_field(), so ACF's default_value never gets a chance to fill
+ * in for a product whose meta row does not exist yet — every product that
+ * predates the toggle, plus any created outside the editor. An empty value must
+ * therefore mean enabled: only an explicit "off" hides the option.
+ *
+ * Single source of truth for the toggle — the partial, the cart-item filter and
+ * the calculator's AJAX handler all defer to it, so display and persistence
+ * cannot disagree.
+ *
+ * @param int $product_id Product id.
+ * @return bool
+ */
+function lt_product_offers_install_quote( $product_id ): bool {
+	$enabled = get_post_meta( (int) $product_id, 'install_quote_enabled', true );
+
+	if ( '' === $enabled || null === $enabled ) {
+		return true;
+	}
+
+	return (bool) $enabled;
+}
+
+/**
+ * Print the installation opt-in inside WooCommerce's own add-to-cart form.
+ *
+ * Box-priced products add to the cart over AJAX and render the partial
+ * themselves (see woocommerce/partials/product-summary.php). Everything else
+ * posts WooCommerce's stock form, and a checkbox only travels with that POST if
+ * it lives inside the form — which is what this hook is for. The partial gates
+ * itself on the product's "Installation Quote" toggle, so there is nothing to
+ * check here beyond staying on the single-product page.
+ */
+function lt_render_install_optin(): void {
+	if ( ! is_product() ) {
+		return;
+	}
+	get_template_part( 'woocommerce/partials/product-choose-option' );
+}
+add_action( 'woocommerce_after_add_to_cart_button', 'lt_render_install_optin' );
+
+/**
+ * Carry the installation opt-in from the stock add-to-cart form onto the cart line.
+ *
+ * The box calculator's AJAX handler sets 'lt_install' itself (see
+ * inc/woocommerce.php), so lines it created are left alone; this covers every
+ * product added through WooCommerce's own form. The flag records intent only —
+ * it never touches the price.
+ *
+ * A product with the toggle off never renders the checkbox, so it should never
+ * see this input — but the flag is re-checked against the toggle anyway, so a
+ * hand-crafted POST cannot attach an installation request to a product that
+ * does not offer one.
+ *
+ * @param array $cart_item_data Cart item data.
+ * @param int   $product_id     Product being added.
+ * @return array
+ */
+function lt_add_install_cart_item_data( $cart_item_data, $product_id = 0 ) {
+	// Already decided by the calculator's AJAX handler (which verified its own nonce).
+	if ( isset( $cart_item_data['lt_install'] ) ) {
+		return $cart_item_data;
+	}
+
+	if ( ! lt_product_offers_install_quote( $product_id ) ) {
+		return $cart_item_data;
+	}
+
+	// WooCommerce's single-product add-to-cart form carries no nonce of its own;
+	// this is a display-only flag, handled the same way Woo handles the rest of
+	// that form's input.
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$raw = isset( $_REQUEST['lt_install_quote'] ) ? (string) wc_clean( wp_unslash( $_REQUEST['lt_install_quote'] ) ) : '';
+
+	if ( in_array( $raw, array( '1', 'yes', 'true', 'on' ), true ) ) {
+		$cart_item_data['lt_install'] = 'yes';
+	}
+
+	return $cart_item_data;
+}
+add_filter( 'woocommerce_add_cart_item_data', 'lt_add_install_cart_item_data', 10, 2 );
 
 /* -------------------------------------------------------------------------
  *  Cart / order — carry the chosen coverage + install option

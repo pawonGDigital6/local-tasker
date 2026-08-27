@@ -1,6 +1,6 @@
 <?php
 /**
- * Installation quote opt-in.
+ * Installation opt-in.
  *
  * Replaces the former "Purchase Only / Purchase & Install" price table. The
  * customer now ASKS FOR A QUOTE rather than buying installation up front, so
@@ -8,8 +8,14 @@
  * flag that rides the cart line through to the order and the installation
  * notification email.
  *
- * The "Installation Rate" field is now purely the "do we install this product?"
- * switch: no rate, no offer, nothing to ask about.
+ * There is no installation cost to configure. The only per-product setting is
+ * the "Installation Quote" toggle (Product Options & Specs), which defaults to
+ * ON — when it is off the option is hidden entirely for that product.
+ *
+ * Self-gating, and it prints its own leading divider, so both render paths (the
+ * calculator branch in product-summary.php and lt_render_install_optin() inside
+ * the stock add-to-cart form) can call it unconditionally without leaving a
+ * stray separator behind when the toggle is off.
  *
  * @package local-tasker
  */
@@ -18,13 +24,12 @@ defined( 'ABSPATH' ) || exit;
 
 global $product;
 
-$product_id      = $product->get_id();
-$install_rate_ex = (float) get_post_meta( $product_id, 'install_rate_per_sqm', true );
-
-if ( $install_rate_ex <= 0 ) {
+if ( ! $product instanceof WC_Product || ! lt_product_offers_install_quote( $product->get_id() ) ) {
 	return;
 }
 ?>
+
+<div class="h-px bg-[#E9EAEC] mb-5"></div>
 
 <div class="lt-install-quote mb-5" id="lt-install-quote">
 

@@ -211,10 +211,13 @@ function lt_ajax_add_flooring_to_cart(): void {
 	$area_sqm     = (float) ( $_POST['area_sqm'] ?? 0 );
 	$variation_id = absint( $_POST['variation_id'] ?? 0 );
 
-	// "I would also like an installation quote" — a request for a quote, not a
-	// purchased add-on. It records intent only and must never move the price.
+	// The installation opt-in — a request for a quote, not a purchased add-on.
+	// It records intent only and must never move the price. Products with the
+	// "Installation Quote" toggle off never render the checkbox, and the toggle is
+	// re-checked here so the flag cannot be posted onto them regardless.
 	$install_quote = isset( $_POST['install_quote'] )
-		&& in_array( (string) $_POST['install_quote'], [ '1', 'yes', 'true', 'on' ], true );
+		&& in_array( (string) $_POST['install_quote'], [ '1', 'yes', 'true', 'on' ], true )
+		&& lt_product_offers_install_quote( $product_id );
 
 	if ( ! $product_id || $quantity < 1 ) {
 		wp_send_json_error( [ 'message' => 'Invalid product or quantity.' ] );
@@ -338,9 +341,8 @@ function lt_apply_flooring_box_pricing( WC_Cart $cart ): void {
 
 		/*
 		 * Installation is quoted separately, not sold here: 'lt_install' marks a
-		 * request for a quote and deliberately does NOT feed into the price. The
-		 * product's Installation Rate is only the "do we install this?" switch
-		 * that decides whether the opt-in is offered at all.
+		 * request for a quote and deliberately does NOT feed into the price.
+		 * There is no installation cost anywhere in the catalogue.
 		 */
 
 		$cart_item['data']->set_price( $price_per_sqm * $carton_sqm );

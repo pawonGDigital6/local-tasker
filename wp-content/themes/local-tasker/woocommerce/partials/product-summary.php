@@ -13,8 +13,6 @@ global $product;
 $product_id = $product->get_id();
 $carton_sqm = (float) get_post_meta($product_id, 'carton_sqm', true);
 $sold_by_box = (bool) get_post_meta($product_id, 'sold_by_box', true);
-$install_rate_ex = (float) get_post_meta($product_id, 'install_rate_per_sqm', true);
-$has_install_option = $install_rate_ex > 0;
 
 $is_variable = $product->is_type('variable');
 
@@ -102,7 +100,6 @@ if ($is_variable) {
 	data-carton-sqm="<?php echo esc_attr($carton_sqm ?: 0); ?>"
 	data-box-price-ex="<?php echo esc_attr($box_price_ex); ?>"
 	data-price-per-sqm-ex="<?php echo esc_attr($price_per_sqm_ex); ?>"
-	data-install-rate-ex="<?php echo esc_attr($install_rate_ex); ?>"
 	data-is-variable="<?php echo esc_attr($is_variable ? '1' : '0'); ?>"
 	data-variations="<?php echo esc_attr(wp_json_encode($variations_json)); ?>"
 	data-default-attributes="<?php echo esc_attr(wp_json_encode($default_attrs)); ?>">
@@ -270,16 +267,17 @@ if ($is_variable) {
 	<!-- ── Box Calculator ── -->
 	<?php if ($sold_by_box && $has_box_price): ?>
 		<?php get_template_part('woocommerce/partials/product-calculator'); ?>
+		<!-- ── Installation opt-in ──
+		     Gated only by the product's "Installation Quote" toggle, which the
+		     partial checks itself (along with printing its own divider). The
+		     calculator adds to the cart over AJAX and product-single.js reads the
+		     checkbox directly, so here the partial can sit outside any form.
+		     Products using the stock add-to-cart form below get it printed INSIDE
+		     that form by lt_render_install_optin()
+		     (inc/lt-woocommerce-flooring.php). -->
+		<?php get_template_part('woocommerce/partials/product-choose-option'); ?>
 	<?php else: ?>
 		<!-- Simple add to cart for non-box products -->
 		<?php woocommerce_template_single_add_to_cart(); ?>
-	<?php endif; ?>
-	<!-- ── Installation quote opt-in ──
-	     No longer tied to the box price: it asks for a quote rather than pricing
-	     anything, so the only condition is whether we install this product at
-	     all. The partial self-gates on the Installation Rate field. -->
-	<?php if ($has_install_option): ?>
-		<div class="h-px bg-[#E9EAEC] mb-5"></div>
-		<?php get_template_part('woocommerce/partials/product-choose-option'); ?>
 	<?php endif; ?>
 </div><!-- /.lt-product-summary -->
