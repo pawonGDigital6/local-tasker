@@ -126,7 +126,7 @@
             ],
             "return_format": "object",
             "min": "",
-            "max": 6,
+            "max": 7,
             "allow_in_bindings": 0,
             "elements": "",
             "bidirectional": 0,
@@ -146,7 +146,7 @@
                 "class": "",
                 "id": ""
             },
-            "taxonomy": "category",
+            "taxonomy": "product_cat",
             "add_term": 1,
             "save_terms": 0,
             "load_terms": 0,
@@ -180,5 +180,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1785916038
+    "modified": 1787824400
 }

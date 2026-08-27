@@ -96,85 +96,95 @@ $hero_search_url = get_field('hero_search_url') ?: ($shop_page_id > 0 ? get_perm
 
 
 
-// Build static navigation items for the search dropdowns.
-$shop_page_url = function_exists('wc_get_page_id') ? get_permalink(wc_get_page_id('shop')) : home_url('/shop/');
+// Build the navigation items for the search dropdowns.
+//
+// Product categories are read live from WooCommerce: every top-level
+// product_cat becomes an option in the first dropdown, and its children
+// populate the second one. Services are not a taxonomy, so they stay as
+// explicit entries appended after the categories.
 
-// Helper function to safely get WooCommerce term link or fallback
+// Helper function to safely get WooCommerce term link or fallback.
+// Accepts a term object (preferred, no extra lookup) or a slug.
 if (!function_exists('lt_get_product_cat_url')) {
-	function lt_get_product_cat_url($slug) {
-		$link = get_term_link($slug, 'product_cat');
+	function lt_get_product_cat_url($term) {
+		$link = get_term_link($term, 'product_cat');
 		if (is_wp_error($link)) {
+			$slug = is_object($term) ? $term->slug : $term;
 			return home_url('/product-category/' . $slug . '/');
 		}
 		return $link;
 	}
 }
 
-$flooring_subcategories = [
-	[
-		'name' => __('SPC Hybrid', 'local-tasker'),
-		'url'  => lt_get_product_cat_url('spc-hybrid-flooring'),
-	],
-	[
-		'name' => __('European Oak Engineered Timber', 'local-tasker'),
-		'url'  => lt_get_product_cat_url('engineered-timber-flooring'),
-	],
-	[
-		'name' => __('Australian Species Engineered Timber', 'local-tasker'),
-		'url'  => lt_get_product_cat_url('australian-species-engineered-timber'),
-	],
-	[
-		'name' => __('Flooring Accessories', 'local-tasker'),
-		'url'  => lt_get_product_cat_url('flooring-accessories'),
-	],
-	[
-		'name' => __('Tiles', 'local-tasker'),
-		'url'  => lt_get_product_cat_url('tiles'),
-	],
-];
+/**
+ * Top-level product categories, each with its own sub-categories.
+ *
+ * Mirrors lt_shop_get_categories(): published terms only, alphabetical, with
+ * the store's default category ("Uncategorized") left out. Keys are prefixed
+ * so a category slug can never collide with a service key below.
+ */
+$product_navigation = [];
 
-$structural_subcategories = [
-	[
-		'name' => __('LVL F11', 'local-tasker'),
-		'url'  => lt_get_product_cat_url('lvl-f11'),
-	],
-	[
-		'name' => __('LVL F17', 'local-tasker'),
-		'url'  => lt_get_product_cat_url('lvl-f17'),
-	],
-];
+$lt_hero_parent_cats = get_terms([
+	'taxonomy'   => 'product_cat',
+	'parent'     => 0,
+	'hide_empty' => true,
+	'orderby'    => 'name',
+	'order'      => 'ASC',
+	'exclude'    => array_filter([(int) get_option('default_product_cat', 0)]),
+]);
 
-// Top-level static navigation items definition
-$static_navigation = [
-	'flooring' => [
-		'name'         => __('Flooring', 'local-tasker'),
-		'url'          => $shop_page_url,
-		'redirect'     => 'false',
-		'subcategories' => $flooring_subcategories,
-	],
-	'structural-materials' => [
-		'name'         => __('Structural Materials', 'local-tasker'),
-		'url'          => lt_get_product_cat_url('structural-materials'),
-		'redirect'     => 'false',
-		'subcategories' => $structural_subcategories,
-	],
+if (!is_wp_error($lt_hero_parent_cats)) {
+	foreach ($lt_hero_parent_cats as $lt_parent_cat) {
+		$lt_child_cats = get_terms([
+			'taxonomy'   => 'product_cat',
+			'parent'     => $lt_parent_cat->term_id,
+			'hide_empty' => true,
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+		]);
+
+		$lt_subcategories = [];
+		if (!is_wp_error($lt_child_cats)) {
+			foreach ($lt_child_cats as $lt_child_cat) {
+				$lt_subcategories[] = [
+					'name' => $lt_child_cat->name,
+					'url'  => lt_get_product_cat_url($lt_child_cat),
+				];
+			}
+		}
+
+		$product_navigation['product-' . $lt_parent_cat->slug] = [
+			'name'          => $lt_parent_cat->name,
+			'url'           => lt_get_product_cat_url($lt_parent_cat),
+			'redirect'      => 'false',
+			'subcategories' => $lt_subcategories,
+		];
+	}
+}
+
+// Services are a separate content type with no sub-categories in this filter;
+// selecting one navigates straight to its page, as before.
+$service_navigation = [
 	'renovations' => [
-		'name'         => __('Renovations', 'local-tasker'),
-		'url'          => home_url('/services/home-renovations/'),
-		'redirect'     => 'true',
+		'name'          => __('Renovations', 'local-tasker'),
+		'url'           => home_url('/services/home-renovations/'),
+		'redirect'      => 'true',
 		'subcategories' => [],
 	],
 	'cabinetry' => [
-		'name'         => __('Cabinetry', 'local-tasker'),
-		'url'          => home_url('/services/custom-cabinetry/'),
-		'redirect'     => 'true',
+		'name'          => __('Cabinetry', 'local-tasker'),
+		'url'           => home_url('/services/custom-cabinetry/'),
+		'redirect'      => 'true',
 		'subcategories' => [],
 	],
 ];
 
+$hero_navigation = $product_navigation + $service_navigation;
+
 // Reformat subcategories map for passing to JavaScript
 $sub_cats_map = [];
-foreach ($static_navigation as $key => $item) {
+foreach ($hero_navigation as $key => $item) {
 	if (!empty($item['subcategories'])) {
 		foreach ($item['subcategories'] as $subcat) {
 			$sub_cats_map[$key][] = [
@@ -334,7 +344,7 @@ radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52,
 							aria-label="<?php echo esc_attr($search_placeholder_service); ?>"
 							data-placeholder="<?php echo esc_attr($search_placeholder_service); ?>">
 							<option value=""><?php echo esc_html($search_placeholder_service); ?></option>
-							<?php foreach ($static_navigation as $key => $item): ?>
+							<?php foreach ($hero_navigation as $key => $item): ?>
 								<option value="<?php echo esc_url($item['url']); ?>"
 									data-term-id="<?php echo esc_attr($key); ?>"
 									data-redirect="<?php echo esc_attr($item['redirect']); ?>">
