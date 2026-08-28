@@ -191,6 +191,62 @@
 		});
 	}
 
+	/**
+	 * Apply the server's per-option counts to the sidebar.
+	 *
+	 * The payload answers "how many products would this option return, given
+	 * everything else that is currently selected" — computed by
+	 * lt_shop_facet_counts() from the same query that built the grid. An option
+	 * worth nothing is dimmed and disabled so a dead-end combination such as
+	 * Accessories + Beige simply can't be reached.
+	 *
+	 * Two options are never locked: one the user already ticked (they must be able
+	 * to untick it) and the "All" reset (data-all-cats), which is the way back out.
+	 *
+	 * @param {Object.<string, Object.<string, number>>|undefined} facets
+	 */
+	function applyFacetCounts(facets) {
+		if (!facets || !form) return;
+
+		Object.keys(facets).forEach(function (key) {
+			var counts = facets[key];
+			if (!counts) return;
+
+			// product_cat is a radio group; the attribute facets are checkbox arrays.
+			var selector = key === 'product_cat' ? '[name="product_cat"]' : '[name="' + key + '[]"]';
+
+			form.querySelectorAll(selector).forEach(function (input) {
+				if (!Object.prototype.hasOwnProperty.call(counts, input.value)) return;
+
+				var n = counts[input.value];
+				var option = input.closest('[data-lt-filter-option]');
+				var countEl = option && option.querySelector('[data-lt-facet-count]');
+				if (countEl) countEl.textContent = n;
+
+				var lock = n === 0 && !input.checked && !input.hasAttribute('data-all-cats');
+				input.disabled = lock;
+				if (option) option.classList.toggle('is-disabled', lock);
+			});
+		});
+	}
+
+	/* ──────────────── category sub-category branches ──────────────── */
+
+	/** Open or close one parent category's sub-category list. */
+	function setBranchOpen(branch, open) {
+		if (!branch) return;
+		var btn = branch.querySelector('[data-lt-cat-toggle]');
+		var panel = btn && document.getElementById(btn.getAttribute('aria-controls'));
+		if (btn) btn.setAttribute('aria-expanded', String(open));
+		if (panel) panel.setAttribute('data-open', String(open));
+	}
+
+	/** Selecting a category reveals its children, so the next choice down is in view. */
+	function revealBranchFor(input) {
+		if (!input) return;
+		setBranchOpen(input.closest('[data-lt-cat-branch]'), true);
+	}
+
 	/* ───────────────────── AJAX fetch + render ───────────────────── */
 
 	function fetchProducts(append) {
@@ -256,6 +312,11 @@
 				// filter set as the grid, so they stay in step with the results.
 				updateAvailabilityCounts(d.availability);
 
+				// Per-option counts + dead-end locking, from the same query.
+				// Appending a page doesn't change the filter set, so leave the
+				// sidebar untouched on Load More.
+				if (!append) applyFacetCounts(d.facets);
+
 				// Re-init WooCommerce AJAX add-to-cart on new nodes.
 				if (window.jQuery && window.jQuery.fn.wc_setup_ajax_add_to_cart) {
 					window.jQuery(document.body).trigger('wc_fragment_refresh');
@@ -287,8 +348,17 @@
 		// Category radios + attribute facet checkboxes.
 		form.querySelectorAll('.lt-filter-checkbox').forEach(function (cb) {
 			cb.addEventListener('change', function () {
+				if (cb.name === 'product_cat') revealBranchFor(cb);
 				refreshClearVisibility();
 				if (AJAX) fetchProducts(false); else submitFallback();
+			});
+		});
+
+		// Sub-category disclosure arrows. type="button" keeps them out of submit,
+		// and they sit outside the <label> so toggling never selects the category.
+		form.querySelectorAll('[data-lt-cat-toggle]').forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				setBranchOpen(btn.closest('[data-lt-cat-branch]'), btn.getAttribute('aria-expanded') !== 'true');
 			});
 		});
 

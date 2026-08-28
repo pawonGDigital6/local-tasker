@@ -360,7 +360,7 @@ function lt_shop_archive_scripts() {
 			'lt-shop-archive',
 			get_template_directory_uri() . '/js/shop-archive.js',
 			[],
-			'1.2.0',
+			'1.3.0',
 			[ 'strategy' => 'defer', 'in_footer' => true ]
 		);
 
@@ -655,11 +655,14 @@ function lt_shop_orderby_args( string $orderby ): array {
  * Build a products WP_Query from a filter state — used by the AJAX endpoint so
  * results match the server-rendered archive exactly.
  *
- * @param array $f        Filter state from lt_shop_get_filters().
- * @param int   $per_page Products per page.
+ * @param array $f         Filter state from lt_shop_get_filters().
+ * @param int   $per_page  Products per page.
+ * @param array $overrides WP_Query args merged in last — used by the counting
+ *                         helpers to fetch bare IDs instead of full post rows.
+ *                         Never used to change what matches, only how it is read.
  * @return WP_Query
  */
-function lt_shop_build_query( array $f, int $per_page ): WP_Query {
+function lt_shop_build_query( array $f, int $per_page, array $overrides = [] ): WP_Query {
 	$args = array_merge(
 		[
 			'post_type'           => 'product',
@@ -736,7 +739,121 @@ function lt_shop_build_query( array $f, int $per_page ): WP_Query {
 		$args['meta_query'][] = [ 'key' => '_price', 'value' => $f['max_price'], 'compare' => '<=', 'type' => 'DECIMAL(12,2)' ];
 	}
 
+	if ( ! empty( $overrides ) ) {
+		$args = array_merge( $args, $overrides );
+	}
+
 	return new WP_Query( apply_filters( 'lt_shop_ajax_query_args', $args, $f ) );
+}
+
+/**
+ * Count how many products each filter option would match under the *current*
+ * selection, so the sidebar can grey out combinations that lead nowhere
+ * (e.g. Accessories + Beige).
+ *
+ * Each facet is counted with its own selection removed but every other facet
+ * left in place. That is what makes a facet multi-selectable: ticking "Beige"
+ * must not grey out "Brown", because both are alternatives within the same
+ * group, while it may well grey out a Thickness that no beige product has.
+ *
+ * Counts come from the very same lt_shop_build_query() that produces the grid,
+ * so an option can never report a number the results would contradict.
+ *
+ * @param array $f Filter state from lt_shop_get_filters().
+ * @return array<string,array<string,int>> facet request key => [ term slug => count ].
+ *                                         product_cat also carries '' => grand total,
+ *                                         which is the "All Flooring" option's value.
+ */
+function lt_shop_facet_counts( array $f ): array {
+	global $wpdb;
+
+	// Facet request key => the taxonomy behind it. Adding a facet to the sidebar
+	// only needs its pair listed here to become availability-aware.
+	$facets = [
+		'product_cat'      => 'product_cat',
+		'filter_colour'    => 'pa_colour',
+		'filter_thickness' => 'pa_thickness',
+		'filter_grade'     => 'pa_grade',
+		'filter_veneer'    => 'pa_veneer',
+	];
+
+	$counts = [];
+
+	foreach ( $facets as $key => $taxonomy ) {
+		$counts[ $key ] = [];
+
+		if ( ! taxonomy_exists( $taxonomy ) ) {
+			continue;
+		}
+
+		$terms = get_terms( [ 'taxonomy' => $taxonomy, 'hide_empty' => false ] );
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			continue;
+		}
+
+		// Neutralise this facet only.
+		$state          = $f;
+		$state[ $key ]  = [];
+		$state['paged'] = 1;
+
+		$ids = lt_shop_build_query( $state, -1, [
+			'fields'                 => 'ids',
+			'posts_per_page'         => -1,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		] )->posts;
+		$ids = array_map( 'absint', (array) $ids );
+
+		if ( 'product_cat' === $key ) {
+			$counts[ $key ][''] = count( $ids ); // The "All Flooring" radio.
+		}
+
+		if ( empty( $ids ) ) {
+			foreach ( $terms as $term ) {
+				$counts[ $key ][ $term->slug ] = 0;
+			}
+			continue;
+		}
+
+		// One roundtrip per facet for the term→product pairs. Object IDs (not raw
+		// per-term totals) because a hierarchical facet has to roll its children up
+		// without double-counting products filed under both parent and child.
+		$placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+		$pairs        = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT tt.term_id AS term_id, tr.object_id AS object_id
+				   FROM {$wpdb->term_relationships} tr
+				   INNER JOIN {$wpdb->term_taxonomy} tt ON tt.term_taxonomy_id = tr.term_taxonomy_id
+				  WHERE tt.taxonomy = %s AND tr.object_id IN ($placeholders)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				array_merge( [ $taxonomy ], $ids )
+			)
+		);
+
+		$sets = [];
+		foreach ( (array) $pairs as $pair ) {
+			$sets[ (int) $pair->term_id ][ (int) $pair->object_id ] = true;
+		}
+
+		$hierarchical = is_taxonomy_hierarchical( $taxonomy );
+		foreach ( $terms as $term ) {
+			$bucket = $sets[ $term->term_id ] ?? [];
+
+			// A product sitting only in "Trims" still counts towards "Accessories",
+			// because selecting a parent matches its children (include_children).
+			if ( $hierarchical ) {
+				foreach ( get_term_children( $term->term_id, $taxonomy ) as $child_id ) {
+					if ( ! empty( $sets[ (int) $child_id ] ) ) {
+						$bucket += $sets[ (int) $child_id ];
+					}
+				}
+			}
+
+			$counts[ $key ][ $term->slug ] = count( $bucket );
+		}
+	}
+
+	return $counts;
 }
 
 /**
@@ -812,6 +929,8 @@ function lt_ajax_shop_load(): void {
 		'has_more'     => $f['paged'] < (int) $query->max_num_pages,
 		// Recomputed per request so the sidebar counts track the active filters.
 		'availability' => lt_shop_availability_counts( $f ),
+		// Per-option counts so the sidebar can dim/lock combinations with no results.
+		'facets'       => lt_shop_facet_counts( $f ),
 	] );
 }
 add_action( 'wp_ajax_lt_shop_load', 'lt_ajax_shop_load' );

@@ -10,6 +10,63 @@
 defined('ABSPATH') || exit;
 
 /**
+ * Render one selectable filter option — the checkbox/radio, its label and its
+ * live result count.
+ *
+ * Every option in the sidebar goes through here so the "no results down this
+ * path" treatment is identical everywhere: an option that would return nothing
+ * under the current selection is dimmed and made unclickable via the
+ * `is-disabled` class (see assets/css/lt-storefront.css) *and* given the real
+ * disabled attribute, so neither a mouse nor the keyboard can reach a dead end.
+ *
+ * An option the user has already chosen is never locked, even at zero — they
+ * have to be able to undo it. Neither is the "All" reset, which is the way back.
+ *
+ * @param string $input_name Request key: 'product_cat' or e.g. 'filter_colour[]'.
+ * @param string $value      Term slug ('' for the All option).
+ * @param string $text       Visible label.
+ * @param int    $count      Products this option would match right now.
+ * @param bool   $checked    Currently selected.
+ * @param string $type       'radio' or 'checkbox'.
+ * @param bool   $lockable   False for the All option, which must always stay live.
+ * @param array  $extra      Extra attributes for the input, e.g. ['data-all-cats' => ''].
+ * @return void
+ */
+function lt_render_filter_option(string $input_name, string $value, string $text, int $count, bool $checked, string $type = 'checkbox', bool $lockable = true, array $extra = []): void
+{
+	$is_disabled = $lockable && 0 === $count && !$checked;
+	$shape       = 'radio' === $type ? 'rounded-full' : 'rounded';
+
+	$attrs = '';
+	foreach ($extra as $attr_name => $attr_value) {
+		$attrs .= ' ' . esc_attr($attr_name) . ($attr_value === '' ? '' : '="' . esc_attr($attr_value) . '"');
+	}
+	?>
+	<label data-lt-filter-option
+		class="flex items-center justify-between gap-2 cursor-pointer group/label flex-1 min-w-0<?php echo $is_disabled ? ' is-disabled' : ''; ?>">
+		<span class="flex items-center gap-2 min-w-0">
+			<input type="<?php echo esc_attr($type); ?>" name="<?php echo esc_attr($input_name); ?>"
+				value="<?php echo esc_attr($value); ?>" class="lt-filter-checkbox sr-only peer"
+				<?php checked($checked); ?> <?php disabled($is_disabled); ?><?php echo $attrs; // phpcs:ignore WordPress.Security.EscapingOutput -- escaped above. ?>>
+			<span
+				class="lt-filter-checkbox__ui w-4 h-4 <?php echo esc_attr($shape); ?> border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
+				aria-hidden="true">
+				<?php if ('radio' === $type) : ?>
+					<span class="hidden peer-checked:block w-1.5 h-1.5 rounded-full bg-lt-white"></span>
+				<?php endif; ?>
+			</span>
+			<span
+				class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
+				<?php echo esc_html($text); ?>
+			</span>
+		</span>
+		<span class="text-[11px] text-[#6b7280] shrink-0"
+			data-lt-facet-count><?php echo esc_html((string) $count); ?></span>
+	</label>
+	<?php
+}
+
+/**
  * Render one collapsible attribute facet in the filters sidebar.
  *
  * Colour / Finish, Thickness, Grade and Veneer are identical in markup and
@@ -22,10 +79,11 @@ defined('ABSPATH') || exit;
  * @param string    $input_name   Request key, e.g. 'filter_grade'.
  * @param WP_Term[] $terms        Terms to list.
  * @param string[]  $active       Currently selected term slugs.
+ * @param array     $counts       slug => live count from lt_shop_facet_counts().
  * @param bool      $with_divider Print the hairline rule after the group.
  * @return void
  */
-function lt_render_filter_facet(string $key, string $label, string $input_name, array $terms, array $active, bool $with_divider = true): void
+function lt_render_filter_facet(string $key, string $label, string $input_name, array $terms, array $active, array $counts = [], bool $with_divider = true): void
 {
 	if (empty($terms)) {
 		return;
@@ -44,26 +102,12 @@ function lt_render_filter_facet(string $key, string $label, string $input_name, 
 		</button>
 		<ul id="filter-<?php echo esc_attr($key); ?>-body" class="mt-3 flex flex-col gap-2 list-none p-0 m-0">
 			<?php foreach ($terms as $term):
-				$is_checked = in_array($term->slug, $active, true);
+				// Fall back to the catalogue-wide count only if this facet somehow has
+				// no live figure — the option still renders, it just isn't lockable.
+				$term_count = array_key_exists($term->slug, $counts) ? (int) $counts[$term->slug] : (int) $term->count;
 				?>
-				<li>
-					<label class="flex items-center justify-between gap-2 cursor-pointer group/label">
-						<span class="flex items-center gap-2">
-							<input type="checkbox" name="<?php echo esc_attr($input_name); ?>[]"
-								value="<?php echo esc_attr($term->slug); ?>" class="lt-filter-checkbox sr-only peer"
-								<?php checked($is_checked); ?>>
-							<span
-								class="lt-filter-checkbox__ui w-4 h-4 rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
-								aria-hidden="true">
-							</span>
-							<span
-								class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
-								<?php echo esc_html($term->name); ?>
-							</span>
-						</span>
-						<span
-							class="text-[11px] text-[#6b7280] shrink-0"><?php echo esc_html($term->count); ?></span>
-					</label>
+				<li class="flex items-center">
+					<?php lt_render_filter_option($input_name . '[]', $term->slug, $term->name, $term_count, in_array($term->slug, $active, true), 'checkbox'); ?>
 				</li>
 			<?php endforeach; ?>
 		</ul>
@@ -137,27 +181,67 @@ $categories = get_terms([
 	'order' => 'DESC',
 ]);
 
-// A sub-category can still be the active term (landing on a sub-category archive
-// URL, or an existing ?product_cat=<child> link). Resolve it up to its top-level
-// ancestor so the matching parent radio is pre-selected instead of nothing.
-// $active_cat itself is left untouched — the query/availability counts must keep
-// using the term actually being filtered on.
+// Sub-categories, read straight from the taxonomy — nothing about the tree is
+// hardcoded, so a new child category appears in the sidebar as soon as it has
+// products. Each parent keeps its own children with it, ready to render as a
+// collapsible branch below the parent's radio.
+$lt_cat_tree = [];
+if (!is_wp_error($categories)) {
+	foreach ($categories as $lt_parent_cat) {
+		$lt_children = get_terms([
+			'taxonomy' => 'product_cat',
+			'parent' => $lt_parent_cat->term_id,
+			'hide_empty' => true,
+			'exclude' => $excluded_cat_ids,
+			'orderby' => 'name',
+			'order' => 'ASC',
+		]);
+		$lt_cat_tree[] = [
+			'term' => $lt_parent_cat,
+			'children' => is_wp_error($lt_children) ? [] : $lt_children,
+		];
+	}
+}
+
+// Which radio is checked, and which branch starts open.
+//
+// The active term can be a sub-category (a /product-category/<child>/ archive,
+// or an existing ?product_cat=<child> link). Now that children have their own
+// radios, the child itself is the one checked, and its top-level ancestor is the
+// branch we open so the selection is visible without the user hunting for it.
+// $active_cat is left untouched — the query and the counts must keep using the
+// term actually being filtered on.
 $active_cat_radio = $active_cat;
+$active_cat_parent = $active_cat;
 if ($active_cat !== '') {
 	$active_term = get_term_by('slug', $active_cat, 'product_cat');
 	if ($active_term instanceof WP_Term && $active_term->parent) {
 		$ancestors = get_ancestors($active_term->term_id, 'product_cat', 'taxonomy');
 		$top_term = !empty($ancestors) ? get_term((int) end($ancestors), 'product_cat') : null; // Nearest-first, so the last is top-level.
 		if ($top_term instanceof WP_Term) {
-			$active_cat_radio = $top_term->slug;
+			$active_cat_parent = $top_term->slug;
 		}
 	}
 }
 
 // An excluded category has no radio to check, so fall back to "All Flooring"
 // rather than leaving the whole group visually unselected.
-if (in_array($active_cat_radio, $excluded_cat_slugs, true)) {
+if (in_array($active_cat_parent, $excluded_cat_slugs, true)) {
 	$active_cat_radio = '';
+	$active_cat_parent = '';
+}
+
+// The active term may still have no radio of its own (a child hidden by
+// hide_empty, say). Check the nearest rendered ancestor instead of nothing.
+$lt_rendered_cat_slugs = [];
+foreach ($lt_cat_tree as $lt_branch) {
+	$lt_rendered_cat_slugs[] = $lt_branch['term']->slug;
+	foreach ($lt_branch['children'] as $lt_child) {
+		$lt_rendered_cat_slugs[] = $lt_child->slug;
+	}
+}
+if ($active_cat_radio !== '' && !in_array($active_cat_radio, $lt_rendered_cat_slugs, true)) {
+	$active_cat_radio = in_array($active_cat_parent, $lt_rendered_cat_slugs, true) ? $active_cat_parent : '';
 }
 
 // Fetch pa_colour attribute terms (display attribute).
@@ -204,9 +288,17 @@ $lt_avail_counts = lt_shop_availability_counts($lt_avail_state);
 $count_in_stock = $lt_avail_counts['in_stock'];
 $count_out_of_stock = $lt_avail_counts['out_of_stock'];
 
-// Total published products (used for "All Flooring" count label).
-$total_products_obj = wp_count_posts('product');
-$total_products_count = isset($total_products_obj->publish) ? (int) $total_products_obj->publish : 0;
+// ── Dynamic per-option counts ────────────────────────────────────────────────
+// Same idea, one level deeper: how many products each individual category /
+// colour / thickness / grade / veneer option would return under everything else
+// currently selected. Zero means that combination is a dead end, so the option
+// renders dimmed and unclickable instead of silently returning an empty grid.
+// shop-archive.js refreshes these from the AJAX payload on every filter change.
+$lt_facet_counts = lt_shop_facet_counts($lt_avail_state);
+
+// "All Flooring" — the total under everything else selected, not a static
+// catalogue count, so it agrees with the category options listed beneath it.
+$total_products_count = $lt_facet_counts['product_cat'][''] ?? 0;
 
 // "Showing X-Y of Z" — initial values from the archive query. The Load-More /
 // filter JS keeps these live afterwards (see js/shop-archive.js).
@@ -375,50 +467,54 @@ $lt_result_range = $lt_result_shown > 0 ? '1-' . $lt_result_shown : '0';
 					</svg>
 				</button>
 				<ul id="filter-category-body" class="mt-3 flex flex-col gap-2 list-none p-0 m-0">
-					<!-- All option -->
-					<li>
-						<label class="flex items-center justify-between gap-2 cursor-pointer group/label">
-							<span class="flex items-center gap-2">
-								<input type="radio" name="product_cat" value="" class="lt-filter-checkbox sr-only peer"
-									<?php checked($active_cat_radio === ''); ?> data-all-cats>
-								<span
-									class="lt-filter-checkbox__ui w-4 h-4 rounded-full border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
-									aria-hidden="true">
-									<span class="hidden peer-checked:block w-1.5 h-1.5 rounded-full bg-lt-white"></span>
-								</span>
-								<span
-									class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
-									<?php esc_html_e('All Flooring', 'local-tasker'); ?>
-								</span>
-							</span>
-							<span
-								class="text-[11px] text-[#6b7280] shrink-0"><?php echo esc_html($total_products_count); ?></span>
-						</label>
+					<!-- All option — the reset, so never lockable -->
+					<li class="flex items-center">
+						<?php lt_render_filter_option('product_cat', '', __('All Flooring', 'local-tasker'), (int) $total_products_count, $active_cat_radio === '', 'radio', false, ['data-all-cats' => '']); ?>
 					</li>
-					<?php if (!is_wp_error($categories)):
-						foreach ($categories as $cat):
-							$is_checked = $active_cat_radio === $cat->slug;
-							?>
-							<li>
-								<label class="flex items-center justify-between gap-2 cursor-pointer group/label">
-									<span class="flex items-center gap-2">
-										<input type="radio" name="product_cat" value="<?php echo esc_attr($cat->slug); ?>"
-											class="lt-filter-checkbox sr-only peer" <?php checked($is_checked); ?>>
-										<span
-											class="lt-filter-checkbox__ui w-4 h-4 rounded-full border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
-											aria-hidden="true">
-											<span class="hidden peer-checked:block w-1.5 h-1.5 rounded-full bg-lt-white"></span>
-										</span>
-										<span
-											class="text-[13.5px] text-[#374151] peer-checked:text-lt-text-primary group-hover/label:text-lt-brand transition-colors duration-150">
-											<?php echo esc_html($cat->name); ?>
-										</span>
-									</span>
-									<span
-										class="text-[11px] text-[#6b7280] shrink-0"><?php echo esc_html($cat->count); ?></span>
-								</label>
-							</li>
-						<?php endforeach; endif; ?>
+					<?php
+					$lt_cat_counts = $lt_facet_counts['product_cat'] ?? [];
+					foreach ($lt_cat_tree as $lt_branch):
+						$cat = $lt_branch['term'];
+						$lt_kids = $lt_branch['children'];
+						$lt_cat_count = array_key_exists($cat->slug, $lt_cat_counts) ? (int) $lt_cat_counts[$cat->slug] : (int) $cat->count;
+						// A branch starts open when the selection lives inside it, so the
+						// active sub-category is visible on load rather than hidden away.
+						$lt_branch_open = $active_cat_parent === $cat->slug;
+						$lt_kids_id = 'filter-cat-' . $cat->slug . '-children';
+						?>
+						<li<?php echo $lt_kids ? ' data-lt-cat-branch' : ''; ?>>
+							<div class="flex items-center gap-1">
+								<?php lt_render_filter_option('product_cat', $cat->slug, $cat->name, $lt_cat_count, $active_cat_radio === $cat->slug, 'radio'); ?>
+								<?php if ($lt_kids): ?>
+									<button type="button" data-lt-cat-toggle
+										class="lt-cat-toggle shrink-0 flex items-center justify-center w-5 h-5 -mr-1 rounded text-lt-text-muted hover:text-lt-brand transition-colors duration-150"
+										aria-expanded="<?php echo $lt_branch_open ? 'true' : 'false'; ?>"
+										aria-controls="<?php echo esc_attr($lt_kids_id); ?>"
+										aria-label="<?php echo esc_attr(sprintf(__('Show %s sub-categories', 'local-tasker'), $cat->name)); ?>">
+										<svg class="w-3.5 h-3.5 transition-transform duration-200" viewBox="0 0 16 16" fill="none"
+											xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+											<path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+												stroke-linejoin="round" />
+										</svg>
+									</button>
+								<?php endif; ?>
+							</div>
+							<?php if ($lt_kids): ?>
+								<div id="<?php echo esc_attr($lt_kids_id); ?>" class="lt-cat-children"
+									data-open="<?php echo $lt_branch_open ? 'true' : 'false'; ?>">
+									<ul class="flex flex-col gap-2 list-none p-0 m-0 mt-2 pl-6">
+										<?php foreach ($lt_kids as $lt_kid):
+											$lt_kid_count = array_key_exists($lt_kid->slug, $lt_cat_counts) ? (int) $lt_cat_counts[$lt_kid->slug] : (int) $lt_kid->count;
+											?>
+											<li class="flex items-center">
+												<?php lt_render_filter_option('product_cat', $lt_kid->slug, $lt_kid->name, $lt_kid_count, $active_cat_radio === $lt_kid->slug, 'radio'); ?>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+							<?php endif; ?>
+						</li>
+					<?php endforeach; ?>
 				</ul>
 			</div><!-- /.lt-filter-group category -->
 
@@ -487,7 +583,7 @@ $lt_result_range = $lt_result_shown > 0 ? '1-' . $lt_result_shown : '0';
 			}));
 			foreach ($lt_visible as $lt_i => $lt_facet) {
 				list($lt_key, $lt_label, $lt_name, $lt_terms, $lt_active) = $lt_facet;
-				lt_render_filter_facet($lt_key, $lt_label, $lt_name, $lt_terms, $lt_active, $lt_i < count($lt_visible) - 1);
+				lt_render_filter_facet($lt_key, $lt_label, $lt_name, $lt_terms, $lt_active, $lt_facet_counts[$lt_name] ?? [], $lt_i < count($lt_visible) - 1);
 			}
 			?>
 

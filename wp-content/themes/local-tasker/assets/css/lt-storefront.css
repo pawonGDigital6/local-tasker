@@ -608,3 +608,45 @@
 		gap: 28px;
 	}
 } */
+/* ── Filter option: unavailable under the current selection ──────────────────
+   lt_shop_facet_counts() reports 0 products down this path, so the option is
+   dimmed and taken out of reach. The input also carries the real `disabled`
+   attribute, so this is a visual echo of a state the keyboard already respects —
+   never the only thing stopping a click. The option the user has already picked
+   is never given this class, so a filter can always be undone. */
+.lt-shop-filters [data-lt-filter-option].is-disabled {
+	pointer-events: none;
+	opacity: 0.4;
+	cursor: default;
+}
+
+/* ── Category sub-category branches ──────────────────────────────────────────
+   Collapsible children under each parent category. max-height animates the
+   slide; visibility is switched only once the slide has finished closing, which
+   both keeps the transition visible and takes the collapsed links out of the
+   tab order and the accessibility tree. */
+.lt-cat-children {
+	overflow: hidden;
+	max-height: 0;
+	visibility: hidden;
+	transition: max-height 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.lt-cat-children[data-open="true"] {
+	max-height: 40rem;
+	visibility: visible;
+	transition: max-height 0.25s ease, visibility 0s;
+}
+
+/* Arrow points down when closed, flips up once the branch is open. */
+.lt-cat-toggle[aria-expanded="true"] svg {
+	transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.lt-cat-children,
+	.lt-cat-toggle svg {
+		transition: none;
+	}
+}
