@@ -18,7 +18,8 @@ $is_variable = $product->is_type('variable');
 
 $is_on_sale = $product->is_on_sale();
 $has_price = '' !== $product->get_price();
-$regular_price_ex = (float) $product->get_regular_price();
+// A variable product has no regular price of its own — its variations carry it.
+$regular_price_ex = (float) ($is_variable ? $product->get_variation_regular_price('min') : $product->get_regular_price());
 $current_price_ex = (float) $product->get_price();
 
 // _price is already the $/sqm figure — no conversion needed to show it.
@@ -89,8 +90,10 @@ if ($is_variable) {
 		$variations_json[] = array(
 			'variation_id' => $variation_id,
 			'attributes' => $variation->get_variation_attributes(false),
-			'price_ex' => (float) $variation->get_price(),
-			'regular_price_ex' => (float) $variation->get_regular_price(),
+			// product-single.js reads these as BOX prices (it divides by the carton to get
+			// $/sqm), but _price is stored per sqm — so hand it the box figure.
+			'price_ex' => (float) $variation->get_price() * ($carton_sqm > 0 ? $carton_sqm : 1),
+			'regular_price_ex' => (float) $variation->get_regular_price() * ($carton_sqm > 0 ? $carton_sqm : 1),
 			'in_stock' => $variation->is_in_stock(),
 		);
 	}
@@ -221,10 +224,11 @@ if ($is_variable) {
 	<!-- Variation selector (colour / thickness) -->
 	<?php if ($is_variable && $variation_groups): ?>
 		<div class="lt-variation-selector mb-5" id="lt-variation-selector">
+			<style>.lt-variation-option--radio input:focus-visible + span{outline:2px solid var(--color-lt-brand,#0a65fc);outline-offset:2px}</style>
 			<?php foreach ($variation_groups as $group): ?>
-				<div class="lt-variation-group mb-4" data-attribute="<?php echo esc_attr($group['taxonomy']); ?>">
+				<div class="lt-variation-group mb-4" data-attribute="<?php echo esc_attr($group['taxonomy']); ?>"<?php if ($group['is_colour']): ?> role="radiogroup" aria-required="true" aria-labelledby="lt-variation-label-<?php echo esc_attr($group['taxonomy']); ?>"<?php endif; ?>>
 					<div class="flex items-center justify-between mb-2">
-						<span
+						<span id="lt-variation-label-<?php echo esc_attr($group['taxonomy']); ?>"
 							class="text-caption-xs font-semibold uppercase tracking-[0.07em] text-lt-text-muted"><?php echo esc_html($group['label']); ?></span>
 						<span class="lt-variation-group__selected text-caption-sm text-lt-text-primary font-medium"></span>
 					</div>
@@ -233,19 +237,20 @@ if ($is_variable) {
 							$is_default = isset($default_attrs[$group['taxonomy']]) && $default_attrs[$group['taxonomy']] === $option['slug'];
 							?>
 							<?php if ($group['is_colour']): ?>
-								<?php
-								$swatch_style = $option['image']
-									? 'background-image:url(' . esc_url($option['image']) . ');background-size:cover;background-position:center;'
-									: 'background-color:' . esc_attr($option['hex']) . ';';
-								?>
-								<button type="button"
-									class="lt-variation-option lt-variation-option--swatch w-9 h-9 rounded-full border-2 overflow-hidden transition-all duration-150 <?php echo $is_default ? 'border-lt-brand' : 'border-transparent'; ?>"
-									style="<?php echo esc_attr($swatch_style); ?>"
+								<!-- Radio-style option labelled with the colour name (client request) -->
+								<label
+									class="lt-variation-option lt-variation-option--pill lt-variation-option--radio inline-flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer select-none text-caption-sm font-semibold transition-colors duration-150 <?php echo $is_default ? 'border-lt-brand text-lt-brand bg-lt-brand/5' : 'border-[#E9EAEC] text-lt-text-primary'; ?>"
 									data-attribute="<?php echo esc_attr($group['taxonomy']); ?>"
 									data-value="<?php echo esc_attr($option['slug']); ?>"
-									data-name="<?php echo esc_attr($option['name']); ?>"
-									aria-label="<?php echo esc_attr($option['name']); ?>"
-									title="<?php echo esc_attr($option['name']); ?>"></button>
+									data-name="<?php echo esc_attr($option['name']); ?>">
+									<input type="radio" class="sr-only peer"
+										name="lt_variation_<?php echo esc_attr($group['taxonomy']); ?>"
+										value="<?php echo esc_attr($option['slug']); ?>" <?php checked($is_default); ?>>
+									<span class="w-4 h-4 rounded-full border border-[#b3b3b3] flex items-center justify-center shrink-0 bg-lt-white peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150" aria-hidden="true">
+										<span class="w-1.5 h-1.5 rounded-full bg-lt-white"></span>
+									</span>
+									<?php echo esc_html($option['name']); ?>
+								</label>
 							<?php else: ?>
 								<button type="button"
 									class="lt-variation-option lt-variation-option--pill px-3 py-2 rounded-lg border text-caption-sm font-semibold transition-colors duration-150 <?php echo $is_default ? 'border-lt-brand text-lt-brand bg-lt-brand/5' : 'border-[#E9EAEC] text-lt-text-primary'; ?>"

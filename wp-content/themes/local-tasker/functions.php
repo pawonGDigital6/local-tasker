@@ -397,6 +397,19 @@ function filter_search_by_woocommerce_products($query)
 	// Check if it is the front-end search page and the main database query
 	if (!is_admin() && $query->is_main_query() && $query->is_search()) {
 		$query->set('post_type', 'product');
+
+		// Search only ever returns products now, so it needs the product-grid
+		// page size rather than the blog one from Settings > Reading. That
+		// option is 3 on this site, which left a search for "Blackbutt" showing
+		// only the first three of its eleven matches. Read from the same filter
+		// the shop loop uses so the two stay in step, and only when nothing
+		// upstream has already asked for a specific page size.
+		if (!$query->get('posts_per_page') && function_exists('wc_get_default_products_per_row')) {
+			$query->set('posts_per_page', (int) apply_filters(
+				'loop_shop_per_page',
+				wc_get_default_products_per_row() * wc_get_default_product_rows_per_page()
+			));
+		}
 	}
 	return $query;
 }

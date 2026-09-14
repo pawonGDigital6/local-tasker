@@ -39,7 +39,9 @@ acf_add_local_field_group( [
 			'instructions'     => 'Square metres covered per box/carton.',
 			'append'           => 'sqm',
 			'min'              => 0,
-			'step'             => 0.01,
+			// Coverage is supplied to 3 decimals (e.g. 2.085 sqm); a 0.01 step made the
+			// admin form round that on every save, which moved the box price.
+			'step'             => 0.001,
 			'wrapper'          => [ 'width' => '50' ],
 			'conditional_logic' => [
 				[ [ 'field' => 'field_lt_sold_by_box', 'operator' => '==', 'value' => '1' ] ],

@@ -56,7 +56,8 @@ if ( empty( $related_products ) ) {
 					$has_price   = '' !== $related->get_price();
 					// _price is already the $/sqm figure — no conversion needed to show it.
 					$ppsm_ex     = $has_price ? (float) $related->get_price() : 0;
-					$reg_ppsm_ex = $has_price ? (float) $related->get_regular_price() : 0;
+					// A variable product has no regular price of its own — its variations carry it.
+					$reg_ppsm_ex = $has_price ? (float) ( $related->is_type( 'variable' ) ? $related->get_variation_regular_price( 'min' ) : $related->get_regular_price() ) : 0;
 					$ppsm_inc    = $ppsm_ex * 1.10;
 					$on_sale     = $related->is_on_sale();
 				?>

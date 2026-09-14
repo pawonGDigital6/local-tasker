@@ -16,7 +16,8 @@ $has_price   = '' !== $product->get_price();
 
 // _price is already the $/sqm figure — no conversion needed to show it.
 $price_ex         = $has_price ? (float) $product->get_price() : 0;
-$regular_price_ex = $has_price ? (float) $product->get_regular_price() : 0;
+// A variable product has no regular price of its own — its variations carry it.
+$regular_price_ex = $has_price ? (float) ( $is_variable ? $product->get_variation_regular_price( 'min' ) : $product->get_regular_price() ) : 0;
 $price_inc        = $price_ex * 1.10;
 ?>
 <li
