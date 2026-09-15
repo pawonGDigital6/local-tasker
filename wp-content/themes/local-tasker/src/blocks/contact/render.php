@@ -118,7 +118,7 @@ $cm_cf7_shortcode   = get_field('cm_cf7_shortcode', 'options');
 											<?php if ($cm_social_icon): ?>
 												<?php echo wp_get_attachment_image($cm_social_icon, $size, false, [
 													'class' => 'size-5 md:size-6 w-auto object-contain',
-													'alt'   => '',
+													'alt'   => 'Social Icons',
 												]); ?>
 											<?php endif; ?>
 										</a>

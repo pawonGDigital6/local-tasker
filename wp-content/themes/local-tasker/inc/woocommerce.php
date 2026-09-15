@@ -78,6 +78,36 @@ add_action( 'wp_enqueue_scripts', 'local_tasker_woocommerce_scripts' );
 add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
 
 /**
+ * Theme fallback image for products with no featured image.
+ *
+ * @return string Image URL.
+ */
+function lt_product_placeholder_src() {
+	return get_template_directory_uri() . '/images/placeholder/product-image.webp';
+}
+
+/**
+ * Placeholder <img> for a product with no featured image.
+ *
+ * The filter is added and removed around this single call on purpose: the
+ * theme placeholder must only ever stand in for a missing FEATURED image.
+ * Variation images (colour swatches) and gallery images keep WooCommerce's
+ * own fallback behaviour. Reusing wc_placeholder_img() keeps the markup —
+ * classes, width/height — identical to what the loop already rendered.
+ *
+ * @param string $size Image size.
+ * @param array  $attr Image attributes.
+ * @return string Image HTML.
+ */
+function lt_product_featured_placeholder_img( $size = 'woocommerce_single', $attr = array() ) {
+	add_filter( 'woocommerce_placeholder_img_src', 'lt_product_placeholder_src' );
+	$html = wc_placeholder_img( $size, $attr );
+	remove_filter( 'woocommerce_placeholder_img_src', 'lt_product_placeholder_src' );
+
+	return $html;
+}
+
+/**
  * Add 'woocommerce-active' class to the body tag.
  *
  * @param  array $classes CSS classes applied to the body tag.

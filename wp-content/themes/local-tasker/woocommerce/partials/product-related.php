@@ -65,7 +65,11 @@ if ( empty( $related_products ) ) {
 						<article <?php echo wc_product_class( 'lt-product-card group relative flex flex-col bg-lt-white rounded-2xl overflow-hidden transition-shadow duration-300 hover:shadow-xl h-full', $related ); ?>>
 
 							<a href="<?php echo esc_url( get_permalink( $rid ) ); ?>" class="relative block overflow-hidden bg-lt-white-lilac" style="aspect-ratio:4/3" tabindex="-1" aria-hidden="true">
-								<?php echo get_the_post_thumbnail( $rid, 'woocommerce_single', [ 'class' => 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-105' ] ); ?>
+								<?php if ( has_post_thumbnail( $rid ) ) : ?>
+									<?php echo get_the_post_thumbnail( $rid, 'woocommerce_single', [ 'class' => 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-105' ] ); ?>
+								<?php else : ?>
+									<?php echo lt_product_featured_placeholder_img( 'woocommerce_single', [ 'class' => 'w-full h-full object-cover' ] ); ?>
+								<?php endif; ?>
 								<?php if ( $on_sale ) : ?>
 									<span class="absolute top-3 left-3 bg-[#E02020] text-lt-white text-caption-xs font-bold uppercase tracking-[0.08em] px-2 py-[5px] rounded"><?php esc_html_e( 'SALE', 'local-tasker' ); ?></span>
 								<?php endif; ?>

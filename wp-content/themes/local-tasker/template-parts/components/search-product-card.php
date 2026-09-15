@@ -15,7 +15,12 @@ if (!defined('ABSPATH')) {
 $post_id = get_the_ID();
 $post_url = get_permalink();
 $post_title = get_the_title();
+// Search is locked to products (see functions.php), so a missing featured
+// image falls back to the theme product placeholder.
 $post_thumb = get_the_post_thumbnail_url($post_id, 'large');
+if (!$post_thumb && function_exists('lt_product_placeholder_src')) {
+	$post_thumb = lt_product_placeholder_src();
+}
 ?>
 <div class="blog-card flex flex-col justify-between">
 	<div class="blog-card__up">

@@ -35,7 +35,7 @@ $price_inc        = $price_ex * 1.10;
 		<?php if ( has_post_thumbnail() ) : ?>
 			<?php the_post_thumbnail( 'woocommerce_single', [ 'class' => 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-105' ] ); ?>
 		<?php else : ?>
-			<?php echo wc_placeholder_img( 'woocommerce_single', [ 'class' => 'w-full h-full object-cover' ] ); ?>
+			<?php echo lt_product_featured_placeholder_img( 'woocommerce_single', [ 'class' => 'w-full h-full object-cover' ] ); ?>
 		<?php endif; ?>
 
 		<?php if ( $is_on_sale ) : ?>
