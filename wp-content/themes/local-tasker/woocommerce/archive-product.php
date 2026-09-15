@@ -67,7 +67,22 @@ $lt_has_any_active_filter = $active_pill !== 'all'
 	|| !empty($_GET['filter_colour'])
 	|| !empty($_GET['filter_thickness']);
 
-$lt_clear_all_url = remove_query_arg(['filter', 'product_cat', 'min_price', 'max_price', 'filter_colour', 'filter_thickness', 'paged']);
+// Base URL for every filter link on this archive, with pagination stripped.
+//
+// Changing a filter must reset to page 1. A filtered result set is smaller than
+// the unfiltered one, so carrying /page/6/ over to it points past its last page
+// and returns a 404 (e.g. /shop/page/6/?filter=on-sale). Under pretty permalinks
+// pagination lives in the PATH, not in ?paged=, so remove_query_arg('paged')
+// never touched it. Mirrors WooCommerce core's layered nav
+// (includes/widgets/class-wc-widget-layered-nav.php).
+global $wp;
+$lt_archive_base = preg_replace('%\/page/[0-9]+%', '', home_url(user_trailingslashit($wp->request)));
+if (!empty($_SERVER['QUERY_STRING'])) {
+	$lt_archive_base .= '?' . $_SERVER['QUERY_STRING'];
+}
+$lt_archive_base = remove_query_arg(['paged', 'page'], $lt_archive_base);
+
+$lt_clear_all_url = remove_query_arg(['filter', 'product_cat', 'min_price', 'max_price', 'filter_colour', 'filter_thickness'], $lt_archive_base);
 
 global $wp_query;
 $result_count = $wp_query ? $wp_query->found_posts : 0;
@@ -146,8 +161,8 @@ foreach ($blocks_before as $block) {
 							<?php foreach ($lt_filter_pills as $key => $pill):
 								$is_active = $active_pill === $key;
 								$pill_url = $key === 'all'
-									? remove_query_arg('filter')
-									: add_query_arg('filter', $key);
+									? remove_query_arg('filter', $lt_archive_base)
+									: add_query_arg('filter', $key, $lt_archive_base);
 								?>
 								<a href="<?php echo esc_url($pill_url); ?>" data-lt-pill="<?php echo esc_attr($key); ?>"
 									<?php if (!empty($pill['term'])): ?>data-lt-cat="<?php echo esc_attr($pill['term']); ?>"

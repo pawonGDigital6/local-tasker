@@ -146,13 +146,6 @@ $active_availability = isset($_GET['filter_availability']) && in_array(sanitize_
 
 $has_active_filters = $active_cat !== '' || $price_min !== '' || $price_max !== '' || !empty($active_colours) || !empty($active_thickness) || !empty($active_grade) || !empty($active_veneer) || $active_availability !== '' || ($active_pill_get !== '' && $active_pill_get !== 'all');
 
-// Helper: build a filter URL preserving current query minus pagination.
-function lt_filter_url(array $params): string
-{
-	$base = remove_query_arg('paged');
-	return add_query_arg(array_map('rawurlencode', $params), $base);
-}
-
 // Categories hidden from this filter only — the terms themselves are left
 // untouched in WooCommerce, and products in them still appear under "All
 // Flooring" and every other filter. Slugs are resolved to term IDs so a renamed
