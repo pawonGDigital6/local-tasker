@@ -68,7 +68,7 @@ if ( empty( $related_products ) ) {
 								<?php if ( has_post_thumbnail( $rid ) ) : ?>
 									<?php echo get_the_post_thumbnail( $rid, 'woocommerce_single', [ 'class' => 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-105' ] ); ?>
 								<?php else : ?>
-									<?php echo lt_product_featured_placeholder_img( 'woocommerce_single', [ 'class' => 'w-full h-full object-cover' ] ); ?>
+									<?php echo wc_placeholder_img( 'woocommerce_single', [ 'class' => 'w-full h-full object-cover' ] ); ?>
 								<?php endif; ?>
 								<?php if ( $on_sale ) : ?>
 									<span class="absolute top-3 left-3 bg-[#E02020] text-lt-white text-caption-xs font-bold uppercase tracking-[0.08em] px-2 py-[5px] rounded"><?php esc_html_e( 'SALE', 'local-tasker' ); ?></span>

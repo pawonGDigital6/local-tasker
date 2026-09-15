@@ -12,8 +12,10 @@ global $product;
 $attachment_ids = $product->get_gallery_image_ids();
 $main_id        = $product->get_image_id();
 
-// Build full list: main image first, then gallery images.
-$all_ids = $main_id ? array_merge( [ $main_id ], $attachment_ids ) : $attachment_ids;
+// Build full list: main image first, then gallery images. The main slot is
+// always present — a 0 id means the product has no featured image, and that
+// one slide renders the placeholder. Gallery images are left as they are.
+$all_ids = array_merge( [ (int) $main_id ], $attachment_ids );
 $count   = count( $all_ids );
 ?>
 
@@ -30,10 +32,14 @@ $count   = count( $all_ids );
 					aria-hidden="<?php echo $index === 0 ? 'false' : 'true'; ?>"
 					id="lt-slide-<?php echo esc_attr( $index ); ?>"
 				>
-					<?php echo wp_get_attachment_image( $id, 'woocommerce_single', false, [
-						'class'   => 'w-full h-full object-cover',
-						'loading' => $index === 0 ? 'eager' : 'lazy',
-					] ); ?>
+					<?php if ( $id ) : ?>
+						<?php echo wp_get_attachment_image( $id, 'woocommerce_single', false, [
+							'class'   => 'w-full h-full object-cover',
+							'loading' => $index === 0 ? 'eager' : 'lazy',
+						] ); ?>
+					<?php else : ?>
+						<?php echo wc_placeholder_img( 'woocommerce_single', [ 'class' => 'w-full h-full object-cover' ] ); ?>
+					<?php endif; ?>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -92,7 +98,11 @@ $count   = count( $all_ids );
 					data-index="<?php echo esc_attr( $index ); ?>"
 					aria-label="<?php echo esc_attr( sprintf( __( 'View image %d', 'local-tasker' ), $index + 1 ) ); ?>"
 				>
-					<?php echo wp_get_attachment_image( $id, 'thumbnail', false, [ 'class' => 'w-full h-full object-cover' ] ); ?>
+					<?php if ( $id ) : ?>
+						<?php echo wp_get_attachment_image( $id, 'thumbnail', false, [ 'class' => 'w-full h-full object-cover' ] ); ?>
+					<?php else : ?>
+						<?php echo wc_placeholder_img( 'thumbnail', [ 'class' => 'w-full h-full object-cover' ] ); ?>
+					<?php endif; ?>
 				</button>
 			<?php endforeach; ?>
 		</div>

@@ -87,25 +87,75 @@ function lt_product_placeholder_src() {
 }
 
 /**
- * Placeholder <img> for a product with no featured image.
+ * Point WooCommerce's placeholder at the theme image.
  *
- * The filter is added and removed around this single call on purpose: the
- * theme placeholder must only ever stand in for a missing FEATURED image.
- * Variation images (colour swatches) and gallery images keep WooCommerce's
- * own fallback behaviour. Reusing wc_placeholder_img() keeps the markup —
- * classes, width/height — identical to what the loop already rendered.
+ * This is the main product image fallback: every place WooCommerce renders a
+ * product's own image through wc_placeholder_img()/wc_placeholder_img_src()
+ * — shop loop, single product, cart, mini-cart — now shows the theme asset
+ * when the product has no featured image.
+ *
+ * Gallery images and variation images do NOT run through this: the gallery
+ * only ever renders real attachments, and the colour swatches deliberately
+ * ask for WooCommerce's own placeholder via lt_wc_default_placeholder_src().
+ */
+add_filter( 'woocommerce_placeholder_img_src', 'lt_product_placeholder_src' );
+
+/**
+ * WooCommerce's own placeholder, with the theme override bypassed.
+ *
+ * For images that are NOT the main product image — currently the variation
+ * colour swatches — so they keep the behaviour they had before the theme
+ * placeholder existed.
  *
  * @param string $size Image size.
- * @param array  $attr Image attributes.
- * @return string Image HTML.
+ * @return string Image URL.
  */
-function lt_product_featured_placeholder_img( $size = 'woocommerce_single', $attr = array() ) {
-	add_filter( 'woocommerce_placeholder_img_src', 'lt_product_placeholder_src' );
-	$html = wc_placeholder_img( $size, $attr );
+function lt_wc_default_placeholder_src( $size = 'woocommerce_thumbnail' ) {
 	remove_filter( 'woocommerce_placeholder_img_src', 'lt_product_placeholder_src' );
+	$src = wc_placeholder_img_src( $size );
+	add_filter( 'woocommerce_placeholder_img_src', 'lt_product_placeholder_src' );
 
-	return $html;
+	return $src;
 }
+
+/**
+ * Main product image fallback for the block checkout.
+ *
+ * The Checkout page uses the WooCommerce Checkout block, which reads its line
+ * item images from the Store API instead of wc_placeholder_img(). A product
+ * with no image of any kind returns an empty list there, so the block renders
+ * an empty box — supply the placeholder instead.
+ *
+ * Only fills an empty list, so a real featured, gallery or variation image is
+ * never replaced or reordered.
+ *
+ * @param array  $images        Image objects, per ImageAttachmentSchema.
+ * @param array  $cart_item     Cart item.
+ * @param string $cart_item_key Cart item key.
+ * @return array
+ */
+function lt_store_api_cart_item_placeholder_image( $images, $cart_item, $cart_item_key ) {
+	if ( ! empty( $images ) ) {
+		return $images;
+	}
+
+	$src = lt_product_placeholder_src();
+
+	return array(
+		(object) array(
+			'id'               => 0,
+			'src'              => $src,
+			'thumbnail'        => $src,
+			'srcset'           => '',
+			'sizes'            => '',
+			'thumbnail_srcset' => '',
+			'thumbnail_sizes'  => '',
+			'name'             => '',
+			'alt'              => '',
+		),
+	);
+}
+add_filter( 'woocommerce_store_api_cart_item_images', 'lt_store_api_cart_item_placeholder_image', 10, 3 );
 
 /**
  * Add 'woocommerce-active' class to the body tag.

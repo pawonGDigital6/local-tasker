@@ -74,7 +74,9 @@ function lt_get_product_swatches( $product, $limit = 3 ) {
 			$image_id = $parent_image_id;
 		}
 
-		$image_url = $image_id ? wp_get_attachment_image_url( $image_id, 'thumbnail' ) : wc_placeholder_img_src( 'thumbnail' );
+		// A swatch is a variation image, not the main product image — keep
+		// WooCommerce's own placeholder rather than the theme product one.
+		$image_url = $image_id ? wp_get_attachment_image_url( $image_id, 'thumbnail' ) : lt_wc_default_placeholder_src( 'thumbnail' );
 
 		$out['swatches'][] = array(
 			'name'  => $term->name,
