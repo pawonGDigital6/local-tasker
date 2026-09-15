@@ -40,7 +40,7 @@ $cm_ph_numb         = get_field('cm_ph_numb', 'options');
 $cm_email           = get_field('cm_email', 'options');
 $cm_cf7_shortcode   = get_field('cm_cf7_shortcode', 'options');
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="wd:container-bx container">
 		<div class="flex flex-col gap-8 md:flex-row justify-between md:items-start md:gap-[55px]">
 			<!-- Contact Info Card -->
@@ -113,7 +113,8 @@ $cm_cf7_shortcode   = get_field('cm_cf7_shortcode', 'options');
 									<li>
 										<a href="<?php echo esc_url($cm_social_link ?: '#'); ?>"
 											class="p-2 inline-flex size-[33px] items-center justify-center rounded-full bg-lt-white transition-transform duration-300 hover:-translate-y-0.5 focus-visible:-translate-y-0.5 md:size-10"
-											<?php echo $social_host ? 'aria-label="' . esc_attr($social_host) . '"' : ''; ?> target="_blank">
+											<?php echo $social_host ? 'aria-label="' . esc_attr($social_host) . '"' : ''; ?> target="_blank"
+											rel="noopener noreferrer">
 											<?php if ($cm_social_icon): ?>
 												<?php echo wp_get_attachment_image($cm_social_icon, $size, false, [
 													'class' => 'size-5 md:size-6 w-auto object-contain',

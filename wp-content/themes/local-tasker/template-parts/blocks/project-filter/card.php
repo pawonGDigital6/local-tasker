@@ -105,5 +105,5 @@ $pj_completed_date = get_field('pj_completed_date', $post_id);
 			</div>
 		<?php endif; ?>
 	</div>
-	<a href="<?php the_permalink(); ?>" class="stretched-link"></a>
+	<a href="<?php the_permalink(); ?>" class="stretched-link"><span class="sr-only"><?php the_title(); ?></span></a>
 </article>

@@ -36,7 +36,7 @@ $qc_heading = get_field('qc_heading');
 $qc_content = get_field('qc_content');
 $qc_cta_image = get_field('qc_cta_image');
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="flex flex-wrap-reverse justify-between">
 		<!-- Content -->
 		<div

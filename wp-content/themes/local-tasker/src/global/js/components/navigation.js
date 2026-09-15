@@ -39,6 +39,12 @@ const navigation = {
 			this.siteOverlay.addEventListener('click', this.closeMenu.bind(this));
 		}
 
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && this.body.classList.contains('menu-open')) {
+				this.closeMenu();
+			}
+		});
+
 		this.addIconHasChildren();
 		this.subMenuSlideToggle();
 	},
@@ -46,10 +52,18 @@ const navigation = {
 	// Toggle menu
 	openMenu() {
 		this.body.classList.add('menu-open');
+		if (this.menuToggle) {
+			this.menuToggle.setAttribute('aria-expanded', 'true');
+		}
 	},
 
 	closeMenu() {
 		this.body.classList.remove('menu-open');
+		if (this.menuToggle) {
+			this.menuToggle.setAttribute('aria-expanded', 'false');
+			// Send focus back to the control that opened the menu.
+			this.menuToggle.focus();
+		}
 	},
 
 	// Add icon to menu items with children
@@ -58,8 +72,18 @@ const navigation = {
 			// Prevent adding multiple icons if function runs twice
 			if (item.querySelector('.icon')) return;
 
-			const icon = document.createElement('span');
+			const icon = document.createElement('button');
+			icon.type = 'button';
 			icon.classList.add('icon');
+			icon.setAttribute('aria-expanded', 'false');
+
+			const itemLink = item.querySelector(':scope > a');
+			const itemLabel = itemLink ? itemLink.textContent.trim() : '';
+			icon.setAttribute(
+				'aria-label',
+				itemLabel ? `Show ${itemLabel} sub-menu` : 'Show sub-menu'
+			);
+
 			icon.innerHTML = '<span></span><span></span>';
 			item.appendChild(icon);
 		});
@@ -83,6 +107,15 @@ const navigation = {
 					// Toggle active class on icon while resetting others
 					$(this).toggleClass('active');
 					$('.main-navigation .icon').not($(this)).removeClass('active');
+
+					// Keep the announced state in step with the visual one
+					this.setAttribute(
+						'aria-expanded',
+						$(this).hasClass('active') ? 'true' : 'false'
+					);
+					$('.main-navigation .icon')
+						.not($(this))
+						.attr('aria-expanded', 'false');
 				});
 			}
 		});

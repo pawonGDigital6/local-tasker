@@ -42,7 +42,7 @@ $ie_section_title = get_field('ie_section_title');
 $ie_section_content = get_field('ie_section_content');
 $ie_form_shortcode = get_field('ie_form_shortcode');
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<?php
 	if ($ie_bg_image):
 		?>

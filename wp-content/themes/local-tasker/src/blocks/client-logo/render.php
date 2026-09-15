@@ -35,7 +35,7 @@ if ($block_style !== '') {
 $clients_logo_list = get_field('clients_logo_list');
 $size = 'full';
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="xl:container">
 		<div class="swiper lt-client-logo__carousel">
 			<div class="swiper-wrapper">

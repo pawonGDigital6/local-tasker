@@ -38,7 +38,7 @@ $is_img_right = get_field('ms_img_position');
 $button_orange = get_field( 'btn_color_brand_orange') ;
  
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container max-sm:px-0">
 		<div class="rows flex flex-wrap justify-between md:gap-8 gap-5 wd:px-8 <?php echo $is_img_right ? 'md:flex-row-reverse flex-wrap-reverse max-md:gap-12.5' : ''; ?>">
 			<!-- Media Col -->

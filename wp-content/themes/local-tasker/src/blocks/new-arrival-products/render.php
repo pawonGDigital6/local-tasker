@@ -62,7 +62,7 @@ if (class_exists('WooCommerce') && function_exists('lt_shop_build_query_args')) 
 	$initial_query = new WP_Query(lt_shop_build_query_args($initial_state));
 }
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container">
 		<!-- Section Header -->
 		<?php if ($na_sec_title): ?>

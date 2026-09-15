@@ -37,5 +37,5 @@
 			</a>
 		</div>
 	</div>
-	<a href="<?php echo esc_url(get_permalink()); ?>" class="stretched-link"></a>
+	<a href="<?php echo esc_url(get_permalink()); ?>" class="stretched-link" tabindex="-1" aria-hidden="true"></a>
 </div>

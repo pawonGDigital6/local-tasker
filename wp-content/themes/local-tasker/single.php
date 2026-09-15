@@ -320,7 +320,8 @@ get_header();
 													</span>
 												</span>
 											</div>
-											<a class="stretched-link" href="<?php the_permalink(); ?>"></a>
+											<a class="stretched-link" href="<?php the_permalink(); ?>"><span
+													class="sr-only"><?php the_title(); ?></span></a>
 										</div>
 									</li>
 								<?php endwhile; ?>

@@ -38,7 +38,7 @@ $size = 'full';
 $ihw_image = get_field('ihw_image');
 $ihw_heading = get_field('ihw_heading');
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<!-- Overlay -->
 	<div class="overlay absolute inset-0 w-full h-full pointer-events-none z-1">
 	</div>

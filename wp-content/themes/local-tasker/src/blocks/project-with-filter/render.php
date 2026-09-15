@@ -83,7 +83,7 @@ $project_types = get_terms(
 	]
 );
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>
 	data-block-id="<?php echo esc_attr($block_id); ?>" data-nonce="<?php echo esc_attr($nonce); ?>"
 	data-posts-per-page="<?php echo esc_attr($posts_per_page); ?>">
 	<div class="wd:container-bx container">

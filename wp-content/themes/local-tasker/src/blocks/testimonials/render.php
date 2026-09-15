@@ -39,7 +39,7 @@ $testi_sec_pre_title = get_field('testi_sec_pre_title');
 $testi_sec_title = get_field('testi_sec_title');
 
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="md:partial-container-left pl-4 wd:ml-[2.3rem]">
 		<?php if ($testi_sec_pre_title): ?>
 			<div class="pre-title sm:mb-8 mb-[10px] text-caption-md uppercase font-semibold tracking-[0.08em] opacity-50">
@@ -71,7 +71,8 @@ $testi_sec_title = get_field('testi_sec_title');
 									class="testimonial-card__content md:w-[calc(50%-19px)] w-full sm:p-[2.5625rem_1.9375rem_2.5625rem_2.375rem] p-[20px_21px_32px_12px] flex flex-col justify-between max-md:min-h-[calc(100%-287px)] max-sm:min-h-[calc(100%-187px)] max-sm:rounded-l-[12px] max-sm:rounded-r-2xl">
 									<div class="upper">
 										<img class="max-sm:w-[146px]"
-											src="<?php echo site_url(); ?>/wp-content/uploads/2026/06/Logo.png" alt="">
+											src="<?php echo site_url(); ?>/wp-content/uploads/2026/06/Logo.png"
+											alt="<?php echo esc_attr(get_bloginfo('name')); ?>" loading="lazy" decoding="async">
 										<!-- Star -->
 										<div class="starts flex sm:mt-10 mt-5">
 											<?php for ($i = 1; $i <= 5; $i++): ?>
@@ -131,7 +132,12 @@ $testi_sec_title = get_field('testi_sec_title');
 										$video_title = esc_attr($testimonial_video['title']);
 										?>
 										<a href="<?php echo $video_url; ?>" data-fancybox
-											class="icon-play md:w-[77px] md:h-[77px] w-[58px] h-[58px] rounded-full bg-lt-accent flex items-center justify-center absolute md:left-[38px] md:bottom-[42px] max-md:left-1/2 max-md:top-1/2 max-md:translate-x-[-50%] max-md:translate-y-[-50%] z-1 cursor-pointer focus:outline-none">
+											aria-label="<?php echo esc_attr(sprintf(
+												/* translators: %s: testimonial author */
+												__('Play video testimonial from %s', 'local-tasker'),
+												$testimonial_author
+											)); ?>"
+											class="icon-play md:w-[77px] md:h-[77px] w-[58px] h-[58px] rounded-full bg-lt-accent flex items-center justify-center absolute md:left-[38px] md:bottom-[42px] max-md:left-1/2 max-md:top-1/2 max-md:translate-x-[-50%] max-md:translate-y-[-50%] z-1 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lt-brand">
 											<svg class="ml-1" width="16" height="18" viewBox="0 0 16 18" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
 												<path d="M15.4629 8.92788L-0.000225908 17.8555L-0.000225128 0.00025014L15.4629 8.92788Z"

@@ -55,12 +55,13 @@ $unique_page_class = get_field('unique_page_class');
 						<!-- Center -->
 						<div class="site-header__top-left flex items-center gap-[12px]">
 							<!-- HamnBurger -->
-							<div
-								class="menu-hamn-burger flex flex-col justify-between w-[24px] h-[20px] max-smlr:w-[18px] max-smlr:h-[13px] lg:hidden cursor-pointer shrink-0">
+							<button type="button" aria-expanded="false" aria-controls="primary-menu"
+								class="menu-hamn-burger flex flex-col justify-between w-[24px] h-[20px] max-smlr:w-[18px] max-smlr:h-[13px] lg:hidden cursor-pointer shrink-0"
+								aria-label="<?php esc_attr_e('Open menu', 'local-tasker'); ?>">
 								<span class="h-[2px] w-full bg-lt-text-secondary rounded-[2px] block"></span>
 								<span class="h-[2px] w-full bg-lt-text-secondary rounded-[2px] block"></span>
 								<span class="h-[2px] w-full bg-lt-text-secondary rounded-[2px] block"></span>
-							</div><!-- End of HamnBurger -->
+							</button><!-- End of HamnBurger -->
 							<!-- Site Logo -->
 							<div class="site-logo max-md:w-[180px] max-xs:w-[140px]">
 								<?php if (has_custom_logo()):
@@ -84,7 +85,8 @@ $unique_page_class = get_field('unique_page_class');
 						<!-- Right -->
 						<div class="site-header__top-right flex items-center flex justify-end gap-[20px] max-sm:gap-[12px]">
 							<!-- User  -->
-							<a href="<?php echo esc_url(home_url('/my-account')); ?>" class="icon-link">
+							<a href="<?php echo esc_url(home_url('/my-account')); ?>" class="icon-link"
+								aria-label="<?php esc_attr_e('My account', 'local-tasker'); ?>">
 								<svg class="max-md:w-[16px]" width="20" height="18" viewBox="0 0 20 18" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_774_479)">
@@ -103,7 +105,8 @@ $unique_page_class = get_field('unique_page_class');
 								</svg>
 							</a>
 							<!-- search  -->
-							<button class="search-button search-pop-opener appearance-button cursor-pointer md:hidden">
+							<button class="search-button search-pop-opener appearance-button cursor-pointer md:hidden"
+								aria-label="<?php esc_attr_e('Open search', 'local-tasker'); ?>">
 								<svg class="max-md:w-[16px]" width="20" height="20" viewBox="0 0 20 20" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_774_483)">
@@ -124,7 +127,8 @@ $unique_page_class = get_field('unique_page_class');
 							<?php if (class_exists('WooCommerce') && function_exists('local_tasker_woocommerce_header_cart')):
 								local_tasker_woocommerce_header_cart();
 							else: ?>
-								<a href="#" class="cart-icon relative pr-3">
+								<a href="#" class="cart-icon relative pr-3"
+									aria-label="<?php esc_attr_e('View your shopping cart', 'local-tasker'); ?>">
 									<span
 										class="cart-count absolute top-[-6px] right-[0] max-sm:top-[-9px] hidden items-center justify-center bg-lt-brand text-lt-white rounded-full w-[20px] h-[20px] text-caption-sm">0</span>
 									<svg class="max-md:w-[16px]" width="19" height="21" viewBox="0 0 19 21" fill="none"
@@ -144,14 +148,15 @@ $unique_page_class = get_field('unique_page_class');
 				<div class="container">
 					<nav id="site-navigation" class="main-navigation text-caption-md  font-primary font-bold">
 						<div class="menu-close-btn-holder text-right cursor-pointer lg:hidden mb-10">
-							<div class="menu-close-btn inline-block">
+							<button type="button" class="menu-close-btn inline-block"
+								aria-label="<?php esc_attr_e('Close menu', 'local-tasker'); ?>">
 								<svg class="w-[18px]" width="14" height="14" viewBox="0 0 14 14" fill="none"
 									xmlns="http://www.w3.org/2000/svg">
 									<path
 										d="M12.2197 0.21967C12.5126 -0.0732233 12.9873 -0.0732233 13.2802 0.21967C13.5731 0.512563 13.5731 0.987324 13.2802 1.28022L7.81049 6.74994L13.2802 12.2197C13.5731 12.5126 13.5731 12.9873 13.2802 13.2802C12.9873 13.5731 12.5126 13.5731 12.2197 13.2802L6.74994 7.81049L1.28022 13.2802C0.987324 13.5731 0.512563 13.5731 0.21967 13.2802C-0.0732233 12.9873 -0.0732233 12.5126 0.21967 12.2197L5.6894 6.74994L0.21967 1.28022C-0.0732233 0.987324 -0.0732233 0.512563 0.21967 0.21967C0.512563 -0.0732233 0.987324 -0.0732233 1.28022 0.21967L6.74994 5.6894L12.2197 0.21967Z"
 										fill="#2E2E2E" />
 								</svg>
-							</div>
+							</button>
 						</div>
 						<?php
 						wp_nav_menu(

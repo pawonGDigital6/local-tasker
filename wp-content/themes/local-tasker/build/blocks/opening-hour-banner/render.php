@@ -39,7 +39,7 @@ $oh_sec_text = get_field('oh_sec_text');
 $oh_location = get_field('oh_location');
 $oh_add_text = get_field('oh_add_text');
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<!-- Decorative shapes  -->
 	<span aria-hidden="true" class="pointer-events-none absolute top-0 right-0 hidden lg:block">
 		<svg width="480" height="422" viewBox="0 0 480 422" fill="none" xmlns="http://www.w3.org/2000/svg">

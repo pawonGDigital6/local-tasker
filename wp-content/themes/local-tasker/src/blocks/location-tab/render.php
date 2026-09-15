@@ -39,7 +39,7 @@ if ($block_style !== '') {
 // A stable, unique id keeps panel ids/ARIA unique when several of these blocks
 $block_uid = 'lc-' . (!empty($block['id']) ? sanitize_html_class($block['id']) : wp_unique_id());
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="wd:container-bx container">
 		<?php if (have_rows('lc_tab_lists')): ?>
 			<div class="lc-tab">

@@ -35,7 +35,7 @@ $section_title = get_field('section_title');
 $section_content = get_field('section_content');
 $section_sub_text = get_field('section_sub_text');
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container">
 		<div class="rows flex flex-wrap justify-between items-center lg:gap-6 gap-[3.125rem]">
 			<!-- Section Heading -->

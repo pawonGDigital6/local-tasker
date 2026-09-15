@@ -42,7 +42,7 @@ $is_single_video_use = get_field('op_single_vid_use');
 $op_single_video = get_field('op_single_video');
 $op_single_image = get_field('op_single_image');
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container">
 		<div class="rows flex flex-wrap lg:gap-8 gap-12.5 lg:justify-between">
 			<!-- Cols -->

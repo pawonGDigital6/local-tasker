@@ -85,7 +85,7 @@ $count   = count( $all_ids );
 			<?php foreach ( $all_ids as $index => $id ) : ?>
 				<button
 					type="button"
-					class="lt-gallery__thumb w-full aspect-square rounded-md overflow-hidden border-2 transition-all duration-200 cursor-pointer outline-none! <?php echo $index === 0 ? 'border-lt-accents' : 'border-[#E2DDD7] hover:border-[#D1D5DB] opacity-50'; ?>"
+					class="lt-gallery__thumb w-full aspect-square rounded-md overflow-hidden border-2 transition-all duration-200 cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lt-brand <?php echo $index === 0 ? 'border-lt-accents' : 'border-[#E2DDD7] hover:border-[#D1D5DB] opacity-50'; ?>"
 					role="tab"
 					aria-selected="<?php echo $index === 0 ? 'true' : 'false'; ?>"
 					aria-controls="lt-slide-<?php echo esc_attr( $index ); ?>"

@@ -35,7 +35,7 @@ $sc_heading = get_field('sc_heading');
 $sc_content = get_field('sc_content');
 $link = get_field('sc_button');
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="bigLp:container max-bigLp:partial-container-right max-md:px-8 max-sm:px-4 max-sm:pl-0">
 		<div class="rows flex flex-wrap-reverse justify-between md:gap-6 gap-13">
 			<!-- Img Col -->

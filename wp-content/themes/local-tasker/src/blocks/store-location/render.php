@@ -35,7 +35,7 @@ if ($block_style !== '') {
 $section_title = get_field('section_title');
 
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container flex flex-col gap-[27px] max-md:gap-5">
 		<?php if ($section_title): ?>
 			<h2
@@ -68,8 +68,9 @@ $section_title = get_field('section_title');
 					<article id="location-<?php the_ID(); ?>" <?php post_class('group showroom-card flex flex-col overflow-hidden rounded-[12px] border border-[#E5E7EB] bg-lt-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.1)] md:rounded-[15px] relative'); ?>>
 						<div class="showroom-card__media h-[150px] shrink-0 overflow-hidden md:h-[180px] img-full-cover">
 							<img
-								class="will-change-transform transition-transform duration-600 group-hover:scale-105 origin-center"" src="
-								<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" />
+								class="will-change-transform transition-transform duration-600 group-hover:scale-105 origin-center"
+								src="<?php echo esc_url($image_url); ?>"
+								alt="<?php echo esc_attr(get_the_title()); ?>" loading="lazy" decoding="async" />
 						</div>
 						<div class="showroom-card__body flex flex-1 flex-col justify-between sm:gap-[27px] gap-5 sm:px-6 sm:py-[22px_18px] p-5">
 							<div class="flex flex-col gap-5 sm:gap-[25px]">
@@ -147,7 +148,7 @@ $section_title = get_field('section_title');
 								class="showroom-card__link inline-flex w-fit items-center gap-2 sm:text-caption-md text-caption-sm font-bold leading-[1.34] text-lt-accent md:text-[0.875rem]">
 								View Location </a>
 						</div>
-						<a href="<?php the_permalink(); ?>" class="stretched-link"></a>
+						<a href="<?php the_permalink(); ?>" class="stretched-link" tabindex="-1" aria-hidden="true"></a>
 					</article>
 				<?php endwhile; ?>
 			</div>

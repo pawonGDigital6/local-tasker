@@ -33,7 +33,7 @@ if ($block_style !== '') {
 }
 
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="xl:container">
 		<div class="rows grid sm:grid-cols-2">
 			<?php if (have_rows('cta_item')): ?>
@@ -68,7 +68,8 @@ if ($block_style !== '') {
 							</h2>
 						<?php endif; ?>
 						<?php if ($cta_link): ?>
-							<a href="<?php echo esc_html($cta_link); ?>" class="stretched-link"></a>
+							<a href="<?php echo esc_url($cta_link); ?>" class="stretched-link"><span
+									class="sr-only"><?php echo esc_html($cta_heading); ?></span></a>
 						<?php endif; ?>
 					</div>
 					<!-- End of CTA Item -->

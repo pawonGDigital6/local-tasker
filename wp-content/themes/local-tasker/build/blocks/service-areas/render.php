@@ -40,7 +40,7 @@ $sa_sec_text = get_field('sa_sec_text');
 $block_uid = !empty($block['id']) ? $block['id'] : uniqid('service-area-');
 
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="wd:container-bx container">
 		<!-- Section Header -->
 		<div class="section-header sm:mb-12 mb-[50px] text-center max-w-[672px] mx-auto">

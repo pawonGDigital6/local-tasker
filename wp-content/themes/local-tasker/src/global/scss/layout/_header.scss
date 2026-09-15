@@ -56,6 +56,12 @@
 			&:focus {
 				outline: none;
 			}
+
+			// Keyboard users still need to see where they are.
+			&:focus-visible {
+				outline: 2px solid var(--color-lt-brand);
+				outline-offset: -2px;
+			}
 		}
 
 		input[type="submit"] {

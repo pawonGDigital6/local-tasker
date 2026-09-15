@@ -33,7 +33,7 @@ $nonce = wp_create_nonce('lt_add_to_cart_' . $product_id);
 			<label for="lt-calc-area"
 				class="sr-only"><?php esc_html_e('Area in square metres', 'local-tasker'); ?></label>
 			<input type="number" id="lt-calc-area"
-				class="lt-stepper__input w-16 text-center border-x border-[#E9EAEC] h-11 text-body font-bold text-lt-text-primary bg-transparent focus:outline-none"
+				class="lt-stepper__input w-16 text-center border-x border-[#E9EAEC] h-11 text-body font-bold text-lt-text-primary bg-transparent focus:outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lt-brand"
 				value="0" min="0" step="1" inputmode="decimal" aria-live="polite">
 			<button type="button" id="lt-calc-plus"
 				class="lt-stepper__btn w-11 h-11 flex items-center justify-center text-lt-text-secondary hover:bg-lt-snow-drift transition-colors duration-150 shrink-0"

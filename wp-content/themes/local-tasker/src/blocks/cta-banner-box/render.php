@@ -37,7 +37,7 @@ $cb_content = get_field('cb_content');
 $cb_bg_img = get_field('cb_bg_img');
 $has_no_bg_img = get_field('cta_bx_no_bg_img');
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name) . ($has_no_bg_img ? ' no-bg-img' : ''); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name) . ($has_no_bg_img ? ' no-bg-img' : ''); ?>" <?php echo $style_attr; ?>>
 	<div class="wd:container-bx sm:container <?php echo $has_no_bg_img ? 'container' : 'sm:container' ?>">
 		<div
 			class="lt-cta-box__inner relative py-10 px-4 flex justify-center items-center sm:border border-[#E6E6E6] overflow-hidden <?php echo $has_no_bg_img ? 'bg-lt-brand sm:min-h-[278px] min-h-[321px] sm:rounded-[10px] rounded-[16px]' : 'sm:min-h-[434px] min-h-[459px] sm:rounded-[20px]' ?>">

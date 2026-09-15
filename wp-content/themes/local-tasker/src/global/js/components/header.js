@@ -2,6 +2,12 @@ function siteHeader() {
 	// Select the header element
 	const header = document.querySelector('.site-header');
 
+	// Nothing to sticky-toggle without a header; bail before binding listeners
+	// so the scroll handler can never throw on pages that omit it.
+	if (!header) {
+		return;
+	}
+
 	function checkScroll() {
 		// Check if the page is scrolled down more than 200 pixels
 		if (window.scrollY >= 200) {

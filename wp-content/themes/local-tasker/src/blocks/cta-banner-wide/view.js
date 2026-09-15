@@ -1,1 +1,1 @@
-console.log("this is the view script");
+// No front-end behaviour required for this block.

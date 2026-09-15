@@ -62,10 +62,14 @@ if ( ! $product instanceof WC_Product || ! lt_product_offers_install_quote( $pro
 		<div class="px-6 py-4 bg-[#e8e8e8] border-t border-[#ccc] text-center">
 			<p class="m-0 text-body-lg font-semibold leading-[1.5] text-[#0d0d0d]">
 				<?php
+				// Use the store phone when one is configured, otherwise fall back to the default number.
+				$lt_store_phone = preg_replace( '/[^0-9+]/', '', (string) get_option( 'woocommerce_store_phone', '' ) );
+				$lt_call_number = '' !== $lt_store_phone ? $lt_store_phone : '+61373020482';
+
 				printf(
 					/* translators: %s: phone link */
 					esc_html__( 'Need More Information? %s', 'local-tasker' ),
-					'<a href="tel:+61373020482' . esc_attr( get_option( 'woocommerce_store_phone', '' ) ) . '" class="text-lt-accent underline hover:no-underline">' . esc_html__( 'Call Us', 'local-tasker' ) . '</a>'
+					'<a href="tel:' . esc_attr( $lt_call_number ) . '" class="text-lt-accent underline hover:no-underline">' . esc_html__( 'Call Us', 'local-tasker' ) . '</a>'
 				);
 				?>
 			</p>

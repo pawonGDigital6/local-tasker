@@ -52,7 +52,7 @@ $related_services = new WP_Query($related_args);
 // 3. Check if there are related services to display.
 if ($related_services->have_posts()):
 	?>
-	<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+	<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 		<div class="container">
 			<div class="rows grid sm:grid-cols-2 sm:gap-8 gap-5 sm:py-10 border-t border-[#E6E6E6]">
 				<?php

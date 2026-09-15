@@ -34,7 +34,7 @@ if ($block_style !== '') {
 $section_title = get_field('section_title');
 $section_text = get_field('section_text');
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container flex flex-col sm:gap-10 gap-[3.125rem]">
 		<div class="projects-header flex flex-col gap-[15px] md:flex-row md:items-end md:justify-between md:gap-8">
 			<div class="projects-header__content flex max-w-[717px] flex-col gap-2.5">
@@ -126,7 +126,8 @@ $section_text = get_field('section_text');
 										<?php the_title(); ?>
 									</h3>
 								</div>
-								<a href="<?php the_permalink(); ?>" class="stretched-link"></a>
+								<a href="<?php the_permalink(); ?>" class="stretched-link"><span
+										class="sr-only"><?php the_title(); ?></span></a>
 							</article>
 						</div>
 					<?php endif; ?>
@@ -155,7 +156,8 @@ $section_text = get_field('section_text');
 										<?php the_title(); ?>
 									</h3>
 								</div>
-								<a href="<?php the_permalink(); ?>" class="stretched-link"></a>
+								<a href="<?php the_permalink(); ?>" class="stretched-link"><span
+										class="sr-only"><?php the_title(); ?></span></a>
 							</article>
 						<?php endif; ?>
 					<?php endwhile; ?>

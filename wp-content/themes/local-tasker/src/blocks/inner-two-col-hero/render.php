@@ -40,7 +40,7 @@ $in_two_hero_pre_title = get_field('in_two_hero_pre_title');
 $in_two_hero_content = get_field('in_two_hero_content');
 $testimoial_hero_off = get_field('turn_off_hero_testimonial');
 ?>
-<section <?php echo esc_attr($anchor); ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
 	<div class="container">
 		<div class="rows flex justify-between flex-wrap md:gap-5 gap-12">
 			<!-- Left Col -->
