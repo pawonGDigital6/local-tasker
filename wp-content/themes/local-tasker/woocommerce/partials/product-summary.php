@@ -209,7 +209,7 @@ if ($is_variable) {
 				<?php esc_html_e('5-star rated', 'local-tasker'); ?>
 			</span>
 		</span>
-		<span class="metas flex gap-2 items-center">
+		<span class="metas gap-2 items-center hidden">
 			<span class="icon">
 				<svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M9.20866 0.541992L3.25033 6.50033L0.541992 3.79199" stroke="#0A65FC" stroke-width="1.08333"
