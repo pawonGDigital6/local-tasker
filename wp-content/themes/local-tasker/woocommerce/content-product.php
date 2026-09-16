@@ -121,8 +121,17 @@ $price_inc        = $price_ex * 1.10;
 			<?php else : ?>
 				<a
 					href="<?php echo esc_url( $product->add_to_cart_url() ); ?>"
-					data-product-id="<?php echo esc_attr( $product_id ); ?>"
-					data-product-type="simple"
+					<?php
+					/*
+					 * WooCommerce's wc-add-to-cart.js gates on data-product_id
+					 * (underscore) and bails out early when it is missing, letting
+					 * the browser follow the href instead. The hyphenated spelling
+					 * used here previously meant no card ever added to the cart
+					 * via AJAX; it navigated away instead.
+					 */
+					?>
+					data-product_id="<?php echo esc_attr( $product_id ); ?>"
+					data-product_type="simple"
 					data-quantity="1"
 					class="btn btn--brand w-full mt-[7px] items-center text-center ajax_add_to_cart add_to_cart_button"
 					rel="nofollow"

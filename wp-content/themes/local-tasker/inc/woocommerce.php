@@ -1117,3 +1117,106 @@ if ( ! function_exists( 'local_tasker_woocommerce_header_cart' ) ) {
 		<?php
 	}
 }
+
+/**
+ * Keep add-to-cart URLs pointing at a real page when cards are rendered via AJAX.
+ *
+ * WC_Product_Simple::add_to_cart_url() builds its URL with
+ * add_query_arg( ..., false ), which resolves against the *current* request URI.
+ * That is fine on a normal page load, but the Popular Products block renders its
+ * cards inside an admin-ajax request, so every button came back pointing at
+ * /wp-admin/admin-ajax.php?add-to-cart=123. Following that link printed a bare
+ * "0" or "1" (admin-ajax's response for an unmatched action) instead of adding
+ * anything to the cart.
+ *
+ * The button normally adds via AJAX and never navigates, so this only matters
+ * for the fallbacks: no-JS visitors, middle-click / open-in-new-tab, and sites
+ * where "AJAX add to cart" is switched off. Those now land on the page the
+ * visitor was actually looking at, falling back to the product itself when the
+ * referer is missing or off-site.
+ *
+ * @param string     $url     Add-to-cart URL built by WooCommerce.
+ * @param WC_Product $product Product the URL belongs to.
+ * @return string
+ */
+function lt_ajax_safe_add_to_cart_url( $url, $product ) {
+	if ( ! wp_doing_ajax() || ! $product instanceof WC_Product ) {
+		return $url;
+	}
+
+	// Only simple/purchasable products get the ?add-to-cart= form of the URL.
+	// Everything else already returns a plain permalink, which is safe as is.
+	if ( ! $product->is_purchasable() || ! $product->is_in_stock() ) {
+		return $url;
+	}
+
+	$referer = wp_get_referer();
+	$base    = $referer ? wp_validate_redirect( $referer, $product->get_permalink() ) : $product->get_permalink();
+	$base    = remove_query_arg( array( 'add-to-cart', 'added-to-cart', 'quantity' ), $base );
+
+	return add_query_arg( 'add-to-cart', $product->get_id(), $base );
+}
+add_filter( 'woocommerce_product_add_to_cart_url', 'lt_ajax_safe_add_to_cart_url', 10, 2 );
+
+/**
+ * Enqueue add-to-cart feedback for product cards.
+ *
+ * Controls what happens visually after a card's "Add to Cart" succeeds. See
+ * js/add-to-cart-feedback.js for the reasoning behind the default.
+ */
+function lt_enqueue_add_to_cart_feedback_script(): void {
+	$rel = '/js/add-to-cart-feedback.js';
+
+	wp_enqueue_script(
+		'lt-add-to-cart-feedback',
+		get_template_directory_uri() . $rel,
+		[ 'jquery' ],
+		file_exists( get_template_directory() . $rel ) ? filemtime( get_template_directory() . $rel ) : _S_VERSION,
+		true
+	);
+
+	wp_localize_script(
+		'lt-add-to-cart-feedback',
+		'ltAddToCart',
+		[
+			/**
+			 * Filter what a product card's button does after a successful add.
+			 *
+			 * 'view_cart' (default) turns the button into "View Cart", and turns
+			 * it back into "Add to Cart" if the product is later removed from
+			 * the mini-cart. 'revert' shows a brief "Added" and restores the
+			 * button, which suits repeat-quantity buying.
+			 *
+			 * Either way only one button is ever shown; WooCommerce's injected
+			 * "View cart" link is always removed.
+			 *
+			 * @param string $mode 'view_cart' or 'revert'.
+			 */
+			'mode'          => 'revert' === apply_filters( 'lt_cards_after_add', 'view_cart' ) ? 'revert' : 'view_cart',
+			'cartUrl'       => wc_get_cart_url(),
+			'addedLabel'    => __( 'Added', 'local-tasker' ),
+			'viewCartLabel' => __( 'View Cart', 'local-tasker' ),
+		]
+	);
+}
+add_action( 'wp_enqueue_scripts', 'lt_enqueue_add_to_cart_feedback_script' );
+
+/**
+ * Flag the view_cart mode on <body> so the card swap can be done in CSS.
+ *
+ * Doing the hide declaratively keeps it independent of the order jQuery runs
+ * its added_to_cart handlers in: WooCommerce binds on DOM ready and this
+ * theme's script binds at parse time, so the theme's handler runs first and
+ * cannot see the link WooCommerce is about to inject.
+ *
+ * @param string[] $classes Body classes.
+ * @return string[]
+ */
+function lt_cards_after_add_body_class( $classes ) {
+	if ( 'revert' !== apply_filters( 'lt_cards_after_add', 'view_cart' ) ) {
+		$classes[] = 'lt-cards-view-cart';
+	}
+
+	return $classes;
+}
+add_filter( 'body_class', 'lt_cards_after_add_body_class' );

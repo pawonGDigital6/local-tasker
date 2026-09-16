@@ -57,7 +57,7 @@ if (!$product instanceof WC_Product || !lt_product_offers_install_quote($product
 				<?php
 				// Use the store phone when one is configured, otherwise fall back to the default number.
 				$lt_store_phone = preg_replace('/[^0-9+]/', '', (string) get_option('woocommerce_store_phone', ''));
-				$lt_call_number = '' !== $lt_store_phone ? $lt_store_phone : '+61373020482';
+				$lt_call_number = '' !== $lt_store_phone ? $lt_store_phone : '1300807127 ';
 
 				printf(
 					/* translators: %s: phone link */

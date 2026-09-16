@@ -31,7 +31,7 @@ $unique_page_class = get_field('unique_page_class');
 				<span
 					class="uppercase text-lt-white text-center items-center block md:text-caption-sm text-caption-xs tracking-[1px] leading-[1.30] flex max-smlr:flex-col max-smlr:items-center gap-1 justify-between">
 					<span class="text">flat rate shipping across Melbourne | Seamless returns | </span>
-					<a href="tel:0373020482"
+					<a href="tel:1300807127 "
 						class="inline-flex items-center gap-2 lt-text-secondary no-underline md:text-caption-md text-caption-xs leading-[1.71] hover:text-lt-accent transition-colors">
 						<span class="icon max-sm:w-3">
 							<svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -40,7 +40,7 @@ $unique_page_class = get_field('unique_page_class');
 									fill="#ffffff" />
 							</svg>
 						</span>
-						<span class="text">(03) 7302 0482</span>
+						<span class="text">1300 807 127 </span>
 					</a>
 				</span>
 			</div>

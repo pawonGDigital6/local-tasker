@@ -650,3 +650,92 @@
 		transition: none;
 	}
 }
+
+/* --------------------------------------------------------------------------
+   Product card — add-to-cart feedback
+
+   Exactly one control is ever visible in a card.
+
+   In the default view_cart mode the swap is done here rather than in JS:
+   WooCommerce adds .added to the button it just used, so hiding that and
+   styling its injected .added_to_cart link as the button is entirely
+   declarative, and cannot be broken by the order jQuery happens to run its
+   added_to_cart handlers in. In revert mode the body class is absent, the
+   button stays visible, and JS shows a brief .is-added confirmation instead.
+   -------------------------------------------------------------------------- */
+
+/*
+ * Secondary button. The compiled Tailwind bundle ships btn--brand / --accent /
+ * --white but no outline variant, so it is defined here in plain CSS rather
+ * than requiring a rebuild of the theme bundle.
+ */
+.btn.btn--outline {
+	background-color: transparent;
+	color: var(--lt-brand);
+	border: 1px solid var(--lt-brand);
+}
+
+.btn.btn--outline:hover {
+	background-color: var(--lt-brand);
+	color: #fff;
+}
+
+/*
+ * Transient confirmation. Kept to a background/colour swap only — no change to
+ * padding, border-width or font-size — so the button cannot change size and
+ * nudge the grid while the state is showing.
+ */
+.lt-product-card .btn.is-added,
+.lt-product-card .btn.is-added:hover {
+	background-color: #047857;
+	border-color: #047857;
+	color: #fff;
+	cursor: default;
+}
+
+
+/*
+ * WooCommerce's injected link, restyled to be the card's button. Geometry is
+ * copied from the .btn utility exactly — same padding, radius, weight and
+ * full width — so swapping one control for the other cannot change the card's
+ * height or reflow the grid row.
+ */
+.lt-product-card .added_to_cart {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin-top: 7px;
+	padding: 18px 40px 20px;
+	border: 1px solid var(--lt-brand);
+	border-radius: 40px;
+	background-color: transparent;
+	color: var(--lt-brand);
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1;
+	text-align: center;
+	text-decoration: none;
+	transition: color .36s, background-color .36s;
+}
+
+.lt-product-card .added_to_cart:hover {
+	background-color: var(--lt-brand);
+	color: #fff;
+}
+
+/*
+ * Hide the button that was just used. .added is set by WooCommerce itself, so
+ * this needs no JavaScript and holds however the handlers are ordered.
+ */
+.lt-cards-view-cart .lt-product-card .btn.added {
+	display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.lt-product-card .btn,
+	.lt-product-card .added_to_cart {
+		transition: none;
+	}
+}
