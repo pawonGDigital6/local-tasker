@@ -246,8 +246,15 @@
     };
   }
 
+  // A length-required product with no length chosen has a unit price of 0.
+  // Such a row must never reach the quote, or the customer is emailed a $0.00
+  // line item. Rows without length options carry the sentinel "N/A".
+  function isQuotable(line){
+    return Boolean(line.category && line.product && line.size && line.length && line.quantity > 0 && line.unitPrice > 0);
+  }
+
   function getQuote(){
-    const lines = state.lines.map(sanitiseLine).filter(line => line.category && line.product && line.size && line.quantity > 0);
+    const lines = state.lines.map(sanitiseLine).filter(isQuotable);
     const exGST = lines.reduce((sum,line)=>sum + Number(line.subtotal || 0), 0);
     const gst = exGST * GST_RATE;
     const incGST = exGST + gst;
@@ -273,36 +280,222 @@
     quoteJsonInput.value = JSON.stringify(quote);
   }
 
-  function buildQuoteSummary(quote){
-    const lines = quote.lines.map((line,idx)=>
-      `${idx+1}. ${line.category} | ${line.product} | ${line.size} | Length: ${line.length || "N/A"} | Unit: ${line.unit} | Qty: ${line.quantity} | Price: ${money(line.unitPrice)} | Subtotal: ${money(line.subtotal)} | SKU: ${line.sku}`
-    ).join("\n");
-    return [
-      "Quote request", "",
-      `Created: ${quote.createdAt}`,
-      `Name: ${quote.customer.name || ""}`,
-      `Email: ${quote.customer.email || ""}`,
-      `Phone: ${quote.customer.phone || ""}`,
-      `Project suburb: ${quote.customer.projectSuburb || ""}`,
-      "", "Products:", lines || "No products selected.", "",
-      `Grand Total excluding GST: ${money(quote.totals.exGST)}`,
-      `GST: ${money(quote.totals.gst)}`,
-      `Grand Total including GST: ${money(quote.totals.incGST)}`,
-      "", `Notes: ${quote.customer.notes || ""}`
-    ].join("\n");
-  }
-
   document.getElementById("printQuoteBtn").addEventListener("click", () => {
     updateTotals();
     window.print();
   });
 
-  document.getElementById("emailQuoteBtn").addEventListener("click", () => {
-    const quote = getQuote();
-    const subject = encodeURIComponent("LVL & MGP10 Quote Request");
-    const body = encodeURIComponent(buildQuoteSummary(quote));
-	  window.location.href = `mailto:pawan@digitalsix.com.au?subject=${subject}&body=${body}`;
-  });
+  /* ---------------------------------------------------------------------- */
+  /* Submission                                                             */
+  /* ---------------------------------------------------------------------- */
+
+  // This document is served statically by Apache, so WordPress cannot localise
+  // it. footer.php appends the admin-ajax URL to the iframe src; the fallback
+  // derives it from our own path so the calculator still works if opened
+  // directly, including on sub-directory installs.
+  function getAjaxUrl(){
+    const fromQuery = new URLSearchParams(window.location.search).get("ajaxUrl");
+    if(fromQuery) return fromQuery;
+
+    const marker = window.location.pathname.indexOf("/wp-content/");
+    if(marker !== -1) return window.location.origin + window.location.pathname.slice(0, marker) + "/wp-admin/admin-ajax.php";
+
+    return window.location.origin + "/wp-admin/admin-ajax.php";
+  }
+
+  const AJAX_URL = getAjaxUrl();
+  const RECAPTCHA_KEY = new URLSearchParams(window.location.search).get("recaptchaKey") || "";
+  const RECAPTCHA_ACTION = "lt_quote";
+  const emailBtn = document.getElementById("emailQuoteBtn");
+  const statusEl = document.getElementById("quoteStatus");
+  const emailBtnLabel = emailBtn.textContent;
+
+  /* ---------------------------------------------------------------------- */
+  /* reCAPTCHA v3                                                           */
+  /* ---------------------------------------------------------------------- */
+
+  // The site key only reaches us when WordPress has reCAPTCHA configured, so
+  // everything below is a no-op on environments without keys (local, staging).
+  let recaptchaReady = null;
+
+  function loadRecaptcha(){
+    if(!RECAPTCHA_KEY) return null;
+    if(recaptchaReady) return recaptchaReady;
+
+    document.getElementById("recaptchaNotice").hidden = false;
+
+    recaptchaReady = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(RECAPTCHA_KEY)}`;
+      script.async = true;
+      script.onload = () => window.grecaptcha ? window.grecaptcha.ready(resolve) : reject(new Error("grecaptcha missing"));
+      script.onerror = () => reject(new Error("reCAPTCHA failed to load"));
+      document.head.appendChild(script);
+    });
+
+    return recaptchaReady;
+  }
+
+  // Returns a token, or "" when reCAPTCHA is switched off or unreachable. The
+  // server decides what to do with an empty token; the form is never blocked
+  // client-side by a Google outage.
+  async function getRecaptchaToken(){
+    const ready = loadRecaptcha();
+    if(!ready) return "";
+
+    try {
+      await ready;
+      return await window.grecaptcha.execute(RECAPTCHA_KEY, { action: RECAPTCHA_ACTION });
+    } catch (error) {
+      return "";
+    }
+  }
+
+  // Warm the script up as soon as the popup is opened so the visitor is not
+  // waiting on a cold network fetch when they click Email Quote.
+  loadRecaptcha();
+
+  // The Email Quote button sits at the top of the form but the status line
+  // renders below the totals, which can be outside the iframe's viewport. Bring
+  // it into view so the visitor always sees the outcome of their click. Skipped
+  // when a field was focused instead, because that already scrolls.
+  function setStatus(message, tone, scrollIntoView){
+    statusEl.textContent = message || "";
+    statusEl.classList.remove("is-error", "is-success");
+    if(tone) statusEl.classList.add(tone === "error" ? "is-error" : "is-success");
+    if(message && scrollIntoView !== false && statusEl.scrollIntoView){
+      statusEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
+  function markInvalid(el, invalid){
+    if(el) el.classList.toggle("has-error", Boolean(invalid));
+  }
+
+  // Mirrors the server-side rules in LT_Quote_Calculator_Ajax::validate() so the
+  // visitor gets an instant answer, but the server remains the authority.
+  function validateQuote(){
+    const nameEl = document.getElementById("customerName");
+    const emailEl = document.getElementById("customerEmail");
+    const phoneEl = document.getElementById("customerPhone");
+    const name = nameEl.value.trim();
+    const email = emailEl.value.trim();
+    const phone = phoneEl.value.trim();
+
+    markInvalid(nameEl, false);
+    markInvalid(emailEl, false);
+    markInvalid(phoneEl, false);
+
+    if(!name){
+      markInvalid(nameEl, true);
+      nameEl.focus();
+      return "Please enter your name.";
+    }
+
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
+      markInvalid(emailEl, true);
+      emailEl.focus();
+      return "Please enter a valid email address.";
+    }
+
+    // Digits only, so "04 1234 5678" and "+61 412 345 678" both pass.
+    if(phone.replace(/\D/g, "").length < 8){
+      markInvalid(phoneEl, true);
+      phoneEl.focus();
+      return phone ? "That phone number does not look right." : "Please enter your phone number.";
+    }
+
+    // A row the visitor started but did not finish should be corrected rather
+    // than silently dropped from the quote.
+    for(let i = 0; i < state.lines.length; i++){
+      const line = state.lines[i];
+      const started = line.category || line.product || line.size || line.quantity > 0;
+      if(started && !isQuotable(line)){
+        focusFirstGap(line);
+        return `Row ${i + 1} is incomplete. Choose a category, product, size, length and quantity, or remove the row.`;
+      }
+    }
+
+    if(!getQuote().lines.length){
+      focusFirstGap(state.lines[0]);
+      return "Please add at least one product to your quote.";
+    }
+
+    return "";
+  }
+
+  // Put the cursor on the first thing the row is missing, so the visitor lands
+  // where the fix is rather than hunting for it.
+  function focusFirstGap(line){
+    if(!line) return;
+
+    const gap = ["category", "product", "size", "length"].find(field => !line[field]);
+    const target = gap
+      ? line.node.querySelector(`[data-field="${gap}"] input`)
+      : line.node.querySelector(".quantity-field");
+
+    if(target && !target.disabled) target.focus();
+  }
+
+  async function postForm(action, fields){
+    const body = new URLSearchParams();
+    body.set("action", action);
+    Object.keys(fields).forEach(key => body.set(key, fields[key]));
+
+    const response = await fetch(AJAX_URL, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+      body: body.toString()
+    });
+
+    // admin-ajax returns 4xx/5xx with a JSON body for handled failures, so parse
+    // before deciding: response.ok alone would hide the real message.
+    const payload = await response.json().catch(() => null);
+    if(!payload) throw new Error("Unexpected response from the server.");
+
+    return payload;
+  }
+
+  async function sendQuote(){
+    const problem = validateQuote();
+    if(problem){
+      // validateQuote() has already focused the offending field.
+      setStatus(problem, "error", false);
+      return;
+    }
+
+    emailBtn.disabled = true;
+    emailBtn.textContent = "Sending...";
+    setStatus("Sending your quote...", null, false);
+
+    try {
+      const nonceResponse = await postForm("lt_quote_nonce", {});
+      const nonce = nonceResponse && nonceResponse.data ? nonceResponse.data.nonce : "";
+      if(!nonce) throw new Error("Could not start a secure session.");
+
+      const result = await postForm("lt_send_quote", {
+        nonce,
+        quote: JSON.stringify(getQuote()),
+        company_website: document.getElementById("companyWebsite").value,
+        recaptcha_token: await getRecaptchaToken()
+      });
+
+      if(result.success){
+        setStatus(result.data && result.data.message ? result.data.message : "Thanks - your quote request has been sent.", "success");
+        return;
+      }
+
+      setStatus(result.data && result.data.message ? result.data.message : "We could not send your quote. Please try again.", "error");
+    } catch (error) {
+      setStatus("We could not reach the server. Please check your connection and try again, or email contact@localtasker.com.au.", "error");
+    } finally {
+      emailBtn.disabled = false;
+      emailBtn.textContent = emailBtnLabel;
+    }
+  }
+
+  emailBtn.addEventListener("click", sendQuote);
 
   addRowBtn.addEventListener("click", createRow);
   createRow();

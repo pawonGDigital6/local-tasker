@@ -31,12 +31,17 @@
       <section class="customer-details">
         <h2>Customer / Quote Details</h2>
         <div class="details-grid">
-          <label>Name<input id="customerName" type="text" placeholder="Customer name"></label>
-          <label>Email<input id="customerEmail" type="email" placeholder="customer@email.com"></label>
-          <label>Phone<input id="customerPhone" type="tel" placeholder="Phone number"></label>
+          <label>Name <span class="req" aria-hidden="true">*</span><input id="customerName" type="text" placeholder="Customer name" required></label>
+          <label>Email <span class="req" aria-hidden="true">*</span><input id="customerEmail" type="email" placeholder="customer@email.com" required></label>
+          <label>Phone <span class="req" aria-hidden="true">*</span><input id="customerPhone" type="tel" placeholder="Phone number" required></label>
           <label>Project suburb<input id="projectSuburb" type="text" placeholder="Project suburb"></label>
         </div>
         <label>Notes<textarea id="quoteNotes" rows="3" placeholder="Delivery notes, project details, preferred contact time..."></textarea></label>
+
+        <!-- Honeypot: hidden from people, irresistible to bots. Never remove. -->
+        <div class="hp-field" aria-hidden="true">
+          <label>Company website<input id="companyWebsite" type="text" tabindex="-1" autocomplete="off"></label>
+        </div>
       </section>
 
       <section class="totals-card">
@@ -44,6 +49,18 @@
         <div><span>GST</span><strong id="gstAmount">$0.00</strong></div>
         <div class="inc-total"><span>Grand Total including GST</span><strong id="grandIncGST">$0.00</strong></div>
       </section>
+
+      <p id="quoteStatus" class="quote-status" role="status" aria-live="polite"></p>
+
+      <!--
+        Google requires this notice whenever the reCAPTCHA badge is hidden.
+        script.js reveals it only when reCAPTCHA is actually active.
+      -->
+      <p id="recaptchaNotice" class="recaptcha-notice" hidden>
+        This site is protected by reCAPTCHA and the Google
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and
+        <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.
+      </p>
 
       <input type="hidden" id="quoteJson" name="quoteJson">
     </form>

@@ -356,3 +356,89 @@ label textarea {
 		box-shadow: none;
 	}
 }
+/* Quote submission — required markers, honeypot, status + error states. */
+
+.req {
+	color: var(--danger);
+}
+
+/*
+ * Honeypot. Kept in the layout but off-screen rather than display:none, because
+ * a fair number of bots skip hidden fields and would sail straight through.
+ */
+.hp-field {
+	position: absolute;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.quote-status {
+	margin: 16px 0 0;
+	padding: 0;
+	font-weight: 700;
+	text-align: right;
+}
+
+.quote-status:empty {
+	display: none;
+}
+
+.quote-status.is-error {
+	color: var(--danger);
+}
+
+.quote-status.is-success {
+	color: var(--success);
+}
+
+input.has-error,
+textarea.has-error {
+	border-color: var(--danger);
+	box-shadow: 0 0 0 3px rgba(185, 28, 28, .12);
+}
+
+button[disabled] {
+	opacity: .6;
+	cursor: not-allowed;
+}
+
+button[disabled]:hover {
+	transform: none;
+}
+
+@media print {
+
+	.quote-status,
+	.hp-field {
+		display: none !important;
+	}
+}
+
+/*
+ * reCAPTCHA v3. The floating badge is hidden because the calculator sits in a
+ * fixed-height iframe where it overlaps the totals; Google permits this as long
+ * as the attribution notice below is shown instead.
+ */
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+.recaptcha-notice {
+	margin: 10px 0 0;
+	color: var(--muted);
+	font-size: 12px;
+	text-align: right;
+}
+
+.recaptcha-notice a {
+	color: var(--muted);
+}
+
+@media print {
+
+	.recaptcha-notice {
+		display: none !important;
+	}
+}

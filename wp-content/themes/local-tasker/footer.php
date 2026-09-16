@@ -49,7 +49,28 @@ $copyright_text = get_field('copyright_text', 'options');
 				<!-- Body -->
 				<div class="gqf-form__body sm:p-8 p-6 bg-white">
 					<div class="th-form-style">
-						<iframe src="<?php echo get_template_directory_uri(); ?>/calculator/index.html"
+						<?php
+						// The calculator is a static document served by Apache, so it cannot be
+						// localised with wp_localize_script(). Hand it the admin-ajax URL via the
+						// query string instead; it fetches its own nonce at submit time, which
+						// keeps the form working even when the page HTML is cached.
+						$lt_calculator_args = array( 'ajaxUrl' => rawurlencode( admin_url( 'admin-ajax.php' ) ) );
+
+						// reCAPTCHA keys are shared with Contact Form 7. When none are
+						// configured the key is omitted and the calculator skips reCAPTCHA
+						// entirely, which is what keeps local and staging working.
+						if ( class_exists( 'LT_Quote_Calculator_Ajax' ) && LT_Quote_Calculator_Ajax::recaptcha_enabled() ) {
+							$lt_recaptcha_keys = LT_Quote_Calculator_Ajax::get_recaptcha_keys();
+
+							$lt_calculator_args['recaptchaKey'] = rawurlencode( $lt_recaptcha_keys['sitekey'] );
+						}
+
+						$lt_calculator_src = add_query_arg(
+							$lt_calculator_args,
+							get_template_directory_uri() . '/calculator/index.html'
+						);
+						?>
+						<iframe src="<?php echo esc_url($lt_calculator_src); ?>"
 							title="<?php esc_attr_e('Request a Quote form', 'local-tasker'); ?>"
 							style="width:100%;height:1200px;border:0;" loading="lazy"></iframe>
 						<?php //echo do_shortcode('[contact-form-7 id="ffcf842" title="Quote Form"]'); ?>

@@ -452,3 +452,7 @@ function rename_search_pagination_text($translated_text, $text, $domain)
 	return $translated_text;
 }
 add_filter('gettext', 'rename_search_pagination_text', 20, 3);
+
+// ─ Include the Quote Calculator AJAX handler ─────────────────────────────
+// Powers the "Email Quote" button inside the global Request a Quote popup.
+require_once get_template_directory() . '/inc/class-quote-calculator-ajax.php';
