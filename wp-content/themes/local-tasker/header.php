@@ -30,7 +30,7 @@ $unique_page_class = get_field('unique_page_class');
 			<div class="container">
 				<span
 					class="uppercase text-lt-white text-center items-center block md:text-caption-sm text-caption-xs tracking-[1px] leading-[1.30] flex max-smlr:flex-col max-smlr:items-center gap-1 justify-between">
-					<span class="text">flat rate shipping across Melbourne | Seamless returns | </span>
+					<span class="text">Buy Direct and Save up to 30% on Retail Prices!</span>
 					<a href="tel:1300807127 "
 						class="inline-flex items-center gap-2 lt-text-secondary no-underline md:text-caption-md text-caption-xs leading-[1.71] hover:text-lt-accent transition-colors">
 						<span class="icon max-sm:w-3">
