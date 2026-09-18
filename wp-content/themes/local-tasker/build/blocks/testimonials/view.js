@@ -10652,16 +10652,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var swiper_css_bundle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! swiper/css/bundle */ "./node_modules/swiper/swiper-bundle.css");
 
 
-new swiper_bundle__WEBPACK_IMPORTED_MODULE_0__["default"](".testimonial-slider", {
-  speed: 500,
-  spaceBetween: 12,
-  slidesPerView: "auto",
-  loop: true,
-  breakpoints: {
-    768: {
-      spaceBetween: 38
+document.querySelectorAll(".lt-testimonials").forEach(container => {
+  const testimonialSlider = new swiper_bundle__WEBPACK_IMPORTED_MODULE_0__["default"](container.querySelector(".testimonial-slider"), {
+    speed: 500,
+    spaceBetween: 12,
+    slidesPerView: "auto",
+    loop: true,
+    navigation: {
+      // Finds the arrows inside THIS container only
+      nextEl: container.querySelector(".slide-arrow.next"),
+      prevEl: container.querySelector(".slide-arrow.prev")
+    },
+    breakpoints: {
+      768: {
+        spaceBetween: 38
+      }
     }
-  }
+  });
 });
 })();
 

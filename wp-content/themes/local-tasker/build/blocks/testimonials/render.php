@@ -39,20 +39,57 @@ $testi_sec_pre_title = get_field('testi_sec_pre_title');
 $testi_sec_title = get_field('testi_sec_title');
 
 ?>
-<section <?php echo $anchor; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped on assignment. ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
-	<div class="md:partial-container-left pl-4 wd:ml-[2.3rem]">
-		<?php if ($testi_sec_pre_title): ?>
-			<div class="pre-title sm:mb-8 mb-[10px] text-caption-md uppercase font-semibold tracking-[0.08em] opacity-50">
-				<?php echo esc_html($testi_sec_pre_title); ?>
+<section <?php echo $anchor; ?> class="<?php echo esc_attr($class_name); ?>" <?php echo $style_attr; ?>>
+	<div class="container">
+		<div class="section-header-wrapper flex flex-wrap items-center gap-4 justify-between wd:ml-[2.3rem]"">
+			<!-- Head -->
+			<div class="section-head md:w-[60%]">
+				<?php if ($testi_sec_pre_title): ?>
+					<div
+						class="pre-title sm:mb-8 mb-[10px] text-caption-md uppercase font-semibold tracking-[0.08em] opacity-50">
+						<?php echo esc_html($testi_sec_pre_title); ?>
+					</div>
+				<?php endif; ?>
+				<?php if ($testi_sec_title): ?>
+					<h2
+						class="sec-title capitalize smlr:text-h3 text-[1.5rem] smlr:leading-[1.30] leading-[1.26] font-bold font-semi-ext text-lt-text-primary sm:tracking-[-1px]">
+						<?php echo esc_html($testi_sec_title); ?>
+					</h2>
+				<?php endif; ?>
 			</div>
-		<?php endif; ?>
-		<?php if ($testi_sec_title): ?>
-			<h2
-				class="sec-title capitalize smlr:text-h3 text-[1.5rem] smlr:leading-[1.30] leading-[1.26] font-bold font-semi-ext text-lt-text-primary sm:tracking-[-1px]">
-				<?php echo esc_html($testi_sec_title); ?>
-			</h2>
-		<?php endif; ?>
-		<div class="testimonial-slider swiper md:mt-[2.6rem] mt-[3.225rem]">
+			<!-- Slide Arrow -->
+			<div class="slide-arrow-holder flex gap-[12px] py-[0.875rem_1.125rem]">
+				<!-- Slide Prev -->
+				<div
+					class="slide-arrow prev flex items-center justify-center p-2 sm:size-[64px] size-[52px] rounded-full border border-transparent hover:opacity-[0.75] transition-all duration-600 cursor-pointer bg-lt-accent">
+					<svg width="17" height="8" viewBox="0 0 17 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<g clip-path="url(#clip0_192_6528)">
+							<path
+								d="M0.6464 4.03553C0.4512 3.84027 0.4512 3.52369 0.6464 3.32843L3.8284 0.146447C4.0237 -0.0488157 4.3403 -0.0488157 4.5355 0.146447C4.7308 0.341709 4.7308 0.658291 4.5355 0.853553L1.7071 3.68198L4.5355 6.51041C4.7308 6.70567 4.7308 7.02225 4.5355 7.21751C4.3403 7.41278 4.0237 7.41278 3.8284 7.21751L0.6464 4.03553ZM17 3.68198L17 4.18198H1V3.68198V3.18198H17L17 3.68198Z"
+								fill="white" />
+						</g>
+						<defs>
+							<clipPath id="clip0_192_6528">
+								<rect width="17" height="8" fill="white" transform="matrix(-1 0 0 1 17 0)" />
+							</clipPath>
+						</defs>
+					</svg>
+				</div><!-- End of Slide Prev -->
+				<!-- Slide Next -->
+				<div
+					class="slide-arrow next flex items-center justify-center p-2 sm:size-[64px] size-[52px] rounded-full border border-transparent hover:opacity-[0.75] transition-all duration-600 cursor-pointer bg-lt-accent">
+					<svg width="17" height="8" viewBox="0 0 17 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M16.3536 4.03519C16.5488 3.83993 16.5488 3.52335 16.3536 3.32809L13.1716 0.146106C12.9763 -0.0491566 12.6597 -0.0491566 12.4645 0.146106C12.2692 0.341368 12.2692 0.65795 12.4645 0.853212L15.2929 3.68164L12.4645 6.51007C12.2692 6.70533 12.2692 7.02191 12.4645 7.21717C12.6597 7.41244 12.9763 7.41244 13.1716 7.21717L16.3536 4.03519ZM0 3.68164L4.37114e-08 4.18164L16 4.18164L16 3.68164L16 3.18164L-4.37114e-08 3.18164L0 3.68164Z"
+							fill="white" />
+					</svg>
+				</div><!-- End of Slide Next -->
+			</div>
+			<!-- End of Slide Arrow -->
+		</div>
+	</div>
+	<div class="md:partial-container-left pl-4 wd:ml-[2.3rem]">
+		<div class="testimonial-slider swiper md:mt-[2.6rem] sm:mt-[3.225rem] mt-4">
 			<div class="swiper-wrapper py-2 pl-2">
 				<?php if (have_rows('testimonial_lists')): ?>
 					<?php while (have_rows('testimonial_lists')):
@@ -131,13 +168,11 @@ $testi_sec_title = get_field('testi_sec_title');
 										$mime_type = esc_attr($testimonial_video['mime_type']);
 										$video_title = esc_attr($testimonial_video['title']);
 										?>
-										<a href="<?php echo $video_url; ?>" data-fancybox
-											aria-label="<?php echo esc_attr(sprintf(
+										<a href="<?php echo $video_url; ?>" data-fancybox aria-label="<?php echo esc_attr(sprintf(
 												/* translators: %s: testimonial author */
 												__('Play video testimonial from %s', 'local-tasker'),
 												$testimonial_author
-											)); ?>"
-											class="icon-play md:w-[77px] md:h-[77px] w-[58px] h-[58px] rounded-full bg-lt-accent flex items-center justify-center absolute md:left-[38px] md:bottom-[42px] max-md:left-1/2 max-md:top-1/2 max-md:translate-x-[-50%] max-md:translate-y-[-50%] z-1 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lt-brand">
+											)); ?>" class="icon-play md:w-[77px] md:h-[77px] w-[58px] h-[58px] rounded-full bg-lt-accent flex items-center justify-center absolute md:left-[38px] md:bottom-[42px] max-md:left-1/2 max-md:top-1/2 max-md:translate-x-[-50%] max-md:translate-y-[-50%] z-1 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lt-brand">
 											<svg class="ml-1" width="16" height="18" viewBox="0 0 16 18" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
 												<path d="M15.4629 8.92788L-0.000225908 17.8555L-0.000225128 0.00025014L15.4629 8.92788Z"

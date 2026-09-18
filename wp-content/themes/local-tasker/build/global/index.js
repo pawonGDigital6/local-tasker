@@ -120,6 +120,12 @@ __webpack_require__.r(__webpack_exports__);
 function siteHeader() {
   // Select the header element
   const header = document.querySelector('.site-header');
+
+  // Nothing to sticky-toggle without a header; bail before binding listeners
+  // so the scroll handler can never throw on pages that omit it.
+  if (!header) {
+    return;
+  }
   function checkScroll() {
     // Check if the page is scrolled down more than 200 pixels
     if (window.scrollY >= 200) {
@@ -186,23 +192,41 @@ const navigation = {
     if (this.siteOverlay) {
       this.siteOverlay.addEventListener('click', this.closeMenu.bind(this));
     }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && this.body.classList.contains('menu-open')) {
+        this.closeMenu();
+      }
+    });
     this.addIconHasChildren();
     this.subMenuSlideToggle();
   },
   // Toggle menu
   openMenu() {
     this.body.classList.add('menu-open');
+    if (this.menuToggle) {
+      this.menuToggle.setAttribute('aria-expanded', 'true');
+    }
   },
   closeMenu() {
     this.body.classList.remove('menu-open');
+    if (this.menuToggle) {
+      this.menuToggle.setAttribute('aria-expanded', 'false');
+      // Send focus back to the control that opened the menu.
+      this.menuToggle.focus();
+    }
   },
   // Add icon to menu items with children
   addIconHasChildren() {
     this.navItems.forEach(item => {
       // Prevent adding multiple icons if function runs twice
       if (item.querySelector('.icon')) return;
-      const icon = document.createElement('span');
+      const icon = document.createElement('button');
+      icon.type = 'button';
       icon.classList.add('icon');
+      icon.setAttribute('aria-expanded', 'false');
+      const itemLink = item.querySelector(':scope > a');
+      const itemLabel = itemLink ? itemLink.textContent.trim() : '';
+      icon.setAttribute('aria-label', itemLabel ? `Show ${itemLabel} sub-menu` : 'Show sub-menu');
       icon.innerHTML = '<span></span><span></span>';
       item.appendChild(icon);
     });
@@ -224,6 +248,10 @@ const navigation = {
           // Toggle active class on icon while resetting others
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).toggleClass('active');
           jquery__WEBPACK_IMPORTED_MODULE_0___default()('.main-navigation .icon').not(jquery__WEBPACK_IMPORTED_MODULE_0___default()(this)).removeClass('active');
+
+          // Keep the announced state in step with the visual one
+          this.setAttribute('aria-expanded', jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).hasClass('active') ? 'true' : 'false');
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()('.main-navigation .icon').not(jquery__WEBPACK_IMPORTED_MODULE_0___default()(this)).attr('aria-expanded', 'false');
         });
       }
     });
@@ -260,15 +288,29 @@ const quotePop = {
 
     // Close popup when clicking outside .gqf-form
     document.addEventListener('click', e => this.handleOutsideClick(e));
+
+    // Escape closes the popup, so keyboard users are never trapped in it
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.body.classList.contains('opened-quote-popup')) {
+        this.quotePopClose();
+      }
+    });
   },
   quotePopOpen: function (e) {
     e.preventDefault();
     // Stop propagation so the opening click doesn't instantly trigger handleOutsideClick
     e.stopPropagation();
+    // Remember the opener so focus can be returned to it on close
+    this.lastOpener = e.currentTarget;
     document.body.classList.add('opened-quote-popup');
+    this.quoteCloser?.focus();
   },
   quotePopClose: function () {
+    if (!document.body.classList.contains('opened-quote-popup')) {
+      return;
+    }
     document.body.classList.remove('opened-quote-popup');
+    this.lastOpener?.focus();
   },
   handleOutsideClick: function (e) {
     // Only check if the popup is currently open
@@ -309,14 +351,23 @@ const searchPop = {
     // Classic check guarantees no crash even without optional chaining support
     if (this.searchOpeners && this.searchOpeners.length > 0) {
       this.searchOpeners.forEach(searchOpener => {
-        searchOpener.addEventListener('click', () => this.searchPopOpen());
+        searchOpener.addEventListener('click', () => this.searchPopOpen(searchOpener));
       });
     }
     if (this.searchCloser) {
       this.searchCloser.addEventListener('click', () => this.searchPopClose());
     }
+
+    // Escape closes the popup, so keyboard users are never trapped in it
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.body.classList.contains('opened-search-popup')) {
+        this.searchPopClose();
+      }
+    });
   },
-  searchPopOpen: function () {
+  searchPopOpen: function (opener) {
+    // Remember the opener so focus can be returned to it on close
+    this.lastOpener = opener || null;
     document.body.classList.add('opened-search-popup');
     const searchInput = document.querySelector('.global-search-pop input[type="search"]');
     if (searchInput) {
@@ -326,7 +377,13 @@ const searchPop = {
     }
   },
   searchPopClose: function () {
+    if (!document.body.classList.contains('opened-search-popup')) {
+      return;
+    }
     document.body.classList.remove('opened-search-popup');
+    if (this.lastOpener) {
+      this.lastOpener.focus();
+    }
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (searchPop);

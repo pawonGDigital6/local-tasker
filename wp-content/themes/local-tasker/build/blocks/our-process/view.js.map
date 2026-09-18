@@ -1,1 +1,1 @@
-{"version":3,"file":"our-process/view.js","mappings":";;;;AAAAA,OAAO,CAACC,GAAG,CAAC,yBAAyB,CAAC,C","sources":["webpack://acf-first-block/./src/blocks/our-process/view.js"],"sourcesContent":["console.log(\"this is the view script\");"],"names":["console","log"],"sourceRoot":""}
+{"version":3,"file":"our-process/view.js","mappings":";;;;AAAA,kD","sources":["webpack://acf-first-block/./src/blocks/our-process/view.js"],"sourcesContent":["// No front-end behaviour required for this block.\r\n"],"names":[],"sourceRoot":""}

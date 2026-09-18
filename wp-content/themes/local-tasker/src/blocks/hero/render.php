@@ -126,38 +126,46 @@ if (!function_exists('lt_get_product_cat_url')) {
 $product_navigation = [];
 
 $lt_hero_parent_cats = get_terms([
-	'taxonomy'   => 'product_cat',
-	'parent'     => 0,
+	'taxonomy' => 'product_cat',
+	'parent' => 0,
 	'hide_empty' => true,
-	'orderby'    => 'name',
-	'order'      => 'ASC',
-	'exclude'    => array_filter([(int) get_option('default_product_cat', 0)]),
+	'exclude' => array_filter([(int) get_option('default_product_cat', 0)]),
 ]);
 
 if (!is_wp_error($lt_hero_parent_cats)) {
+	// 1. Sort Parent Categories by text length (Longest to Shortest)
+	usort($lt_hero_parent_cats, function ($a, $b) {
+		return strlen($b->name) <=> strlen($a->name);
+	});
+
 	foreach ($lt_hero_parent_cats as $lt_parent_cat) {
 		$lt_child_cats = get_terms([
-			'taxonomy'   => 'product_cat',
-			'parent'     => $lt_parent_cat->term_id,
+			'taxonomy' => 'product_cat',
+			'parent' => $lt_parent_cat->term_id,
 			'hide_empty' => true,
-			'orderby'    => 'name',
-			'order'      => 'ASC',
 		]);
+
+		// 2. Sort Child Categories by text length (Longest to Shortest)
+		if (!is_wp_error($lt_child_cats)) {
+			usort($lt_child_cats, function ($a, $b) {
+				return strlen($b->name) <=> strlen($a->name);
+			});
+		}
 
 		$lt_subcategories = [];
 		if (!is_wp_error($lt_child_cats)) {
 			foreach ($lt_child_cats as $lt_child_cat) {
 				$lt_subcategories[] = [
 					'name' => $lt_child_cat->name,
-					'url'  => lt_get_product_cat_url($lt_child_cat),
+					'url' => lt_get_product_cat_url($lt_child_cat),
 				];
 			}
 		}
 
 		$product_navigation['product-' . $lt_parent_cat->slug] = [
-			'name'          => $lt_parent_cat->name,
-			'url'           => lt_get_product_cat_url($lt_parent_cat),
-			'redirect'      => 'false',
+			'name' => $lt_parent_cat->name,
+			'url' => lt_get_product_cat_url($lt_parent_cat),
+			'redirect' => 'false',
 			'subcategories' => $lt_subcategories,
 		];
 	}
