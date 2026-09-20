@@ -249,6 +249,27 @@ function enqueue_admin_scripts_and_styles()
 
 add_action('admin_enqueue_scripts', 'enqueue_admin_scripts_and_styles');
 
+
+function lt_enqueue_swiper()
+{
+	// Load Swiper once globally; all blocks that need it reference the same global instance
+	wp_enqueue_script(
+		'swiper',
+		get_template_directory_uri() . '/node_modules/swiper/swiper-bundle.min.js',
+		array(),
+		'11.2.1',
+		true
+	);
+	// Only enqueue style if you want Swiper CSS globally; otherwise rely on block-specific styles
+	wp_enqueue_style(
+		'swiper-bundle',
+		get_template_directory_uri() . '/node_modules/swiper/swiper-bundle.min.css',
+		array(),
+		'11.2.1'
+	);
+}
+add_action('wp_enqueue_scripts', 'lt_enqueue_swiper', 1); // priority 1 so it loads BEFORE block scripts
+
 /**
  * Load ACF Blocks.
  */
