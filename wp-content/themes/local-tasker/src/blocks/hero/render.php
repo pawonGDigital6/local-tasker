@@ -106,7 +106,8 @@ $hero_search_url = get_field('hero_search_url') ?: ($shop_page_id > 0 ? get_perm
 // Helper function to safely get WooCommerce term link or fallback.
 // Accepts a term object (preferred, no extra lookup) or a slug.
 if (!function_exists('lt_get_product_cat_url')) {
-	function lt_get_product_cat_url($term) {
+	function lt_get_product_cat_url($term)
+	{
 		$link = get_term_link($term, 'product_cat');
 		if (is_wp_error($link)) {
 			$slug = is_object($term) ? $term->slug : $term;
@@ -175,15 +176,15 @@ if (!is_wp_error($lt_hero_parent_cats)) {
 // selecting one navigates straight to its page, as before.
 $service_navigation = [
 	'renovations' => [
-		'name'          => __('Renovations', 'local-tasker'),
-		'url'           => home_url('/services/home-renovations/'),
-		'redirect'      => 'true',
+		'name' => __('Renovations', 'local-tasker'),
+		'url' => home_url('/services/home-renovations/'),
+		'redirect' => 'true',
 		'subcategories' => [],
 	],
 	'cabinetry' => [
-		'name'          => __('Cabinetry', 'local-tasker'),
-		'url'           => home_url('/services/custom-cabinetry/'),
-		'redirect'      => 'true',
+		'name' => __('Cabinetry', 'local-tasker'),
+		'url' => home_url('/services/custom-cabinetry/'),
+		'redirect' => 'true',
 		'subcategories' => [],
 	],
 ];
@@ -242,8 +243,8 @@ foreach ($hero_navigation as $key => $item) {
 			echo wp_get_attachment_image($hero_image, $size, false, [
 
 				'class' => 'w-full h-full object-cover',
-
-				'sizes' => '100vw'
+				'sizes' => '100vw',
+				'fetchpriority' => 'auto'
 
 			]);
 
@@ -315,7 +316,8 @@ radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52,
 						if ($feature_item_icon):
 
 							?>
-							<div class="icon sm:mb-[18px] mb-4 flex justify-center shrink-0 max-sm:w-[21px] max-sm:h-[21px] max-sm:mt-[3px] sml:mx-auto">
+							<div
+								class="icon sm:mb-[18px] mb-4 flex justify-center shrink-0 max-sm:w-[21px] max-sm:h-[21px] max-sm:mt-[3px] sml:mx-auto">
 								<?php
 								echo wp_get_attachment_image($feature_item_icon, $size);
 								; ?>
@@ -333,7 +335,8 @@ radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52,
 								</h2>
 							<?php endif; ?>
 							<?php if ($feature_text): ?>
-								<div class="feature-text max-w-[302px] mx-auto tracking-[0.02em] max-sml:text-caption-md"><?php echo $feature_text; ?></div>
+								<div class="feature-text max-w-[302px] mx-auto tracking-[0.02em] max-sml:text-caption-md">
+									<?php echo $feature_text; ?></div>
 							<?php endif; ?>
 						</div>
 					</div><!-- End of Item -->
@@ -353,8 +356,7 @@ radial-gradient(52.86% 52.86% at 50% 47.14%, rgba(0, 0, 0, 0.65) 0%, rgba(5, 52,
 							data-placeholder="<?php echo esc_attr($search_placeholder_service); ?>">
 							<option value=""><?php echo esc_html($search_placeholder_service); ?></option>
 							<?php foreach ($hero_navigation as $key => $item): ?>
-								<option value="<?php echo esc_url($item['url']); ?>"
-									data-term-id="<?php echo esc_attr($key); ?>"
+								<option value="<?php echo esc_url($item['url']); ?>" data-term-id="<?php echo esc_attr($key); ?>"
 									data-redirect="<?php echo esc_attr($item['redirect']); ?>">
 									<?php echo esc_html($item['name']); ?>
 								</option>

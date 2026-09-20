@@ -271,6 +271,13 @@ require get_template_directory() . '/inc/template-tags.php';
 require get_template_directory() . '/inc/template-functions.php';
 
 /**
+ * Optmization
+ */
+require get_template_directory() . '/inc/optimization/forms.php';
+
+require get_template_directory() . '/inc/optimization/woo-commerce.php';
+
+/**
  * Customizer additions.
  */
 require get_template_directory() . '/inc/customizer.php';
