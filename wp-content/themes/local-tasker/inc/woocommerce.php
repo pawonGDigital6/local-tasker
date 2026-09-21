@@ -1073,8 +1073,150 @@ function lt_enqueue_mini_cart_script(): void {
 		file_exists( get_template_directory() . $rel ) ? filemtime( get_template_directory() . $rel ) : _S_VERSION,
 		true
 	);
+	wp_localize_script(
+		'lt-mini-cart',
+		'ltMiniCart',
+		[
+			'ajaxUrl' => esc_url_raw( admin_url( 'admin-ajax.php' ) ),
+			'nonce'   => wp_create_nonce( 'lt_update_cart_qty' ),
+		]
+	);
 }
 add_action( 'wp_enqueue_scripts', 'lt_enqueue_mini_cart_script' );
+
+/**
+ * Put a quantity stepper on every mini-cart line.
+ *
+ * Adding from a product card commits the customer to a quantity of one with no
+ * way back short of removing the line and starting again, so the drawer that
+ * pops up on add is where they get to change their mind.
+ *
+ * Hooked onto WooCommerce's own filter rather than overriding
+ * templates/cart/mini-cart.php: the drawer is re-rendered from that template on
+ * every wc-cart-fragments refresh, so a filter keeps the stepper in place after
+ * each update without the theme owning a copy of the template.
+ *
+ * The markup deliberately reuses utility classes the theme already compiles
+ * (the box calculator's stepper), so this needs no stylesheet rebuild.
+ *
+ * @param string $html          Default '<span class="quantity">1 &times; $x</span>'.
+ * @param array  $cart_item     Cart item.
+ * @param string $cart_item_key Cart item key.
+ * @return string
+ */
+function lt_mini_cart_item_quantity( $html, $cart_item, $cart_item_key ) {
+	$product = isset( $cart_item['data'] ) ? $cart_item['data'] : null;
+
+	if ( ! $product instanceof WC_Product ) {
+		return $html;
+	}
+
+	$qty = (int) $cart_item['quantity'];
+
+	// Only a stock-managed product without backorders has a ceiling worth
+	// enforcing; 0 means "no limit" to both the input and the AJAX handler.
+	$max = ( $product->managing_stock() && ! $product->backorders_allowed() )
+		? max( 0, (int) $product->get_stock_quantity() )
+		: 0;
+
+	$btn_class   = 'lt-mini-cart__qty-btn w-8 h-8 flex items-center justify-center text-lt-text-secondary hover:bg-lt-snow-drift transition-colors duration-150 shrink-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
+	$input_class = 'lt-mini-cart__qty-input w-10 h-8 text-center border-x border-[#E9EAEC] bg-transparent text-caption-sm font-bold text-lt-text-primary focus:outline-none';
+
+	ob_start();
+	?>
+	<span class="quantity flex items-center justify-between gap-2">
+		<span
+			class="lt-mini-cart__qty flex items-center border border-[#E9EAEC] rounded-lg overflow-hidden bg-lt-white shrink-0"
+			data-cart-item-key="<?php echo esc_attr( $cart_item_key ); ?>"
+			data-max="<?php echo esc_attr( $max ); ?>"
+		>
+			<button type="button" class="<?php echo esc_attr( $btn_class ); ?>" data-lt-qty-step="-1"
+				<?php disabled( $qty <= 1 ); ?>
+				aria-label="<?php esc_attr_e( 'Decrease quantity', 'local-tasker' ); ?>">&minus;</button>
+			<input type="number" class="<?php echo esc_attr( $input_class ); ?>"
+				value="<?php echo esc_attr( $qty ); ?>" min="1" step="1" inputmode="numeric"
+				<?php echo $max > 0 ? ' max="' . esc_attr( $max ) . '"' : ''; ?>
+				aria-label="<?php esc_attr_e( 'Quantity', 'local-tasker' ); ?>">
+			<button type="button" class="<?php echo esc_attr( $btn_class ); ?>" data-lt-qty-step="1"
+				<?php disabled( $max > 0 && $qty >= $max ); ?>
+				aria-label="<?php esc_attr_e( 'Increase quantity', 'local-tasker' ); ?>">+</button>
+		</span>
+		<?php
+		// The stepper already states the count, so the figure beside it is the
+		// line total rather than WooCommerce's default "qty × unit price".
+		echo wp_kses_post( WC()->cart->get_product_subtotal( $product, $qty ) );
+		?>
+	</span>
+	<?php
+	return ob_get_clean();
+}
+add_filter( 'woocommerce_widget_cart_item_quantity', 'lt_mini_cart_item_quantity', 10, 3 );
+
+/**
+ * Recalculate the cart before the mini-cart renders.
+ *
+ * Box-priced flooring gets its real price from lt_apply_flooring_box_pricing()
+ * (see above), which rewrites each line's product object during
+ * `woocommerce_before_calculate_totals`. In a cart-fragment request the cart is
+ * rebuilt from the session and the mini-cart renders from product objects that
+ * have not been through that pass, so every boxed line showed its raw per-sqm
+ * rate instead of its box price — $53.00 where the cart page said $153.06. The
+ * drawer's subtotal was right all along, which is what made it easy to miss.
+ *
+ * One more totals pass before the template runs is enough to put the line back
+ * in step, and that pass is documented as idempotent, so running it again here
+ * cannot compound the box multiplier.
+ */
+function lt_mini_cart_recalculate(): void {
+	if ( WC()->cart && ! WC()->cart->is_empty() ) {
+		WC()->cart->calculate_totals();
+	}
+}
+add_action( 'woocommerce_before_mini_cart', 'lt_mini_cart_recalculate' );
+
+/**
+ * AJAX: set a cart line's quantity from the mini-cart stepper.
+ *
+ * Returns nothing but a status: the drawer, the totals and the header badge are
+ * all repainted from WooCommerce's own cart fragments once this succeeds, so
+ * there is no second copy of that markup to keep in step.
+ */
+function lt_ajax_update_cart_item_qty(): void {
+	check_ajax_referer( 'lt_update_cart_qty', 'nonce' );
+
+	$cart = WC()->cart;
+	$key  = isset( $_POST['cart_item_key'] ) ? wc_clean( wp_unslash( $_POST['cart_item_key'] ) ) : '';
+	$qty  = isset( $_POST['quantity'] ) ? absint( $_POST['quantity'] ) : 0;
+
+	if ( ! $cart || '' === $key || ! $cart->get_cart_item( $key ) ) {
+		wp_send_json_error( [ 'message' => __( 'That item is no longer in your cart.', 'local-tasker' ) ] );
+	}
+
+	// The stepper's minimum is 1 and removal has its own control, so a 0 here is
+	// a malformed request rather than an intent to delete the line.
+	$qty = max( 1, $qty );
+
+	$cart_item = $cart->get_cart_item( $key );
+	$product   = $cart_item['data'];
+
+	if ( $product instanceof WC_Product && $product->managing_stock() && ! $product->backorders_allowed() ) {
+		$stock = (int) $product->get_stock_quantity();
+		if ( $stock > 0 ) {
+			$qty = min( $qty, $stock );
+		}
+	}
+
+	$cart->set_quantity( $key, $qty, true );
+
+	wp_send_json_success(
+		[
+			'quantity' => $qty,
+			'count'    => $cart->get_cart_contents_count(),
+		]
+	);
+}
+add_action( 'wp_ajax_lt_update_cart_item_qty', 'lt_ajax_update_cart_item_qty' );
+add_action( 'wp_ajax_nopriv_lt_update_cart_item_qty', 'lt_ajax_update_cart_item_qty' );
 
 if ( ! function_exists( 'local_tasker_woocommerce_header_cart' ) ) {
 	/**

@@ -1003,6 +1003,15 @@ body.woocommerce-account {
 		width: 100%;
 	}
 
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	input[type="number"] {
+		-moz-appearance: textfield;
+	}
+
 	.lt-mini-cart__content,
 	.widget_shopping_cart {
 		height: 100%;

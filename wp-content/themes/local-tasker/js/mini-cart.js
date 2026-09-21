@@ -59,4 +59,116 @@
 	if (window.jQuery) {
 		window.jQuery(document.body).on('added_to_cart', openPanel);
 	}
+
+	/* ──────────────────────────────────────────────────────────────
+	   Quantity stepper
+
+	   Adding from a product card fixes the quantity at one, so the drawer is
+	   where it can be changed. The markup comes from
+	   lt_mini_cart_item_quantity() (inc/woocommerce.php) and is replaced
+	   wholesale on every cart-fragment refresh, so every handler here is
+	   delegated off the document rather than bound to the controls.
+	   ────────────────────────────────────────────────────────────── */
+	var settings = window.ltMiniCart || {};
+	var inFlight = false;
+
+	function stepperOf(el) {
+		return el && el.closest ? el.closest('.lt-mini-cart__qty') : null;
+	}
+
+	// Disable the whole row while a change is in flight. Two quick clicks would
+	// otherwise race, and the slower response would win and set a stale figure.
+	function setBusy(stepper, busy) {
+		inFlight = busy;
+		stepper.querySelectorAll('button, input').forEach(function (control) {
+			control.disabled = busy;
+		});
+		stepper.style.opacity = busy ? '0.5' : '';
+	}
+
+	function commit(stepper, quantity) {
+		if (inFlight || !settings.ajaxUrl) {
+			return;
+		}
+
+		var key = stepper.dataset.cartItemKey;
+		var max = parseInt(stepper.dataset.max, 10) || 0;
+
+		quantity = Math.max(1, quantity);
+		if (max > 0) {
+			quantity = Math.min(quantity, max);
+		}
+
+		var input = stepper.querySelector('.lt-mini-cart__qty-input');
+		if (input && parseInt(input.value, 10) === quantity) {
+			// Clamped back to what is already in the cart — nothing to send, but
+			// the field may be showing the out-of-range figure the user typed.
+			input.value = quantity;
+			return;
+		}
+		if (input) {
+			input.value = quantity;
+		}
+
+		setBusy(stepper, true);
+
+		var body = new FormData();
+		body.append('action', 'lt_update_cart_item_qty');
+		body.append('cart_item_key', key);
+		body.append('quantity', quantity);
+		body.append('nonce', settings.nonce || '');
+
+		fetch(settings.ajaxUrl, { method: 'POST', body: body, credentials: 'same-origin' })
+			.then(function (response) { return response.json(); })
+			.then(function () {
+				// Repaint from WooCommerce's own fragments: the line, the
+				// subtotal and the header badge all update from one source.
+				inFlight = false;
+				document.body.dispatchEvent(new CustomEvent('wc_fragment_refresh'));
+			})
+			.catch(function () {
+				setBusy(stepper, false);
+			});
+	}
+
+	document.addEventListener('click', function (event) {
+		var button = event.target.closest('[data-lt-qty-step]');
+		if (!button) {
+			return;
+		}
+
+		event.preventDefault();
+
+		var stepper = stepperOf(button);
+		var input = stepper && stepper.querySelector('.lt-mini-cart__qty-input');
+		if (!stepper || !input) {
+			return;
+		}
+
+		commit(stepper, (parseInt(input.value, 10) || 1) + parseInt(button.dataset.ltQtyStep, 10));
+	});
+
+	// Typed edits commit on blur / Enter rather than per keystroke, so typing
+	// "12" does not first send a 1.
+	document.addEventListener('change', function (event) {
+		var input = event.target.closest('.lt-mini-cart__qty-input');
+		if (!input) {
+			return;
+		}
+		var stepper = stepperOf(input);
+		if (stepper) {
+			commit(stepper, parseInt(input.value, 10) || 1);
+		}
+	});
+
+	document.addEventListener('keydown', function (event) {
+		if (event.key !== 'Enter') {
+			return;
+		}
+		var input = event.target.closest('.lt-mini-cart__qty-input');
+		if (input) {
+			event.preventDefault();
+			input.blur();
+		}
+	});
 })();
