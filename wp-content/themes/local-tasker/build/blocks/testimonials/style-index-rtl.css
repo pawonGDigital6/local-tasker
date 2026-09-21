@@ -1,1 +1,27 @@
-.testimonial-card__content{box-shadow:0 3px 10.9px 0 hsla(0,0%,64%,.251)}.testimonial-card__content .text>:last-child{margin-bottom:0}
+/*!***********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/testimonials/style.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************/
+/*********************
+* BREAKPOINTS
+*
+* @example
+* for max-width case
+* @include breakpoint('smaller') {
+*	@content;
+* }
+*
+* for min-width case
+* @include breakpoint('smaller', true) {
+*	@content;
+*}
+*********************/
+/**
+* Mixin to declare Font-face
+*
+*/
+.testimonial-card__content {
+  box-shadow: 0px 3px 10.9px 0px rgba(163, 163, 163, 0.2509803922);
+}
+.testimonial-card__content .text > *:last-child {
+  margin-bottom: 0;
+}

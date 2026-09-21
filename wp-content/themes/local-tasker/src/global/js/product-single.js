@@ -265,9 +265,9 @@ import { initAreaCalculators } from './components/area-calculator';
 				addToCartBtn.disabled = !enabled;
 				addToCartBtn.dataset.boxes = boxes;
 			}
-			if (checkoutBtn) {
-				checkoutBtn.classList.toggle('hidden', !enabled);
-			}
+			// Checkout stays hidden until Add to Cart actually succeeds — a box
+			// count alone is not a cart, and revealing it here sent the customer
+			// to WooCommerce's "Your cart is empty" page.
 
 			// Wastage banner.
 			if (wastageBanner) {
