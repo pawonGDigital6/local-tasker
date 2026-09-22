@@ -1,6 +1,12 @@
 const defaults = require("@wordpress/scripts/config/webpack.config");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const DependencyExtractionWebpackPlugin = require("@wordpress/dependency-extraction-webpack-plugin");
 const path = require("path");
+
+// Swiper ships from /assets/vendor/swiper and is registered as the "swiper"
+// script handle, so every bundle that imports it reuses that single copy
+// instead of inlining its own (~150 KB per entry point).
+const SWIPER_REQUESTS = ["swiper", "swiper/bundle"];
 
 const copyPreviewImage = [];
 
@@ -45,7 +51,6 @@ module.exports = {
 	externals: {
 		...defaults.externals,
 		jquery: "jQuery",
-		swiper: "Swiper",   // <-- ADD THIS LINE
 	},
 	module: {
 		...defaults.module,
@@ -69,7 +74,24 @@ module.exports = {
 		],
 	},
 	plugins: [
-		...defaults.plugins,
+		// Replace the stock dependency extraction plugin with one that also knows
+		// about Swiper, so each entry point's .asset.php lists "swiper" as a
+		// dependency and WordPress loads the shared copy in the right order.
+		...defaults.plugins.filter(
+			(plugin) => plugin.constructor.name !== "DependencyExtractionWebpackPlugin"
+		),
+		new DependencyExtractionWebpackPlugin({
+			requestToExternal(request) {
+				if (SWIPER_REQUESTS.includes(request)) {
+					return "Swiper";
+				}
+			},
+			requestToHandle(request) {
+				if (SWIPER_REQUESTS.includes(request)) {
+					return "swiper";
+				}
+			},
+		}),
 		...copyPreviewImage
 	],
 };

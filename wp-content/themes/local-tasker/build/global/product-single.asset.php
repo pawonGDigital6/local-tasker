@@ -1,1 +1,1 @@
-<?php return array('dependencies' => array(), 'version' => '4f310c21b4508acd5ecc');
+<?php return array('dependencies' => array('swiper'), 'version' => 'a83d95e233b8f4b96f4b');

@@ -244,7 +244,10 @@ foreach ($hero_navigation as $key => $item) {
 
 				'class' => 'w-full h-full object-cover',
 				'sizes' => '100vw',
-				'fetchpriority' => 'auto'
+				// Hero is the LCP element: load it eagerly at high priority so the
+				// browser starts it immediately instead of after layout/JS.
+				'loading' => 'eager',
+				'fetchpriority' => 'high'
 
 			]);
 

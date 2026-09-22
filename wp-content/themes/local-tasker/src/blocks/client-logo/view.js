@@ -1,5 +1,4 @@
 import Swiper from "swiper/bundle";
-import "swiper/css/bundle";
 
 // Loop through every instance of the component container
 document.querySelectorAll(".lt-client-logo").forEach((container) => {

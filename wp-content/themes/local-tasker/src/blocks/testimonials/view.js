@@ -1,5 +1,4 @@
 import Swiper from "swiper/bundle";
-import "swiper/css/bundle";
 document.querySelectorAll(".lt-testimonials").forEach((container) => {
 	const testimonialSlider = new Swiper(container.querySelector(".testimonial-slider"), {
 		speed: 500,

@@ -2,6 +2,10 @@
 @use "../abstracts/mixins" as mix;
 
 // Manrope
+// Manrope is a variable font (weight 200-800). Only the .ttf carries the fvar
+// table - the bundled .woff2/.woff are static ExtraLight instances, so listing
+// them here renders every weight at 200. Keep the .ttf until a true variable
+// woff2 is generated.
 @include mix.font-face("Manrope", "../fonts/manrope/Manrope-Var", (ttf), 200 800, normal);
 
 // PP Formula

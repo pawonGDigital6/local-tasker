@@ -3,7 +3,6 @@
  * Vanilla JS only.
  */
 import Swiper from 'swiper/bundle';
-import 'swiper/css/bundle';
 import { initAreaCalculators } from './components/area-calculator';
 
 (function () {
