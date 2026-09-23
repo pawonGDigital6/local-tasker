@@ -132,3 +132,119 @@
 	.lt-calc__results { grid-template-columns: 1fr; }
 	.lt-calc__actions .lt-btn { flex: 1 1 100%; }
 }
+
+/* --------------------------------------------------------------------------
+   Product description card
+
+   The product's main editor content (post_content), shown above the Details
+   spec table. The card chrome is Tailwind in the template and matches
+   .lt-spec-table exactly; what is set here is the body typography, because this
+   content is free-form editor HTML rather than the fixed two-column table the
+   spec card renders. Sizes mirror the spec table: 14px desktop / 13px mobile,
+   with the same 24px / 16px horizontal padding.
+   -------------------------------------------------------------------------- */
+.lt-product-description {
+	padding-top: 48px;
+}
+
+.lt-product-description__body {
+	padding: 20px 24px 24px;
+	font-size: 14px;
+	line-height: 1.7;
+	color: var(--lt-muted);
+}
+
+.lt-product-description__body > *:first-child {
+	margin-top: 0;
+}
+
+.lt-product-description__body > *:last-child {
+	margin-bottom: 0;
+}
+
+.lt-product-description__body p {
+	margin: 0 0 14px;
+}
+
+.lt-product-description__body h1,
+.lt-product-description__body h2,
+.lt-product-description__body h3,
+.lt-product-description__body h4,
+.lt-product-description__body h5,
+.lt-product-description__body h6 {
+	margin: 22px 0 10px;
+	color: var(--lt-ink);
+	font-weight: 700;
+	line-height: 1.35;
+}
+
+.lt-product-description__body h1,
+.lt-product-description__body h2 {
+	font-size: 18px;
+}
+
+.lt-product-description__body h3 {
+	font-size: 16px;
+}
+
+.lt-product-description__body h4,
+.lt-product-description__body h5,
+.lt-product-description__body h6 {
+	font-size: 15px;
+}
+
+.lt-product-description__body strong,
+.lt-product-description__body b {
+	color: var(--lt-ink);
+}
+
+.lt-product-description__body ul,
+.lt-product-description__body ol {
+	margin: 0 0 14px;
+	padding-left: 20px;
+}
+
+.lt-product-description__body li {
+	margin: 0 0 6px;
+}
+
+.lt-product-description__body a {
+	color: var(--lt-brand);
+	text-decoration: underline;
+}
+
+.lt-product-description__body a:hover {
+	text-decoration: none;
+}
+
+.lt-product-description__body img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 10px;
+}
+
+.lt-product-description__body table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.lt-product-description__body td,
+.lt-product-description__body th {
+	padding: 10px 12px;
+	border: 1px solid var(--lt-line);
+	text-align: left;
+	vertical-align: top;
+}
+
+@media (min-width: 768px) {
+	.lt-product-description {
+		padding-top: 80px;
+	}
+}
+
+@media (max-width: 767px) {
+	.lt-product-description__body {
+		padding: 16px 16px 20px;
+		font-size: 13px;
+	}
+}

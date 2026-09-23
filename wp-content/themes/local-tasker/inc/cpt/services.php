@@ -57,7 +57,9 @@ if (!function_exists('local_task_register_services_cpt')) {
             'publicly_queryable' => true,
             'capability_type' => 'post',
             'show_in_rest' => true,
-            'rewrite' => array('slug' => 'services', 'with_front' => true),
+            // with_front must stay false: it prepends the posts permalink front to this
+            // post type, so a /blog/ front would turn /services/x/ into /blog/services/x/.
+            'rewrite' => array('slug' => 'services', 'with_front' => false),
         );
 
         register_post_type('service', $args);

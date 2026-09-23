@@ -54,7 +54,7 @@
     "show_in_nav_menus": true,
     "show_in_rest": true,
     "rest_base": "",
-    "rest_namespace": "wp\/v2",
+    "rest_namespace": "wp/v2",
     "rest_controller_class": "WP_REST_Posts_Controller",
     "menu_position": "",
     "menu_icon": {
@@ -76,7 +76,7 @@
     "rewrite": {
         "permalink_rewrite": "custom_permalink",
         "slug": "store-location",
-        "with_front": "1",
+        "with_front": "0",
         "feeds": "0",
         "pages": "1"
     },

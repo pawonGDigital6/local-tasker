@@ -14,6 +14,30 @@ $is_variable = $product->is_type( 'variable' );
 $is_on_sale  = $product->is_on_sale();
 $has_price   = '' !== $product->get_price();
 
+/*
+ * These cards also appear outside the shop — on service pages and landing
+ * pages, pulled in by the Popular Products / New Arrivals blocks, often via a
+ * reusable block, so the host page's own content gives no hint they are
+ * coming. purge_woocommerce_and_square_assets() (inc/optimization) strips
+ * WooCommerce's cart scripts on any page that is not a shop/product/cart page,
+ * which left the button below with no AJAX handler: it fell back to its href
+ * and reloaded the page as ?add-to-cart=123, with no sign anything was added.
+ *
+ * Asking for the scripts here — at render time, from the one template all of
+ * those blocks share — puts them back only on pages that actually show a
+ * button, so the optimisation still holds everywhere else. Both are footer
+ * scripts, so enqueueing them during the_content is not too late, and
+ * WooCommerce localises them when the footer prints.
+ *
+ * With wc-add-to-cart present the button adds over AJAX and fires the
+ * `added_to_cart` event that js/mini-cart.js already listens for, which is what
+ * slides the cart drawer out.
+ */
+if ( ! $is_variable && $product->is_purchasable() && $product->is_in_stock() ) {
+	wp_enqueue_script( 'wc-add-to-cart' );
+	wp_enqueue_script( 'wc-cart-fragments' );
+}
+
 // _price is already the $/sqm figure — no conversion needed to show it.
 $price_ex         = $has_price ? (float) $product->get_price() : 0;
 $regular_price_ex = $has_price ? (float) $product->get_regular_price() : 0;

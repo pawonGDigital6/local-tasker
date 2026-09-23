@@ -60,6 +60,21 @@
 		window.jQuery(document.body).on('added_to_cart', openPanel);
 	}
 
+	/*
+	 * The single product page does not use that flow: its box calculator posts
+	 * to lt_add_flooring_to_cart itself (src/global/js/product-single.js) and
+	 * announces the result by dispatching a native `wc_fragment_refresh` on
+	 * document.body. Listening for it here opens the drawer there too, so a
+	 * product added from the calculator behaves like one added from a card.
+	 *
+	 * Only this theme dispatches that event natively — jQuery's own
+	 * wc_fragment_refresh is a jQuery event and does not reach addEventListener,
+	 * so WooCommerce's periodic fragment refreshes cannot pop the drawer open.
+	 * The stepper below dispatches it as well, but the drawer is already open at
+	 * that point, so re-opening is a no-op.
+	 */
+	document.body.addEventListener('wc_fragment_refresh', openPanel);
+
 	/* ──────────────────────────────────────────────────────────────
 	   Quantity stepper
 

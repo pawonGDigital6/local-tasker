@@ -59,6 +59,9 @@ global $product;
 	</section>
 	<?php endif; ?>
 
+	<!-- ── Product description (main editor content) ─────────── -->
+	<?php get_template_part( 'woocommerce/partials/product-description' ); ?>
+
 	<!-- ── Details / Spec table ─────────────────────────────── -->
 	<?php get_template_part( 'woocommerce/partials/product-details' ); ?>
 
