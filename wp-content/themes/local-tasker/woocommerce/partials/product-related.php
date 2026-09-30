@@ -90,7 +90,10 @@ if ( empty( $related_products ) ) {
 												<span class="text-caption-md text-lt-text-muted line-through"><?php echo wc_price( $reg_ppsm_ex ); ?></span>
 											<?php endif; ?>
 											<span class="text-body font-bold text-lt-text-primary"><?php echo wc_price( $ppsm_ex ); ?></span>
-											<span class="text-caption-sm text-lt-text-muted">/ sqm</span>
+											<?php $unit_suffix = lt_get_price_unit_suffix( $related ); ?>
+											<?php if ( $unit_suffix ) : ?>
+												<span class="text-caption-sm text-lt-text-muted"><?php echo esc_html( $unit_suffix ); ?></span>
+											<?php endif; ?>
 										</div>
 										<p class="text-caption-xs text-lt-text-muted mt-[3px] m-0"><?php printf( esc_html__( '(incl. GST %s)', 'local-tasker' ), wc_price( $ppsm_inc ) ); ?></p>
 									<?php else : ?>

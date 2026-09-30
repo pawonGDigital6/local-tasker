@@ -325,6 +325,8 @@ require get_template_directory() . '/inc/optimization/forms.php';
 
 require get_template_directory() . '/inc/optimization/woo-commerce.php';
 
+require get_template_directory() . '/inc/optimization/reviews-widget.php';
+
 /**
  * Customizer additions.
  */

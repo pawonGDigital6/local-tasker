@@ -56,6 +56,36 @@ acf_add_local_field_group( [
 			'default_value' => 1,
 			'ui'            => 1,
 		],
+		[
+			// Display label only — never feeds into any price calculation.
+			'key'           => 'field_lt_price_unit',
+			'label'         => 'Price Unit Label',
+			'name'          => 'price_unit',
+			'type'          => 'select',
+			'instructions'  => 'Text shown after the price (e.g. "$12.00 / sqm"). Only changes the label — the price itself is unaffected.',
+			'choices'       => [
+				'sqm'    => '/ sqm (default)',
+				'unit'   => '/ unit',
+				'each'   => '/ each',
+				'none'   => 'No label',
+				'custom' => 'Custom…',
+			],
+			'default_value' => 'sqm',
+			'return_format' => 'value',
+			'wrapper'       => [ 'width' => '50' ],
+		],
+		[
+			'key'               => 'field_lt_price_unit_custom',
+			'label'             => 'Custom Unit Label',
+			'name'              => 'price_unit_custom',
+			'type'              => 'text',
+			'instructions'      => 'e.g. "tub", "roll", "litre". Shown as "/ tub".',
+			'maxlength'         => 20,
+			'wrapper'           => [ 'width' => '50' ],
+			'conditional_logic' => [
+				[ [ 'field' => 'field_lt_price_unit', 'operator' => '==', 'value' => 'custom' ] ],
+			],
+		],
 	],
 	'location' => [
 		[ [ 'param' => 'post_type', 'operator' => '==', 'value' => 'product' ] ],

@@ -25,6 +25,7 @@ $current_price_ex = (float) $product->get_price();
 $price_per_sqm_ex = $has_price ? $current_price_ex : 0;
 $regular_price_per_sqm_ex = $has_price ? $regular_price_ex : 0;
 $price_per_sqm_inc = $price_per_sqm_ex * 1.10;
+$price_unit_suffix = lt_get_price_unit_suffix($product);
 
 // Box price is derived by multiplying the sqm price by the box's coverage — only
 // meaningful once both a price and a carton coverage exist.
@@ -162,10 +163,12 @@ if ($is_variable) {
 					<span id="lt-price-now"
 						class="text-h4 font-bold text-lt-text-primary leading-none"><?php echo wc_price($price_per_sqm_ex); ?></span>
 				</span>
-				<span class="text-body text-lt-text-muted leading-none mb-1">/ sqm</span>
+				<?php if ($price_unit_suffix): ?>
+					<span class="text-body text-lt-text-muted leading-none mb-1"><?php echo esc_html($price_unit_suffix); ?></span>
+				<?php endif; ?>
 			</div>
 			<p class="text-caption-sm text-lt-text-muted mt-1 m-0">(incl. GST <span
-					id="lt-price-inc"><?php echo wc_price($price_per_sqm_inc); ?></span> / sqm)</p>
+					id="lt-price-inc"><?php echo wc_price($price_per_sqm_inc); ?></span><?php echo $price_unit_suffix ? ' ' . esc_html($price_unit_suffix) : ''; ?>)</p>
 			<!-- Box price badge -->
 			<div class="mt-3<?php echo ($sold_by_box && $has_box_price) ? '' : ' hidden'; ?>" id="lt-price-box-wrap">
 				<span

@@ -115,7 +115,7 @@ $price_inc        = $price_ex * 1.10;
 						</span>
 					<?php endif; ?>
 					<span class="sm:text-lg text-body font-semibold text-lt-text-primary leading-[21px]">
-						<?php echo wc_price( $price_ex ); ?> / sqm
+						<?php echo wc_price( $price_ex ); ?> <?php echo esc_html( lt_get_price_unit_suffix( $product ) ); ?>
 					</span>
 				</div>
 				<p class="text-caption-xs text-lt-text-muted mt-[3px] m-0">

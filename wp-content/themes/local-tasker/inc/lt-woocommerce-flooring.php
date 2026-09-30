@@ -183,6 +183,47 @@ function lt_product_offers_install_quote( $product_id ): bool {
 }
 
 /**
+ * Unit suffix printed after a product's price, e.g. "/ sqm".
+ *
+ * Driven by the product's "Price Unit Label" field. Display only — prices and
+ * the box calculator are untouched. An empty value (every product saved before
+ * the field existed) falls back to "sqm", so existing products look the same.
+ *
+ * @param WC_Product|int $product Product or product id.
+ * @return string Suffix including the leading "/ ", or '' for no label.
+ */
+function lt_get_price_unit_suffix( $product ): string {
+	if ( $product instanceof WC_Product ) {
+		$product_id = $product->get_parent_id() ? $product->get_parent_id() : $product->get_id();
+	} else {
+		$product_id = (int) $product;
+	}
+
+	$unit = (string) get_post_meta( $product_id, 'price_unit', true );
+
+	switch ( $unit ) {
+		case 'none':
+			return '';
+		case 'unit':
+			$label = __( 'unit', 'local-tasker' );
+			break;
+		case 'each':
+			$label = __( 'each', 'local-tasker' );
+			break;
+		case 'custom':
+			$label = trim( (string) get_post_meta( $product_id, 'price_unit_custom', true ) );
+			if ( '' === $label ) {
+				return '';
+			}
+			break;
+		default:
+			$label = __( 'sqm', 'local-tasker' );
+	}
+
+	return '/ ' . $label;
+}
+
+/**
  * Print the installation opt-in inside WooCommerce's own add-to-cart form.
  *
  * Box-priced products add to the cart over AJAX and render the partial
