@@ -17,6 +17,11 @@ $main_id        = $product->get_image_id();
 // one slide renders the placeholder. Gallery images are left as they are.
 $all_ids = array_merge( [ (int) $main_id ], $attachment_ids );
 $count   = count( $all_ids );
+
+// Lightbox group id. Fancybox is bound site-wide to `[data-fancybox]` in
+// `src/global/js/components/global-fancybox.js`, so the gallery only has to
+// declare the group — no extra library and no per-page init.
+$lightbox_group = 'lt-product-gallery';
 ?>
 
 <div class="lt-gallery" id="lt-gallery" data-count="<?php echo esc_attr( $count ); ?>">
@@ -33,16 +38,44 @@ $count   = count( $all_ids );
 					id="lt-slide-<?php echo esc_attr( $index ); ?>"
 				>
 					<?php if ( $id ) : ?>
-						<?php echo wp_get_attachment_image( $id, 'woocommerce_single', false, [
-							'class'   => 'w-full h-full object-cover',
-							'loading' => $index === 0 ? 'eager' : 'lazy',
-						] ); ?>
+						<?php
+						$full_src = wp_get_attachment_image_url( $id, 'full' );
+						$caption  = trim( (string) get_post_meta( $id, '_wp_attachment_image_alt', true ) );
+						if ( '' === $caption ) {
+							$caption = get_the_title();
+						}
+						?>
+						<a
+							href="<?php echo esc_url( $full_src ); ?>"
+							class="lt-gallery__zoom block w-full h-full cursor-zoom-in"
+							data-fancybox="<?php echo esc_attr( $lightbox_group ); ?>"
+							data-caption="<?php echo esc_attr( $caption ); ?>"
+							aria-label="<?php echo esc_attr( sprintf( __( 'View image %d larger', 'local-tasker' ), $index + 1 ) ); ?>"
+							<?php // Off-screen slides are aria-hidden, so keep them out of the tab order too; the JS keeps this in sync. ?>
+							tabindex="<?php echo $index === 0 ? '0' : '-1'; ?>"
+						>
+							<?php echo wp_get_attachment_image( $id, 'woocommerce_single', false, [
+								'class'   => 'w-full h-full object-cover',
+								'loading' => $index === 0 ? 'eager' : 'lazy',
+							] ); ?>
+						</a>
 					<?php else : ?>
 						<?php echo wc_placeholder_img( 'woocommerce_single', [ 'class' => 'w-full h-full object-cover' ] ); ?>
 					<?php endif; ?>
 				</div>
 			<?php endforeach; ?>
 		</div>
+
+		<!-- Zoom affordance — overlays the image, so it must sit out of the flow.
+		     Click-through only: the slide's own link is what opens the lightbox. -->
+		<?php if ( $main_id || $attachment_ids ) : ?>
+			<span class="lt-gallery__zoom-hint pointer-events-none absolute right-3 top-3 z-10 flex items-center justify-center w-9 h-9 rounded-full bg-lt-white/80 border border-[#E9EAEC] text-lt-text-secondary shadow-sm" aria-hidden="true">
+				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+					<path d="M7 5v4M5 7h4M10.8 10.8L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+				</svg>
+			</span>
+		<?php endif; ?>
 
 		<!-- Prev / Next -->
 		<?php if ( $count > 1 ) : ?>

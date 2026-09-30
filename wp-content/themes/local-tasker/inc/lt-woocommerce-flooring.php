@@ -224,6 +224,72 @@ function lt_get_price_unit_suffix( $product ): string {
 }
 
 /**
+ * Wastage allowance, as a percentage, for a product's calculators.
+ *
+ * Resolution order: the product's own "Wastage Allowance (%)" field, then the
+ * site-wide default in Theme Options, then 10 — the figure the calculator was
+ * hard-coded to before either field existed, so nothing changes for a site that
+ * has not filled them in yet.
+ *
+ * An explicit 0 is a real value at every level: it means "no wastage option",
+ * and the calculators hide the row rather than offering a 0% tick. Only a blank
+ * field falls through to the next level.
+ *
+ * Single source of truth for the percentage — the box calculator, its banner and
+ * the area calculator all read it here, so the three cannot drift apart.
+ *
+ * @param WC_Product|int $product Optional. Product or product id. Site default when omitted.
+ * @return float Percentage between 0 and 100.
+ */
+function lt_get_wastage_percent( $product = 0 ): float {
+	$fallback = 10.0;
+
+	if ( $product instanceof WC_Product ) {
+		$product_id = $product->get_parent_id() ? $product->get_parent_id() : $product->get_id();
+	} else {
+		$product_id = (int) $product;
+	}
+
+	// Product override.
+	if ( $product_id ) {
+		$override = get_post_meta( $product_id, 'wastage_percent', true );
+		if ( '' !== $override && null !== $override ) {
+			return lt_clamp_wastage_percent( $override );
+		}
+	}
+
+	// Site-wide default.
+	if ( function_exists( 'get_field' ) ) {
+		$site_default = get_field( 'default_wastage_percent', 'option' );
+		if ( '' !== $site_default && null !== $site_default && false !== $site_default ) {
+			return lt_clamp_wastage_percent( $site_default );
+		}
+	}
+
+	return $fallback;
+}
+
+/**
+ * Keep an authored wastage figure inside a sane 0–100 range.
+ *
+ * @param mixed $value Raw field value.
+ * @return float
+ */
+function lt_clamp_wastage_percent( $value ): float {
+	return (float) max( 0, min( 100, (float) $value ) );
+}
+
+/**
+ * Format a wastage percentage for display, trimming trailing zeros ("10.0" → "10").
+ *
+ * @param float $percent Percentage.
+ * @return string
+ */
+function lt_format_wastage_percent( float $percent ): string {
+	return rtrim( rtrim( number_format( $percent, 2, '.', '' ), '0' ), '.' );
+}
+
+/**
  * Print the installation opt-in inside WooCommerce's own add-to-cart form.
  *
  * Box-priced products add to the cart over AJAX and render the partial

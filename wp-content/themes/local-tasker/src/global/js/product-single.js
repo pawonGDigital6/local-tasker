@@ -9,8 +9,11 @@ import { initAreaCalculators } from './components/area-calculator';
 	'use strict';
 
 	/* ── Constants ─────────────────────────────────────────── */
-	const GST_RATE      = 0.10;
-	const WASTAGE_FACTOR = 1.10;
+	const GST_RATE              = 0.10;
+	// Fallback only — the live figure comes from the calculator's
+	// `data-wastage-percent`, written by the backend field (see
+	// lt_get_wastage_percent() in inc/lt-woocommerce-flooring.php).
+	const DEFAULT_WASTAGE_PCT   = 10;
 
 	/* ══════════════════════════════════════════════════════════
 	   AREA CALCULATOR (shared component — see section 4 below)
@@ -175,7 +178,15 @@ import { initAreaCalculators } from './components/area-calculator';
 			current = Math.max(0, Math.min(index, count - 1));
 			track.style.transform = `translateX(-${current * 100}%)`;
 
-			slides.forEach(function (s, i) { s.setAttribute('aria-hidden', i !== current ? 'true' : 'false'); });
+			slides.forEach(function (s, i) {
+				const hidden = i !== current;
+				s.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+				// The lightbox trigger inside a hidden slide must leave the tab
+				// order with it — a focusable child of an aria-hidden element is
+				// both a screen-reader trap and a tab stop on nothing visible.
+				const zoom = s.querySelector('.lt-gallery__zoom');
+				if (zoom) zoom.setAttribute('tabindex', hidden ? '-1' : '0');
+			});
 
 			thumbs.forEach(function (t, i) {
 				t.classList.toggle('border-lt-accent', i === current);
@@ -220,7 +231,6 @@ import { initAreaCalculators } from './components/area-calculator';
 		const areaInput    = document.getElementById('lt-calc-area');
 		const minusBtn     = document.getElementById('lt-calc-minus');
 		const plusBtn      = document.getElementById('lt-calc-plus');
-		const roundUpCb    = document.getElementById('lt-calc-round-up');
 		const wastageCb    = document.getElementById('lt-calc-wastage');
 		const wastageBanner = document.getElementById('lt-wastage-banner');
 		const resultCoverage = document.getElementById('lt-result-coverage');
@@ -229,18 +239,23 @@ import { initAreaCalculators } from './components/area-calculator';
 		const addToCartBtn   = document.getElementById('lt-add-to-cart');
 		const checkoutBtn    = document.getElementById('lt-checkout-btn');
 
+		// Wastage percentage is configured in the backend and printed onto the
+		// calculator; a missing/invalid attribute keeps the historical 10%.
+		const wastagePctRaw  = parseFloat(calcWrap.dataset.wastagePercent);
+		const wastagePct     = isNaN(wastagePctRaw) ? DEFAULT_WASTAGE_PCT : Math.max(0, wastagePctRaw);
+		const wastageFactor  = 1 + wastagePct / 100;
+
 		function compute() {
 			if (!areaInput) return;
 			const areaSqm    = Math.max(0, parseFloat(areaInput.value) || 0);
-			const roundUp    = roundUpCb  ? roundUpCb.checked  : true;
+			// Boxes cannot be split, so the box count is always rounded up — this
+			// is no longer a customer-facing choice.
 			const addWastage = wastageCb  ? wastageCb.checked  : false;
 
 			if (cartonSqm <= 0) return;
 
-			const effective  = addWastage ? areaSqm * WASTAGE_FACTOR : areaSqm;
-			const boxes      = effective > 0
-				? (roundUp ? Math.ceil(effective / cartonSqm) : Math.floor(effective / cartonSqm))
-				: 0;
+			const effective  = addWastage ? areaSqm * wastageFactor : areaSqm;
+			const boxes      = effective > 0 ? Math.ceil(effective / cartonSqm) : 0;
 			const coverageSqm = boxes * cartonSqm;
 			const subtotalEx  = boxes * boxPriceEx;
 			const gst         = subtotalEx * GST_RATE;
@@ -293,7 +308,6 @@ import { initAreaCalculators } from './components/area-calculator';
 		}
 
 		if (areaInput)  areaInput.addEventListener('input',  compute);
-		if (roundUpCb)  roundUpCb.addEventListener('change', compute);
 		if (wastageCb)  wastageCb.addEventListener('change', compute);
 
 		recomputeCalculator = compute;

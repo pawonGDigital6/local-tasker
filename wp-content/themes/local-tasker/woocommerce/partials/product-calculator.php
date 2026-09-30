@@ -11,8 +11,15 @@ global $product;
 
 $product_id = $product->get_id();
 $nonce = wp_create_nonce('lt_add_to_cart_' . $product_id);
+
+// Wastage is authored in the backend (per product, falling back to the site
+// default in Theme Options). 0 means the option is switched off for this
+// product, so the tick and its banner are not rendered at all.
+$wastage_percent = lt_get_wastage_percent($product);
+$wastage_label = lt_format_wastage_percent($wastage_percent);
+$show_wastage = $wastage_percent > 0;
 ?>
-<div class="lt-calculator" id="lt-calculator"
+<div class="lt-calculator" id="lt-calculator" data-wastage-percent="<?php echo esc_attr($wastage_percent); ?>"
 	aria-label="<?php esc_attr_e('Flooring quantity calculator', 'local-tasker'); ?>">
 	<h2 class="text-caption-sm font-bold text-lt-text-primary mb-4 font-semi-ext">
 		<?php esc_html_e('How much flooring do you need?', 'local-tasker'); ?>
@@ -73,12 +80,13 @@ $nonce = wp_create_nonce('lt_add_to_cart_' . $product_id);
 			<?php esc_html_e('Area calculator ↓', 'local-tasker'); ?>
 		</a>
 	</div>
-	<!-- Checkboxes -->
+	<!-- Options -->
 	<div class="flex flex-col gap-[10px] mb-4">
-		<label class="flex items-start gap-3 cursor-pointer select-none">
-			<input type="checkbox" id="lt-calc-round-up" class="sr-only peer" checked>
+		<!-- Rounding up is always applied — boxes cannot be split, so this is a
+		     statement of what the calculator does, not a choice to make. -->
+		<div class="lt-calc-note flex items-start gap-3 select-none">
 			<span
-				class="lt-checkbox__ui mt-[2px] w-4 h-4 bg-white rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
+				class="lt-checkbox__ui mt-[2px] w-4 h-4 bg-lt-brand rounded border border-lt-brand invisible items-center justify-center shrink-0"
 				aria-hidden="true">
 				<svg class="w-3 h-3 text-lt-white" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round"
@@ -88,35 +96,45 @@ $nonce = wp_create_nonce('lt_add_to_cart_' . $product_id);
 			<span class="text-caption-sm text-lt-text-secondary leading-[1.4]">
 				<?php esc_html_e("We'll round up to full boxes", 'local-tasker'); ?>
 			</span>
-		</label>
-		<label class="flex items-start gap-3 cursor-pointer select-none">
-			<input type="checkbox" id="lt-calc-wastage" class="sr-only peer">
-			<span
-				class="lt-checkbox__ui mt-[2px] w-4 h-4 bg-white rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
-				aria-hidden="true">
-				<svg class="w-3 h-3 text-lt-white" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round"
-						stroke-linejoin="round" />
-				</svg>
-			</span>
-			<span class="text-caption-sm text-lt-text-secondary leading-[1.4]">
-				<?php esc_html_e('We recommend adding 10% for wastage', 'local-tasker'); ?>
-			</span>
-		</label>
+		</div>
+		<?php if ($show_wastage): ?>
+			<label class="flex items-start gap-3 cursor-pointer select-none">
+				<input type="checkbox" id="lt-calc-wastage" class="sr-only peer">
+				<span
+					class="lt-checkbox__ui mt-[2px] w-4 h-4 bg-white rounded border border-[#D1D5DB] flex items-center justify-center shrink-0 peer-checked:bg-lt-brand peer-checked:border-lt-brand transition-colors duration-150"
+					aria-hidden="true">
+					<svg class="w-3 h-3 text-lt-white" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round"
+							stroke-linejoin="round" />
+					</svg>
+				</span>
+				<span class="text-caption-sm text-lt-text-secondary leading-[1.4]">
+					<?php
+					/* translators: %s: wastage percentage, e.g. "10". */
+					printf(esc_html__('We recommend adding %s%% for wastage', 'local-tasker'), esc_html($wastage_label));
+					?>
+				</span>
+			</label>
+		<?php endif; ?>
 	</div>
-	<!-- Wastage confirmation banner -->
-	<div id="lt-wastage-banner"
-		class="hidden items-center gap-2 bg-lt-accent/8 border border-lt-accent/20 rounded-lg px-4 py-3 mb-4"
-		role="status" aria-live="polite">
-		<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-			class="text-lt-accent shrink-0">
-			<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3" />
-			<path d="M8 5v3.5M8 10.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-		</svg>
-		<span class="text-caption-sm text-lt-accent font-medium">
-			<?php esc_html_e('10% wastage has been included in your calculation.', 'local-tasker'); ?>
-		</span>
-	</div>
+	<?php if ($show_wastage): ?>
+		<!-- Wastage confirmation banner -->
+		<div id="lt-wastage-banner"
+			class="hidden items-center gap-2 bg-lt-accent/8 border border-lt-accent/20 rounded-lg px-4 py-3 mb-4"
+			role="status" aria-live="polite">
+			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+				aria-hidden="true" class="text-lt-accent shrink-0">
+				<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3" />
+				<path d="M8 5v3.5M8 10.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+			</svg>
+			<span class="text-caption-sm text-lt-accent font-medium">
+				<?php
+				/* translators: %s: wastage percentage, e.g. "10". */
+				printf(esc_html__('%s%% wastage has been included in your calculation.', 'local-tasker'), esc_html($wastage_label));
+				?>
+			</span>
+		</div>
+	<?php endif; ?>
 	<!-- Result cards -->
 	<div class="grid grid-cols-3 gap-3 mb-5" role="region"
 		aria-label="<?php esc_attr_e('Calculator results', 'local-tasker'); ?>">

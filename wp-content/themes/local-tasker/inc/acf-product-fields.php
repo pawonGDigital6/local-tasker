@@ -6,7 +6,8 @@
  *  1. "Product Options & Specs" — custom meta for flooring product calculations and specs.
  *  2. "Site Options — Supply CTA" — editable content for the supply+install CTA on single product.
  *  3. "Site Options — Reviews" — site-wide Google review cards shown on single product.
- *  4. "Site Options — Work Together CTA" — editable content for the closing CTA on single product.
+ *  4. "Site Options — Calculator" — site-wide defaults for the box / area calculators.
+ *  5. "Site Options — Work Together CTA" — editable content for the closing CTA on single product.
  *
  * @package local-tasker
  */
@@ -43,6 +44,24 @@ acf_add_local_field_group( [
 			// admin form round that on every save, which moved the box price.
 			'step'             => 0.001,
 			'wrapper'          => [ 'width' => '50' ],
+			'conditional_logic' => [
+				[ [ 'field' => 'field_lt_sold_by_box', 'operator' => '==', 'value' => '1' ] ],
+			],
+		],
+		[
+			// Per-product override. Blank falls back to the site-wide default in
+			// Theme Options, so most products never need touching.
+			'key'               => 'field_lt_wastage_percent',
+			'label'             => 'Wastage Allowance (%)',
+			'name'              => 'wastage_percent',
+			'type'              => 'number',
+			'instructions'      => 'Percentage added when the customer ticks "add wastage" on the box calculator. Leave blank to use the site default set under Theme Options → Site Options — Calculator. Enter 0 to hide the wastage option on this product.',
+			'append'            => '%',
+			'min'               => 0,
+			'max'               => 100,
+			'step'              => 0.5,
+			'placeholder'       => 'Site default',
+			'wrapper'           => [ 'width' => '50' ],
 			'conditional_logic' => [
 				[ [ 'field' => 'field_lt_sold_by_box', 'operator' => '==', 'value' => '1' ] ],
 			],
@@ -202,7 +221,32 @@ acf_add_local_field_group( [
 	'menu_order' => 30,
 ] );
 
-// ── 4. Site Options — Work Together CTA ────────────────────────────────────
+// ── 4. Site Options — Calculator ────────────────────────────────────────────
+acf_add_local_field_group( [
+	'key'    => 'group_lt_calculator_options',
+	'title'  => 'Site Options — Calculator',
+	'fields' => [
+		[
+			'key'           => 'field_lt_default_wastage_percent',
+			'label'         => 'Default Wastage Allowance (%)',
+			'name'          => 'default_wastage_percent',
+			'type'          => 'number',
+			'instructions'  => 'Percentage added when the customer ticks "add wastage" on the box calculator and the area calculator. Individual products can override this under Product Options & Specs. Enter 0 to hide the wastage option site-wide.',
+			'append'        => '%',
+			'min'           => 0,
+			'max'           => 100,
+			'step'          => 0.5,
+			'default_value' => 10,
+			'wrapper'       => [ 'width' => '50' ],
+		],
+	],
+	'location' => [
+		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'acf-options' ] ],
+	],
+	'menu_order' => 10,
+] );
+
+// ── 5. Site Options — Work Together CTA ────────────────────────────────────
 acf_add_local_field_group( [
 	'key'    => 'group_lt_work_together',
 	'title'  => 'Site Options — Work Together CTA',
