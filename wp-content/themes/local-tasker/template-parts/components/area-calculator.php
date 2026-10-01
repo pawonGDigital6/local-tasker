@@ -197,7 +197,7 @@ if ($lt_ac['cta_scroll_to']) {
 					aria-live="polite">0 </span>
 				<span class="quat text-caption-sm text-lt-text-muted block">sqm</span>
 			</div>
-			<div class="flex flex-col gap-1 min-w-0 text-right">
+			<div class="flex flex-col gap-1 min-w-0 text-right hidden">
 				<span class="text-caption-sm text-lt-text-muted">
 					<?php
 					/* translators: %s: wastage percentage, e.g. "10". */
