@@ -24,11 +24,11 @@
             "append": ""
         },
         {
-            "key": "field_6a39e032c592d",
-            "label": "Time",
-            "name": "time",
+            "key": "field_6abdef0ee59f8",
+            "label": "Opening Hours",
+            "name": "lt_oh_cb_lists",
             "aria-label": "",
-            "type": "text",
+            "type": "repeater",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -37,16 +37,63 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "maxlength": "",
-            "allow_in_bindings": 0,
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Row",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_6abdef37e59f9",
+                    "label": "Day",
+                    "name": "lt_cb_day",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_6abdef0ee59f8"
+                },
+                {
+                    "key": "field_6abdef3ee59fa",
+                    "label": "Hours",
+                    "name": "lt_cb_hours",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_6abdef0ee59f8"
+                }
+            ]
         },
         {
             "key": "field_6a39e03fc592e",
-            "label": "Address",
+            "label": "Phone Number",
             "name": "address",
             "aria-label": "",
             "type": "text",
@@ -84,5 +131,8 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1782179060
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1790834097
 }

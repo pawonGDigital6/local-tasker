@@ -56,7 +56,8 @@ $section_title = get_field('section_title');
 
 
 		if ($locations_query->have_posts()): ?>
-			<div class="store-location__grid grid wd:grid-cols-4 md:grid-cols-3 smlr:grid-cols-2 grid-cols-1 bigLp:gap-5 wd:gap-4 sm:gap-6 gap-4">
+			<div
+				class="store-location__grid grid wd:grid-cols-4 md:grid-cols-3 smlr:grid-cols-2 grid-cols-1 bigLp:gap-5 wd:gap-4 sm:gap-6 gap-4">
 				<?php while ($locations_query->have_posts()):
 					$locations_query->the_post();
 
@@ -67,14 +68,15 @@ $section_title = get_field('section_title');
 					?>
 					<article id="location-<?php the_ID(); ?>" <?php post_class('group showroom-card flex flex-col overflow-hidden rounded-[12px] border border-[#E5E7EB] bg-lt-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.1)] md:rounded-[15px] relative'); ?>>
 						<div class="showroom-card__media h-[150px] shrink-0 overflow-hidden md:h-[180px] img-full-cover">
-							<img
-								class="will-change-transform transition-transform duration-600 group-hover:scale-105 origin-center"
-								src="<?php echo esc_url($image_url); ?>"
-								alt="<?php echo esc_attr(get_the_title()); ?>" loading="lazy" decoding="async" />
+							<img class="will-change-transform transition-transform duration-600 group-hover:scale-105 origin-center"
+								src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" loading="lazy"
+								decoding="async" />
 						</div>
-						<div class="showroom-card__body flex flex-1 flex-col justify-between sm:gap-[27px] gap-5 sm:px-6 sm:py-[22px_18px] p-5">
+						<div
+							class="showroom-card__body flex flex-1 flex-col justify-between sm:gap-[27px] gap-5 sm:px-6 sm:py-[22px_18px] p-5">
 							<div class="flex flex-col gap-5 sm:gap-[25px]">
-								<h3 class="sm:text-body text-caption-md font-base font-bold leading-[1.37] text-lt-onyx sm:tracking-[0.02em]">
+								<h3
+									class="text-sm font-base font-bold leading-[1.37] text-lt-onyx sm:tracking-[0.02em]">
 									<?php the_title(); ?>
 								</h3>
 								<ul class="flex flex-col gap-2.5 sm:gap-3 m-0">
@@ -100,7 +102,7 @@ $section_title = get_field('section_title');
 													</defs>
 												</svg>
 											</span>
-											<span class="sm:text-body text-caption-sm font-medium leading-[1.4] text-lt-text-secondary">
+											<span class="text-sm font-medium leading-[1.4] text-lt-text-secondary">
 												<?php echo esc_html($location); ?>
 											</span>
 										</li>
@@ -125,17 +127,38 @@ $section_title = get_field('section_title');
 													</defs>
 												</svg>
 											</span>
-											<span class="sm:text-body text-caption-sm font-medium leading-[1.4] text-lt-text-secondary">
-												<?php echo $time; ?>
+											<span class="text-sm font-medium leading-[1.4] text-lt-text-secondary">
+												<ul class="m-0 flex list-none flex-col gap-1 p-0" role="list">
+													<?php if (have_rows('lt_oh_cb_lists', get_the_ID())): ?>
+														<?php while (have_rows('lt_oh_cb_lists', get_the_ID())):
+															the_row();
+															$oh_list_day = get_sub_field('lt_cb_day');
+															$oh_list_hours = get_sub_field('lt_cb_hours');
+															?>
+															<li
+																class="flex items-center justify-between gap-4 leading-none ">
+																<?php if ($oh_list_day): ?>
+																	<span><?php echo $oh_list_day; ?></span>
+																<?php endif; ?>
+																<?php if ($oh_list_hours): ?>
+																	<span class="text-left"><?php echo $oh_list_hours; ?></span>
+																<?php endif; ?>
+															</li>
+														<?php endwhile; ?>
+													<?php endif; ?>
+												</ul>
 											</span>
 										</li>
 									<?php endif; ?>
 									<?php if ($address): ?>
 										<li class="flex items-start gap-3">
 											<span class="sm:mt-0.5 shrink-0 text-lt-text-muted max-sm:w-[16px]" aria-hidden="true">
-												<svg class="w-5" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0A65FC" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round">
-														<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-													</svg>
+												<svg class="w-5" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0A65FC"
+													stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round">
+													<path
+														d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+													</path>
+												</svg>
 											</span>
 											<span class="sm:text-body text-caption-sm font-medium leading-[1.4] text-lt-text-secondary">
 												<?php echo esc_html($address); ?>

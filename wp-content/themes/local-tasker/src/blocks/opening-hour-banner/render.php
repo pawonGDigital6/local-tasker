@@ -110,11 +110,11 @@ $oh_add_text = get_field('oh_add_text');
 						<p class="mb-0 text-[11px] font-bold uppercase tracking-[0.1em] text-lt-white/65"> Opening Hours </p>
 						<div class="my-3 h-px w-full bg-lt-white/20"></div>
 						<ul class="m-0 flex list-none flex-col gap-[17px] p-0" role="list">
-							<?php if (have_rows('oh_lists')): ?>
-								<?php while (have_rows('oh_lists')):
+							<?php if (have_rows('lt_oh_cb_lists', get_the_ID())): ?>
+								<?php while (have_rows('lt_oh_cb_lists', get_the_ID())):
 									the_row();
-									$oh_list_day = get_sub_field('oh_list_day');
-									$oh_list_hours = get_sub_field('oh_list_hours');
+									$oh_list_day = get_sub_field('lt_cb_day');
+									$oh_list_hours = get_sub_field('lt_cb_hours');
 									?>
 									<li
 										class="flex items-center justify-between gap-4 text-[13px] leading-none text-lt-white/85 max-md:text-[12px]">
@@ -130,7 +130,7 @@ $oh_add_text = get_field('oh_add_text');
 						</ul>
 					</div>
 					<?php if ($oh_add_text): ?>
-						<div class="m-0 mt-[6px] mb-0 text-[11px] text-lt-white/50"> <?php echo esc_html($oh_add_text); ?> </div>
+						<div class="m-0 mt-[6px] mb-0 text-[11px] text-lt-white/50 hidden"> <?php echo esc_html($oh_add_text); ?> </div>
 					<?php endif; ?>
 				</div>
 			</div>

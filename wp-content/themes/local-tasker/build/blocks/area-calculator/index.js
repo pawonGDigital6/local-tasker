@@ -1,1 +1,459 @@
-(()=>{"use strict";var t={1152(){class t{constructor(t){this.root=t,this.rowsEl=t.querySelector(".lt-area-calc__rows"),this.templateEl=t.querySelector(".lt-area-calc__template"),this.addBtn=t.querySelector(".lt-area-calc__add"),this.totalEl=t.querySelector(".lt-area-calc__total"),this.wastageEl=t.querySelector(".lt-area-calc__wastage"),this.useBtn=t.querySelector(".lt-area-calc__use");const e=parseFloat(t.dataset.wastage);this.wastageFactor=1+(isNaN(e)?10:e)/100,this.mirrors=null,this.updateTotals=this.updateTotals.bind(this),this.addRow=this.addRow.bind(this),this.handleUse=this.handleUse.bind(this),this.addBtn&&this.addBtn.addEventListener("click",this.addRow),this.useBtn&&this.useBtn.addEventListener("click",this.handleUse),this.addRow()}getMirrors(){return this.mirrors&&this.mirrors.length?this.mirrors:this.root.id?(this.mirrors=Array.from(document.querySelectorAll('[data-lt-area-mirror="'+this.root.id+'"]')),this.mirrors):[]}updateTotals(){let t=0;this.rowsEl.querySelectorAll(".lt-area-row").forEach(e=>{const r=(parseFloat(e.querySelector(".lt-area-row__length")?.value)||0)*(parseFloat(e.querySelector(".lt-area-row__width")?.value)||0),a=e.querySelector(".lt-area-row__area");a&&(a.textContent=r.toFixed(2)),t+=r});const e=t.toFixed(2)+" sqm",r=(t*this.wastageFactor).toFixed(2)+" sqm";return this.totalEl&&(this.totalEl.textContent=e),this.wastageEl&&(this.wastageEl.textContent=r),this.root.dataset.totalArea=t,this.getMirrors().forEach(t=>{const a=t.querySelector('[data-lt-area-mirror-field="total"]'),o=t.querySelector('[data-lt-area-mirror-field="wastage"]');a&&(a.textContent=e),o&&(o.textContent=r)}),t}addRow(){const t=this.templateEl.content.cloneNode(!0),e=t.querySelector(".lt-area-row");if(!e)return;e.querySelectorAll(".lt-area-row__length, .lt-area-row__width").forEach(t=>{t.addEventListener("input",this.updateTotals)});const r=e.querySelector(".lt-area-row__remove");r&&r.addEventListener("click",()=>{e.remove(),this.updateTotals(),0===this.rowsEl.children.length&&this.addRow()}),this.rowsEl.appendChild(t)}handleUse(t){const e=this.useBtn.dataset.target||"",r=this.useBtn.dataset.scrollTo||"";if(!e&&!r)return;const a=parseFloat(this.root.dataset.totalArea)||0;if(e){const r=document.querySelector(e);r&&(t.preventDefault(),r.value=a.toFixed(2),r.dispatchEvent(new Event("input")))}if(r){const e=document.querySelector(r);e&&(t.preventDefault(),e.scrollIntoView({behavior:"smooth",block:"start"}))}}}if("undefined"!=typeof window&&"undefined"!=typeof MutationObserver){let e=!1;const r=()=>{e=!1,function(e=document){const r=[];e.querySelectorAll("[data-lt-area-calc]").forEach(e=>{"1"!==e.dataset.ltAreaCalcReady&&e.querySelector(".lt-area-calc__rows")&&e.querySelector(".lt-area-calc__template")&&(e.dataset.ltAreaCalcReady="1",r.push(new t(e)))})}()},a=()=>{e||(e=!0,window.requestAnimationFrame(r))};window.addEventListener("DOMContentLoaded",a),new MutationObserver(a).observe(document.documentElement,{childList:!0,subtree:!0})}}};const e={};function r(a){const o=e[a];if(void 0!==o)return o.exports;const s=e[a]={exports:{}};return t[a](s,s.exports,r),s.exports}r.m=t,(()=>{const t=[];r.O=(e,a,o,s)=>{if(a){s=s||0;for(var l=t.length;l>0&&t[l-1][2]>s;l--)t[l]=t[l-1];return void(t[l]=[a,o,s])}let i=1/0;for(l=0;l<t.length;l++){let[a,o,s]=t[l],c=!0;for(var n=0;n<a.length;n++)(!1&s||i>=s)&&Object.keys(r.O).every(t=>r.O[t](a[n]))?a.splice(n--,1):(c=!1,s<i&&(i=s));if(c){t.splice(l--,1);const r=o();void 0!==r&&(e=r)}}return e}})(),r.o=(t,e)=>Object.hasOwn(t,e),(()=>{const t={3696:0,4728:0};r.O.j=e=>0===t[e];const e=(e,a)=>{let[o,s,l]=a;var i,n,c=0;if(o.some(e=>0!==t[e])){for(i in s)r.o(s,i)&&(r.m[i]=s[i]);if(l)var d=l(r)}for(e&&e(a);c<o.length;c++)n=o[c],r.o(t,n)&&t[n]&&t[n][0](),t[n]=0;return r.O(d)},a=globalThis.webpackChunkacf_first_block||=[];a.forEach(e.bind(null,0)),a.push=e.bind(null,a.push.bind(a))})();let a=r.O(void 0,[4728],()=>r(1152));a=r.O(a)})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/blocks/area-calculator/index.js"
+/*!*********************************************!*\
+  !*** ./src/blocks/area-calculator/index.js ***!
+  \*********************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor.scss */ "./src/blocks/area-calculator/editor.scss");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./src/blocks/area-calculator/style.scss");
+/* harmony import */ var _global_js_components_area_calculator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../global/js/components/area-calculator */ "./src/global/js/components/area-calculator.js");
+
+
+
+
+/**
+ * Editor preview.
+ *
+ * ACF renders the block preview over AJAX and the front-end view script is not
+ * loaded in the editor, so the card would otherwise render with no room rows.
+ * Booting the shared component on every DOM change keeps the preview live;
+ * `initAreaCalculators()` skips cards it has already booted.
+ */
+if (typeof window !== 'undefined' && typeof MutationObserver !== 'undefined') {
+  let scheduled = false;
+  const boot = () => {
+    scheduled = false;
+    (0,_global_js_components_area_calculator__WEBPACK_IMPORTED_MODULE_2__.initAreaCalculators)();
+  };
+  const schedule = () => {
+    if (scheduled) return;
+    scheduled = true;
+    window.requestAnimationFrame(boot);
+  };
+  window.addEventListener('DOMContentLoaded', schedule);
+  new MutationObserver(schedule).observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+}
+
+/***/ },
+
+/***/ "./src/global/js/components/area-calculator.js"
+/*!*****************************************************!*\
+  !*** ./src/global/js/components/area-calculator.js ***!
+  \*****************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   autoInitAreaCalculators: () => (/* binding */ autoInitAreaCalculators),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   initAreaCalculators: () => (/* binding */ initAreaCalculators)
+/* harmony export */ });
+/**
+ * Area Calculator — shared component (vanilla JS, no dependencies).
+ *
+ * Drives every `[data-lt-area-calc]` card rendered by
+ * `template-parts/components/area-calculator.php`:
+ *
+ *   - clones the row <template> to add "Add another area" rows,
+ *   - recalculates length × width per row plus the grand total,
+ *   - keeps the "with wastage" figure in sync (percentage from `data-wastage`),
+ *   - always keeps at least one row on screen,
+ *   - mirrors both totals into any companion box that points back at the card
+ *     (`data-lt-area-mirror="<card id>"`, e.g. the "How it works" summary),
+ *   - optionally pushes the total into a host input (`data-target` on the CTA)
+ *     and scrolls to another element (`data-scroll-to`).
+ *
+ * Everything is scoped to the card's root element and instances are marked as
+ * initialised, so any number of calculators can share one page — the standalone
+ * ACF block and the WooCommerce single-product card use the exact same code.
+ *
+ * @package local-tasker
+ * @since   1.0.0
+ */
+
+const ROOT_SELECTOR = '[data-lt-area-calc]';
+const DEFAULT_WASTAGE = 10; // Percent.
+
+class AreaCalculator {
+  /**
+   * @param {HTMLElement} root - Root element of one calculator card.
+   */
+  constructor(root) {
+    this.root = root;
+    this.rowsEl = root.querySelector('.lt-area-calc__rows');
+    this.templateEl = root.querySelector('.lt-area-calc__template');
+    this.addBtn = root.querySelector('.lt-area-calc__add');
+    this.totalEl = root.querySelector('.lt-area-calc__total');
+    this.wastageEl = root.querySelector('.lt-area-calc__wastage');
+    this.useBtn = root.querySelector('.lt-area-calc__use');
+
+    // Wastage is authored as a percentage (10 → ×1.10).
+    const wastage = parseFloat(root.dataset.wastage);
+    this.wastageFactor = 1 + (isNaN(wastage) ? DEFAULT_WASTAGE : wastage) / 100;
+
+    // Companion boxes (e.g. the "How it works" summary) that mirror the totals.
+    this.mirrors = null;
+    this.updateTotals = this.updateTotals.bind(this);
+    this.addRow = this.addRow.bind(this);
+    this.handleUse = this.handleUse.bind(this);
+    if (this.addBtn) {
+      this.addBtn.addEventListener('click', this.addRow);
+    }
+    if (this.useBtn) {
+      this.useBtn.addEventListener('click', this.handleUse);
+    }
+
+    // Init one row.
+    this.addRow();
+  }
+
+  /**
+   * Companion boxes that mirror this card's totals.
+   *
+   * Looked up lazily (and cached once found) because the mirroring markup is a
+   * sibling rendered after the card — with `data-lt-area-mirror` set to this
+   * card's id, so several calculators on a page each drive their own box.
+   *
+   * @return {HTMLElement[]} Matching mirror containers.
+   */
+  getMirrors() {
+    if (this.mirrors && this.mirrors.length) return this.mirrors;
+    if (!this.root.id) return [];
+    this.mirrors = Array.from(document.querySelectorAll('[data-lt-area-mirror="' + this.root.id + '"]'));
+    return this.mirrors;
+  }
+
+  /**
+   * Recalculate every row and the two totals.
+   *
+   * @return {number} Total area in sqm.
+   */
+  updateTotals() {
+    let total = 0;
+    this.rowsEl.querySelectorAll('.lt-area-row').forEach(row => {
+      const l = parseFloat(row.querySelector('.lt-area-row__length')?.value) || 0;
+      const w = parseFloat(row.querySelector('.lt-area-row__width')?.value) || 0;
+      const area = l * w;
+      const areaEl = row.querySelector('.lt-area-row__area');
+      if (areaEl) areaEl.textContent = area.toFixed(2);
+      total += area;
+    });
+    const totalText = total.toFixed(2) + ' sqm';
+    const wastageText = (total * this.wastageFactor).toFixed(2) + ' sqm';
+    if (this.totalEl) this.totalEl.textContent = totalText;
+    if (this.wastageEl) this.wastageEl.textContent = wastageText;
+    this.root.dataset.totalArea = total;
+    this.getMirrors().forEach(box => {
+      const mirrorTotal = box.querySelector('[data-lt-area-mirror-field="total"]');
+      const mirrorWastage = box.querySelector('[data-lt-area-mirror-field="wastage"]');
+      if (mirrorTotal) mirrorTotal.textContent = totalText;
+      if (mirrorWastage) mirrorWastage.textContent = wastageText;
+    });
+    return total;
+  }
+
+  /**
+   * Clone the row template, wire it up and append it.
+   */
+  addRow() {
+    const clone = this.templateEl.content.cloneNode(true);
+    const row = clone.querySelector('.lt-area-row');
+    if (!row) return;
+    row.querySelectorAll('.lt-area-row__length, .lt-area-row__width').forEach(input => {
+      input.addEventListener('input', this.updateTotals);
+    });
+    const removeBtn = row.querySelector('.lt-area-row__remove');
+    if (removeBtn) {
+      removeBtn.addEventListener('click', () => {
+        row.remove();
+        this.updateTotals();
+        // Never leave the card empty.
+        if (this.rowsEl.children.length === 0) this.addRow();
+      });
+    }
+    this.rowsEl.appendChild(clone);
+  }
+
+  /**
+   * CTA handler.
+   *
+   * Purely opt-in host-page integration: when the CTA carries `data-target`
+   * the total is written into that input (and an `input` event dispatched so
+   * the host recalculates); `data-scroll-to` then scrolls that element into
+   * view. Without either attribute the CTA is inert — or, when rendered as a
+   * link, simply follows its href.
+   *
+   * @param {Event} event - Click event.
+   */
+  handleUse(event) {
+    const targetSel = this.useBtn.dataset.target || '';
+    const scrollSel = this.useBtn.dataset.scrollTo || '';
+    if (!targetSel && !scrollSel) return;
+    const totalArea = parseFloat(this.root.dataset.totalArea) || 0;
+    if (targetSel) {
+      const targetInput = document.querySelector(targetSel);
+      if (targetInput) {
+        event.preventDefault();
+        targetInput.value = totalArea.toFixed(2);
+        targetInput.dispatchEvent(new Event('input'));
+      }
+    }
+    if (scrollSel) {
+      const scrollEl = document.querySelector(scrollSel);
+      if (scrollEl) {
+        event.preventDefault();
+        scrollEl.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+  }
+}
+
+/**
+ * Boot every calculator inside `scope` that has not been booted yet.
+ *
+ * Safe to call more than once (e.g. from the block view script *and* the
+ * product-single bundle on a page that happens to have both).
+ *
+ * @param {Document|HTMLElement} scope - Search root. Defaults to `document`.
+ * @return {AreaCalculator[]} The instances created by this call.
+ */
+function initAreaCalculators(scope = document) {
+  const instances = [];
+  scope.querySelectorAll(ROOT_SELECTOR).forEach(root => {
+    if (root.dataset.ltAreaCalcReady === '1') return;
+
+    // Bail on incomplete markup rather than throwing.
+    if (!root.querySelector('.lt-area-calc__rows') || !root.querySelector('.lt-area-calc__template')) {
+      return;
+    }
+    root.dataset.ltAreaCalcReady = '1';
+    instances.push(new AreaCalculator(root));
+  });
+  return instances;
+}
+
+/**
+ * Run `initAreaCalculators()` as soon as the DOM is parsed.
+ */
+function autoInitAreaCalculators() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => initAreaCalculators());
+  } else {
+    initAreaCalculators();
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AreaCalculator);
+
+/***/ },
+
+/***/ "./src/blocks/area-calculator/editor.scss"
+/*!************************************************!*\
+  !*** ./src/blocks/area-calculator/editor.scss ***!
+  \************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ },
+
+/***/ "./src/blocks/area-calculator/style.scss"
+/*!***********************************************!*\
+  !*** ./src/blocks/area-calculator/style.scss ***!
+  \***********************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	const __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		const cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		const module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			const e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		const deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			let notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				let [chunkIds, fn, priority] = deferred[i];
+/******/ 				let fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					const r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter/value functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			if(Array.isArray(definition)) {
+/******/ 				var i = 0;
+/******/ 				while(i < definition.length) {
+/******/ 					var key = definition[i++];
+/******/ 					var binding = definition[i++];
+/******/ 					if(!__webpack_require__.o(exports, key)) {
+/******/ 						if(binding === 0) {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, value: definition[i++] });
+/******/ 						} else {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, get: binding });
+/******/ 						}
+/******/ 					} else if(binding === 0) { i++; }
+/******/ 				}
+/******/ 			} else {
+/******/ 				for(var key in definition) {
+/******/ 					if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 						Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 					}
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.hasOwn(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		const installedChunks = {
+/******/ 			"area-calculator/index": 0,
+/******/ 			"area-calculator/style-index": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		const webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			let [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		const chunkLoadingGlobal = globalThis["webpackChunkacf_first_block"] ||= [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	let __webpack_exports__ = __webpack_require__.O(undefined, ["area-calculator/style-index"], () => (__webpack_require__("./src/blocks/area-calculator/index.js")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;
+//# sourceMappingURL=index.js.map
