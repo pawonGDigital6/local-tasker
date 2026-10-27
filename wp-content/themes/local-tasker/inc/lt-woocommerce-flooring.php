@@ -349,6 +349,266 @@ function lt_add_install_cart_item_data( $cart_item_data, $product_id = 0 ) {
 add_filter( 'woocommerce_add_cart_item_data', 'lt_add_install_cart_item_data', 10, 2 );
 
 /* -------------------------------------------------------------------------
+ *  Installation opt-in on the cart page
+ * ---------------------------------------------------------------------- */
+
+/**
+ * The cart-item data a line was created with, for a given installation choice.
+ *
+ * WC_Cart::generate_cart_id() hashes this array into the line's key, and both
+ * add-to-cart paths put the install flag in it: the calculator's AJAX handler
+ * passes [ lt_boxed, lt_install ] (inc/woocommerce.php) and the stock form gets
+ * [ lt_install ] from lt_add_install_cart_item_data() only when ticked. Rebuilding
+ * it lets the cart toggle give a line the same key the product page would have,
+ * so a later add from the product page still tops up the right line.
+ *
+ * @param array $cart_item Cart item.
+ * @param bool  $install   Installation quote requested.
+ * @return array|null Null for lines whose identity cannot be rebuilt (legacy
+ *                    'lt_boxes'-only lines from before 'lt_boxed' existed).
+ */
+function lt_install_cart_identity( array $cart_item, bool $install ): ?array {
+	if ( ! empty( $cart_item['lt_boxed'] ) ) {
+		return array(
+			'lt_boxed'   => 'yes',
+			'lt_install' => $install ? 'yes' : '',
+		);
+	}
+	if ( ! empty( $cart_item['lt_boxes'] ) ) {
+		return null;
+	}
+	return $install ? array( 'lt_install' => 'yes' ) : array();
+}
+
+/**
+ * Turn the installation quote on or off for a cart line.
+ *
+ * Re-keys the line the way the product page would have keyed it. If the cart
+ * already holds a line with that key (same product, same choice), the two are
+ * merged — exactly what adding it again from the product page does. When the
+ * line's current key does not match the rebuilt identity (data added by
+ * something other than this theme), the flag is changed in place instead, so
+ * nothing this code does not understand is lost.
+ *
+ * Price is never touched: the flag is a request for a quote, nothing more.
+ *
+ * @param string $cart_item_key Cart item key.
+ * @param bool   $requested     Whether a quote is wanted.
+ * @return bool True when the line exists and now carries the requested choice.
+ */
+function lt_set_cart_item_install_quote( string $cart_item_key, bool $requested ): bool {
+	$cart = WC()->cart;
+	if ( ! $cart ) {
+		return false;
+	}
+
+	$contents = $cart->get_cart_contents();
+	if ( ! isset( $contents[ $cart_item_key ] ) ) {
+		return false;
+	}
+
+	$item = $contents[ $cart_item_key ];
+
+	// Same gate as the product page: no toggle, no request.
+	if ( $requested && ! lt_product_offers_install_quote( $item['product_id'] ) ) {
+		return false;
+	}
+
+	$current = ! empty( $item['lt_install'] );
+	if ( $current === $requested ) {
+		return true;
+	}
+
+	if ( $requested ) {
+		$item['lt_install'] = 'yes';
+	} elseif ( ! empty( $item['lt_boxed'] ) ) {
+		$item['lt_install'] = '';
+	} else {
+		unset( $item['lt_install'] );
+	}
+
+	$new_key      = $cart_item_key;
+	$old_identity = lt_install_cart_identity( $item, $current );
+	$new_identity = lt_install_cart_identity( $item, $requested );
+
+	if ( null !== $old_identity && null !== $new_identity ) {
+		$product_id   = (int) $item['product_id'];
+		$variation_id = (int) $item['variation_id'];
+		$variation    = (array) ( $item['variation'] ?? array() );
+
+		if ( $cart->generate_cart_id( $product_id, $variation_id, $variation, $old_identity ) === $cart_item_key ) {
+			$new_key = $cart->generate_cart_id( $product_id, $variation_id, $variation, $new_identity );
+		}
+	}
+
+	if ( $new_key !== $cart_item_key && isset( $contents[ $new_key ] ) ) {
+		// Merge into the matching line, as a second add from the product page would.
+		$target             = $contents[ $new_key ];
+		$target['quantity'] = (float) $target['quantity'] + (float) $item['quantity'];
+
+		if ( ! empty( $item['lt_area_sqm'] ) || ! empty( $target['lt_area_sqm'] ) ) {
+			$target['lt_area_sqm'] = round( (float) ( $target['lt_area_sqm'] ?? 0 ) + (float) ( $item['lt_area_sqm'] ?? 0 ), 2 );
+		}
+		if ( isset( $target['lt_boxes'] ) ) {
+			$carton_sqm                = (float) get_post_meta( $target['product_id'], 'carton_sqm', true );
+			$target['lt_boxes']        = (int) $target['quantity'];
+			$target['lt_coverage_sqm'] = round( $target['lt_boxes'] * $carton_sqm, 4 );
+		}
+
+		$contents[ $new_key ] = $target;
+		unset( $contents[ $cart_item_key ] );
+	} else {
+		// Swap the key in place so the line keeps its position in the cart.
+		$item['key'] = $new_key;
+		$rebuilt     = array();
+		foreach ( $contents as $key => $line ) {
+			if ( $key === $cart_item_key ) {
+				$rebuilt[ $new_key ] = $item;
+			} else {
+				$rebuilt[ $key ] = $line;
+			}
+		}
+		$contents = $rebuilt;
+	}
+
+	$cart->set_cart_contents( $contents );
+	$cart->calculate_totals();
+	$cart->set_session();
+
+	return true;
+}
+
+/**
+ * Expose the installation choice to the Cart block, and accept changes from it.
+ *
+ * The cart and checkout pages are WooCommerce blocks, which read the cart through
+ * the Store API rather than PHP templates. Each cart item gets an 'lt-install'
+ * entry ({ offered, requested }) and the same namespace takes updates from
+ * js/cart-install-quote.js via extensionCartUpdate(), which returns the fresh
+ * cart so every block repaints from one source.
+ */
+function lt_register_install_quote_store_api(): void {
+	if ( ! function_exists( 'woocommerce_store_api_register_endpoint_data' ) ) {
+		return;
+	}
+
+	woocommerce_store_api_register_endpoint_data(
+		array(
+			'endpoint'        => \Automattic\WooCommerce\StoreApi\Schemas\V1\CartItemSchema::IDENTIFIER,
+			'namespace'       => 'lt-install',
+			'data_callback'   => static function ( $cart_item ) {
+				return array(
+					'offered'   => ! empty( $cart_item['product_id'] ) && lt_product_offers_install_quote( $cart_item['product_id'] ),
+					'requested' => ! empty( $cart_item['lt_install'] ),
+				);
+			},
+			'schema_callback' => static function () {
+				return array(
+					'offered'   => array(
+						'description' => __( 'Whether this product offers an installation quote.', 'local-tasker' ),
+						'type'        => 'boolean',
+						'readonly'    => true,
+					),
+					'requested' => array(
+						'description' => __( 'Whether an installation quote is requested for this line.', 'local-tasker' ),
+						'type'        => 'boolean',
+						'readonly'    => true,
+					),
+				);
+			},
+			'schema_type'     => ARRAY_A,
+		)
+	);
+
+	woocommerce_store_api_register_update_callback(
+		array(
+			'namespace' => 'lt-install',
+			'callback'  => static function ( $data ) {
+				$key       = isset( $data['key'] ) ? wc_clean( (string) $data['key'] ) : '';
+				$requested = ! empty( $data['requested'] ) && 'false' !== $data['requested'];
+
+				if ( '' === $key || ! lt_set_cart_item_install_quote( $key, $requested ) ) {
+					throw new \Automattic\WooCommerce\StoreApi\Exceptions\RouteException(
+						'lt_install_quote_invalid',
+						esc_html__( 'We could not update the installation quote request. Please refresh the page and try again.', 'local-tasker' ),
+						400
+					);
+				}
+			},
+		)
+	);
+}
+// WooCommerce fires woocommerce_blocks_loaded on plugins_loaded, before the
+// theme is loaded, so register straight away when it has already run.
+if ( did_action( 'woocommerce_blocks_loaded' ) ) {
+	lt_register_install_quote_store_api();
+} else {
+	add_action( 'woocommerce_blocks_loaded', 'lt_register_install_quote_store_api' );
+}
+
+/**
+ * Load the cart-page installation panel (js/cart-install-quote.js).
+ *
+ * Plain script rather than a webpack entry, like the other cart helpers in js/,
+ * so it needs no build step. It only renders inside the Cart block.
+ */
+function lt_enqueue_cart_install_quote_script(): void {
+	if ( ! function_exists( 'is_cart' ) || ! is_cart() ) {
+		return;
+	}
+
+	$rel = '/js/cart-install-quote.js';
+	wp_enqueue_script(
+		'lt-cart-install-quote',
+		get_template_directory_uri() . $rel,
+		array( 'wc-blocks-checkout', 'wp-element', 'wp-plugins', 'wp-html-entities', 'wp-hooks' ),
+		file_exists( get_template_directory() . $rel ) ? filemtime( get_template_directory() . $rel ) : _S_VERSION,
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'lt_enqueue_cart_install_quote_script' );
+
+/**
+ * A one-line pointer in the mini-cart drawer to where the installation quote
+ * can be requested — the drawer itself carries no checkbox.
+ *
+ * Printed as the last row of the item list (woocommerce_mini_cart_contents runs
+ * inside the drawer's <ul>), so it sits above the sticky subtotal and buttons
+ * without changing their layout, and it is re-rendered with every cart-fragment
+ * refresh like the rest of the drawer. Shown only while the cart holds a
+ * product that offers an installation quote. Markup uses utility classes the
+ * theme already compiles, so no stylesheet rebuild is needed.
+ */
+function lt_mini_cart_install_quote_note(): void {
+	if ( ! WC()->cart ) {
+		return;
+	}
+
+	$offered = false;
+	foreach ( WC()->cart->get_cart() as $cart_item ) {
+		if ( ! empty( $cart_item['product_id'] ) && lt_product_offers_install_quote( $cart_item['product_id'] ) ) {
+			$offered = true;
+			break;
+		}
+	}
+	if ( ! $offered ) {
+		return;
+	}
+	?>
+	<li class="lt-mini-cart__install-note list-none mb-6 rounded-lg bg-lt-snow-drift px-4 py-3 text-caption-sm leading-[1.5] text-lt-text-secondary">
+		<?php
+		printf(
+			/* translators: %s: link to the cart page. */
+			esc_html__( 'Need installation? You can request an installation quote on the product page or in your %s.', 'local-tasker' ),
+			'<a href="' . esc_url( wc_get_cart_url() ) . '" class="text-lt-brand underline hover:no-underline">' . esc_html__( 'cart', 'local-tasker' ) . '</a>'
+		);
+		?>
+	</li>
+	<?php
+}
+add_action( 'woocommerce_mini_cart_contents', 'lt_mini_cart_install_quote_note' );
+
+/* -------------------------------------------------------------------------
  *  Cart / order — carry the chosen coverage + install option
  * ---------------------------------------------------------------------- */
 
