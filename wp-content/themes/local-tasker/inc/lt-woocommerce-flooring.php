@@ -609,6 +609,144 @@ function lt_mini_cart_install_quote_note(): void {
 add_action( 'woocommerce_mini_cart_contents', 'lt_mini_cart_install_quote_note' );
 
 /* -------------------------------------------------------------------------
+ *  Delivery cost note (product page, cart, checkout)
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Lowest delivery price per shipping zone, read from the live shipping setup.
+ *
+ * Nothing is hardcoded: each enabled method in each zone contributes its
+ * cheapest rate — a Flexible Shipping method its lowest rule cost, a flat rate
+ * its base cost — so editing a rate or a zone in WooCommerce → Shipping changes
+ * the note with no code change. Zones with no priced method (e.g. "Rest of the
+ * World" with nothing set up) are left out.
+ *
+ * Display only; the price a customer pays is still calculated by the shipping
+ * methods at checkout.
+ *
+ * @return array<int,array{zone:string,from:float}> Cheapest first.
+ */
+function lt_get_delivery_zone_prices(): array {
+	static $prices = null;
+	if ( null !== $prices ) {
+		return $prices;
+	}
+
+	$prices = array();
+	if ( ! class_exists( 'WC_Shipping_Zones' ) ) {
+		return $prices;
+	}
+
+	foreach ( WC_Shipping_Zones::get_zones() as $zone ) {
+		$lowest = null;
+
+		foreach ( $zone['shipping_methods'] as $method ) {
+			if ( 'yes' !== $method->enabled ) {
+				continue;
+			}
+
+			$costs = array();
+			if ( 'flexible_shipping_single' === $method->id ) {
+				foreach ( (array) $method->get_option( 'method_rules', array() ) as $rule ) {
+					if ( isset( $rule['cost_per_order'] ) && is_numeric( $rule['cost_per_order'] ) ) {
+						$costs[] = (float) $rule['cost_per_order'];
+					}
+				}
+			} elseif ( 'flat_rate' === $method->id && is_numeric( $method->get_option( 'cost' ) ) ) {
+				$costs[] = (float) $method->get_option( 'cost' );
+			}
+
+			if ( $costs ) {
+				$lowest = null === $lowest ? min( $costs ) : min( $lowest, min( $costs ) );
+			}
+		}
+
+		if ( null !== $lowest ) {
+			$prices[] = array(
+				'zone' => (string) $zone['zone_name'],
+				'from' => $lowest,
+			);
+		}
+	}
+
+	usort(
+		$prices,
+		static function ( $a, $b ) {
+			return $a['from'] <=> $b['from'];
+		}
+	);
+
+	return $prices;
+}
+
+/**
+ * A delivery price as plain text, without cents when it is a whole amount ("$160").
+ *
+ * @param float $amount Amount.
+ * @return string
+ */
+function lt_format_delivery_price( float $amount ): string {
+	$decimals = ( floor( $amount ) === $amount ) ? 0 : wc_get_price_decimals();
+	return html_entity_decode( wp_strip_all_tags( wc_price( $amount, array( 'decimals' => $decimals ) ) ), ENT_QUOTES, 'UTF-8' );
+}
+
+/**
+ * Store phone number for "call us" links, digits only.
+ *
+ * Same source as the installation opt-in's "Call Us" link: the WooCommerce
+ * store phone when set, otherwise the business number.
+ *
+ * @return string
+ */
+function lt_get_store_call_number(): string {
+	$phone = preg_replace( '/[^0-9+]/', '', (string) get_option( 'woocommerce_store_phone', '' ) );
+	return '' !== $phone ? $phone : '1300807127';
+}
+
+/**
+ * Feed the cart/checkout delivery note (js/cart-delivery-note.js).
+ *
+ * Plain script like the other cart helpers in js/, rendered through the Cart
+ * and Checkout blocks' own order-summary slot.
+ */
+function lt_enqueue_cart_delivery_note_script(): void {
+	if ( ! function_exists( 'is_cart' ) || ! ( is_cart() || is_checkout() ) || is_order_received_page() ) {
+		return;
+	}
+
+	$prices = lt_get_delivery_zone_prices();
+	if ( ! $prices ) {
+		return;
+	}
+
+	$rel = '/js/cart-delivery-note.js';
+	wp_enqueue_script(
+		'lt-cart-delivery-note',
+		get_template_directory_uri() . $rel,
+		array( 'wc-blocks-checkout', 'wp-element', 'wp-plugins' ),
+		file_exists( get_template_directory() . $rel ) ? filemtime( get_template_directory() . $rel ) : _S_VERSION,
+		true
+	);
+	wp_localize_script(
+		'lt-cart-delivery-note',
+		'ltDeliveryNote',
+		array(
+			'zones' => array_map(
+				static function ( $row ) {
+					return array(
+						'zone' => $row['zone'],
+						'from' => lt_format_delivery_price( $row['from'] ),
+					);
+				},
+				$prices
+			),
+			'phone' => lt_get_store_call_number(),
+		)
+	);
+}
+add_action( 'wp_enqueue_scripts', 'lt_enqueue_cart_delivery_note_script' );
+
+/* -------------------------------------------------------------------------
  *  Cart / order — carry the chosen coverage + install option
  * ---------------------------------------------------------------------- */
 

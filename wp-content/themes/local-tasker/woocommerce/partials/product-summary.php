@@ -283,4 +283,6 @@ if ($is_variable) {
 		<!-- Simple add to cart for non-box products -->
 		<?php woocommerce_template_single_add_to_cart(); ?>
 	<?php endif; ?>
+	<!-- ── Delivery cost note ── (self-gating; prints nothing when no zone is priced) -->
+	<?php get_template_part('woocommerce/partials/product-delivery-note'); ?>
 </div><!-- /.lt-product-summary -->
