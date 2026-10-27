@@ -1,1 +1,1 @@
-<?php return array('dependencies' => array('jquery', 'swiper', 'wp-dom-ready'), 'version' => '2e330c9e56e9c26a9ee3');
+<?php return array('dependencies' => array('jquery', 'swiper', 'wp-dom-ready'), 'version' => '5ecda9f363d60c9a1818');
