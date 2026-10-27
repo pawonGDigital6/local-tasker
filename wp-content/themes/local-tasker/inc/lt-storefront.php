@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once get_template_directory() . '/inc/lt-woocommerce-flooring.php';
+require_once get_template_directory() . '/inc/lt-samples.php';
 require_once get_template_directory() . '/inc/lt-shop-filter.php';
 require_once get_template_directory() . '/inc/class-shop-filter-ajax.php';
 

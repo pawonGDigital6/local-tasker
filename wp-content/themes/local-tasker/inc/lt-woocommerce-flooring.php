@@ -173,6 +173,11 @@ function lt_guess_swatch_hex( $name ) {
  * @return bool
  */
 function lt_product_offers_install_quote( $product_id ): bool {
+	// A free sample is never installed (see inc/lt-samples.php).
+	if ( function_exists( 'lt_get_sample_product_id' ) && (int) $product_id === lt_get_sample_product_id() && (int) $product_id > 0 ) {
+		return false;
+	}
+
 	$enabled = get_post_meta( (int) $product_id, 'install_quote_enabled', true );
 
 	if ( '' === $enabled || null === $enabled ) {
@@ -741,6 +746,9 @@ function lt_enqueue_cart_delivery_note_script(): void {
 				$prices
 			),
 			'phone' => lt_get_store_call_number(),
+			// Lets the note read correctly for a cart that holds only samples.
+			'sampleProductId' => function_exists( 'lt_get_sample_product_id' ) ? lt_get_sample_product_id() : 0,
+			'sampleFee'       => function_exists( 'lt_sample_delivery_fee' ) ? lt_format_delivery_price( lt_sample_delivery_fee() ) : '',
 		)
 	);
 }

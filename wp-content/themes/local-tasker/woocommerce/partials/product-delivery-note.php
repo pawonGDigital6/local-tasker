@@ -45,7 +45,7 @@ if (!$lt_delivery_prices) {
 			<?php
 			printf(
 				/* translators: %s: "Call us" phone link. */
-				esc_html__('Outside these areas? %s to arrange delivery or collection.', 'local-tasker'),
+				esc_html__('Outside these areas? %s for a shipping quote.', 'local-tasker'),
 				'<a href="tel:' . esc_attr(lt_get_store_call_number()) . '" class="text-lt-brand underline hover:no-underline">' . esc_html__('Call us', 'local-tasker') . '</a>'
 			);
 			?>

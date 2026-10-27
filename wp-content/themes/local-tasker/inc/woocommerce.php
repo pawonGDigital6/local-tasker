@@ -1107,7 +1107,8 @@ add_action( 'wp_enqueue_scripts', 'lt_enqueue_mini_cart_script' );
 function lt_mini_cart_item_quantity( $html, $cart_item, $cart_item_key ) {
 	$product = isset( $cart_item['data'] ) ? $cart_item['data'] : null;
 
-	if ( ! $product instanceof WC_Product ) {
+	// One-per-line products (e.g. free samples) keep WooCommerce's plain "1 × $x".
+	if ( ! $product instanceof WC_Product || $product->is_sold_individually() ) {
 		return $html;
 	}
 
@@ -1198,6 +1199,10 @@ function lt_ajax_update_cart_item_qty(): void {
 
 	$cart_item = $cart->get_cart_item( $key );
 	$product   = $cart_item['data'];
+
+	if ( $product instanceof WC_Product && $product->is_sold_individually() ) {
+		$qty = 1;
+	}
 
 	if ( $product instanceof WC_Product && $product->managing_stock() && ! $product->backorders_allowed() ) {
 		$stock = (int) $product->get_stock_quantity();

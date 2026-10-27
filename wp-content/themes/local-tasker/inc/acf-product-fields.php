@@ -76,6 +76,16 @@ acf_add_local_field_group( [
 			'ui'            => 1,
 		],
 		[
+			// Off by default: only products switched on here show "Order Sample".
+			'key'           => 'field_lt_sample_enabled',
+			'label'         => 'Offer Samples',
+			'name'          => 'sample_enabled',
+			'type'          => 'true_false',
+			'instructions'  => 'Show the "Order Sample" button on this product. Samples are free; the customer pays the sample delivery charge set under Theme Options → Site Options — Samples, which is dropped when the order also includes flooring.',
+			'default_value' => 0,
+			'ui'            => 1,
+		],
+		[
 			// Display label only — never feeds into any price calculation.
 			'key'           => 'field_lt_price_unit',
 			'label'         => 'Price Unit Label',
@@ -244,6 +254,49 @@ acf_add_local_field_group( [
 		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'acf-options' ] ],
 	],
 	'menu_order' => 10,
+] );
+
+// ── 4b. Site Options — Samples ──────────────────────────────────────────────
+acf_add_local_field_group( [
+	'key'    => 'group_lt_sample_options',
+	'title'  => 'Site Options — Samples',
+	'fields' => [
+		[
+			'key'           => 'field_lt_samples_enabled',
+			'label'         => 'Enable Order Sample',
+			'name'          => 'samples_enabled',
+			'type'          => 'true_false',
+			'instructions'  => 'Site-wide switch for the "Order Sample" button. When off, no product shows it (whatever its own "Offer Samples" setting) and samples already in carts are removed.',
+			'ui'            => 1,
+			'default_value' => 1,
+		],
+		[
+			'key'           => 'field_lt_sample_delivery_fee',
+			'label'         => 'Sample Delivery Charge',
+			'name'          => 'sample_delivery_fee',
+			'type'          => 'number',
+			'instructions'  => 'Charged on orders that contain only samples. Dropped automatically when the order also includes flooring (normal delivery applies instead). Samples are delivered only to areas with a delivery rate.',
+			'prepend'       => '$',
+			'min'           => 0,
+			'step'          => 0.01,
+			'default_value' => 15,
+			'wrapper'       => [ 'width' => '50' ],
+		],
+		[
+			'key'           => 'field_lt_sample_max_per_order',
+			'label'         => 'Maximum Samples per Order',
+			'name'          => 'sample_max_per_order',
+			'type'          => 'number',
+			'min'           => 1,
+			'step'          => 1,
+			'default_value' => 3,
+			'wrapper'       => [ 'width' => '50' ],
+		],
+	],
+	'location' => [
+		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'acf-options' ] ],
+	],
+	'menu_order' => 11,
 ] );
 
 // ── 5. Site Options — Work Together CTA ────────────────────────────────────

@@ -175,5 +175,7 @@ $show_wastage = $wastage_percent > 0;
 			aria-label="<?php esc_attr_e('Proceed to checkout', 'local-tasker'); ?>">
 			<?php esc_html_e('Proceed to Checkout', 'local-tasker'); ?>
 		</a>
+		<?php get_template_part('woocommerce/partials/product-sample', null, array('part' => 'button')); ?>
 	</div>
+	<?php get_template_part('woocommerce/partials/product-sample', null, array('part' => 'note')); ?>
 </div><!-- /.lt-calculator -->
