@@ -25,7 +25,7 @@ $show_wastage = $wastage_percent > 0;
 		<?php esc_html_e('How much flooring do you need?', 'local-tasker'); ?>
 	</h2>
 	<!-- sqm input row -->
-	<div class="flex items-center gap-3 mb-4">
+	<div class="flex items-center gap-3 mb-4 max-xs:flex-wrap">
 		<!-- Stepper -->
 		<div class="lt-stepper flex items-center border border-[#E9EAEC] rounded-xl overflow-hidden bg-lt-white"
 			role="group" aria-label="<?php esc_attr_e('Square metres', 'local-tasker'); ?>">
@@ -40,7 +40,7 @@ $show_wastage = $wastage_percent > 0;
 			<label for="lt-calc-area"
 				class="sr-only"><?php esc_html_e('Area in square metres', 'local-tasker'); ?></label>
 			<input type="number" id="lt-calc-area"
-				class="lt-stepper__input w-16 text-center border-x border-[#E9EAEC] h-11 text-body font-bold text-lt-text-primary bg-transparent focus:outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lt-brand"
+				class="lt-stepper__input xs:w-16 w-10 text-center border-x border-[#E9EAEC] h-11 text-body font-bold text-lt-text-primary bg-transparent focus:outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lt-brand"
 				value="0" min="0" step="1" inputmode="decimal" aria-live="polite">
 			<button type="button" id="lt-calc-plus"
 				class="lt-stepper__btn w-11 h-11 flex items-center justify-center text-lt-text-secondary hover:bg-lt-snow-drift transition-colors duration-150 shrink-0"
@@ -136,7 +136,7 @@ $show_wastage = $wastage_percent > 0;
 		</div>
 	<?php endif; ?>
 	<!-- Result cards -->
-	<div class="grid grid-cols-3 gap-3 mb-5" role="region"
+	<div class="grid xs:grid-cols-3 grid-cols-2 gap-3 mb-5" role="region"
 		aria-label="<?php esc_attr_e('Calculator results', 'local-tasker'); ?>">
 		<div
 			class="lt-calc-result flex flex-col items-center text-center bg-lt-white border border-[#E9EAEC] rounded-lg px-3 py-3 gap-1">
@@ -163,7 +163,7 @@ $show_wastage = $wastage_percent > 0;
 		</div>
 	</div>
 	<!-- Actions -->
-	<div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+	<div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center prod-btn-wrappers">
 		<button type="button" id="lt-add-to-cart"
 			class="btn btn--brand flex-1 py-[14px]! disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors duration-75"
 			data-product-id="<?php echo esc_attr($product_id); ?>" data-nonce="<?php echo esc_attr($nonce); ?>"

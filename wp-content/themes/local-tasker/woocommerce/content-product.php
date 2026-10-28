@@ -40,14 +40,17 @@ if ( ! $is_variable && $product->is_purchasable() && $product->is_in_stock() ) {
 
 /*
  * "Order Sample" (inc/lt-samples.php), only where the product and the site-wide
- * switch allow it. A simple product adds its sample straight from the card; a
- * variable one needs a colour picked first, so its button opens the product
- * page at the sample button instead. The script is asked for here, at render
- * time, for the same reason as the cart scripts above — on any card, not just
+ * switch allow it. A simple product, or a variable one with a single colour /
+ * finish, adds its sample straight from the card (lt_add_sample_to_cart picks
+ * that one variation); any other variable product needs a colour picked first,
+ * so its button opens the product page at the sample button instead. The
+ * script is asked for here, at render time, for the same reason as the cart
+ * scripts above — on any card, not just
  * sample ones, because Popular Products tabs and Load More bring in more cards
  * over AJAX after the page's scripts are already printed. It loads once.
  */
 $offers_sample = lt_product_offers_samples( $product_id );
+$sample_link   = $is_variable && 1 !== count( $product->get_children() );
 if ( lt_samples_enabled() ) {
 	lt_enqueue_sample_script();
 }
@@ -180,7 +183,7 @@ $price_inc        = $price_ex * 1.10;
 
 			<?php if ( $offers_sample ) : ?>
 				<div data-lt-sample>
-					<?php if ( $is_variable ) : ?>
+					<?php if ( $sample_link ) : ?>
 						<a
 							href="<?php echo esc_url( get_permalink() . '#lt-order-sample' ); ?>"
 							class="btn bg-transparent w-full mt-2 items-center text-center border border-lt-accent text-lt-accent hover:opacity-80 transition-opacity duration-75"

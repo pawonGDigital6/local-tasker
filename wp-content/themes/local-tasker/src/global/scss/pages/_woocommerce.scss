@@ -223,6 +223,16 @@
 		opacity: 0.5;
 		cursor: not-allowed;
 	}
+
+	.prod-btn-wrappers:has(#lt-checkout-btn:not(.hidden)) {
+		flex-wrap: wrap !important;
+	}
+	.prod-btn-wrappers:has(#lt-checkout-btn:not(.hidden)) > * {
+		flex: initial;
+		padding-inline: 12px;
+		min-width: 180px;
+		font-size: 14px;
+	}
 }
 
 /* --------------------------------------------------------------------------

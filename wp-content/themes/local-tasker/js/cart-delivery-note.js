@@ -59,7 +59,7 @@
 
 		return el(
 			'div',
-			{ className: 'lt-delivery-note mt-4 rounded-lg bg-lt-snow-drift px-4 py-3 text-caption-sm leading-[1.5] text-lt-text-secondary', role: 'note' },
+			{ className: 'lt-delivery-note mt-4 rounded-lg bg-lt-snow-drift px-4! text-caption-sm leading-[1.5] text-lt-text-secondary', role: 'note' },
 			el('p', { className: 'm-0 font-semibold text-lt-text-primary' }, heading),
 			el(
 				'p',

@@ -215,6 +215,12 @@ function lt_ajax_add_sample_to_cart(): void {
 	$label = $product->get_name();
 
 	if ( $product->is_type( 'variable' ) ) {
+		// Only one colour / finish: nothing to choose, so a card (or a page
+		// with no colour picked) gets that one.
+		$children = $product->get_children();
+		if ( ! $variation_id && 1 === count( $children ) ) {
+			$variation_id = (int) $children[0];
+		}
 		$variation = $variation_id ? wc_get_product( $variation_id ) : null;
 		if ( ! $variation || $variation->get_parent_id() !== $product_id ) {
 			wp_send_json_error( array( 'message' => __( 'Please choose a colour / finish first.', 'local-tasker' ) ) );

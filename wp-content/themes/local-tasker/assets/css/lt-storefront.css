@@ -540,6 +540,10 @@
 	border-radius: 0;
 	font-size: 16px;
 	color: var(--lt-muted-2);
+	/* @media screen and (max-width: 374px){
+		width: 22px;
+		padding: 4px 6px;
+	} */
 }
 
 .lt-stepper__btn:hover {
