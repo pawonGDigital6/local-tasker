@@ -29,7 +29,7 @@ $lt_max  = lt_sample_max_per_order();
 $lt_fee  = lt_format_delivery_price(lt_sample_delivery_fee());
 ?>
 <?php if ('note' !== $lt_part): ?>
-	<button type="button" id="lt-order-sample"
+	<button type="button" id="lt-order-sample" data-lt-sample-add data-product-id="<?php echo esc_attr($product->get_id()); ?>"
 		class="btn bg-transparent flex-1 py-[14px]! border border-lt-accent text-lt-accent hover:opacity-80 cursor-pointer disabled:opacity-50 transition-opacity duration-75"
 		aria-describedby="lt-sample-note">
 		<?php esc_html_e('Order Sample', 'local-tasker'); ?>

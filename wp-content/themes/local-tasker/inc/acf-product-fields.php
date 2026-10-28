@@ -55,7 +55,7 @@ acf_add_local_field_group( [
 			'label'             => 'Wastage Allowance (%)',
 			'name'              => 'wastage_percent',
 			'type'              => 'number',
-			'instructions'      => 'Percentage added when the customer ticks "add wastage" on the box calculator. Leave blank to use the site default set under Theme Options → Site Options — Calculator. Enter 0 to hide the wastage option on this product.',
+			'instructions'      => 'Percentage added when the customer ticks "add wastage" on the box calculator. Leave blank to use the site default set under Theme Option → Site Options — Calculator. Enter 0 to hide the wastage option on this product.',
 			'append'            => '%',
 			'min'               => 0,
 			'max'               => 100,
@@ -81,7 +81,7 @@ acf_add_local_field_group( [
 			'label'         => 'Offer Samples',
 			'name'          => 'sample_enabled',
 			'type'          => 'true_false',
-			'instructions'  => 'Show the "Order Sample" button on this product. Samples are free; the customer pays the sample delivery charge set under Theme Options → Site Options — Samples, which is dropped when the order also includes flooring.',
+			'instructions'  => 'Show the "Order Sample" button on this product. Samples are free; the customer pays the sample delivery charge set under Theme Option → Site Options — Samples, which is dropped when the order also includes flooring.',
 			'default_value' => 0,
 			'ui'            => 1,
 		],
@@ -167,7 +167,7 @@ acf_add_local_field_group( [
 		],
 	],
 	'location' => [
-		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'acf-options' ] ],
+		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'theme-option' ] ],
 	],
 	'menu_order' => 20,
 ] );
@@ -226,7 +226,7 @@ acf_add_local_field_group( [
 		],
 	],
 	'location' => [
-		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'acf-options' ] ],
+		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'theme-option' ] ],
 	],
 	'menu_order' => 30,
 ] );
@@ -251,7 +251,7 @@ acf_add_local_field_group( [
 		],
 	],
 	'location' => [
-		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'acf-options' ] ],
+		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'theme-option' ] ],
 	],
 	'menu_order' => 10,
 ] );
@@ -294,7 +294,7 @@ acf_add_local_field_group( [
 		],
 	],
 	'location' => [
-		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'acf-options' ] ],
+		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'theme-option' ] ],
 	],
 	'menu_order' => 11,
 ] );
@@ -326,20 +326,12 @@ acf_add_local_field_group( [
 		],
 	],
 	'location' => [
-		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'acf-options' ] ],
+		[ [ 'param' => 'options_page', 'operator' => '==', 'value' => 'theme-option' ] ],
 	],
 	'menu_order' => 40,
 ] );
 
-// ── Register ACF options page ────────────────────────────────────────────────
-if ( function_exists( 'acf_add_options_page' ) ) {
-	acf_add_options_page( [
-		'page_title'  => 'Theme Options',
-		'menu_title'  => 'Theme Options',
-		'menu_slug'   => 'acf-options',
-		'capability'  => 'manage_options',
-		'redirect'    => false,
-		'icon_url'    => 'dashicons-admin-generic',
-		'position'    => 60,
-	] );
-}
+// The Site Options groups above sit on the "Theme Option" page, which is
+// registered in ACF (acf-json/ui_options_page_6a2f7a74dcd74.json) alongside
+// Global Settings. Both store values as options, so get_field( ..., 'option' )
+// reads the same data whichever page saved it.

@@ -543,10 +543,28 @@ function lt_enqueue_product_sample_script(): void {
 	if ( ! function_exists( 'is_product' ) || ! is_product() ) {
 		return;
 	}
-	$product_id = get_queried_object_id();
-	if ( ! lt_product_offers_samples( $product_id ) ) {
+	if ( ! lt_product_offers_samples( get_queried_object_id() ) ) {
 		return;
 	}
+	lt_enqueue_sample_script();
+}
+add_action( 'wp_enqueue_scripts', 'lt_enqueue_product_sample_script' );
+
+/**
+ * Enqueue js/product-sample.js once. Every "Order Sample" button carries its
+ * own product id (data-product-id), so the same script serves the single
+ * product page and product cards (woocommerce/content-product.php), including
+ * cards added to the page later over AJAX.
+ *
+ * Also asks for wc-cart-fragments, which the asset optimisation strips off
+ * non-shop pages: it is what refreshes the mini-cart after a sample is added.
+ */
+function lt_enqueue_sample_script(): void {
+	if ( wp_script_is( 'lt-product-sample', 'enqueued' ) ) {
+		return;
+	}
+
+	wp_enqueue_script( 'wc-cart-fragments' );
 
 	$rel = '/js/product-sample.js';
 	wp_enqueue_script(
@@ -562,7 +580,6 @@ function lt_enqueue_product_sample_script(): void {
 		array(
 			'ajaxUrl'   => esc_url_raw( admin_url( 'admin-ajax.php' ) ),
 			'nonce'     => wp_create_nonce( 'lt_add_sample' ),
-			'productId' => $product_id,
 			'labels'    => array(
 				'adding'   => __( 'Adding…', 'local-tasker' ),
 				'added'    => __( 'Sample added', 'local-tasker' ),
@@ -573,4 +590,3 @@ function lt_enqueue_product_sample_script(): void {
 		)
 	);
 }
-add_action( 'wp_enqueue_scripts', 'lt_enqueue_product_sample_script' );

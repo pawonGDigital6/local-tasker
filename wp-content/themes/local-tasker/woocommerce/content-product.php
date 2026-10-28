@@ -38,6 +38,20 @@ if ( ! $is_variable && $product->is_purchasable() && $product->is_in_stock() ) {
 	wp_enqueue_script( 'wc-cart-fragments' );
 }
 
+/*
+ * "Order Sample" (inc/lt-samples.php), only where the product and the site-wide
+ * switch allow it. A simple product adds its sample straight from the card; a
+ * variable one needs a colour picked first, so its button opens the product
+ * page at the sample button instead. The script is asked for here, at render
+ * time, for the same reason as the cart scripts above — on any card, not just
+ * sample ones, because Popular Products tabs and Load More bring in more cards
+ * over AJAX after the page's scripts are already printed. It loads once.
+ */
+$offers_sample = lt_product_offers_samples( $product_id );
+if ( lt_samples_enabled() ) {
+	lt_enqueue_sample_script();
+}
+
 // _price is already the $/sqm figure — no conversion needed to show it.
 $price_ex         = $has_price ? (float) $product->get_price() : 0;
 $regular_price_ex = $has_price ? (float) $product->get_regular_price() : 0;
@@ -162,6 +176,31 @@ $price_inc        = $price_ex * 1.10;
 				>
 					<?php esc_html_e( 'Add to Cart', 'local-tasker' ); ?>
 				</a>
+			<?php endif; ?>
+
+			<?php if ( $offers_sample ) : ?>
+				<div data-lt-sample>
+					<?php if ( $is_variable ) : ?>
+						<a
+							href="<?php echo esc_url( get_permalink() . '#lt-order-sample' ); ?>"
+							class="btn bg-transparent w-full mt-2 items-center text-center border border-lt-accent text-lt-accent hover:opacity-80 transition-opacity duration-75"
+							aria-label="<?php echo esc_attr( sprintf( __( 'Choose a colour to order a sample of %s', 'local-tasker' ), get_the_title() ) ); ?>"
+						>
+							<?php esc_html_e( 'Order Sample', 'local-tasker' ); ?>
+						</a>
+					<?php else : ?>
+						<button
+							type="button"
+							data-lt-sample-add
+							data-product-id="<?php echo esc_attr( $product_id ); ?>"
+							class="btn bg-transparent w-full mt-2 items-center text-center border border-lt-accent text-lt-accent hover:opacity-80 cursor-pointer disabled:opacity-50 transition-opacity duration-75"
+							aria-label="<?php echo esc_attr( sprintf( __( 'Order a sample of %s', 'local-tasker' ), get_the_title() ) ); ?>"
+						>
+							<?php esc_html_e( 'Order Sample', 'local-tasker' ); ?>
+						</button>
+						<p data-lt-sample-status class="hidden text-caption-xs text-lt-accent mt-1 mb-0" role="status" aria-live="polite"></p>
+					<?php endif; ?>
+				</div>
 			<?php endif; ?>
 		</div>
 	</div><!-- /.lt-product-card__content -->
