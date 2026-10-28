@@ -8,8 +8,8 @@
  *     which disappears when the same order includes full flooring.
  *   • Samples only go where flooring is delivered (the Metro Melbourne and VIC
  *     Outer Metro zones), or can be collected with local pickup.
- *   • Offered per product via the "Offer Samples" toggle, off by default, and
- *     only while Theme Options → "Enable Order Sample" is on.
+ *   • Offered on every product by default; the "Offer Samples" toggle turns it off
+ *     per product, and Theme Option → "Enable Order Sample" turns it off site-wide.
  *   • Sample orders are ordinary WooCommerce orders — same fulfilment process.
  *
  * How it fits WooCommerce without touching the shipping matrix:
@@ -71,15 +71,38 @@ function lt_samples_enabled(): bool {
  * Does this product offer samples? Driven by its "Offer Samples" toggle, and
  * only while the site-wide switch is on.
  *
- * Off unless explicitly switched on, so a product saved before the toggle
- * existed never shows the button.
+ * On unless explicitly switched off ('0'), so products saved before the toggle
+ * existed, or never saved since, offer samples. The hidden sample product never
+ * offers a sample of itself.
  *
  * @param int $product_id Product id (parent id for variations).
  * @return bool
  */
 function lt_product_offers_samples( $product_id ): bool {
-	return lt_samples_enabled() && (bool) get_post_meta( (int) $product_id, 'sample_enabled', true );
+	$product_id = (int) $product_id;
+	if ( ! lt_samples_enabled() || ( $product_id && $product_id === lt_get_sample_product_id() ) ) {
+		return false;
+	}
+	return '0' !== (string) get_post_meta( $product_id, 'sample_enabled', true );
 }
+
+/**
+ * One-time switch to "on by default".
+ *
+ * While samples were off by default, the product edit screen saved
+ * sample_enabled = '0' for any product edited without touching the toggle, so
+ * '0' then meant "never switched on", not "switched off". Clearing those once
+ * lets every existing product follow the new default. Later '0' values (a
+ * product deliberately switched off) are kept.
+ */
+function lt_samples_default_on_migration(): void {
+	if ( get_option( 'lt_samples_default_on' ) ) {
+		return;
+	}
+	delete_metadata( 'post', 0, 'sample_enabled', '0', true );
+	update_option( 'lt_samples_default_on', 1 );
+}
+add_action( 'init', 'lt_samples_default_on_migration' );
 
 /* -------------------------------------------------------------------------
  *  The hidden sample product

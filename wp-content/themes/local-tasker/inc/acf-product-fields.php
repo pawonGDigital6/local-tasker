@@ -76,13 +76,13 @@ acf_add_local_field_group( [
 			'ui'            => 1,
 		],
 		[
-			// Off by default: only products switched on here show "Order Sample".
+			// On by default: every product shows "Order Sample" unless switched off here.
 			'key'           => 'field_lt_sample_enabled',
 			'label'         => 'Offer Samples',
 			'name'          => 'sample_enabled',
 			'type'          => 'true_false',
-			'instructions'  => 'Show the "Order Sample" button on this product. Samples are free; the customer pays the sample delivery charge set under Theme Option → Site Options — Samples, which is dropped when the order also includes flooring.',
-			'default_value' => 0,
+			'instructions'  => 'Show the "Order Sample" button on this product (on by default). Samples are free; the customer pays the sample delivery charge set under Theme Option → Site Options — Samples, which is dropped when the order also includes flooring.',
+			'default_value' => 1,
 			'ui'            => 1,
 		],
 		[
